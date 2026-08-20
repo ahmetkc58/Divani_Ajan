@@ -1,0 +1,72 @@
+{
+  "manifest_version": "1.0",
+  "retrieved_at": "2026-08-20",
+  "items": [
+    {
+      "id": "ssdp_v4_2024",
+      "local_path": "resources/official/ssdp_v4_2024.pdf",
+      "source_url": "https://www.devletarsivleri.gov.tr/varliklar/goruntuler/haberler/image/SSDP.PDF%20%282024%20V.4%29.pdf",
+      "publisher": "T.C. Cumhurbaşkanlığı Devlet Arşivleri Başkanlığı",
+      "bytes": 1103422,
+      "sha256": "91522bba34504909a369e1e9d4b76a550f89b51f716919556a97a997e7bda79c",
+      "license": "Kamuya açık resmî kaynak; açık veri lisansı belirtilmemiş",
+      "usage": "Sentetik konu ve yönlendirme taksonomisine referans",
+      "redistribution": "Kaynak göster; ham dosyayı proje veri setinin parçası gibi yeniden lisanslama"
+    },
+    {
+      "id": "standart_dosya_plani_rehberi_v1_1",
+      "local_path": "resources/official/standart_dosya_plani_rehberi_v1.1.pdf",
+      "source_url": "https://www.devletarsivleri.gov.tr/varliklar/dosyalar/formlar/dosyaplan%C4%B1rehberi1.1.pdf",
+      "publisher": "T.C. Cumhurbaşkanlığı Devlet Arşivleri Başkanlığı",
+      "bytes": 28979326,
+      "sha256": "475f5d370550dddbb2615800a52c8f100a4bfecff3801c005852d5832a0bd8cd",
+      "license": "Kamuya açık resmî kaynak; açık veri lisansı belirtilmemiş",
+      "usage": "Dosya planı uygulama mantığı ve sentetik senaryo tasarımı",
+      "redistribution": "Kaynak göster; ham dosyayı proje veri setinin parçası gibi yeniden lisanslama"
+    },
+    {
+      "id": "tr_docvqa_synth_readme",
+      "local_path": "resources/dataset_cards/TR-DocVQA-Synth_README.md",
+      "source_url": "https://huggingface.co/datasets/Ethosoft/TR-DocVQA-Synth/raw/main/README.md",
+      "publisher": "Ethosoft",
+      "bytes": 15576,
+      "sha256": "830b93a69059c9cfff97d10abc0648f54cc87844918d18ed445825203bbdc227",
+      "license": "CC BY 4.0 (veri), MIT (kod) - veri kartı beyanı",
+      "usage": "OCR, alan çıkarımı ve belge görüntüsü testleri için aday",
+      "download_status": "Yalnızca veri kartı; 5.15 GB tam veri indirilmedi"
+    },
+    {
+      "id": "tr_docvqa_synth_dataset_card",
+      "local_path": "resources/dataset_cards/TR-DocVQA-Synth_dataset_card.md",
+      "source_url": "https://huggingface.co/datasets/Ethosoft/TR-DocVQA-Synth/raw/main/dataset_card.md",
+      "publisher": "Ethosoft",
+      "bytes": 15071,
+      "sha256": "d1a810aa52283ff94a780dc293b416b40952637247e23ace0d53a299fdb2e24c",
+      "license": "CC BY 4.0 (veri), MIT (kod) - veri kartı beyanı",
+      "usage": "Veri şeması ve alt küme indirme kararı",
+      "download_status": "Yalnızca veri kartı"
+    },
+    {
+      "id": "augraphy_license",
+      "local_path": "resources/tool_licenses/augraphy_LICENSE.txt",
+      "source_url": "https://raw.githubusercontent.com/sparkfish/augraphy/dev/LICENSE",
+      "publisher": "Sparkfish LLC",
+      "bytes": 1070,
+      "sha256": "752e0d24ad4c1bc6394021c162281240151a78c8e508c7ffc5aaa8a47345e5c1",
+      "license": "MIT",
+      "usage": "Sentetik tarama/faks/fotokopi bozulmaları için aday",
+      "download_status": "Yalnızca lisans; araç kurulmadı"
+    },
+    {
+      "id": "trdg_license",
+      "local_path": "resources/tool_licenses/trdg_LICENSE.txt",
+      "source_url": "https://raw.githubusercontent.com/Belval/TextRecognitionDataGenerator/master/LICENSE",
+      "publisher": "Edouard Belval",
+      "bytes": 1071,
+      "sha256": "6451a49275ddf393b9e113e70cdc358db35e4356c97fd9688183e49bc8e24409",
+      "license": "MIT",
+      "usage": "Sentetik OCR satırı/görüntüsü üretimi için aday",
+      "download_status": "Yalnızca lisans; araç kurulmadı"
+    }
+  ]
+}

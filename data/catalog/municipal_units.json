@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "institution": {
+    "id": "ORNEKSEHIR-BLD",
+    "name": "Örnekşehir Belediyesi",
+    "synthetic": true
+  },
+  "units": [
+    {
+      "id": "BRM-YAZI",
+      "name": "Yazı İşleri ve Kararlar Müdürlüğü",
+      "description": "Genel evrak kaydı, meclis ve encümen kararları, kurum içi yazışma koordinasyonu.",
+      "keywords": ["genel evrak", "karar", "meclis", "encümen", "tutanak", "kurum içi"]
+    },
+    {
+      "id": "BRM-FEN",
+      "name": "Fen İşleri Müdürlüğü",
+      "description": "Yol, kaldırım, asfalt, altyapı, yapım, bakım ve onarım hizmetleri.",
+      "keywords": ["yol", "kaldırım", "asfalt", "altyapı", "çukur", "bakım", "onarım"]
+    },
+    {
+      "id": "BRM-IMAR",
+      "name": "İmar ve Şehircilik Müdürlüğü",
+      "description": "İmar planı, yapı ruhsatı, iskan, parsel, adres ve şehircilik işlemleri.",
+      "keywords": ["imar", "ruhsat", "iskan", "parsel", "yapı", "adres", "plan"]
+    },
+    {
+      "id": "BRM-ZABITA",
+      "name": "Zabıta Müdürlüğü",
+      "description": "Belediye düzeni, işyeri denetimi, seyyar satıcı, gürültü ve kamusal alan ihlalleri.",
+      "keywords": ["denetim", "işyeri", "seyyar", "gürültü", "işgal", "ruhsatsız", "zabıta"]
+    },
+    {
+      "id": "BRM-TEMIZLIK",
+      "name": "Temizlik İşleri Müdürlüğü",
+      "description": "Evsel atık, sokak temizliği, konteyner, çöp toplama ve çevre temizliği.",
+      "keywords": ["çöp", "atık", "konteyner", "temizlik", "sokak", "koku"]
+    },
+    {
+      "id": "BRM-SOSYAL",
+      "name": "Sosyal Yardım İşleri Müdürlüğü",
+      "description": "Sosyal destek, gıda, yakacak, engelli, yaşlı ve ihtiyaç sahibi başvuruları.",
+      "keywords": ["sosyal yardım", "gıda", "yakacak", "engelli", "yaşlı", "ihtiyaç"]
+    },
+    {
+      "id": "BRM-IK",
+      "name": "İnsan Kaynakları ve Eğitim Müdürlüğü",
+      "description": "Personel, izin, özlük, hizmet içi eğitim, staj ve insan kaynakları işlemleri.",
+      "keywords": ["personel", "izin", "özlük", "eğitim", "staj", "görevlendirme"]
+    },
+    {
+      "id": "BRM-MALI",
+      "name": "Mali Hizmetler Müdürlüğü",
+      "description": "Bütçe, tahsilat, ödeme, gelir, gider, vergi ve mali kontrol işlemleri.",
+      "keywords": ["bütçe", "ödeme", "tahsilat", "borç", "vergi", "harç", "mali"]
+    },
+    {
+      "id": "BRM-BILGI",
+      "name": "Bilgi İşlem Müdürlüğü",
+      "description": "Yazılım, donanım, ağ, kullanıcı hesabı, bilgi güvenliği ve teknik destek.",
+      "keywords": ["yazılım", "donanım", "ağ", "bilgisayar", "erişim", "teknik destek", "siber"]
+    },
+    {
+      "id": "BRM-DESTEK",
+      "name": "Destek Hizmetleri Müdürlüğü",
+      "description": "Satın alma, ihale, taşınır, depo, araç ve genel idari destek hizmetleri.",
+      "keywords": ["satın alma", "ihale", "teklif", "malzeme", "taşınır", "araç", "depo"]
+    },
+    {
+      "id": "BRM-KULTUR",
+      "name": "Kültür ve Sosyal İşler Müdürlüğü",
+      "description": "Kültür, sanat, spor, etkinlik, kurs, tesis ve toplumsal programlar.",
+      "keywords": ["kültür", "sanat", "spor", "etkinlik", "kurs", "tesis", "festival"]
+    },
+    {
+      "id": "BRM-HALKLA",
+      "name": "Basın Yayın ve Halkla İlişkiler Müdürlüğü",
+      "description": "Bilgi edinme, vatandaş iletişimi, basın, duyuru, şikâyet ve kurumsal bilgilendirme.",
+      "keywords": ["bilgi edinme", "vatandaş", "basın", "duyuru", "şikâyet", "iletişim"]
+    }
+  ]
+}

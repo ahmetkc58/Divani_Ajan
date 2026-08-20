@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "document_types": [
+    {
+      "id": "dilekce",
+      "label": "Dilekçe",
+      "description": "Bir kişi veya topluluğun belediyeye talep, görüş ya da başvuru ilettiği evrak.",
+      "required_fields": ["basvuru_sahibi", "iletisim", "konu", "talep", "tarih"]
+    },
+    {
+      "id": "bilgi_edinme_basvurusu",
+      "label": "Bilgi Edinme Başvurusu",
+      "description": "Belediyeden kayıt, belge veya kamuya açık bilgi talep eden başvuru.",
+      "required_fields": ["basvuru_sahibi", "iletisim", "istenen_bilgi", "tarih"]
+    },
+    {
+      "id": "sikayet_ihbar",
+      "label": "Şikâyet / İhbar",
+      "description": "Bir sorun, aykırılık veya kamu hizmeti aksaklığını bildiren evrak.",
+      "required_fields": ["bildiren", "olay", "konum", "tarih"]
+    },
+    {
+      "id": "talep_yazisi",
+      "label": "Talep Yazısı",
+      "description": "Bir kurum, birim veya tüzel kişinin belirli bir işlem ya da kaynak talebi.",
+      "required_fields": ["gonderen", "muhatap", "konu", "talep", "tarih"]
+    },
+    {
+      "id": "ust_yazi",
+      "label": "Üst Yazı",
+      "description": "Ekli belgeyi veya kurumsal işlemi resmî olarak ileten yazı.",
+      "required_fields": ["gonderen_kurum", "muhatap", "sayi", "konu", "tarih", "metin"]
+    },
+    {
+      "id": "cevap_yazisi",
+      "label": "Cevap Yazısı",
+      "description": "Daha önce gelen başvuru ya da yazıya verilen resmî cevap.",
+      "required_fields": ["muhatap", "konu", "ilgi", "cevap", "tarih"]
+    },
+    {
+      "id": "bilgilendirme_duyuru",
+      "label": "Bilgilendirme / Duyuru",
+      "description": "Bir karar, etkinlik, hizmet veya uygulamayı bildiren metin.",
+      "required_fields": ["hedef_kitle", "konu", "bilgi", "tarih"]
+    },
+    {
+      "id": "kurum_ici_yazisma",
+      "label": "Kurum İçi Yazışma",
+      "description": "Belediye birimleri arasında bilgi, görüş veya işlem talep eden yazı.",
+      "required_fields": ["gonderen_birim", "muhatap_birim", "konu", "metin", "tarih"]
+    },
+    {
+      "id": "tutanak",
+      "label": "Tutanak",
+      "description": "Bir olayı, toplantıyı veya tespiti yer, zaman ve katılımcı bilgileriyle kaydeden belge.",
+      "required_fields": ["olay", "yer", "tarih", "katilimcilar"]
+    },
+    {
+      "id": "basvuru_formu",
+      "label": "Başvuru / Form",
+      "description": "Belirli bir belediye hizmeti için yapılandırılmış alanlarla sunulan başvuru.",
+      "required_fields": ["basvuru_sahibi", "basvuru_turu", "iletisim", "tarih"]
+    }
+  ]
+}

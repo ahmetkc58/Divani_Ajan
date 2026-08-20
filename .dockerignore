@@ -1,0 +1,13 @@
+.git
+.env
+backend/.venv
+backend/.pytest_cache
+backend/.ruff_cache
+frontend/node_modules
+frontend/dist
+frontend/*.tsbuildinfo
+runtime
+tmp
+data/processed
+*.log
+.DS_Store
