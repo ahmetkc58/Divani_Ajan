@@ -56,6 +56,14 @@ Bu belge, proje klasöründeki her dosyanın neden bulunduğunu, hangi aşamada 
 - **Modele verilecek mi?** Hayır.
 - **Durum:** Korunmalı ve güncel tutulmalı.
 
+### `docs/PROJE_DURUM_RAPORU.md`
+
+- **Nedir?** Projenin başlangıcından mevcut sürüme kadar yapılan işleri, doğrulama sonuçlarını ve kalan teslim adımlarını özetleyen yaşayan durum raporu.
+- **Neden var?** Yeni bir ekip üyesinin veya değerlendiricinin projenin nasıl geliştiğini, bugün hangi parçaların çalıştığını ve sırada ne olduğunu tek belgeden görmesini sağlar.
+- **Nasıl kullanılacak?** Gold veri incelemesi, performans ölçümü, demo veya teslim adımı tamamlandıkça güncellenir.
+- **Modele verilecek mi?** Hayır. Ekip ve proje yönetimi belgesidir.
+- **Durum:** Korunmalı ve güncel tutulmalı.
+
 ## `resources/` Dizini
 
 Bu dizin, internetten indirilen resmî referansları, veri seti kartlarını, lisans metinlerini ve kaynak manifestosunu tutar. Doğrudan uygulama kodu veya sentetik evrak veri seti değildir.
