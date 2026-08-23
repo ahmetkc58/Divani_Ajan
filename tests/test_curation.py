@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from hashlib import sha256
 from pathlib import Path
 
 import pytest
@@ -338,3 +339,79 @@ def test_curate_legislation_cli_writes_manifest(
     assert output.exists()
     assert result["summary"]["manifest_record_count"] == 1
     assert result["summary"]["approved_for_active_rag_count"] == 0
+
+
+def test_core_inventory_builds_reviewable_manifest_without_auto_approval(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    pdf = tmp_path / "source.pdf"
+    pdf.write_bytes(b"core inventory source")
+    digest = sha256(pdf.read_bytes()).hexdigest()
+    inventory = tmp_path / "inventory.json"
+    inventory.write_text(
+        json.dumps(
+            {
+                "sources": [
+                    {
+                        "document_id": "law-test-1",
+                        "title": "Test Kanunu",
+                        "document_type": "kanun",
+                        "domain": "kgm_infrastructure",
+                        "subdomain": "traffic_safety",
+                        "local_path": "source.pdf",
+                        "source_url": "https://example.test/law-test-1",
+                        "bytes": pdf.stat().st_size,
+                        "sha256": digest,
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    service = LegislationManifestService(project_root=tmp_path)
+
+    def inspect(record: LegislationManifestRecord, _: Path) -> None:
+        record.source_bytes = pdf.stat().st_size
+        record.source_sha256 = digest
+        record.text_layer_status = TextLayerStatus.AVAILABLE
+        record.ocr_required = False
+
+    monkeypatch.setattr(service, "_inspect_text_layer", inspect)
+    manifest = service.build_core_inventory(inventory)
+
+    assert manifest.summary.manifest_record_count == 1
+    assert manifest.summary.candidate_for_active_rag_count == 1
+    assert manifest.summary.approved_for_active_rag_count == 0
+    assert manifest.data[0].document_id == "law-test-1"
+    assert manifest.data[0].source_sha256 == digest
+    assert manifest.data[0].scope_status == ScopeStatus.REVIEW_REQUIRED
+    assert manifest.data[0].review_status == ReviewStatus.NEEDS_HUMAN_REVIEW
+
+
+def test_core_inventory_rejects_source_hash_change(tmp_path: Path) -> None:
+    (tmp_path / "source.pdf").write_bytes(b"changed source")
+    inventory = tmp_path / "inventory.json"
+    inventory.write_text(
+        json.dumps(
+            {
+                "sources": [
+                    {
+                        "document_id": "law-test-1",
+                        "title": "Test Kanunu",
+                        "document_type": "kanun",
+                        "domain": "kgm_infrastructure",
+                        "subdomain": "traffic_safety",
+                        "local_path": "source.pdf",
+                        "sha256": "0" * 64,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(CurationError, match="SHA-256"):
+        LegislationManifestService(project_root=tmp_path).build_core_inventory(
+            inventory
+        )

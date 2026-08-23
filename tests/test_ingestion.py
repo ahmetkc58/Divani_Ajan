@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -297,3 +298,58 @@ def test_verified_manifest_ingestion_writes_active_provenance(
     assert all(chunk["approved_for_active_rag"] is True for chunk in payload["data"])
     assert all(chunk["source_sha256"] == digest for chunk in payload["data"])
     assert all(chunk["page"] == 1 for chunk in payload["data"])
+
+
+def test_active_corpus_combines_only_verified_ingestion_outputs(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    path = tmp_path / "42_public.pdf"
+    path.write_bytes(b"public legislation fixture")
+    record = _approved_manifest_record(path)
+    document_output = tmp_path / "document.json"
+    corpus_output = tmp_path / "active_corpus.json"
+    service = LegislationIngestionService()
+    monkeypatch.setattr(service, "_read_pages", lambda _: [_readable_legal_page()])
+
+    report = service.ingest_manifest_record(
+        record,
+        path=path,
+        output_path=document_output,
+    )
+    result = service.write_active_corpus([report], corpus_output)
+    payload = json.loads(result.read_text(encoding="utf-8"))
+
+    assert payload["approved_for_active_rag"] is True
+    assert payload["document_count"] == 1
+    assert payload["chunk_count"] == report.chunk_count
+    assert payload["documents"][0]["document_id"] == "UAB-42"
+    assert all(chunk["validity_status"] == "verified" for chunk in payload["data"])
+
+
+def test_active_corpus_rejects_empty_approval_set(tmp_path: Path) -> None:
+    with pytest.raises(IngestionApprovalError, match="onaylı belge bulunmuyor"):
+        LegislationIngestionService().write_active_corpus(
+            [], tmp_path / "active_corpus.json"
+        )
+
+
+def test_manifest_quarantine_chunks_without_granting_active_approval(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    path = tmp_path / "42_public.pdf"
+    path.write_bytes(b"public legislation fixture")
+    record = _approved_manifest_record(path)
+    service = LegislationIngestionService()
+    monkeypatch.setattr(service, "_read_pages", lambda _: [_readable_legal_page()])
+
+    reports = service.ingest_manifest_quarantine(
+        SimpleNamespace(data=[record]),
+        project_root=tmp_path,
+        output_dir=tmp_path / "quarantine",
+    )
+    payload = json.loads(Path(reports[0].output_file or "").read_text(encoding="utf-8"))
+
+    assert reports[0].chunk_count > 0
+    assert reports[0].approved_for_active_rag is False
+    assert payload["approved_for_active_rag"] is False
+    assert all(chunk["approved_for_active_rag"] is False for chunk in payload["data"])

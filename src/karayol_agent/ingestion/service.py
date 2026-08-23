@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -118,6 +119,7 @@ class LegislationIngestionService:
         *,
         project_root: Path,
         output_dir: Path,
+        corpus_output_path: Path | None = None,
     ) -> list[IngestionReport]:
         """Manifestte açıkça onaylanmış kayıtları ayrı JSON çıktılara işler."""
 
@@ -143,7 +145,163 @@ class LegislationIngestionService:
                     output_path=output_dir / f"{document_id}.json",
                 )
             )
+        if corpus_output_path is not None:
+            self.write_active_corpus(reports, corpus_output_path)
         return reports
+
+    def ingest_manifest_quarantine(
+        self,
+        manifest: "LegislationManifest",
+        *,
+        project_root: Path,
+        output_dir: Path,
+    ) -> list[IngestionReport]:
+        """İnceleme bekleyen manifesti aktif-RAG onayı vermeden toplu işler.
+
+        Metin kalitesi yeterli belgeler yapısal JSON'a dönüştürülür. OCR bekleyen
+        belgeler için çıktı üretilmez; raporları OCR kuyruğu olarak korunur.
+        """
+
+        project_root = project_root.resolve()
+        output_dir = output_dir.resolve()
+        reports: list[IngestionReport] = []
+        for record in manifest.data:
+            if len(record.local_pdfs) != 1:
+                continue
+            source_path = Path(record.local_pdfs[0])
+            if not source_path.is_absolute():
+                source_path = project_root / source_path
+            document_id = record.document_id or f"legislation-{record.legislation_id}"
+            reports.append(
+                self.ingest_pdf(
+                    source_path,
+                    title=record.title,
+                    source_status="karantina_insan_dogrulamasi_bekliyor",
+                    output_path=output_dir / f"{document_id}.json",
+                    document_id=document_id,
+                    source_url=record.source_url,
+                    document_type=record.document_type,
+                    domain=self._enum_value(record.domain),
+                    subdomain=record.subdomain,
+                    validity_status=self._enum_value(record.validity_status),
+                    source_kind="public_legislation",
+                )
+            )
+        return reports
+
+    def write_active_corpus(
+        self,
+        reports: list[IngestionReport],
+        output_path: Path,
+    ) -> Path:
+        """Onaylı tekil ingestion çıktılarını taşınabilir tek korpusta birleştirir."""
+
+        if not reports:
+            raise IngestionApprovalError(
+                "Aktif corpus üretilemedi: manifestte onaylı belge bulunmuyor."
+            )
+
+        chunks: list[dict[str, object]] = []
+        documents: list[dict[str, object]] = []
+        seen_chunk_ids: set[str] = set()
+        seen_document_ids: set[str] = set()
+        for report in reports:
+            if not report.approved_for_active_rag or not report.output_file:
+                raise IngestionApprovalError(
+                    f"{report.document_id or report.title}: aktif ve yazılmış çıktı değil."
+                )
+            source_path = Path(report.output_file)
+            try:
+                payload = json.loads(source_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise IngestionError(
+                    f"Aktif ingestion çıktısı okunamadı: {source_path}: {exc}"
+                ) from exc
+            if payload.get("approved_for_active_rag") is not True:
+                raise IngestionApprovalError(
+                    f"{source_path}: üst seviye aktif-RAG onayı bulunmuyor."
+                )
+            document_id = str(payload.get("document_id") or "")
+            if not document_id or document_id in seen_document_ids:
+                raise IngestionApprovalError(
+                    f"{source_path}: document_id eksik veya yineleniyor: {document_id!r}"
+                )
+            seen_document_ids.add(document_id)
+            source_sha256 = str(payload.get("source_sha256") or "")
+            if not re.fullmatch(r"[0-9a-fA-F]{64}", source_sha256):
+                raise IngestionApprovalError(
+                    f"{source_path}: geçerli kaynak SHA-256 değeri bulunmuyor."
+                )
+            if not payload.get("reviewed_by") or not payload.get("reviewed_at"):
+                raise IngestionApprovalError(
+                    f"{source_path}: insan inceleme izi eksik."
+                )
+
+            records = payload.get("data")
+            if not isinstance(records, list) or not records:
+                raise IngestionApprovalError(
+                    f"{source_path}: aktif corpus için parça bulunmuyor."
+                )
+            for chunk in records:
+                if not isinstance(chunk, dict):
+                    raise IngestionError(f"{source_path}: nesne olmayan parça bulundu.")
+                chunk_id = str(chunk.get("chunk_id") or "")
+                if not chunk_id or chunk_id in seen_chunk_ids:
+                    raise IngestionApprovalError(
+                        f"{source_path}: chunk_id eksik veya yineleniyor: {chunk_id!r}"
+                    )
+                if (
+                    chunk.get("approved_for_active_rag") is not True
+                    or chunk.get("validity_status") != "verified"
+                    or chunk.get("source_kind") != "public_legislation"
+                    or chunk.get("ocr_status")
+                    not in {"text_layer_available", "ocr_verified"}
+                ):
+                    raise IngestionApprovalError(
+                        f"{chunk_id}: aktif corpus güvenlik sözleşmesini karşılamıyor."
+                    )
+                if (
+                    chunk.get("document_id") != document_id
+                    or chunk.get("source_sha256") != source_sha256
+                    or not chunk.get("article")
+                    or not chunk.get("context_text")
+                    or not isinstance(chunk.get("page"), int)
+                    or not isinstance(chunk.get("page_end"), int)
+                    or int(chunk["page_end"]) < int(chunk["page"])
+                ):
+                    raise IngestionApprovalError(
+                        f"{chunk_id}: kaynak, yapı veya sayfa izi eksik/tutarsız."
+                    )
+                seen_chunk_ids.add(chunk_id)
+                chunks.append(chunk)
+            documents.append(
+                {
+                    "document_id": document_id,
+                    "title": payload.get("dataset_name"),
+                    "source_url": payload.get("source_url"),
+                    "source_sha256": payload.get("source_sha256"),
+                    "chunk_count": len(records),
+                    "reviewed_by": payload.get("reviewed_by"),
+                    "reviewed_at": payload.get("reviewed_at"),
+                }
+            )
+
+        output_path = output_path.resolve()
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        corpus = {
+            "schema_version": "2.0",
+            "dataset_name": "active_public_legislation",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "approved_for_active_rag": True,
+            "document_count": len(documents),
+            "chunk_count": len(chunks),
+            "documents": documents,
+            "data": chunks,
+        }
+        output_path.write_text(
+            json.dumps(corpus, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        return output_path
 
     def _ingest_pdf(
         self,

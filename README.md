@@ -55,6 +55,54 @@ kaliteli metni zorla indekslemek yalnızca inceleme amacıyla
 `--allow-low-quality` seçeneğiyle mümkündür. Bu seçenek aktif RAG onayı veremez.
 Genel `ingest` komutu hiçbir kamu kaynağını doğrudan aktif korpusa alamaz.
 
+### Yapısal mevzuat parçası sözleşmesi
+
+Mevzuat metni öncelikle doğal hukuk hiyerarşisine göre **Bölüm → Madde →
+Fıkra → Bent** sınırlarında parçalanır. Örneğin `MADDE 4- (1) ... a) ...`
+yapısından aşağıdaki gibi bir parça üretilir:
+
+```json
+{
+  "chunk_id": "MEV-3EE6799D5AA69232",
+  "document_id": "uab-road-expropriation-regulation",
+  "title": "Karayolu Yapımı Amaçlı Kamulaştırmalarda Hazine Taşınmazlarının Trampası Hakkında Yönetmelik",
+  "section": "Birinci Bölüm — Amaç, Kapsam, Dayanak ve Tanımlar",
+  "article": "Madde 4",
+  "paragraph": "1",
+  "clause": "a",
+  "page": 1,
+  "page_end": 1,
+  "context_text": "... > Madde 4 > Fıkra 1 > Bent a > Yerel bağlam: Bu Yönetmelikte geçen;",
+  "text": "a) Bakanlık: Maliye Bakanlığını,",
+  "validity_status": "needs_verification",
+  "approved_for_active_rag": false
+}
+```
+
+- `text`, kullanıcıya gösterilebilecek asıl kaynak hükmüdür.
+- `context_text`, parçanın belge içindeki yerini açıklayan yardımcı arama
+  bağlamıdır; tek başına mevzuat hükmü veya alıntı olarak gösterilemez.
+- Jina dense arama ve BM25 için indekslenecek içerik `context_text + text`
+  olacaktır. Nihai atıf her zaman `text`, kaynak PDF, madde/fıkra/bent ve sayfa
+  bilgisine döner.
+- `page` ve `page_end`, hükmün PDF'de başladığı ve bittiği sayfaları korur.
+- `chunk_id`; kararlı `document_id`, hukuk hiyerarşisi ve parça metninden
+  SHA-256 tabanlı olarak türetilir. Kaynak dosya başka klasöre taşınsa bile
+  kimlik değişmez.
+- Bir doğal fıkra veya bent 1.800 karakteri aşarsa yalnız o parça cümle
+  sınırlarında alt parçalara ayrılır; tüm alt parçalar aynı kaynak ve hiyerarşi
+  metadata'sını taşır.
+
+Bu aşamada üretilen JSON dosyaları embedding değildir; Jina/Qdrant aşamasının
+girdisidir. İnsan incelemesi tamamlanmayan parçalar karantinada tutulur ve
+`approved_for_active_rag=false` olarak kalır.
+
+**Bilinen yapısal kalite notu:** 2918 sayılı Kanun gibi değişiklik dipnotları
+içeren belgelerde “Birinci Bölüm başlığında...” ifadeleri bazı durumlarda gerçek
+bölüm başlığı sanılabilir. Madde/fıkra/bent ve sayfa izi korunmasına rağmen
+`section` alanı gürültülü olabilir. Aktif corpus onayından önce insan yapı
+incelemesi veya bölüm başlığı normalizasyonu uygulanmalıdır.
+
 ## Mevzuat kapsam ayırma ve doğrulama manifesti
 
 DETSİS mevzuat kayıtlarını fiziksel bir yerel PDF arşiviyle eşleştirmek, ulaşım
@@ -102,6 +150,38 @@ zorunludur. Çalışma alanında gerçekten bulunan ilk sekiz aday kaynak
 `data/manifests/core_legislation_sources.json` dosyasında kayıtlıdır. Eski 501
 kayıtlık manifestin işaret ettiği PDF arşivi bu çalışma alanında bulunmadığından
 o kayıtlar şu anda ingestion girdisi değildir.
+
+Depodaki çekirdek envanteri gerçek dosya hash'leri ve metin kalite kontrolüyle
+inceleme manifestine dönüştürmek, ardından onaysız karantina corpusunu üretmek:
+
+```powershell
+python -m karayol_agent.cli curate-core-inventory
+
+python -m karayol_agent.cli ingest-manifest-quarantine `
+  --manifest data\manifests\core_legislation_manifest.json `
+  --output-dir data\processed\stage3_quarantine
+```
+
+24 Ağustos 2026 kapanış çalışmasında 8 kaynağın 6'sı 2.407 yapısal parçaya
+ayrılmış, 2 kaynak OCR kuyruğuna alınmış ve hiçbir parçaya aktif-RAG onayı
+verilmemiştir. `data/processed/` tekrar üretilebilir çalışma çıktısı olduğu için
+Git'e eklenmez; kalıcı inceleme girdileri
+`core_legislation_manifest.json` ve `core_legislation_manifest_review.csv`
+dosyalarıdır.
+
+İnsan kapsam, yürürlük ve OCR doğrulamasından sonra tekil çıktılarla beraber tek
+aktif corpus dosyası üretmek için:
+
+```powershell
+python -m karayol_agent.cli ingest-approved-manifest `
+  --manifest data\manifests\core_legislation_reviewed.json `
+  --output-dir data\processed\active_legislation `
+  --corpus-output data\processed\active_legislation.json
+```
+
+Kaynakların güncel sürümle değiştirilmesi ve hukuk uzmanı onayı Aşama 3'ün
+teknik kapanışını engellemeyen, fakat gerçek kamu corpusunu aktive etmeden önce
+zorunlu olan içerik doğrulama işidir.
 
 ## API
 

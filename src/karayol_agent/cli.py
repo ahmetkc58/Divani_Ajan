@@ -100,6 +100,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Tüm PDF'lerin metin katmanını denetle ve OCR kuyruğunu belirle",
     )
 
+    curate_core = subcommands.add_parser(
+        "curate-core-inventory",
+        help="Depodaki çekirdek mevzuat envanterini doğrulayıp inceleme manifesti üret",
+    )
+    curate_core.add_argument("--inventory", type=Path)
+    curate_core.add_argument("--output", type=Path)
+    curate_core.add_argument("--review-csv", type=Path)
+
     apply_review = subcommands.add_parser(
         "apply-legislation-review",
         help="İnsan inceleme CSV'sini doğrulayıp yeni mevzuat manifestine uygula",
@@ -114,6 +122,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     ingest_manifest.add_argument("--manifest", type=Path, required=True)
     ingest_manifest.add_argument("--output-dir", type=Path, required=True)
+    ingest_manifest.add_argument(
+        "--corpus-output",
+        type=Path,
+        help="Onaylı tekil çıktıları birleştiren aktif corpus JSON dosyası",
+    )
+
+    ingest_quarantine = subcommands.add_parser(
+        "ingest-manifest-quarantine",
+        help="İnceleme bekleyen manifesti aktif onay vermeden toplu yapısal parçala",
+    )
+    ingest_quarantine.add_argument("--manifest", type=Path, required=True)
+    ingest_quarantine.add_argument("--output-dir", type=Path, required=True)
+    ingest_quarantine.add_argument("--report-output", type=Path)
 
     evaluate = subcommands.add_parser(
         "evaluate",
@@ -233,6 +254,32 @@ def _run(arguments: argparse.Namespace) -> int:
             )
         )
         return 0
+    elif arguments.command == "curate-core-inventory":
+        inventory_path = arguments.inventory or (
+            settings.data_dir / "manifests" / "core_legislation_sources.json"
+        )
+        output_path = arguments.output or (
+            settings.data_dir / "manifests" / "core_legislation_manifest.json"
+        )
+        service = LegislationManifestService(project_root=settings.project_root)
+        manifest = service.build_core_inventory(inventory_path)
+        json_path, review_path = service.write(
+            manifest,
+            output_path,
+            review_csv_path=arguments.review_csv,
+        )
+        print(
+            json.dumps(
+                {
+                    "manifest": str(json_path),
+                    "review_csv": str(review_path),
+                    "summary": manifest.summary.model_dump(mode="json"),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
     elif arguments.command == "apply-legislation-review":
         service = LegislationManifestService(project_root=settings.project_root)
         manifest = service.load(arguments.manifest)
@@ -259,6 +306,7 @@ def _run(arguments: argparse.Namespace) -> int:
             manifest,
             project_root=settings.project_root,
             output_dir=arguments.output_dir,
+            corpus_output_path=arguments.corpus_output,
         )
         print(
             json.dumps(
@@ -266,11 +314,45 @@ def _run(arguments: argparse.Namespace) -> int:
                     "approved_document_count": len(reports),
                     "chunk_count": sum(report.chunk_count for report in reports),
                     "outputs": [report.output_file for report in reports],
+                    "corpus_output": (
+                        str(arguments.corpus_output.resolve())
+                        if arguments.corpus_output
+                        else None
+                    ),
                 },
                 ensure_ascii=False,
                 indent=2,
             )
         )
+        return 0
+    elif arguments.command == "ingest-manifest-quarantine":
+        curation_service = LegislationManifestService(
+            project_root=settings.project_root
+        )
+        manifest = curation_service.load(arguments.manifest)
+        reports = LegislationIngestionService().ingest_manifest_quarantine(
+            manifest,
+            project_root=settings.project_root,
+            output_dir=arguments.output_dir,
+        )
+        result = {
+            "document_count": len(reports),
+            "chunked_document_count": sum(report.chunk_count > 0 for report in reports),
+            "ocr_queue_count": sum(report.quality.requires_ocr for report in reports),
+            "chunk_count": sum(report.chunk_count for report in reports),
+            "approved_document_count": sum(
+                report.approved_for_active_rag for report in reports
+            ),
+            "reports": [report.model_dump(mode="json") for report in reports],
+        }
+        if arguments.report_output:
+            report_path = arguments.report_output.resolve()
+            report_path.parent.mkdir(parents=True, exist_ok=True)
+            report_path.write_text(
+                json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            result["report_output"] = str(report_path)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     elif arguments.command == "evaluate":
         dataset_path = arguments.dataset or settings.data_dir / "synthetic_gold.json"

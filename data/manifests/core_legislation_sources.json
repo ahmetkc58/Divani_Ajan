@@ -18,7 +18,7 @@
       "text_layer_status": "ocr_required",
       "pipeline_audit": {
         "page_count": 49,
-        "extracted_character_count": 6440,
+        "extracted_character_count": 6934,
         "quality": "insufficient",
         "requires_ocr": true
       },
@@ -72,7 +72,7 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 3,
-        "extracted_character_count": 12787,
+        "extracted_character_count": 12617,
         "chunk_count": 56,
         "distinct_article_labels": 12,
         "clause_chunk_count": 35,
@@ -102,7 +102,7 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 3,
-        "extracted_character_count": 12423,
+        "extracted_character_count": 12255,
         "chunk_count": 49,
         "distinct_article_labels": 16,
         "clause_chunk_count": 11,
@@ -132,11 +132,11 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 114,
-        "extracted_character_count": 419816,
-        "chunk_count": 944,
+        "extracted_character_count": 419300,
+        "chunk_count": 887,
         "distinct_article_labels": 192,
-        "clause_chunk_count": 761,
-        "maximum_chunk_characters": 1795,
+        "clause_chunk_count": 704,
+        "maximum_chunk_characters": 1799,
         "missing_page_metadata_count": 0
       },
       "validity_status": "needs_verification",
@@ -161,11 +161,11 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 90,
-        "extracted_character_count": 234760,
-        "chunk_count": 473,
+        "extracted_character_count": 234843,
+        "chunk_count": 472,
         "distinct_article_labels": 183,
-        "clause_chunk_count": 308,
-        "maximum_chunk_characters": 1800,
+        "clause_chunk_count": 307,
+        "maximum_chunk_characters": 1798,
         "missing_page_metadata_count": 0
       },
       "validity_status": "needs_verification",
@@ -190,11 +190,11 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 14,
-        "extracted_character_count": 33397,
+        "extracted_character_count": 33373,
         "chunk_count": 83,
         "distinct_article_labels": 41,
         "clause_chunk_count": 38,
-        "maximum_chunk_characters": 1799,
+        "maximum_chunk_characters": 1796,
         "missing_page_metadata_count": 0
       },
       "validity_status": "needs_verification",
@@ -219,10 +219,10 @@
       "text_layer_status": "pipeline_quality_passed_human_verification_pending",
       "pipeline_audit": {
         "page_count": 54,
-        "extracted_character_count": 229791,
-        "chunk_count": 859,
+        "extracted_character_count": 229205,
+        "chunk_count": 860,
         "distinct_article_labels": 92,
-        "clause_chunk_count": 518,
+        "clause_chunk_count": 520,
         "maximum_chunk_characters": 1800,
         "missing_page_metadata_count": 0
       },

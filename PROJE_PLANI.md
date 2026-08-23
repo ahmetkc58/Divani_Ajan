@@ -61,13 +61,22 @@ değerleriyle `data/manifests/core_legislation_sources.json` içinde ayrı
 envantere alınmıştır. İnsan kapsam/yürürlük/OCR doğrulaması tamamlanmadığı için
 aktif RAG onayı verilen gerçek kayıt sayısı sıfırdır.
 
-**Adım 3 uygulama durumu — 24 Ağustos 2026:** Sayfa izini koruyan Bölüm → Madde
+**Aşama 3 teknik kapanış — 24 Ağustos 2026:** Sayfa izini koruyan Bölüm → Madde
 → Fıkra → Bent chunker'ı, uzun hüküm bölme, kararlı `document_id` tabanlı chunk
-kimliği, kaynak SHA-256 kontrolü, review CSV geri-alımı, onaylı manifestten toplu
-ingestion ve public korpus için fail-closed aktif-RAG filtresi kodlanmıştır.
-`allow_low_quality` yalnız karantina çıktısı üretebilir; aktif korpus kapısını
-aşamaz. OCR motorunun çalıştırılması ve insan doğrulaması, ortam ayağa kaldırma
-aşamasında tamamlanacaktır.
+kimliği, kaynak SHA-256 kontrolü, çekirdek envanterden inceleme manifesti üretimi,
+review CSV geri-alımı, karantina toplu ingestion, onaylı manifestten ingestion,
+tek aktif-corpus çıktısı ve public korpus için fail-closed aktif-RAG filtresi
+tamamlanmıştır. Sekiz çekirdek kaynak gerçek pipeline'dan geçirilmiş; metin
+katmanı uygun altı belge **2.407 parçaya** ayrılmış, sayfa metadata kaybı `0` ve
+yanlış aktif onay sayısı `0` olarak doğrulanmıştır. Kalan iki belge otomatik
+olarak OCR kuyruğuna alınmıştır.
+
+Bu kapanış **teknik veri hazırlama aşamasının** tamamlandığını ifade eder. Kaynak
+metinlerin en güncel sürümle değiştirilmesi, yürürlük/hukuk uzmanı kontrolü, iki
+belgenin OCR + görsel doğrulaması ve insanın `approved_for_active_rag=true`
+kararı ayrı bir **Aşama 3 sonrası içerik doğrulama işi** olarak ertelenmiştir.
+Bu işler tamamlanmadan gerçek kamu mevzuatı aktif indekse alınmayacak; geliştirme
+ve demo sentetik BM25 fallback ile çalışmayı sürdürecektir.
 
 ---
 

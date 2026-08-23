@@ -85,6 +85,147 @@ class LegislationManifestService:
             data=manifest_records,
         )
 
+    def build_core_inventory(self, inventory_path: Path) -> LegislationManifest:
+        """Depodaki çekirdek kaynak envanterini inceleme manifestine dönüştürür.
+
+        Çekirdek envanter DETSİS arşivindeki ``<id>_*.pdf`` adlandırmasına bağlı
+        değildir. Bu köprü, gerçek dosyaların hash ve metin katmanını yeniden
+        denetler; kapsam/yürürlük veya aktif-RAG onayı üretmez.
+        """
+
+        inventory_path = inventory_path.resolve()
+        try:
+            payload = json.loads(inventory_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise CurationError(f"Çekirdek kaynak envanteri okunamadı: {exc}") from exc
+        sources = payload.get("sources") if isinstance(payload, dict) else None
+        if not isinstance(sources, list) or not all(
+            isinstance(source, dict) for source in sources
+        ):
+            raise CurationError("Çekirdek envanterde geçerli bir sources listesi yok.")
+
+        records: list[LegislationManifestRecord] = []
+        seen_document_ids: set[str] = set()
+        seen_legislation_ids: set[int] = set()
+        for source in sources:
+            document_id = str(source.get("document_id") or "").strip()
+            if not document_id:
+                raise CurationError("Çekirdek envanter kaydında document_id eksik.")
+            if document_id in seen_document_ids:
+                raise CurationError(
+                    f"Çekirdek envanterde yinelenen document_id var: {document_id}"
+                )
+            seen_document_ids.add(document_id)
+
+            legislation_id = self._stable_inventory_id(document_id)
+            if legislation_id in seen_legislation_ids:
+                raise CurationError(
+                    "Çekirdek envanter kimlik çakışması üretti; document_id değerleri "
+                    "yeniden adlandırılmalıdır."
+                )
+            seen_legislation_ids.add(legislation_id)
+            records.append(
+                self._build_core_inventory_record(
+                    source,
+                    document_id=document_id,
+                    legislation_id=legislation_id,
+                )
+            )
+
+        records.sort(key=lambda item: item.document_id or "")
+        summary = self._summarize(
+            records,
+            source_record_count=len(sources),
+            unmatched_archive_pdf_count=0,
+        )
+        return LegislationManifest(
+            source_records=self._display_path(inventory_path),
+            archive_root=self._display_path(self.project_root),
+            summary=summary,
+            data=records,
+        )
+
+    def _build_core_inventory_record(
+        self,
+        source: dict[str, Any],
+        *,
+        document_id: str,
+        legislation_id: int,
+    ) -> LegislationManifestRecord:
+        local_path = str(source.get("local_path") or "").strip()
+        if not local_path:
+            raise CurationError(f"{document_id}: local_path eksik.")
+        pdf_path = (self.project_root / local_path).resolve()
+        try:
+            pdf_path.relative_to(self.project_root)
+        except ValueError as exc:
+            raise CurationError(
+                f"{document_id}: local_path proje kökü dışına çıkamaz."
+            ) from exc
+
+        domain_raw = str(source.get("domain") or "unknown")
+        try:
+            domain = CurationDomain(domain_raw)
+        except ValueError as exc:
+            raise CurationError(
+                f"{document_id}: desteklenmeyen domain değeri: {domain_raw!r}"
+            ) from exc
+
+        is_file = pdf_path.is_file()
+        record = LegislationManifestRecord(
+            legislation_id=legislation_id,
+            document_id=document_id,
+            title=str(source.get("title") or "").strip(),
+            document_type=str(source.get("document_type") or "unknown").strip(),
+            source_url=self._clean_optional(source.get("source_url")),
+            local_pdfs=[self._display_path(pdf_path)] if is_file else [],
+            pdf_match_status=(PdfMatchStatus.MATCHED if is_file else PdfMatchStatus.MISSING),
+            domain=domain,
+            subdomain=str(source.get("subdomain") or "unknown").strip(),
+            classification_confidence=1.0,
+            classification_reasons=[
+                "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve "
+                "yürürlük doğrulaması gereklidir."
+            ],
+            scope_status=ScopeStatus.REVIEW_REQUIRED,
+            candidate_for_active_rag=(
+                is_file
+                and domain
+                in {
+                    CurationDomain.OFFICIAL_WRITING,
+                    CurationDomain.GENERAL_APPLICATION,
+                    CurationDomain.KGM_INFRASTRUCTURE,
+                    CurationDomain.ROAD_TRANSPORT,
+                }
+            ),
+            text_layer_status=(
+                TextLayerStatus.NOT_INSPECTED if is_file else TextLayerStatus.MISSING
+            ),
+        )
+        if not is_file:
+            return record
+
+        expected_bytes = source.get("bytes")
+        expected_sha256 = self._clean_optional(source.get("sha256"))
+        actual_bytes = pdf_path.stat().st_size
+        actual_sha256 = sha256(pdf_path.read_bytes()).hexdigest()
+        if expected_bytes is not None and int(expected_bytes) != actual_bytes:
+            raise CurationError(
+                f"{document_id}: dosya boyutu çekirdek envanterden farklı."
+            )
+        if expected_sha256 and expected_sha256.lower() != actual_sha256:
+            raise CurationError(
+                f"{document_id}: SHA-256 çekirdek envanterden farklı."
+            )
+        self._inspect_text_layer(record, pdf_path)
+        return record
+
+    @staticmethod
+    def _stable_inventory_id(document_id: str) -> int:
+        # CSV inceleme akışı sayısal kimlik bekliyor. Document ID'den türeyen bu
+        # değer, envanter sırası değişse bile aynı kaynağa bağlı kalır.
+        return 1_000_000_000 + int(sha256(document_id.encode("utf-8")).hexdigest()[:8], 16)
+
     def write(
         self,
         manifest: LegislationManifest,
