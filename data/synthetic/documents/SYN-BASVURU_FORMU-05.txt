@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Başvuru / Form
-Basvuru Sahibi: SENTETIK KISI 077
-Basvuru Turu: Gıda yardımı başvurusu
-Iletisim: sentetik077@example.invalid
-Tarih: 24.08.2026
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

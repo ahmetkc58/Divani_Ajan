@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Başvuru / Form
-Basvuru Sahibi: SENTETIK KISI 078
-Basvuru Turu: Staj başvurusu
-Iletisim: sentetik078@example.invalid
-Tarih: 25.08.2026
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

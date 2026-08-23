@@ -1,0 +1,768 @@
+{
+  "dataset_name": "Sentetik Karayolu Evrak Gold Değerlendirme Seti",
+  "version": "1.0.0",
+  "usage": "Yalnızca prototip, test ve yarışma demosu; tüm kişi ve yerler kurgusaldır.",
+  "data": [
+    {
+      "record_id": "BAKIM-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Asfalt kaplama bozukluğu\nKonum: Örnek İl, Merkez, D-100 yolu 12. kilometre\n\nYol yüzeyinde geniş çukurlar ve asfalt bozulması bulunmaktadır. Yol bakım ve onarım çalışması yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-02",
+      "text": "Tarih: 02.08.2026\nKonu: Yol yüzeyindeki çukurlar\nKonum: Kurgu İlçesi, devlet yolu 8. kilometre\n\nDevlet yolunda oluşan çukurlar araç geçişini zorlaştırmaktadır. Yol bakım ve onarım çalışması yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Bozuk yol kaplaması\n\nBozuk yol kaplaması sürüş konforunu azaltmaktadır. Yol bakım ve onarım çalışması yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Asfalt yüzey onarımı\nKonum: Örnek Köyü kavşağı, il yolu 4. kilometre\n\nAsfalt yüzeyde derin çatlaklar oluşmuştur.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-05",
+      "text": "Tarih: 05.08.2026\nKonu: Çukur ve kaplama problemi\n\nÇukur ve kaplama kaybı yol yüzeyinde yayılmıştır. Yol bakım ve onarım çalışması yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-06",
+      "text": "Gönderen: Mert Deneme\nTarih: 06.08.2026\nKonu: Yol bakım ihtiyacı\nKonum: Deneme İl, güney çevre yolu 21. kilometre\n\nBelirtilen kesimde yol bakım ihtiyacı gözlenmiştir. Yol bakım ve onarım çalışması yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ]
+    },
+    {
+      "record_id": "BAKIM-07",
+      "text": "Gönderen: Selin Örnek\nTarih: 07.08.2026\nKonu: Sürüş yüzeyindeki derin oyuklar\nKonum: Örnek İlçe, sanayi kavşağı yaklaşımı\n\nAraç tekerlerinin içine girdiği derin oyuklar oluşmuştur.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bakim",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "BAKIM-08",
+      "text": "Gönderen: Burak Kurgu\nTarih: 08.08.2026\nKonu: Güzergâh yüzeyindeki dalgalanma\nKonum: Kurgu İl, dağ yolu geçişi 3. kilometre\n\nTekerlek izleri boyunca yüzeyde belirgin dalgalanma vardır. Sürüş yüzeyinin yenilenmesini istiyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "bakim",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Hasarlı trafik işaret levhası\nKonum: Örnek İl, Merkez, D-100 yolu 12. kilometre\n\nTrafik işaret levhası devrilmiş durumdadır. Trafik güvenliği tedbirlerinin alınmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-02",
+      "text": "Tarih: 02.08.2026\nKonu: Eksik bariyer\nKonum: Kurgu İlçesi, devlet yolu 8. kilometre\n\nYol kenarındaki bariyerin bir bölümü eksiktir. Trafik güvenliği tedbirlerinin alınmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Sinyalizasyon arızası\n\nKavşaktaki sinyalizasyon sistemi çalışmamaktadır. Trafik güvenliği tedbirlerinin alınmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Yaya geçidi güvenliği\nKonum: Örnek Köyü kavşağı, il yolu 4. kilometre\n\nYaya geçidinde görünür işaretleme bulunmamaktadır.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-05",
+      "text": "Tarih: 05.08.2026\nKonu: Kaza riski oluşturan levha\n\nHasarlı levha sürücüler için kaza riski oluşturmaktadır. Trafik güvenliği tedbirlerinin alınmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-06",
+      "text": "Gönderen: Mert Deneme\nTarih: 06.08.2026\nKonu: Trafik güvenliği problemi\nKonum: Deneme İl, güney çevre yolu 21. kilometre\n\nBelirtilen noktada trafik güvenliği sorunu vardır. Trafik güvenliği tedbirlerinin alınmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-07",
+      "text": "Gönderen: Selin Örnek\nTarih: 07.08.2026\nKonu: Yönlendirme tabelası yere düşmüş\nKonum: Örnek İlçe, sanayi kavşağı yaklaşımı\n\nYön gösteren tabela taşıtların geçtiği alana düşmüştür.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "trafik",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "TRAFIK-08",
+      "text": "Gönderen: Burak Kurgu\nTarih: 08.08.2026\nKonu: Kavşak ışıkları düzensiz yanıyor\nKonum: Kurgu İl, dağ yolu geçişi 3. kilometre\n\nKırmızı ve yeşil ışıklar doğru sırayla yanmamaktadır. Işık düzeninin düzeltilmesini istiyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "trafik",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "HASAR-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Heyelan kaynaklı yol hasarı\nKonum: Örnek İl, Merkez, D-100 yolu 12. kilometre\n\nHeyelan nedeniyle yol platformunda hasar oluşmuştur. Acil inceleme ve gerekli müdahalenin yapılmasını talep ediyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-02",
+      "text": "Tarih: 02.08.2026\nKonu: İstinat duvarında hasar\nKonum: Kurgu İlçesi, devlet yolu 8. kilometre\n\nİstinat duvarında geniş çatlak ve hasar görülmektedir. Acil inceleme ve gerekli müdahalenin yapılmasını talep ediyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Köprü yaklaşımında çökme\n\nKöprü yaklaşım dolgusunda çökme oluşmuştur. Acil inceleme ve gerekli müdahalenin yapılmasını talep ediyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Sel sonrası yol hasarı\nKonum: Örnek Köyü kavşağı, il yolu 4. kilometre\n\nSel sonrasında yol gövdesi zarar görmüştür.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-05",
+      "text": "Tarih: 05.08.2026\nKonu: Yamaçta heyelan\n\nYamaçtan kopan malzeme heyelan riski oluşturmaktadır. Acil inceleme ve gerekli müdahalenin yapılmasını talep ediyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-06",
+      "text": "Gönderen: Mert Deneme\nTarih: 06.08.2026\nKonu: Köprü korkuluğu hasarı\nKonum: Deneme İl, güney çevre yolu 21. kilometre\n\nKöprü korkuluklarında belirgin hasar vardır. Acil inceleme ve gerekli müdahalenin yapılmasını talep ediyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ]
+    },
+    {
+      "record_id": "HASAR-07",
+      "text": "Gönderen: Selin Örnek\nTarih: 07.08.2026\nKonu: Şevden kaya parçaları düşmesi\nKonum: Örnek İlçe, sanayi kavşağı yaklaşımı\n\nYamaçtan kopan büyük kaya parçaları geçiş alanına düşmüştür.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "hasar",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "HASAR-08",
+      "text": "Gönderen: Burak Kurgu\nTarih: 08.08.2026\nKonu: Destek duvarının dışa eğilmesi\nKonum: Kurgu İl, dağ yolu geçişi 3. kilometre\n\nYol kenarındaki destek duvarı dışa doğru eğilmiştir. Duvarın kontrol edilmesini istiyorum.",
+      "expected_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "ust_yazi_v1",
+      "tags": [
+        "sentetik",
+        "hasar",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "BILGI-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Bakım programı hakkında bilgi edinme başvurusu\n\nBilgi edinme kapsamında ilgili kayıtların tarafıma verilmesini talep ediyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-02",
+      "text": "Tarih: 02.08.2026\nKonu: Otoyol çalışmaları hakkında bilgi\n\nBilgi edinme kapsamında ilgili kayıtların tarafıma verilmesini talep ediyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Köprü denetim kayıtları hakkında bilgi edinme\n\nBilgi edinme kapsamında ilgili kayıtların tarafıma verilmesini talep ediyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Yol kapanış süreleri hakkında bilgi edinme\n\nBaşvurunun kapsamı 2026 yılı karayolu faaliyet kayıtlarıdır.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-05",
+      "text": "Tarih: 05.08.2026\nKonu: Trafik sayım sonuçları hakkında bilgi edinme\n\nBilgi edinme kapsamında ilgili kayıtların tarafıma verilmesini talep ediyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-06",
+      "text": "Gönderen: Mert Deneme\nTarih: 06.08.2026\nKonu: Kış bakım programı hakkında bilgi\n\nBilgi edinme kapsamında ilgili kayıtların tarafıma verilmesini talep ediyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ]
+    },
+    {
+      "record_id": "BILGI-07",
+      "text": "Gönderen: Selin Örnek\nTarih: 07.08.2026\nKonu: 2026 kavşak çalışmaları kayıtları\n\nBaşvurunun kapsamı 2026 yılı karayolu faaliyet kayıtlarıdır.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "BILGI-08",
+      "text": "Gönderen: Burak Kurgu\nTarih: 08.08.2026\nKonu: Yol ağına ilişkin yıllık istatistikler\n\nKayıtların tarafıma gönderilmesini istiyorum.",
+      "expected_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "bilgi",
+        "challenge_paraphrase"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır. Şikayetimin incelenmesini ve gereğinin yapılmasını istiyorum.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-02",
+      "text": "Tarih: 02.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır. Şikayetimin incelenmesini ve gereğinin yapılmasını istiyorum.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır. Şikayetimin incelenmesini ve gereğinin yapılmasını istiyorum.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-05",
+      "text": "Tarih: 05.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "SIKAYET-06",
+      "text": "Gönderen: Mert Deneme\nTarih: 06.08.2026\nKonu: Karayolu çevresindeki gürültü hakkında şikayet\n\nKarayolu çevresindeki sürekli gürültü nedeniyle rahatsızlık yaşanmaktadır. Şikayetimin incelenmesini ve gereğinin yapılmasını istiyorum.",
+      "expected_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır. Başvurumun kayıt altına alınmasını talep ediyorum.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-02",
+      "text": "Tarih: 02.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır. Başvurumun kayıt altına alınmasını talep ediyorum.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-04",
+      "text": "Gönderen: Can Örneksoy\nTarih: 04.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır. Başvurumun kayıt altına alınmasını talep ediyorum.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-05",
+      "text": "Gönderen: Zeynep Kurgusal\nTarih: 05.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır. Başvurumun kayıt altına alınmasını talep ediyorum.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "DILEKCE-06",
+      "text": "Tarih: 06.08.2026\nKonu: Genel dilekçe başvurusu\n\nBu dilekçe genel nitelikli bir başvuru kaydıdır.",
+      "expected_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "expected_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "expected_reference_chunk_ids": [],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ]
+    },
+    {
+      "record_id": "USTYAZI-01",
+      "text": "Gönderen: Ayşe Örnek\nTarih: 01.08.2026\nKonu: Asfalt bakım çalışması\n\nİlgi: 2026/1\nDağıtım: İlgili birimler\nYol bakım programının uygulanması hususunda gereğini rica ederim.",
+      "expected_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ]
+    },
+    {
+      "record_id": "USTYAZI-02",
+      "text": "Gönderen: Mehmet Kurgu\nTarih: 02.08.2026\nKonu: Hasarlı bariyer\n\nİlgi: 2026/2\nDağıtım: İlgili birimler\nTrafik güvenliği için bariyer yenilemesi hususunda gereğini rica ederim.",
+      "expected_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ]
+    },
+    {
+      "record_id": "USTYAZI-03",
+      "text": "Gönderen: Elif Deneme\nTarih: 03.08.2026\nKonu: Heyelan hasarı\n\nİlgi: 2026/3\nDağıtım: İlgili birimler\nHeyelan nedeniyle oluşan hasarın incelenmesi hususunda gereğini rica ederim.",
+      "expected_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "expected_missing_fields": [],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-003"
+      ],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ]
+    },
+    {
+      "record_id": "USTYAZI-04",
+      "text": "Gönderen: Can Örneksoy\nKonu: Asfalt kaplama\n\nİlgi: 2026/4\nDağıtım: İlgili birimler\nAsfalt kaplama onarımı hususunda gereğini rica ederim.",
+      "expected_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "expected_missing_fields": [
+        "tarih"
+      ],
+      "expected_reference_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ]
+    }
+  ]
+}

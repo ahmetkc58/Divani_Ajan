@@ -1,8 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Bilgi Edinme Başvurusu
-Basvuru Sahibi: SENTETIK KISI 015
-Iletisim: sentetik015@example.invalid
-Istenen Bilgi: Gece saatlerinde gürültü şikâyeti
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

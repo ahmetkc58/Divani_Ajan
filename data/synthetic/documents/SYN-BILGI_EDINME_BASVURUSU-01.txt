@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Bilgi Edinme Başvurusu
-Basvuru Sahibi: SENTETIK KISI 009
-Iletisim: sentetik009@example.invalid
-Istenen Bilgi: Kırtasiye malzemesi satın alma talebi
-Tarih: 10.08.2026
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Başvuru / Form
-Basvuru Sahibi: SENTETIK KISI 074
-Basvuru Turu: Yapı ruhsatı hakkında bilgi
-Iletisim: sentetik074@example.invalid
-Tarih: 21.08.2026
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

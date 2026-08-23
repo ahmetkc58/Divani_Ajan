@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Karayolu evrak akıllı ajan sistemi için yerel ve sentetik manuel test arayüzü."
+    />
+    <title>YolYaz — Evrak Test Masası</title>
+    <link rel="stylesheet" href="/ui-assets/app.css" />
+    <script src="/ui-assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#test-workspace">Test alanına geç</a>
+
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="YolYaz ana sayfa">
+        <span class="brand-mark" aria-hidden="true">YY</span>
+        <span>
+          <strong>YolYaz</strong>
+          <small>Evrak Test Masası</small>
+        </span>
+      </a>
+      <div class="topbar-actions">
+        <span class="environment-badge">Sentetik demo</span>
+        <a class="quiet-link" href="/docs" target="_blank" rel="noreferrer">API belgeleri</a>
+        <span class="health-pill" id="health-pill" role="status">
+          <span class="health-dot" aria-hidden="true"></span>
+          <span id="health-label">Sistem kontrol ediliyor</span>
+        </span>
+      </div>
+    </header>
+
+    <main id="test-workspace">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">KARAYOLU EVRAK AJANI · YEREL MVP</p>
+          <h1 id="page-title">Bir evrak verin.<br /><span>Süreci adım adım izleyin.</span></h1>
+        </div>
+        <p class="intro-copy">
+          Hazır senaryoyu çalıştırın veya kendi metninizi girin. Sistem evrakı
+          sınıflandırır, mevzuat önerir, ilgili birimi bulur ve resmî yazı taslağı hazırlar.
+        </p>
+      </section>
+
+      <section class="workspace-grid" aria-label="Manuel test çalışma alanı">
+        <aside class="scenario-panel" aria-labelledby="scenario-title">
+          <div class="panel-heading">
+            <span class="step-number">01</span>
+            <div>
+              <p class="section-kicker">Başlangıç noktası</p>
+              <h2 id="scenario-title">Test senaryosu seçin</h2>
+            </div>
+          </div>
+
+          <div class="scenario-list" id="scenario-list">
+            <button class="scenario-card is-active" type="button" data-scenario="maintenance">
+              <span class="scenario-index">A</span>
+              <span>
+                <strong>Yol bakım talebi</strong>
+                <small>Önerilen · tam uçtan uca akış</small>
+              </span>
+              <span class="scenario-check" aria-hidden="true">✓</span>
+            </button>
+            <button class="scenario-card" type="button" data-scenario="missing">
+              <span class="scenario-index">B</span>
+              <span>
+                <strong>Eksik trafik bildirimi</strong>
+                <small>Eksik bilgi tamamlama akışı</small>
+              </span>
+              <span class="scenario-check" aria-hidden="true">✓</span>
+            </button>
+            <button class="scenario-card" type="button" data-scenario="paraphrase">
+              <span class="scenario-index">C</span>
+              <span>
+                <strong>Paraphrase sınır testi</strong>
+                <small>Kural tabanlı sürümün zorlandığı örnek</small>
+              </span>
+              <span class="scenario-check" aria-hidden="true">✓</span>
+            </button>
+          </div>
+
+          <ol class="guide-steps" aria-label="Önerilen test adımları">
+            <li class="is-current"><span>1</span><p><strong>Senaryoyu yükleyin</strong><small>Örnek metin editöre gelir.</small></p></li>
+            <li><span>2</span><p><strong>Evrakı işleyin</strong><small>Ajan zinciri çalışır.</small></p></li>
+            <li><span>3</span><p><strong>Sonuçları inceleyin</strong><small>Tür, kaynak, birim ve taslak.</small></p></li>
+            <li><span>4</span><p><strong>Eksikleri tamamlayın</strong><small>Son onaya hazırlayın.</small></p></li>
+          </ol>
+        </aside>
+
+        <section class="test-panel" aria-labelledby="input-title">
+          <div class="panel-heading compact">
+            <span class="step-number">02</span>
+            <div>
+              <p class="section-kicker">Girdi</p>
+              <h2 id="input-title">Evrak metni</h2>
+            </div>
+            <span class="character-count" id="character-count">0 karakter</span>
+          </div>
+
+          <div class="input-mode-tabs" role="tablist" aria-label="Evrak giriş yöntemi">
+            <button class="input-mode-tab is-active" id="text-mode-tab" type="button" role="tab" aria-selected="true" data-input-mode="text">Metin girişi</button>
+            <button class="input-mode-tab" id="file-mode-tab" type="button" role="tab" aria-selected="false" data-input-mode="file">TXT / MD / PDF yükle</button>
+          </div>
+
+          <form id="process-form">
+            <div class="input-mode-panel" id="text-mode-panel" role="tabpanel" aria-labelledby="text-mode-tab">
+              <label class="sr-only" for="document-text">İşlenecek evrak metni</label>
+              <textarea id="document-text" name="document-text" spellcheck="true"></textarea>
+            </div>
+
+            <div class="input-mode-panel" id="file-mode-panel" role="tabpanel" aria-labelledby="file-mode-tab" hidden>
+              <label class="file-drop" id="file-drop" for="document-file">
+                <input id="document-file" name="document-file" type="file" accept=".txt,.md,.pdf,text/plain,text/markdown,application/pdf" />
+                <span class="file-symbol" aria-hidden="true">⇧</span>
+                <strong>Dosyayı buraya bırakın</strong>
+                <span>veya bilgisayarınızdan seçin</span>
+                <small>TXT, MD veya PDF · en fazla 20 MB</small>
+              </label>
+              <div class="selected-file" id="selected-file" hidden></div>
+            </div>
+
+            <div class="form-footer">
+              <div class="input-options">
+                <p id="scenario-hint">Beklenen: yol bakım talebi → Yol Yapım ve Bakım Birimi</p>
+                <label class="switch-row" title="Bilgisayarda LaTeX derleyicisi varsa PDF de üretilir.">
+                  <input id="compile-pdf" type="checkbox" />
+                  <span>PDF derlemeyi dene</span>
+                </label>
+              </div>
+              <div class="button-row">
+                <button class="secondary-button" id="reset-button" type="button">Temizle</button>
+                <button class="primary-button" id="process-button" type="submit">
+                  <span>Evrakı işle</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="result-panel" id="result-panel" aria-labelledby="result-title" aria-live="polite">
+          <div class="panel-heading compact">
+            <span class="step-number">03</span>
+            <div>
+              <p class="section-kicker">Ajan çıktısı</p>
+              <h2 id="result-title">Süreç sonucu</h2>
+            </div>
+          </div>
+
+          <div class="empty-state" id="empty-state">
+            <span class="empty-symbol" aria-hidden="true">↳</span>
+            <h3>Sonuçlar burada görünecek</h3>
+            <p>Hazır senaryoyu seçip “Evrakı işle” düğmesine basın.</p>
+          </div>
+          <div class="result-content" id="result-content" hidden></div>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <span>YolYaz v0.1 · Yerel test ortamı</span>
+      <span>Gerçek vatandaş verisi kullanmayın.</span>
+    </footer>
+
+    <div class="toast" id="toast" role="alert" hidden></div>
+  </body>
+</html>

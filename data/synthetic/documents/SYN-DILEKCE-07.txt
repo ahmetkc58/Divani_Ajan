@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Dilekçe
-Basvuru Sahibi: SENTETIK KISI 007
-Iletisim: sentetik007@example.invalid
-Konu: Emlak vergisi borcu hakkında bilgi
-Talep: Emlak vergisi borcu hakkında bilgi
-
-Sayın Yetkili, Emlak vergisi borcu hakkında bilgi hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

@@ -1,0 +1,3 @@
+required_sections: [kurum_adi, sayi, tarih, konu, muhatap, govde, imza]
+human_approval_required: true
+

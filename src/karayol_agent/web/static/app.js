@@ -1,0 +1,536 @@
+"use strict";
+
+const scenarios = {
+  maintenance: {
+    hint: "Beklenen: yol bakım talebi → Yol Yapım ve Bakım Birimi",
+    expectedType: "yol_bakim_talebi",
+    expectedUnit: "ORKGM-YB-001",
+    semanticType: "yol_bakim_talebi",
+    text: `Gönderen: Ayşe Örnek
+Tarih: 23.08.2026
+Konu: D-100 bağlantı yolundaki asfalt bozulması
+Konum: Örnek İl, Örnek İlçe, D-100 bağlantı yolu 12. kilometre
+Telefon: 0555 111 22 33
+
+Belirtilen konumda yol yüzeyinde geniş çukurlar ve asfalt bozulmaları oluşmuştur.
+Trafik güvenliği açısından gerekli yol bakım ve onarım çalışmasının yapılmasını talep ediyorum.`
+  },
+  missing: {
+    hint: "Beklenen: trafik güvenliği bildirimi → gönderen ve konum eksik",
+    expectedType: "trafik_guvenligi_bildirimi",
+    expectedUnit: "ORKGM-TG-001",
+    semanticType: "trafik_guvenligi_bildirimi",
+    text: `Konu: Hasarlı trafik işaret levhası
+
+Bölgemizde bulunan trafik işaret levhası devrilmiştir. Trafik güvenliği açısından gereğinin yapılmasını talep ediyorum.`
+  },
+  paraphrase: {
+    hint: "Sınır testi: anahtar kelime kullanılmadığı için mevcut sürüm zorlanabilir",
+    expectedType: "genel_basvuru",
+    expectedUnit: "ORKGM-EB-001",
+    semanticType: "yol_bakim_talebi",
+    limitation: true,
+    text: `Gönderen: Selin Örnek
+Tarih: 23.08.2026
+Konu: Sürüş yüzeyindeki derin oyuklar
+Konum: Örnek İlçe, sanayi kavşağı yaklaşımı
+
+Araç tekerlerinin içine girdiği derin oyuklar oluşmuştur. Bu bölümün düzeltilmesini istiyorum.`
+  }
+};
+
+const statusLabels = {
+  alindi: "Evrak alındı",
+  okunuyor: "Evrak okunuyor",
+  siniflandiriliyor: "Sınıflandırılıyor",
+  mevzuat_araniyor: "Mevzuat aranıyor",
+  kaynak_dogrulaniyor: "Kaynak doğrulanıyor",
+  eksik_bilgi_bekleniyor: "Eksik bilgi bekleniyor",
+  yazi_turu_seciliyor: "Yazı türü seçiliyor",
+  birim_yonlendiriliyor: "Birim belirleniyor",
+  taslak_hazirlaniyor: "Taslak hazırlanıyor",
+  uygunluk_kontrolunde: "Uygunluk kontrolünde",
+  kullanici_onayi_bekleniyor: "Kullanıcı onayı bekleniyor",
+  tamamlandi: "Süreç tamamlandı",
+  hata: "İşlem hatası"
+};
+
+const documentTypeLabels = {
+  yol_bakim_talebi: "Yol bakım talebi",
+  trafik_guvenligi_bildirimi: "Trafik güvenliği bildirimi",
+  hasar_bildirimi: "Hasar bildirimi",
+  bilgi_talebi: "Bilgi talebi",
+  sikayet: "Şikâyet",
+  dilekce: "Dilekçe",
+  ust_yazi: "Üst yazı",
+  genel_basvuru: "Genel başvuru",
+  cevap_yazisi: "Cevap yazısı",
+  bilgilendirme_yazisi: "Bilgilendirme yazısı",
+  eksik_bilgi_talebi: "Eksik bilgi talebi"
+};
+
+const fieldLabels = {
+  gonderen: "Gönderen / başvuran",
+  konu: "Konu",
+  konum: "Konum",
+  tarih: "Tarih",
+  talep: "Talep",
+  eposta: "E-posta",
+  telefon: "Telefon",
+  sayi: "Evrak sayısı",
+  imzalayan: "İmzalayan",
+  unvan: "İmzalayan unvanı",
+  muhatap: "Muhatap"
+};
+
+const fieldStatusLabels = {
+  kaynaktan_alindi: "Kaynaktan alındı",
+  metinden_cikarildi: "Metinden çıkarıldı",
+  yonlendirmeden_uretildi: "Sistem tarafından üretildi",
+  kullanici_girdisi_gerekli: "Kullanıcı girdisi gerekli"
+};
+
+const suggestedValues = {
+  gonderen: "Ayşe Örnek",
+  konu: "D-100 bağlantı yolundaki asfalt bozulması",
+  konum: "Örnek İl, Örnek İlçe, D-100 yolu 12. kilometre",
+  tarih: "23.08.2026",
+  talep: "Gerekli inceleme ve çalışmanın yapılmasını talep ediyorum.",
+  eposta: "ayse.ornek@example.test",
+  telefon: "0555 111 22 33",
+  sayi: "2026/42",
+  imzalayan: "Mehmet Demir",
+  unvan: "Şube Müdürü",
+  muhatap: "Örnek Bölge Müdürlüğü"
+};
+
+const textArea = document.querySelector("#document-text");
+const characterCount = document.querySelector("#character-count");
+const hint = document.querySelector("#scenario-hint");
+const processForm = document.querySelector("#process-form");
+const processButton = document.querySelector("#process-button");
+const resetButton = document.querySelector("#reset-button");
+const emptyState = document.querySelector("#empty-state");
+const resultContent = document.querySelector("#result-content");
+const toast = document.querySelector("#toast");
+const fileInput = document.querySelector("#document-file");
+const fileDrop = document.querySelector("#file-drop");
+const selectedFileLabel = document.querySelector("#selected-file");
+const compilePdf = document.querySelector("#compile-pdf");
+
+let activeScenario = "maintenance";
+let inputMode = "text";
+let selectedFile = null;
+let currentState = null;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function safePercent(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.min(100, Math.round(numeric * 100)));
+}
+
+function safeArtifactUrl(url) {
+  const value = String(url || "");
+  return /^\/v1\/process\/EVR-\d{8}-[A-F0-9]{8}\/artifacts\/(?:tex|pdf)$/.test(value)
+    ? value
+    : null;
+}
+
+function typeLabel(value) {
+  return documentTypeLabels[value] || String(value || "Belirlenemedi").replaceAll("_", " ");
+}
+
+function fieldLabel(value) {
+  return fieldLabels[value] || String(value || "Alan").replaceAll("_", " ");
+}
+
+function showToast(message, kind = "error") {
+  toast.textContent = message;
+  toast.classList.toggle("is-success", kind === "success");
+  toast.hidden = false;
+  window.clearTimeout(showToast.timeout);
+  showToast.timeout = window.setTimeout(() => { toast.hidden = true; }, 5000);
+}
+
+function updateCount() {
+  characterCount.textContent = inputMode === "text"
+    ? `${textArea.value.length.toLocaleString("tr-TR")} karakter`
+    : selectedFile
+      ? `${(selectedFile.size / 1024).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} KB`
+      : "Dosya seçilmedi";
+}
+
+function setGuideStep(step, completed = false) {
+  document.querySelectorAll(".guide-steps li").forEach((item, index) => {
+    const itemStep = index + 1;
+    item.classList.toggle("is-current", !completed && itemStep === step);
+    item.classList.toggle("is-complete", completed || itemStep < step);
+  });
+}
+
+function resetResults() {
+  currentState = null;
+  resultContent.innerHTML = "";
+  resultContent.hidden = true;
+  emptyState.hidden = false;
+  setGuideStep(1);
+}
+
+function switchInputMode(mode) {
+  inputMode = mode === "file" ? "file" : "text";
+  document.querySelectorAll(".input-mode-tab").forEach((tab) => {
+    const active = tab.dataset.inputMode === inputMode;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-selected", String(active));
+  });
+  document.querySelector("#text-mode-panel").hidden = inputMode !== "text";
+  document.querySelector("#file-mode-panel").hidden = inputMode !== "file";
+  hint.textContent = inputMode === "text"
+    ? scenarios[activeScenario].hint
+    : "Yüklenen dosya gerçek sistem akışındaki metin çıkarımı ve OCR kontrolünden geçer.";
+  updateCount();
+}
+
+function setScenario(name, focus = true) {
+  const scenario = scenarios[name];
+  if (!scenario) return;
+  activeScenario = name;
+  document.querySelectorAll(".scenario-card").forEach((card) => {
+    const active = card.dataset.scenario === name;
+    card.classList.toggle("is-active", active);
+    card.setAttribute("aria-pressed", String(active));
+  });
+  textArea.value = scenario.text;
+  switchInputMode("text");
+  resetResults();
+  updateCount();
+  if (focus) textArea.focus();
+}
+
+function setSelectedFile(file) {
+  selectedFile = file || null;
+  if (!selectedFile) {
+    selectedFileLabel.hidden = true;
+    selectedFileLabel.textContent = "";
+  } else {
+    selectedFileLabel.hidden = false;
+    selectedFileLabel.textContent = `${selectedFile.name} · ${(selectedFile.size / 1024).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} KB`;
+  }
+  updateCount();
+}
+
+async function requestJson(url, options = {}) {
+  const response = await fetch(url, options);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.detail || "İşlem tamamlanamadı.");
+  }
+  return payload;
+}
+
+function renderLoading() {
+  emptyState.hidden = true;
+  resultContent.hidden = false;
+  resultContent.innerHTML = `
+    <div class="loading-state" role="status">
+      <span class="loading-orbit" aria-hidden="true"></span>
+      <h3>Ajan zinciri çalışıyor</h3>
+      <p>Evrak okunuyor, kaynaklar aranıyor ve taslak hazırlanıyor…</p>
+    </div>`;
+  setGuideStep(2);
+}
+
+function scenarioExpectation(state) {
+  if (inputMode === "file") return "";
+  const scenario = scenarios[activeScenario];
+  const actualType = state.analysis?.document_type;
+  const actualUnit = state.routing?.unit_id;
+  if (scenario.limitation) {
+    if (actualType === scenario.semanticType) {
+      return `<div class="expectation-banner"><span>✓</span><div><strong>Sınır örneği artık doğru anlaşıldı</strong>Paraphrase metni semantik olarak yol bakım talebi şeklinde sınıflandırıldı.</div></div>`;
+    }
+    return `<div class="expectation-banner is-warning"><span>!</span><div><strong>Beklenen MVP sınırı görüldü</strong>Metin semantik olarak yol bakım talebi olsa da mevcut anahtar kelime sürümü “${escapeHtml(typeLabel(actualType))}” sonucunu verdi. Bu örnek embedding/LLM geliştirmesi için bilerek korunuyor.</div></div>`;
+  }
+  const matched = actualType === scenario.expectedType && actualUnit === scenario.expectedUnit;
+  return `<div class="expectation-banner${matched ? "" : " is-warning"}"><span>${matched ? "✓" : "!"}</span><div><strong>${matched ? "Senaryo beklentisi karşılandı" : "Senaryo beklentisinden sapma var"}</strong>Tür: ${escapeHtml(typeLabel(actualType))} · Birim: ${escapeHtml(state.routing?.unit_name || "bulunamadı")}</div></div>`;
+}
+
+function renderOverview(state) {
+  const analysis = state.analysis || {};
+  const routing = state.routing || {};
+  const template = state.template_decision || {};
+  const compliance = state.compliance || {};
+  const confidence = safePercent(analysis.confidence);
+  const complianceScore = safePercent(compliance.score);
+  const verifiedCount = (state.verified_references || []).filter((item) => item.verified).length;
+  const warnings = (compliance.warnings || []).map((item) => escapeHtml(item)).join(" · ");
+
+  return `
+    ${scenarioExpectation(state)}
+    <div class="overview-grid">
+      <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.document_type))}</strong><small>Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
+      <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")}</small></div>
+      <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong><small>${escapeHtml(template.template_id || "")}</small></div>
+      <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
+      <div class="info-card wide"><span>Özet</span><strong>${escapeHtml(analysis.summary || "Özet oluşturulamadı.")}</strong>${warnings ? `<small>${warnings}</small>` : ""}</div>
+      <div class="info-card wide"><span>Yönlendirme gerekçesi</span><strong>${escapeHtml(routing.rationale || "—")}</strong></div>
+    </div>
+    ${renderNextAction(state)}
+  `;
+}
+
+function renderNextAction(state) {
+  if (state.status === "tamamlandi") {
+    return `<div class="completed-banner"><span class="completed-mark">✓</span><h4>Evrak süreci tamamlandı</h4><p>Taslak onaylandı. Çıktıyı Taslak sekmesinden indirebilirsiniz.</p></div>`;
+  }
+
+  const missing = state.missing_information || [];
+  if (missing.length) {
+    const controls = missing.map((name, index) => {
+      const safeName = escapeHtml(name);
+      return `<div class="field-control"><label for="missing-field-${index}">${escapeHtml(fieldLabel(name))}</label><input id="missing-field-${index}" data-field="${safeName}" value="" placeholder="${escapeHtml(suggestedValues[name] || "Bilgiyi girin")}" autocomplete="off" required /></div>`;
+    }).join("");
+    return `<div class="action-card"><h4>Eksik bilgileri tamamlayın</h4><p>${escapeHtml(state.next_step)}</p><form class="field-form" id="missing-information-form">${controls}<div class="field-form-actions"><button class="mini-button is-secondary" id="fill-sample-values" type="button">Örnek değerleri doldur</button><button class="mini-button" type="submit">Bilgileri kaydet ve taslağı yenile</button></div></form></div>`;
+  }
+
+  if (state.status === "kullanici_onayi_bekleniyor") {
+    return `<div class="action-card is-success"><h4>Taslak onaya hazır</h4><p>Önce Taslak ve Kaynaklar sekmelerini kontrol edin, ardından yetkili kullanıcı adıyla onaylayın.</p><form class="field-form" id="approval-form"><div class="field-control"><label for="approved-by">Onaylayan kişi</label><input id="approved-by" value="Yetkili Demo Kullanıcısı" minlength="2" maxlength="120" required /></div><div class="field-form-actions"><button class="mini-button" type="submit">Taslağı nihai olarak onayla</button></div></form></div>`;
+  }
+
+  return `<div class="action-card"><h4>Sıradaki adım</h4><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div>`;
+}
+
+function renderFields(state) {
+  const fields = state.analysis?.fields || {};
+  const rows = Object.entries(fields).map(([name, field]) => `
+    <div class="data-row"><dt>${escapeHtml(fieldLabel(name))}</dt><dd>${escapeHtml(field.value || "[EKSİK]")}<span class="field-source">${escapeHtml(fieldStatusLabels[field.status] || field.status)}${field.source ? ` · ${escapeHtml(field.source)}` : ""}</span></dd></div>`).join("");
+  return `<dl class="data-list">${rows || "<p>Çıkarılmış alan bulunmuyor.</p>"}</dl>`;
+}
+
+function renderReferences(state) {
+  const references = state.verified_references || [];
+  if (!references.length) return `<div class="empty-state"><h3>Kaynak bulunamadı</h3><p>Bu evrak için mevzuat eşleşmesi üretilemedi.</p></div>`;
+  return references.map((reference) => `
+    <article class="reference-card"><div class="reference-top"><strong>${escapeHtml(reference.title)}${reference.article ? ` · ${escapeHtml(reference.article)}` : ""}</strong><span class="verification-badge${reference.verified ? "" : " is-rejected"}">${reference.verified ? "Doğrulandı" : "Eşik altı"}</span></div><p>${escapeHtml(reference.excerpt)}</p><div class="reference-meta"><span>Skor: %${safePercent(reference.score)}</span><span>${escapeHtml(reference.source)}</span></div></article>`).join("");
+}
+
+function draftValue(field) {
+  return field?.value || "[DOLDURULACAK]";
+}
+
+function renderDraft(state) {
+  const draft = state.draft;
+  if (!draft) return `<div class="empty-state"><h3>Taslak bulunmuyor</h3><p>Henüz bir resmî yazı taslağı oluşturulmadı.</p></div>`;
+  const texUrl = safeArtifactUrl(state.artifact?.tex_download_url);
+  const pdfUrl = safeArtifactUrl(state.artifact?.pdf_download_url);
+  const paragraphs = (draft.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+  return `
+    <div class="artifact-actions">${texUrl ? `<a class="download-link" href="${texUrl}">↓ LaTeX taslağını indir</a>` : ""}${pdfUrl ? `<a class="download-link" href="${pdfUrl}">↓ PDF çıktısını indir</a>` : `<span class="download-link is-disabled">PDF derleyicisi / çıktısı yok</span>`}</div>
+    <article class="draft-sheet"><div class="draft-letterhead"><strong>${escapeHtml(draftValue(draft.institution_name))}</strong></div><div class="draft-meta"><span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span><span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span><span><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</span><span><b>Şablon:</b> ${escapeHtml(draft.template_id)}</span></div><div class="draft-recipient">${escapeHtml(draftValue(draft.recipient))}</div>${paragraphs}<div class="draft-signature"><strong>${escapeHtml(draftValue(draft.signer))}</strong><br />${escapeHtml(draftValue(draft.signer_title))}</div></article>`;
+}
+
+function renderTimeline(state) {
+  const events = state.events || [];
+  return `<div class="timeline">${events.map((event) => {
+    const date = new Date(event.timestamp);
+    const time = Number.isNaN(date.valueOf()) ? "" : date.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    return `<div class="timeline-item"><span class="timeline-dot" aria-hidden="true"></span><div><strong>${escapeHtml(event.agent)} · ${escapeHtml(statusLabels[event.status] || event.status)}</strong><p>${escapeHtml(event.message)}</p><time>${escapeHtml(time)}</time></div></div>`;
+  }).join("")}</div>`;
+}
+
+function renderState(state) {
+  currentState = state;
+  emptyState.hidden = true;
+  resultContent.hidden = false;
+  resultContent.innerHTML = `
+    <div class="result-headline"><div><span class="result-label">${escapeHtml(statusLabels[state.status] || state.status)}</span><h3>${escapeHtml(typeLabel(state.analysis?.document_type))}</h3><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div><button class="document-id" id="copy-document-id" type="button" title="Evrak kimliğini kopyala">${escapeHtml(state.document_id)} ⧉</button></div>
+    <nav class="result-tabs" role="tablist" aria-label="Sonuç bölümleri"><button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-result-tab="overview">Genel</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="fields">Alanlar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="sources">Kaynaklar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="draft">Taslak</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="timeline">Akış</button></nav>
+    <section class="tab-panel" data-tab-panel="overview">${renderOverview(state)}</section><section class="tab-panel" data-tab-panel="fields" hidden>${renderFields(state)}</section><section class="tab-panel" data-tab-panel="sources" hidden>${renderReferences(state)}</section><section class="tab-panel" data-tab-panel="draft" hidden>${renderDraft(state)}</section><section class="tab-panel" data-tab-panel="timeline" hidden>${renderTimeline(state)}</section>`;
+
+  bindResultInteractions();
+  if (state.status === "tamamlandi") setGuideStep(4, true);
+  else setGuideStep(4);
+}
+
+function bindResultInteractions() {
+  document.querySelectorAll(".result-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".result-tab").forEach((item) => {
+        const active = item === tab;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-selected", String(active));
+      });
+      document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.tabPanel !== tab.dataset.resultTab;
+      });
+    });
+  });
+
+  document.querySelector("#copy-document-id")?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(currentState.document_id);
+      showToast("Evrak kimliği kopyalandı.", "success");
+    } catch {
+      showToast(`Evrak kimliği: ${currentState.document_id}`, "success");
+    }
+  });
+
+  const missingForm = document.querySelector("#missing-information-form");
+  document.querySelector("#fill-sample-values")?.addEventListener("click", () => {
+    missingForm.querySelectorAll("input[data-field]").forEach((input) => {
+      input.value = suggestedValues[input.dataset.field] || "Örnek bilgi";
+    });
+  });
+  missingForm?.addEventListener("submit", handleInformationSubmit);
+  document.querySelector("#approval-form")?.addEventListener("submit", handleApprovalSubmit);
+}
+
+async function handleInformationSubmit(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const submit = form.querySelector("button[type='submit']");
+  const fields = {};
+  form.querySelectorAll("input[data-field]").forEach((input) => {
+    if (input.value.trim()) fields[input.dataset.field] = input.value.trim();
+  });
+  submit.disabled = true;
+  submit.textContent = "Taslak yenileniyor…";
+  try {
+    const state = await requestJson(`/v1/process/${encodeURIComponent(currentState.document_id)}/information`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fields, compile_pdf: compilePdf.checked })
+    });
+    renderState(state);
+    showToast("Bilgiler kaydedildi ve taslak yenilendi.", "success");
+  } catch (error) {
+    showToast(error.message);
+    submit.disabled = false;
+    submit.textContent = "Bilgileri kaydet ve taslağı yenile";
+  }
+}
+
+async function handleApprovalSubmit(event) {
+  event.preventDefault();
+  const submit = event.currentTarget.querySelector("button[type='submit']");
+  const approvedBy = document.querySelector("#approved-by").value.trim();
+  submit.disabled = true;
+  submit.textContent = "Onaylanıyor…";
+  try {
+    const state = await requestJson(`/v1/process/${encodeURIComponent(currentState.document_id)}/approve`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ approved_by: approvedBy })
+    });
+    renderState(state);
+    showToast("Evrak onaylandı ve süreç tamamlandı.", "success");
+  } catch (error) {
+    showToast(error.message);
+    submit.disabled = false;
+    submit.textContent = "Taslağı nihai olarak onayla";
+  }
+}
+
+async function checkHealth() {
+  const pill = document.querySelector("#health-pill");
+  const label = document.querySelector("#health-label");
+  try {
+    const health = await requestJson("/health");
+    pill.classList.add("is-online");
+    const compiler = health.latex_compiler ? ` · ${health.latex_compiler}` : " · PDF derleyicisi yok";
+    label.textContent = `Sistem hazır · ${health.corpus_size} kural${compiler}`;
+  } catch {
+    pill.classList.add("is-offline");
+    label.textContent = "Sistem bağlantısı yok";
+  }
+}
+
+document.querySelectorAll(".scenario-card").forEach((card) => {
+  card.addEventListener("click", () => setScenario(card.dataset.scenario));
+});
+
+document.querySelectorAll(".input-mode-tab").forEach((tab) => {
+  tab.addEventListener("click", () => switchInputMode(tab.dataset.inputMode));
+});
+
+textArea.addEventListener("input", updateCount);
+fileInput.addEventListener("change", () => setSelectedFile(fileInput.files[0]));
+
+["dragenter", "dragover"].forEach((name) => fileDrop.addEventListener(name, (event) => {
+  event.preventDefault();
+  fileDrop.classList.add("is-dragging");
+}));
+["dragleave", "drop"].forEach((name) => fileDrop.addEventListener(name, (event) => {
+  event.preventDefault();
+  fileDrop.classList.remove("is-dragging");
+}));
+fileDrop.addEventListener("drop", (event) => {
+  const file = event.dataTransfer.files[0];
+  if (file) {
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    fileInput.files = transfer.files;
+    setSelectedFile(file);
+  }
+});
+
+resetButton.addEventListener("click", () => {
+  if (inputMode === "text") textArea.value = "";
+  else {
+    fileInput.value = "";
+    setSelectedFile(null);
+  }
+  resetResults();
+  updateCount();
+});
+
+processForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (inputMode === "text" && !textArea.value.trim()) {
+    showToast("İşlenecek bir evrak metni girin.");
+    textArea.focus();
+    return;
+  }
+  if (inputMode === "file" && !selectedFile) {
+    showToast("Önce TXT, MD veya PDF dosyası seçin.");
+    fileInput.focus();
+    return;
+  }
+
+  processButton.disabled = true;
+  processButton.firstElementChild.textContent = "Ajanlar çalışıyor…";
+  renderLoading();
+  try {
+    let state;
+    if (inputMode === "file") {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      state = await requestJson(`/v1/process/file?compile_pdf=${compilePdf.checked}`, { method: "POST", body: formData });
+    } else {
+      state = await requestJson("/v1/process/text", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: textArea.value.trim(), source_name: `${activeScenario}-arayuz-senaryosu.txt`, compile_pdf: compilePdf.checked })
+      });
+    }
+    renderState(state);
+  } catch (error) {
+    resetResults();
+    showToast(error.message);
+  } finally {
+    processButton.disabled = false;
+    processButton.firstElementChild.textContent = "Evrakı işle";
+  }
+});
+
+setScenario("maintenance", false);
+checkHealth();

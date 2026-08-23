@@ -1,0 +1,122 @@
+{
+  "source_url": "https://detsis.gov.tr/birim/24325150/24325150/2026-08-23",
+  "retrieved_at": "2026-08-23T20:56:20.711161+03:00",
+  "record_count": 11,
+  "filter_terms": [
+    "karayolu",
+    "kara yolu",
+    "otoyol",
+    "yolcu taşı",
+    "eşya taşı",
+    "yük taşı",
+    "taşıt",
+    "araç muayene",
+    "takograf",
+    "trafik",
+    "ulaştırma hizmetleri",
+    "ulaşım hizmetleri",
+    "özel yük"
+  ],
+  "filter_note": "Anahtar kelime filtresidir; kullanımdan önce insan doğrulaması gerekir.",
+  "data": [
+    {
+      "belgeBeyanID": 999,
+      "belgeBeyanAdi": "CMR KARAYOLU TAŞIMA BELGESİ",
+      "belgeTur": "İZİN",
+      "istenenmi": true,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 16100,
+      "belgeBeyanAdi": "UBAK İZİN BELGESİ KARAYOLU KARNESİ",
+      "belgeTur": "DURUM BELGESİ",
+      "istenenmi": true,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 1564,
+      "belgeBeyanAdi": "ÖZEL YÜK TAŞIMA İZİN BELGESİ",
+      "belgeTur": "İZİN",
+      "istenenmi": false,
+      "filter_matches": [
+        "özel yük"
+      ]
+    },
+    {
+      "belgeBeyanID": 3051,
+      "belgeBeyanAdi": "ARAÇ MUAYENE İSTASYONU İŞLETME YETKİ BELGESİ",
+      "belgeTur": "YETKİ BELGESİ",
+      "istenenmi": false,
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "belgeBeyanID": 3301,
+      "belgeBeyanAdi": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜ MESLEKİ YETERLİLİK BELGESİ",
+      "belgeTur": "YETERLİK/YETERLİLİK BELGESİ",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 3956,
+      "belgeBeyanAdi": "KARAYOLU TAŞIMA İDARİ PARA CEZASI KARAR TUTANAĞI",
+      "belgeTur": "TUTANAK",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 16209,
+      "belgeBeyanAdi": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜ TAŞIT KARTI",
+      "belgeTur": "KİMLİK BELGESİ/KARTİ",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 16210,
+      "belgeBeyanAdi": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜ YETKİ BELGESİ",
+      "belgeTur": "YETKİ BELGESİ",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 16211,
+      "belgeBeyanAdi": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜ TAŞIT BELGESİ",
+      "belgeTur": "YETKİ BELGESİ",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 18791,
+      "belgeBeyanAdi": "4925 KARAYOLU TAŞIMA İDARİ PARA CEZASI KARAR TUTANAĞI FORMU",
+      "belgeTur": "DİGER FORMLAR",
+      "istenenmi": false,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "belgeBeyanID": 25069,
+      "belgeBeyanAdi": "BARKODLU ARAÇ MUAYENE RAPORU",
+      "belgeTur": "RAPOR FORM",
+      "istenenmi": false,
+      "filter_matches": [
+        "araç muayene"
+      ]
+    }
+  ]
+}

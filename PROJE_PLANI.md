@@ -7,12 +7,12 @@
 
 | | |
 |---|---|
-| Bugünün tarihi | **20 Ağustos 2026** |
+| Bugünün tarihi | **19 Ağustos 2026** |
 | Çevrimiçi süreç son tarihi | **26 Ağustos 2026** |
-| Kalan süre | **6 geliştirme günü + teslim günü** |
+| Kalan süre | **~7 gün** |
 | Final | Ağustos (tarih TEKNOFEST takviminde ilan edilecek) |
 
-Bu plan, "ideal/kapsamlı mimari" değil, **teslim tarihine kadar uçtan uca çalışan, demo edilebilir bir sistem** teslim etme gerçeğine göre kurgulanmıştır. Puanlamada Uygulama (35) + Demo (15) = **100 puanın yarısı çalışırlığa bağlı**; yarım kalmış ama "teorik olarak ileri" bir mimari, sade ama sağlam çalışan bir mimariden daha düşük puan alır. Bu nedenle aşağıdaki her bölüm **Tier 0 (zorunlu) / Tier 1 (zaman kalırsa) / Tier 2 (dokümante edilir, muhtemelen kodlanmaz)** şeklinde önceliklendirilmiştir.
+Bu plan, "ideal/kapsamlı mimari" değil, **7 gün içinde uçtan uca çalışan, demo edilebilir bir sistem** teslim etme gerçeğine göre kurgulanmıştır. Puanlamada Uygulama (35) + Demo (15) = **100 puanın yarısı çalışırlığa bağlı**; yarım kalmış ama "teorik olarak ileri" bir mimari, sade ama sağlam çalışan bir mimariden daha düşük puan alır. Bu nedenle aşağıdaki her bölüm **Tier 0 (zorunlu) / Tier 1 (zaman kalırsa) / Tier 2 (dokümante edilir, muhtemelen kodlanmaz)** şeklinde önceliklendirilmiştir.
 
 ---
 
@@ -34,7 +34,7 @@ Bu plan, "ideal/kapsamlı mimari" değil, **teslim tarihine kadar uçtan uca ça
 |---|---|---|
 | `2026_TYDA_SARTNAME_...pdf` | Yarışma teknik şartnamesi | Gereksinim kaynağı (bu plan buradan türetildi) |
 | `mevzuat-1.pdf` | **Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik** (49 sayfa) | Görev 2'nin "resmi üsluba uygunluk" ve format kurallarının **birincil kaynağı** |
-| `mevzuat-kılavuz.pdf` | Aynı yönetmeliğin **Kılavuzu** (26 sayfa, örnek/şablon içerikli) | Taslak üretimi için örnek doküman kaynağı |
+| `mevzuat-2-1.pdf` | Aynı yönetmeliğin **Kılavuzu** (26 sayfa, örnek/şablon içerikli) | Taslak üretimi için örnek doküman kaynağı |
 
 **Teknik not:** Bu iki mevzuat PDF'i, gömülü font kodlamasından dolayı `pdftotext`/`pypdf` ile metne çevrilince Türkçe'ye özgü harfler (ı, ş, ğ, ü, ö, ç) düşüyor. Sayfaları görsel olarak render edip (PyMuPDF ile) doğruladık — içerik doğru ama **standart metin çıkarımı bu dosyalarda güvenilir değil**. Bu, projenin kendi evrak-okuma modülü için de gerçek bir tasarım girdisi: OCR/görsel tabanlı çıkarım (veya en azından font/encoding doğrulama adımı), yalnızca "nice to have" değil, **gerçek bir ihtiyaç** olarak Tier 0'a alınmalı.
 
@@ -46,11 +46,19 @@ Yönetmelikten şimdiye kadar görsel olarak doğrulanan içerik: Amaç/Kapsam/D
 
 Şartname madde 6.5 gerçek kamu verisini yasaklıyor. Buna göre:
 
-1. **Sentetik evrak korpüsü:** 8-12 evrak türü (dilekçe, üst yazı, cevap yazısı, bilgi talebi, ihbar/şikayet, bilgilendirme yazısı, iç yazışma vb.) × her türden 30-50 örnek → toplam **300-500 temiz kurgu evrak** hedeflenir. Bunların en az 80 adedi ekip tarafından alan alan gözden geçirilmiş "gold" veri olur. Temiz belgeler farklı şablonlarla PDF/görsele dönüştürülür; seçili örnekler tarama, fotokopi, dönme, bulanıklık ve sıkıştırma bozulmalarıyla çoğaltılarak **1.000-2.000 OCR görüntüsü** elde edilir. Hacimden önce gold setin doğruluğu tamamlanır.
-2. **Mevzuat corpus:** `mevzuat-1.pdf` + `mevzuat-kılavuz.pdf` madde bazlı chunk'lanarak RAG kaynağı yapılacak (kamuya açık, gerçek kamu verisi değil — yönetmelik metni).
+1. **Sentetik evrak korpüsü:** En az 6-8 evrak türü (dilekçe, üst yazı, cevap yazısı, bilgi talebi, ihbar/şikayet, bilgilendirme yazısı, iç yazışma) × her türden 5-10 örnek → toplam ~40-60 kurgu evrak. LLM ile üretilip, biçimsel çeşitlilik (eksik alanlı, bozuk formatlı, taranmış görüntü kalitesinde) kasıtlı olarak eklenmeli ki sistemin "eksik bilgi tespiti" yeteneği gerçekten test edilsin.
+2. **Mevzuat corpus:** `mevzuat-1.pdf` + `mevzuat-2-1.pdf` madde bazlı chunk'lanarak RAG kaynağı yapılacak (kamuya açık, gerçek kamu verisi değil — yönetmelik metni).
 3. **Kurum/birim listesi (DETSİS esinli, sentetik):** Gerçek DETSİS kayıtları çekilmeyecek (hem erişim kısıtlı hem de "gerçek kamu verisi" riski var — bkz. önceki tartışma). Bunun yerine DETSİS'in **numaralandırma formatı ve hiyerarşi mantığı** referans alınarak kurgu bir kurum/birim ağacı (örn. "Örnek Bakanlık > Örnek Genel Müdürlük > Örnek Daire Başkanlığı") oluşturulacak. Bu liste, birim yönlendirme agent'ının hedef havuzu olacak.
-4. **Veri bölme kuralı:** Train/dev/test ayrımı belge şablonu ve senaryo ailesi bazında yapılır. Aynı şablonun yalnızca alan değerleri değiştirilmiş kopyaları farklı bölümlere dağıtılmaz. En az 30-40 belge gizli test setinde tutulur.
-5. **Veri manifestosu:** Her kaynak ve üretilen dosya için `source`, `license`, `synthetic`, `generator`, `seed`, `template_id`, `split` ve `review_status` alanları kaydedilir. Gerçek ad, TCKN, adres, imza, telefon, sicil veya evrak numarası kullanılmaz; test değerleri açıkça `SENTETIK` olarak işaretlenir.
+
+**Uygulama durumu — 23 Ağustos 2026:** Kamuya açık DETSİS/UAB kayıtları yalnızca
+kaynak araştırması ve kapsam doğrulaması için ayrı arşivde tutulmaktadır; çalışma
+zamanındaki kurum/birim havuzu hâlâ sentetiktir. 501 mevzuat kaydı 501 PDF ile
+eşleştirilmiş, tüm sayfaların metin kalitesi denetlenmiş ve
+`data/manifests/uab_legislation_manifest.json` oluşturulmuştur. Otomatik sistem
+50 karayolu/genel kaynak adayı ve 58 OCR gerektiren PDF belirlemiştir. İnsan
+kapsam ve yürürlük doğrulaması yapılmadığı için aktif RAG onayı verilen gerçek
+kayıt sayısı sıfırdır. İnceleme kararları
+`data/manifests/uab_legislation_manifest_review.csv` üzerinde tutulacaktır.
 
 ---
 
@@ -101,9 +109,9 @@ Yönetmelikten şimdiye kadar görsel olarak doğrulanan içerik: Amaç/Kapsam/D
 | Mevzuat eşleştirme | Klasik vektör RAG: yönetmelik+kılavuz chunk'ları → embedding → benzerlik araması |
 | Özet | LLM ile kısa özet üretimi |
 | Eksik bilgi tespiti | Evrak türüne göre zorunlu alan listesi + LLM kontrolü |
-| Taslak oluşturma | Şablon (Yönetmelik'e uygun format) + LLM ile doldurma |
+| Taslak oluşturma | Sürümlü ve onaylı LaTeX şablonu + LLM'in şemaya uygun JSON alanları üretmesi + güvenli PDF derleme |
 | Birim yönlendirme | Sentetik birim ağacı üzerinde LLM/embedding ile en uygun birim seçimi |
-| Orkestrasyon | Basit sıralı pipeline (tek agent zinciri yeterli, karmaşık multi-agent framework şart değil) |
+| Orkestrasyon | Ortak durum kaydı üzerinden çalışan açık rollü çok ajanlı sistem: Alım/OCR, Sınıflandırma, Mevzuat Araştırma, Kaynak Doğrulama, Yazı Türü Karar ve Şablon Seçimi, Taslak Oluşturma, Birim Yönlendirme, Uygunluk Denetimi ve Kullanıcı Bilgilendirme ajanları |
 
 ### Tier 1 — Zaman kalırsa eklenecek (Gün 5-6)
 | Teknik | Neden bu sırada |
@@ -139,6 +147,138 @@ Beklenen yetenekler (şartname 6.4.1): OCR/metin okuma, tür belirleme, bilgi ç
 Beklenen yetenekler (şartname 6.4.2): taslak oluşturma (üst yazı/cevap/bilgilendirme), resmi üsluba uygunluk, birim yönlendirme önerisi, süreç bilgilendirmesi, gerektiğinde eksik bilgi talebi.
 **Kritik:** Taslağın "resmi üsluba uygunluğu", Yönetmelik'teki format kurallarına (kurum adı, sayı/tarih alanı, hitap, imza bloğu, ek/dağıtım) göre **otomatik kontrol edilmeli** — bu bir doğrulama katmanı (kural motoru) olarak Tier 0'a dahil edilmeli, sadece LLM'in "iyi niyetine" bırakılmamalı.
 
+#### Yazı Türü Karar ve Şablon Seçimi Ajanı
+
+LaTeX bileşeni seçilen şablonu güvenli biçimde doldurup PDF üretir; hangi resmî yazı türünün hazırlanacağına ise bundan önce çalışan **Yazı Türü Karar ve Şablon Seçimi Ajanı** karar verir. Ajan, gelen evrakın türü, amacı, talebi, muhatabı, eksik alanları ve doğrulanmış mevzuat sonuçlarını değerlendirerek `üst_yazı`, `cevap_yazısı`, `bilgilendirme_yazısı` veya `eksik_bilgi_talebi` seçeneklerinden birini seçer. Seçim gerekçesi ve güven skoru kullanıcıya gösterilir; düşük güven durumunda otomatik üretim yerine kullanıcı onayı istenir.
+
+```json
+{
+  "onerilen_yazi_turu": "cevap_yazisi",
+  "template_id": "cevap_yazisi_v1",
+  "karar_gerekcesi": "Gelen evrak kurumdan bilgi ve işlem sonucu talep etmektedir.",
+  "guven_skoru": 0.91,
+  "kullanici_onayi_gerekli": false,
+  "alternatifler": [
+    {"yazi_turu": "bilgilendirme_yazisi", "uygunluk_skoru": 0.31}
+  ]
+}
+```
+
+Bu karar çıktısı LaTeX üretim modülünün girdisi olacaktır. Böylece sistem yalnızca bir şablonu doldurmayacak, şartnamenin istediği şekilde hazırlanması gereken resmî yazı türüne de gerekçeli olarak karar verecektir.
+
+#### LaTeX Tabanlı Güvenli Evrak Üretim Mimarisi
+
+Evrak üretiminde modelden her istek için sıfırdan ve serbest biçimde LaTeX kodu yazması istenmeyecektir. Örnek resmî evraklar bir defaya mahsus analiz edilerek onaylı, sürümlü ve salt okunur LaTeX şablonlarına dönüştürülecek; model yalnızca gelen evraktan ve doğrulanmış mevzuat sonuçlarından elde edilen değişken alanları yapılandırılmış JSON olarak üretecektir. Uygulama bu alanları şablona güvenli biçimde yerleştirip PDF çıktısını oluşturacaktır.
+
+**Şablon dizin yapısı (öneri):**
+
+```text
+templates/
+├── resmi_yazi/
+│   ├── template.tex
+│   ├── schema.json
+│   ├── rules.yaml
+│   └── metadata.json
+├── ust_yazi/
+├── cevap_yazisi/
+├── bilgilendirme_yazisi/
+└── eksik_bilgi_talebi/
+```
+
+- `template.tex`: Logo, kenar boşlukları, başlık, sayı/tarih, imza, ek ve dağıtım gibi değişmemesi gereken düzeni içerir.
+- `schema.json`: Modelin üretmesine izin verilen alanları, veri tiplerini ve zorunlu alanları tanımlar.
+- `rules.yaml`: Belge türüne özgü biçim, üslup ve mevzuat kurallarını içerir.
+- `metadata.json`: Şablon kimliği, sürümü, onay durumu, kaynak örnek ve geçerlilik tarihini tutar.
+
+**Üretim akışı:**
+
+```text
+Gelen PDF/görsel
+      ↓
+OCR ve yapılandırılmış bilgi çıkarımı
+      ↓
+İlgili mevzuatın RAG ile bulunması
+      ↓
+Kaynak ve mevzuat doğrulaması
+      ↓
+Yazı Türü Karar ve Şablon Seçimi Ajanı
+      ↓
+Modelin şemaya uygun JSON içerik üretmesi
+      ↓
+Kaynak, zorunlu alan ve mevzuat doğrulaması
+      ↓
+Alanların onaylı LaTeX şablonuna yerleştirilmesi
+      ↓
+İzole ve güvenli LaTeX derleme
+      ↓
+PDF görsel düzen ve içerik kontrolü
+      ↓
+Kullanıcı önizlemesi ve nihai onay
+```
+
+**Model çıktı sözleşmesi (özet örnek):**
+
+```json
+{
+  "template_id": "ust_yazi_v1",
+  "kurum_adi": {"deger": "Örnek Genel Müdürlük", "durum": "kaynaktan_alindi"},
+  "tarih": {"deger": null, "durum": "kullanici_girdisi_gerekli"},
+  "sayi": {"deger": null, "durum": "kullanici_girdisi_gerekli"},
+  "konu": {"deger": "Yol bakım çalışması", "durum": "kaynaktan_alindi"},
+  "muhatap": {"deger": "Örnek Bölge Müdürlüğüne", "durum": "yonlendirmeden_uretildi"},
+  "paragraflar": ["...", "..."],
+  "dayanaklar": [
+    {"mevzuat": "...", "madde": "...", "kaynak": "...", "sayfa": 0}
+  ],
+  "eksik_alanlar": ["tarih", "sayi", "imzalayan"]
+}
+```
+
+Model; evrak sayısı, tarih, makam, imzalayan, unvan veya mevzuat maddesi gibi kritik bilgileri tahmin ederek doldurmayacaktır. Kaynakta bulunmayan bilgiler `null` ve `kullanici_girdisi_gerekli` durumuyla işaretlenecek, taslakta `[DOLDURULACAK]` olarak gösterilecektir. Her mevzuat iddiası kaynak belge, madde ve mümkünse sayfa bilgisiyle izlenebilir olacaktır.
+
+**LaTeX güvenlik kuralları:**
+
+- Kullanıcı ve OCR metni doğrudan LaTeX'e eklenmeden önce `\`, `{`, `}`, `$`, `&`, `#`, `%`, `_`, `~` ve `^` karakterleri kaçış işleminden geçirilir.
+- Modelin `\input`, `\include`, `\write18`, `\openin`, `\openout` ve `\usepackage` gibi dosya/sistem erişimi sağlayabilecek komutlar üretmesine izin verilmez.
+- Derleme geçici bir çalışma klasöründe; ağ erişimi, shell escape ve dış dosya erişimi kapalı; zaman, bellek ve çıktı boyutu sınırlı olarak yürütülür.
+- Şablon dosyaları çalışma sırasında model tarafından değiştirilemez; yalnızca onaylı alanlar doldurulur.
+
+**Otomatik doğrulama:**
+
+PDF derlenmeden önce JSON şema uygunluğu, zorunlu alanlar, kurum/birim uyumu, mevzuat atıfları ve kaynakta bulunmayan bilgi eklenip eklenmediği kontrol edilir. Derlemeden sonra sayfa taşması, kesilen metin, Türkçe karakterler, logo/başlık konumu, imza alanı, ekler ve dağıtım bölümü görsel olarak denetlenir. Kritik hata varsa belge yayımlanmaz; kullanıcıya düzeltme veya eksik bilgi talebi gösterilir.
+
+Yeni bir evrak örneğinden model yardımıyla LaTeX şablonu üretmek ayrı bir **şablon geliştirme modu** olacaktır. Bu modun çıktısı insan tarafından karşılaştırılıp onaylanmadan günlük evrak üretim havuzuna alınmayacaktır. Böylece model yeni şablonların hazırlanmasını hızlandırırken üretim aşamasında resmî biçim bütünlüğü korunacaktır.
+
+#### Süreç Durumu ve Kullanıcı Bilgilendirme Ajanı
+
+Orkestratör, her evrak için kalıcı bir `process_state` kaydı tutacaktır. Her ajan göreve başladığında ve görevi bitirdiğinde bu kaydı güncelleyecek; Kullanıcı Bilgilendirme Ajanı teknik ajan günlüklerini göstermek yerine bu durumu sade Türkçe ile kullanıcıya açıklayacaktır. Böylece kullanıcı evrakın hangi aşamada olduğunu, hangi işlemlerin tamamlandığını, hangi bilgilerin eksik olduğunu ve sıradaki adımı görebilecektir.
+
+```json
+{
+  "evrak_id": "EVR-00042",
+  "genel_durum": "kullanici_onayi_bekleniyor",
+  "mevcut_asama": "taslak_onizleme",
+  "tamamlanan_adimlar": [
+    "Evrak okundu ve sınıflandırıldı",
+    "İlgili mevzuat maddeleri doğrulandı",
+    "Cevap yazısı şablonu seçildi",
+    "İlgili birim önerildi",
+    "LaTeX taslağı oluşturuldu"
+  ],
+  "bekleyen_islemler": [
+    "Evrak sayısının kullanıcı tarafından girilmesi",
+    "Taslağın yetkili kullanıcı tarafından onaylanması"
+  ],
+  "eksik_bilgiler": ["evrak_sayisi"],
+  "sonraki_adim": "Evrak sayısını girerek PDF taslağını onaylayınız.",
+  "olasi_eylemler": ["bilgi_gir", "taslagi_duzenle", "onayla", "reddet"]
+}
+```
+
+Önerilen süreç durumları şunlardır: `alindi`, `okunuyor`, `siniflandiriliyor`, `mevzuat_araniyor`, `kaynak_dogrulaniyor`, `eksik_bilgi_bekleniyor`, `yazi_turu_seciliyor`, `taslak_hazirlaniyor`, `uygunluk_kontrolunde`, `kullanici_onayi_bekleniyor`, `tamamlandi` ve `hata`. Bir ajan hata verdiğinde süreç kaybolmayacak; hata durumu, tekrar deneme seçeneği ve kullanıcıdan beklenen işlem açıkça gösterilecektir.
+
+Kullanıcı arayüzünde en az bir ilerleme göstergesi, mevcut aşama, tamamlanan adımlar, eksik bilgiler, önerilen birim, seçilen yazı türü, kaynaklar ve birincil sonraki işlem düğmesi bulunacaktır. Süreç bilgilendirme başarısı demo sırasında ayrı bir gözlemlenebilir çıktı olarak gösterilecektir.
+
 ---
 
 ## 7. Demo Senaryosu Planı
@@ -153,23 +293,36 @@ Beklenen yetenekler (şartname 6.4.2): taslak oluşturma (üst yazı/cevap/bilgi
 
 ## 8. Test / Değerlendirme Planı
 
-- En az 30-40 sentetik evrak içeren, şablon/senaryo sızıntısından arındırılmış gizli test seti (gold-label: doğru tür, alanlar, eksik bilgiler, doğru birim ve gerekli mevzuat).
+- En az 15-20 sentetik evrak içeren gizli bir test seti (gold-label: doğru tür, doğru birim, gerekli mevzuat).
 - Ölçütler: sınıflandırma doğruluğu, yönlendirme başarımı (top-1/top-3), eksik bilgi tespit recall'ü, taslak formatının Yönetmelik kurallarına uyum yüzdesi.
 - Bu sonuçlar teknik raporda ve sunumda **sayısal olarak** gösterilmeli (jüri "Uygulama" kriterinde performans ölçütlerini açıkça arıyor — madde 9).
 
+**Uygulama durumu — 23 Ağustos 2026:** `data/synthetic_gold.json` içinde 48
+tamamen kurgusal ve gold-label'lı evrak oluşturuldu. Bunların 40'ı standart, 8'i
+anahtar kelimeyi doğrudan kullanmayan paraphrase challenge örneğidir. Tek komutla
+tekrarlanabilir değerlendirme `karayol-agent evaluate` üzerinden çalışmaktadır.
+Başlangıç kural tabanlı sürümün genel sonuçları: sınıflandırma `%83,33`, birim
+yönlendirme top-1 `%85,42`, top-3 `%93,75`, eksik alan exact-match `%100`, şablon
+seçimi `%93,75`, mevzuat `Recall@5` `%80,56` ve MRR `%80,56`. Standart 40 kayıtta
+temel metrikler `%100`; challenge diliminde sınıflandırma `%0`, yönlendirme top-1
+`%12,5` ve retrieval `Recall@5` `%12,5` olduğundan bu dilim embedding/LLM
+entegrasyonu için dürüst başlangıç hedefi olarak korunacaktır. Bu sentetik baseline
+gerçek saha başarımı iddiası değildir.
+
 ---
 
-## 9. Zaman Çizelgesi (20-26 Ağustos)
+## 9. Zaman Çizelgesi (19-26 Ağustos)
 
 | Gün | Tarih | Odak |
 |---|---|---|
-| 1 | 20 Ağu | Teknik yığını kesinleştirme; sentetik veri ve birim listesi; mevzuat corpus |
-| 2 | 21 Ağu | Görev 1: metin/OCR, sınıflandırma ve yapılandırılmış bilgi çıkarımı |
-| 3 | 22 Ağu | Görev 1: mevzuat RAG, madde atfı, eksik bilgi tespiti ve ilk uçtan uca test |
-| 4 | 23 Ağu | Görev 2: birim yönlendirme, taslak üretimi ve format doğrulama |
-| 5 | 24 Ağu | Entegrasyon, insan onayı akışı, hata durumları ve test seti ölçümleri |
-| 6 | 25 Ağu | Hata düzeltme, Docker, README, rapor, sunum, demo videosu ve prova |
-| 7 | 26 Ağu | Son smoke test, lisans/kaynak kontrolü, GitHub ve **son teslim** |
+| 1 | 19 Ağu | Sentetik veri seti + kurum/birim listesi taslağı; mevzuat corpus'un chunk'lanması |
+| 2 | 20 Ağu | Görev 1 iskeleti: metin çıkarımı + sınıflandırma + içerik analizi |
+| 3 | 21 Ağu | Görev 1 tamamlama: mevzuat RAG + eksik bilgi tespiti + özet; ilk uçtan uca test |
+| 4 | 22 Ağu | Görev 2 iskeleti: taslak oluşturma + format doğrulama katmanı |
+| 5 | 23 Ağu | Görev 2 tamamlama: birim yönlendirme + eksik bilgi talebi; Tier 1 (Late Chunking/CRAG) varsa entegre |
+| 6 | 24 Ağu | Uçtan uca entegrasyon, test seti üzerinde ölçüm, hata düzeltme |
+| 7 | 25 Ağu | Demo senaryosu prova, sunum/rapor son hâli, GitHub + açık kaynak lisans + dokümantasyon |
+| — | 26 Ağu | **Son teslim** |
 
 ---
 
@@ -186,7 +339,7 @@ Beklenen yetenekler (şartname 6.4.2): taslak oluşturma (üst yazı/cevap/bilgi
 
 | Risk | Etki | Azaltım |
 |---|---|---|
-| Sürenin yetersiz kalması | Yüksek | Tier 0 dışına zaman harcanmaz; Tier 2 sadece raporda "gelecek vizyon" olarak yazılır |
+| 7 günlük süre yetersizliği | Yüksek | Tier 0 dışına hiçbir şey harcanmaz; Tier 2 sadece raporda "gelecek vizyon" olarak yazılır |
 | Yönetmelik PDF'lerinde Türkçe karakter/encoding kaybı | Orta | Görsel render + OCR doğrulama; bu bulgunun kendisi projenin OCR modülü tasarımına girdi olarak kullanılır |
 | Gerçek kamu verisi kullanma riski (DETSİS vb.) | Yüksek (diskalifiye riski) | Tüm kurum/birim/evrak verisi sentetik; gerçek API'lerden veri çekilmez |
 | Demo sırasında internet kesintisi | Orta | Yerel fallback + kayıttan yedek demo |
@@ -204,188 +357,6 @@ Beklenen yetenekler (şartname 6.4.2): taslak oluşturma (üst yazı/cevap/bilgi
 | LLM/NLP Mühendisi | _ | Sınıflandırma, RAG, taslak üretimi |
 | Backend/Orkestrasyon | _ | Pipeline, entegrasyon, demo altyapısı |
 | Veri/Mevzuat Sorumlusu | _ | Sentetik veri seti, mevzuat corpus, format doğrulama kuralları |
-
----
-
-## 13. MVP Kabul Kriterleri (Definition of Done)
-
-Tier 0, ancak aşağıdaki maddelerin tamamı doğrulandığında bitmiş sayılır:
-
-- [x] PDF, görsel ve düz metin girdisi kabul ediliyor.
-- [x] OCR sonucu orijinal belgeyle birlikte görüntülenebiliyor ve kullanıcı tarafından düzeltilebiliyor.
-- [x] Analiz sonucu tanımlı ve sürümlenmiş JSON şemasına uyuyor.
-- [x] Evrak türü, özet, çıkarılan bilgiler ve eksik alanlar gösteriliyor.
-- [x] Her mevzuat önerisi kaynak belge, sayfa/madde ipucu ve dayanak metni içeriyor.
-- [x] Birim önerisi gerekçe ve benzerlik skoruyla sunuluyor.
-- [x] Resmî yazı taslağı kullanıcı tarafından düzenlenebiliyor.
-- [x] Kullanıcı onayı olmadan yazı kesinleştirilmiyor, imzalanmıyor, gönderilmiyor veya dışa aktarılamıyor.
-- [x] Okunamayan, kapsam dışı veya düşük güvenli belgelerde sistem açık uyarı veriyor.
-- [x] Uygulama temiz Docker imajlarında README/Makefile talimatlarıyla yeniden çalıştırılabiliyor.
-
----
-
-## 14. İnsan Onayı, Güvenlik Sınırları ve Denetim İzi
-
-- Sistem karar veren makam değil, **karar destek aracıdır**.
-- Düşük güvenli sınıflandırma, mevzuat ve yönlendirme sonuçları insan incelemesine aktarılır.
-- Sistem elektronik imza atmaz, evrak göndermez ve resmî kayıt oluşturmaz.
-- Yeterli mevzuat dayanağı bulunamadığında tahmin üretmek yerine "doğrulanmış dayanak bulunamadı" uyarısı verir.
-- OCR metni ile orijinal belge yan yana gösterilir; kullanıcı düzeltmeleri analizden önce uygulanır.
-- Her işlemde zaman, model/prompt sürümü, kullanılan kaynak maddeler, güven skorları ve kullanıcı değişiklikleri denetim izi olarak kaydedilir.
-- Sentetik evraklarda dahi gerçek kişi bilgisi kullanılmaz; girdi yükleme boyutu ve dosya türü sınırlanır.
-
----
-
-## 15. Teknik Yığın Kararı
-
-| Katman | MVP tercihi | Not |
-|---|---|---|
-| Arayüz | React + Vite + TypeScript | Tek sayfalı, adım adım demo akışı |
-| Servis katmanı | FastAPI | Sürümlü REST API ve arka plan işleri |
-| Veri şeması | Pydantic | Yapılandırılmış ve doğrulanabilir çıktı |
-| Metin/OCR | PyMuPDF metin çıkarımı + Tesseract OCR fallback | Metin katmanı kalite kontrolü zorunlu |
-| RAG | Normalize NumPy matrisi + kosinüs benzerliği | Küçük corpus için haricî vektör veritabanı gerektirmez |
-| Embedding | Ollama `/api/embed`; model arayüzden dinamik seçilir | Model ve vektör boyutu doğrulanır, değişiklikte yeniden indekslenir |
-| LLM | Ollama yapılandırılmış JSON; model arayüzden dinamik seçilir | Pydantic şeması ve sınırlı yeniden deneme uygulanır |
-| Veri | JSONL + SQLite + dosya tabanlı runtime | İş durumu, denetim izi ve sürümler kalıcı tutulur |
-| Test | Pytest + Vitest + üretim derlemesi | Deterministik servisler ve istemci davranışı otomatik test edilir |
-| Paketleme | Docker | Tek komutla kurulum hedeflenir |
-| Dışa aktarma | DOCX + PDF | Yalnızca insan onayından sonra; sentetik filigranla |
-
-Mimari kararlar `docs/DECISIONS.md`, model gereksinimleri ise `docs/MODELS.md` içinde kayıtlıdır.
-
----
-
-## 16. İzlenebilir Çıktı Şeması
-
-```json
-{
-  "evrak_id": "sentetik-001",
-  "sema_surumu": "1.0",
-  "evrak_turu": "bilgi_talebi",
-  "evrak_turu_guven": 0.91,
-  "ozet": "...",
-  "cikarilan_bilgiler": {},
-  "eksik_alanlar": [],
-  "onerilen_mevzuat": [
-    {
-      "kaynak": "mevzuat-1.pdf",
-      "madde": "Madde ...",
-      "dayanak_metni": "...",
-      "benzerlik_skoru": 0.84
-    }
-  ],
-  "onerilen_birim": {
-    "birim_id": "BRM-001",
-    "birim_adi": "...",
-    "gerekce": "...",
-    "guven": 0.87
-  },
-  "taslak": "...",
-  "uyarilar": [],
-  "insan_onayi_gerekli": true
-}
-```
-
-Kaynak metin parçalarının kullanıcı arayüzünde gösterimi, belge/madde atfı ve skorlarla birlikte yapılır. Benzerlik skoru tek başına "doğruluk" olarak sunulmaz.
-
----
-
-## 17. Demo ve Hata Senaryoları
-
-Demo, yalnızca başarılı bir örneği değil sistemin güvenli davranışını da göstermelidir:
-
-1. **Temiz ve eksiksiz evrak:** Uçtan uca analiz, mevzuat, yönlendirme ve taslak başarıyla tamamlanır.
-2. **Taranmış ve eksik evrak:** OCR sonucu, eksik alan uyarısı ve kullanıcıdan bilgi talebi gösterilir.
-3. **Belirsiz veya kapsam dışı evrak:** Sistem düşük güven bildirir, kesin karar üretmez ve insan incelemesi ister.
-4. **Yanıltıcı talimat içeren evrak:** Belge içindeki prompt-injection benzeri talimatlar veri olarak ele alınır; sistem kurallarını değiştiremez.
-
-Her demo senaryosu için beklenen çıktı, tahmini süre, anlatılacak teknik kazanım ve yedek ekran kaydı önceden hazırlanır.
-
----
-
-## 18. Deney Hedefleri ve Raporlama
-
-| Ölçüt | MVP hedefi |
-|---|---:|
-| Evrak sınıflandırma macro-F1 | ≥ %80 |
-| Bilgi çıkarımı alan bazlı F1 | ≥ %80 |
-| Eksik bilgi tespit recall | ≥ %85 |
-| Birim yönlendirme top-1 | ≥ %75 |
-| Birim yönlendirme top-3 | ≥ %90 |
-| Doğru mevzuatın ilk 3 sonuçta bulunması | ≥ %85 |
-| Taslak biçim kuralı uyumu | ≥ %90 |
-| Uçtan uca p95 yanıt süresi | ≤ 30 saniye |
-
-Bu değerler yarışma sonucu vaadi değil, **geliştirme hedefidir**. Son raporda hedef yerine ölçülen gerçek sonuçlar; test seti boyutu, başarısız örnekler ve bilinen kısıtlarla birlikte verilir. Sentetik veri üretiminde kullanılan örnekler ile gizli test seti ayrı tutulur; aynı şablonun yakın kopyaları farklı bölümlere dağıtılmaz.
-
----
-
-## 19. Teslim Çıktıları
-
-- [x] Çalışan uygulama ve kaynak kod
-- [x] Docker yapılandırması
-- [x] Türkçe README ve tek komutla kurulum/çalıştırma talimatı
-- [x] Mimari ve veri akışı diyagramı
-- [x] Sentetik veri seti, veri üretim yöntemi ve veri kartı
-- [x] Kullanılan kütüphane, veri ve lisans envanteri; dinamik model gereksinimi
-- [ ] Gold test seti, metrikler ve hata analizi
-- [x] Örnek sentetik evraklar ve aday beklenen çıktılar
-- [ ] Demo videosu ve canlı demo yedek planı
-- [ ] Teknik rapor ve sunum
-- [x] Açık kaynak lisansı
-- [x] Bilinen kısıtlar, etik/güvenlik notları ve gelecek çalışmalar
-
----
-
-## 20. Haricî Veri Kaynağı Araştırması
-
-Araştırma sonucunda, açık lisanslı ve gerçek kişisel veri içermeyen, doğrudan **"Türkçe kamu evrakı + birim yönlendirme"** veri kümesi bulunamamıştır. Bu nedenle ana veri stratejisi; resmî taksonomi ve mevzuatın yalnızca dayanak olarak kullanılması, asıl evrakların ise sentetik üretilmesidir.
-
-İndirilen resmî referanslar, veri kartları, lisans kayıtları ve SHA-256 manifestosu `resources/` dizininde tutulur. Büyük veri kümeleri, alt küme ve depolama kararı verilmeden bu dizine indirilmez.
-
-### 20.1. Kullanılabilecek Kaynaklar
-
-| Kaynak | Lisans/erişim | Projedeki rol | Karar |
-|---|---|---|---|
-| [TR-DocVQA-Synth](https://huggingface.co/datasets/Ethosoft/TR-DocVQA-Synth) | CC BY 4.0 veri, MIT kod | Sentetik Türkçe belge görüntüleri; OCR, alan çıkarımı ve layout testi | Seçili alt küme kullanılabilir; kamu evrakı değil, ticari belge ağırlıklı olduğu belirtilir |
-| [Turkish Law Corpus](https://huggingface.co/datasets/CtnkyaABC/turkish-law-corpus) | CC BY 4.0 | Mevzuat retrieval deneyi ve madde atfı testi | Yardımcı corpus; resmî kaynakla doğrulanmadan nihai dayanak olarak kullanılmaz |
-| [Turkish Legal QA Triplets](https://huggingface.co/datasets/yunus-emre/tr-legal-triplets) | Apache 2.0 | Embedding/reranker karşılaştırması | MVP'de fine-tune yerine küçük, incelenmiş benchmark örneklemi |
-| [Mevzuat Bilgi Sistemi](https://www.mevzuat.gov.tr/) | Kamuya açık resmî kaynak; portalın otomatik kullanım koşulları ayrıca kontrol edilir | Mevzuat adı, madde ve güncellik doğrulaması | Bağlayıcı doğrulama kaynağı; toplu scraping yapılmaz |
-| [Devlet Arşivleri Standart Dosya Planı](https://www.devletarsivleri.gov.tr/Sayfalar/Sayfa.aspx?h=EC4EE38996FE1DD2D040D483800B793116ED6F1FD94ED1E517B581F5E16F395B&icerik=20) | Kamuya açık; açık veri lisansı belirtilmemiş | Konu sınıfları ve sentetik yönlendirme taksonomisine referans | Ham dosya yeniden dağıtılmaz; kaynak gösterilerek sentetik şema türetilir |
-| [DocLayNet](https://github.com/DS4SD/DocLayNet) | CDLA-Permissive 1.0 | Başlık, paragraf, tablo ve şekil gibi layout bileşenleri | Dil sınıflandırması için değil; gerekirse küçük alt küme ile layout benchmark |
-| [Turkish PII Corpus](https://huggingface.co/datasets/fevziegeyurtsevenler/turkish-pii-corpus) | Apache 2.0 | Kişisel veri maskeleme testleri ve etiket şeması | Küçük olduğu için yalnızca test tohumu; gerçek kimlik değerleri projeye alınmaz |
-
-Yönlendirme senaryoları için kamu kurumlarının hizmet standartları tabloları, `talep konusu → sorumlu birim → gerekli belgeler` şemasına **ilham kaynağı** olabilir. Ancak açık veri lisansı belirtilmeyen tablolar projede aynen yeniden yayımlanmayacak; kurum/birim adları ve başvuru olayları kurgu olarak üretilecektir.
-
-### 20.2. Sentetik Veri Üretim Araçları
-
-| Araç | Lisans | Kullanım |
-|---|---|---|
-| [Faker](https://github.com/joke2k/faker) | MIT | `tr_TR` ile açıkça sentetik alan değerleri; gerçek TCKN üretimi yapılmaz |
-| [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) | MIT | Türkçe karakter destekli fontlarla sentetik OCR satırı/görüntüsü |
-| [Augraphy](https://github.com/sparkfish/augraphy) | MIT | Temiz belgelerden tarama, fotokopi, faks, leke, dönme ve sıkıştırma varyantları |
-
-Her temiz belgenin doğru metni ground-truth olarak korunur; görsel bozulmalar ayrı dosyalar halinde aynı `document_family_id` ile izlenir. Böylece OCR başarımı CER/WER ile ölçülebilir.
-
-### 20.3. Kullanılmaması veya İzin Beklenmesi Gereken Kaynaklar
-
-- Gerçek mahkeme kararı/dava anlatısı içeren veri kümeleri, anonimleştirilmiş olsalar bile yarışma kısıtı nedeniyle kullanılmaz.
-- Yargıtay/Danıştay karar toplulukları, gerçek dilekçeler, CİMER başvuruları, kurum içi EBYS çıktıları ve internette bulunan imzalı resmî yazılar veri setine alınmaz.
-- Açık lisansı belirtilmeyen [OCRTurk](https://github.com/metunlp/ocrturk) gibi veri kaynakları, yazılı izin/lisans netliği olmadan indirilmez, eğitimde kullanılmaz veya yeniden dağıtılmaz.
-- Yalnızca "internette herkese açık" olması, bir veri setini kullanılabilir saymak için yeterli değildir; lisans ve kişisel veri kontrolü zorunludur.
-- Ticari kullanımı kısıtlayan `NC` lisanslı veri kümeleri, projenin ticarileşme hedefiyle çelişmemesi için ana veri setine karıştırılmaz.
-
-### 20.4. Uygulama Sırası
-
-1. 8-12 evrak türü ve sentetik birim taksonomisi kesinleştirilir.
-2. Her tür için şema, zorunlu/opsiyonel alanlar ve 3-5 temel senaryo yazılır.
-3. Önce 80 adet elle doğrulanmış gold evrak tamamlanır; sistem bu setle uçtan uca çalıştırılır.
-4. Otomatik üretimle temiz metin sayısı 300-500'e çıkarılır ve kalite kurallarından geçirilir.
-5. Temiz belgeler resmî yazı kılavuzundan türetilen farklı kurgu şablonlarla PDF/görsele dönüştürülür.
-6. Seçili sayfalardan Augraphy/TRDG ile 1.000-2.000 bozulmuş OCR varyantı oluşturulur.
-7. TR-DocVQA-Synth'in seçili alt kümesiyle alan çıkarımı ve OCR/layout sağlamlaştırma testi yapılır.
-8. Gizli test seti sonuçları, hata analizi ve veri/lisans manifestosu rapora eklenir.
 
 ---
 

@@ -1,0 +1,41 @@
+{
+  "dataset_name": "DETSİS esinli sentetik karayolu birimleri",
+  "usage": "Yalnızca prototip ve demo",
+  "data": [
+    {
+      "unit_id": "ORKGM-EB-001",
+      "unit_name": "Örnek Genel Evrak ve Başvuru Birimi",
+      "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Destek Hizmetleri Dairesi > Genel Evrak ve Başvuru Birimi",
+      "responsibilities": ["Genel başvuruların alınması", "Görev alanı belirlenemeyen evrakların ön incelemesi"],
+      "keywords": ["genel başvuru", "evrak", "dilekçe", "şikayet", "genel_basvuru"]
+    },
+    {
+      "unit_id": "ORKGM-YB-001",
+      "unit_name": "Örnek Yol Yapım ve Bakım Şube Müdürlüğü",
+      "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Yol Yapım ve Bakım Şube Müdürlüğü",
+      "responsibilities": ["Yol bakım ve onarım", "Asfalt ve kaplama bozuklukları", "Çukur ve yol yüzeyi çalışmaları"],
+      "keywords": ["yol bakım", "onarım", "asfalt", "çukur", "kaplama", "bozuk yol"]
+    },
+    {
+      "unit_id": "ORKGM-TG-001",
+      "unit_name": "Örnek Trafik Güvenliği Şube Müdürlüğü",
+      "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Trafik Güvenliği Şube Müdürlüğü",
+      "responsibilities": ["Trafik işaretleri", "Bariyer ve sinyalizasyon", "Karayolu trafik güvenliği incelemeleri"],
+      "keywords": ["trafik güvenliği", "levha", "bariyer", "sinyalizasyon", "kaza riski", "yaya geçidi"]
+    },
+    {
+      "unit_id": "ORKGM-AF-001",
+      "unit_name": "Örnek Acil Müdahale ve Sanat Yapıları Şube Müdürlüğü",
+      "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Acil Müdahale ve Sanat Yapıları Şube Müdürlüğü",
+      "responsibilities": ["Heyelan ve sel müdahalesi", "Köprü ve istinat yapısı hasarları", "Acil yol güvenliği"],
+      "keywords": ["heyelan", "sel", "çökme", "köprü", "istinat", "hasar", "acil"]
+    },
+    {
+      "unit_id": "ORKGM-BE-001",
+      "unit_name": "Örnek Bilgi Edinme Birimi",
+      "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Strateji Geliştirme Dairesi > Bilgi Edinme Birimi",
+      "responsibilities": ["Bilgi taleplerinin değerlendirilmesi", "Başvuru sahiplerine cevap hazırlanması"],
+      "keywords": ["bilgi edinme", "bilgi talebi", "hakkında bilgi", "cevap"]
+    }
+  ]
+}

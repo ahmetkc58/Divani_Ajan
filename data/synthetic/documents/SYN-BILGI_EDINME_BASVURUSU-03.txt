@@ -1,8 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Bilgi Edinme Başvurusu
-Basvuru Sahibi: SENTETIK KISI 011
-Iletisim: sentetik011@example.invalid
-Istenen Bilgi: Bilgi edinme başvurusunun durumu
-
-Sayın Yetkili, belirtilen konu hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.

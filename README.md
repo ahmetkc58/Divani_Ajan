@@ -1,118 +1,142 @@
-# EvrakAI - Kamu Evrak ve Yazışma Karar Destek Sistemi
+# Karayolu Evrak Akıllı Ajan Sistemi
 
-TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması 1. Senaryo için geliştirilen, tamamı sentetik verilerle çalışan yerel karar destek prototipi.
+Bu depo, `PROJE_PLANI.md` içindeki TEKNOFEST 2026 projesinin çalışan MVP
+uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 
-Sistem bir evrakı PDF, görsel veya metin olarak alır; OCR/metin çıkarımı, sınıflandırma, bilgi ve eksik alan tespiti, mevzuat RAG'i, sentetik belediye birimine yönlendirme ve resmî yazı taslağı üretimi yapar. Hiçbir karar veya taslak insan onayı olmadan kesinleşmez.
+1. metin/PDF alımı ve OCR fallback,
+2. evrak sınıflandırma ve önemli alan çıkarımı,
+3. eksik bilgi tespiti,
+4. BM25 tabanlı mevzuat/kurum içi kural araması,
+5. kaynak doğrulama,
+6. resmî yazı türü ve LaTeX şablonu seçimi,
+7. sentetik birime yönlendirme,
+8. güvenli LaTeX taslağı oluşturma,
+9. uygunluk kontrolü ve süreç bilgilendirmesi.
 
-## Önemli Sınırlar
+İlk sürüm çevrimdışı ve kural tabanlıdır. Ajan arayüzleri daha sonra LLM,
+embedding, reranker ve grafik arama sağlayıcılarına bağlanabilecek şekilde
+ayrılmıştır. Demo verileri sentetiktir; `veri_kaynaklari/` altındaki gerçek ve
+herkese açık kayıtlar çalışma zamanında otomatik olarak kullanılmaz.
 
-- Uygulama resmî karar vermez, elektronik imza atmaz ve evrak göndermez.
-- Gerçek kamu evrakı veya gerçek kişi bilgisi kullanılmaz.
-- Kurum ve birimler tamamen sentetiktir.
-- Ollama aynı bilgisayarda yerel olarak çalışır.
-- Analiz ve embedding model adları arayüzden seçilir; kod içinde sabit değildir.
+## Kurulum
 
-## Bileşenler
-
-- `frontend/`: React + Vite + TypeScript arayüz
-- `backend/`: FastAPI, OCR, Ollama, NumPy RAG, SQLite, DOCX/PDF export
-- `data/catalog/`: 10 evrak türü ve 12 sentetik belediye birimi
-- `data/synthetic/`: Script ile üretilen ve henüz insan incelemesi bekleyen aday gold veri
-- `resources/`: Resmî referanslar, veri kartları ve lisans kayıtları
-- `runtime/`: Yüklenen belgeler, SQLite, vektör indeksi ve export dosyaları
-
-## Ön Koşullar
-
-- macOS/Linux
-- Ollama
-- Docker Desktop veya Python 3.11 + Node.js
-- Yerel Ollama'da en az bir chat modeli ve `/api/embed` destekleyen embedding modeli
-
-Ollama servisinin çalıştığını doğrulayın:
-
-```bash
-ollama serve
-curl http://127.0.0.1:11434/api/tags
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
 ```
 
-Model adlarını uygulamadaki ayar panelinden seçeceğiniz için README belirli bir modeli zorunlu tutmaz.
+Bu çalışma ortamında ana bağımlılıklar zaten kuruluysa kurulumsuz da
+`$env:PYTHONPATH="src"` ile çalıştırılabilir.
 
-## Docker ile Çalıştırma
+## Komut satırı
 
-```bash
-cp .env.example .env
-make docker-up
+```powershell
+$env:PYTHONPATH="src"
+python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
 ```
 
-Arayüz: `http://localhost:8080`
+Çıktılar varsayılan olarak `output/<evrak-id>/` altında saklanır. Sistemde
+`xelatex`, `pdflatex` veya `tectonic` varsa PDF de derlenir; yoksa güvenli
+`.tex` taslağı ve yapılandırılmış JSON çıktı üretilir.
 
-API dokümanı: `http://localhost:8000/docs`
+Mevzuat PDF'sinin metin katmanını denetlemek ve Madde/Fıkra yapısında parçalamak:
 
-Docker içindeki backend Ollama'ya ulaşamıyorsa `.env` içindeki `OLLAMA_BASE_URL` değerini kontrol edin. macOS Docker Desktop için varsayılan adres `http://host.docker.internal:11434` olur.
-
-`make docker-up`, imajları doğrudan `docker build` ile üretip Compose'u `--no-build` ile başlatır. Bu yöntem, bazı Docker Desktop sürümlerinde Türkçe karakter içeren klasör adlarında görülen Compose/Buildx oturum anahtarı hatasını da önler.
-
-## Yerel Geliştirme
-
-Bağımlılıkları kurun:
-
-```bash
-make setup
+```powershell
+python -m karayol_agent.cli ingest `
+  --file mevzuat-1.pdf `
+  --title "Resmî Yazışma Yönetmeliği" `
+  --output data\processed\resmi_yazisma.json
 ```
 
-Bir terminalde backend:
+Kalite eşiğini geçmeyen PDF indekslenmez ve OCR gerektiği raporlanır. Düşük
+kaliteli metni zorla indekslemek yalnızca inceleme amacıyla
+`--allow-low-quality` seçeneğiyle mümkündür; üretim korpusunda önerilmez.
 
-```bash
-make backend
+## Mevzuat kapsam ayırma ve doğrulama manifesti
+
+DETSİS mevzuat kayıtlarını yerel PDF arşiviyle eşleştirmek, ulaşım alanı adayı
+üretmek ve OCR kuyruğunu belirlemek için:
+
+```powershell
+$env:PYTHONPATH="src"
+python -m karayol_agent.cli curate-legislation --inspect-pdfs
 ```
 
-Başka terminalde frontend:
+Komut iki çıktı üretir:
 
-```bash
-make frontend
+- `data/manifests/uab_legislation_manifest.json`: Makine tarafından okunabilir
+  ana manifest, PDF eşleşmeleri, kapsam önerileri ve metin kalite sonuçları.
+- `data/manifests/uab_legislation_manifest_review.csv`: Alan uzmanının kapsam,
+  yürürlük ve aktif RAG onayı vermesi için inceleme tablosu.
+
+Otomatik sınıflandırma hiçbir kaydı kendiliğinden aktif RAG verisi yapmaz.
+`approved_for_active_rag` alanı insan doğrulaması tamamlanana kadar `false`
+kalır. Böylece denizcilik, havacılık ve demiryolu mevzuatının karayolu
+cevaplarına yanlışlıkla karışması önlenir.
+
+## API
+
+```powershell
+$env:PYTHONPATH="src"
+uvicorn karayol_agent.api:app --reload
 ```
 
-Arayüz: `http://localhost:5173`
+- `GET /health`
+- `POST /v1/process/text`
+- `POST /v1/process/file`
+- `GET /v1/process/{evrak_id}`
+- `POST /v1/process/{evrak_id}/information`
+- `POST /v1/process/{evrak_id}/approve`
+- `GET /v1/process/{evrak_id}/artifacts/tex`
+- `GET /v1/process/{evrak_id}/artifacts/pdf`
 
-## İlk Kurulum Akışı
+Swagger arayüzü: `http://127.0.0.1:8000/docs`
 
-1. Ollama'yı başlatın.
-2. Arayüzü açın.
-3. Analiz ve embedding modelini seçin.
-4. `Modelleri doğrula` düğmesine basın.
-5. `İndeksi oluştur` ile mevzuat ve belediye birim vektörlerini hazırlayın.
-6. Sentetik bir PDF/görsel/TXT yükleyin.
-7. OCR metnini kontrol edip analizi başlatın.
-8. Birim önerisini onaylayıp taslak oluşturun.
-9. Taslağı düzenleyin, insan onayı verin ve DOCX/PDF indirin.
+## Manuel test arayüzü
 
-## Sentetik Veri
+Yerel web arayüzünü örnek senaryolarla çalıştırmak için:
 
-80 aday evrakı deterministik olarak üretmek için:
-
-```bash
-make synthetic
+```powershell
+$env:PYTHONPATH="src"
+uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
 ```
 
-Üretilen kayıtlar `needs_review` durumundadır. Bir ekip üyesi alanları, beklenen birimi ve metni kontrol etmeden bu veri "gold" olarak raporlanmamalıdır.
+Tarayıcıdan `http://127.0.0.1:8010` adresini açın. Arayüz; hazır evrak
+senaryolarını, TXT/MD/PDF yüklemeyi, sınıflandırma ve yönlendirme sonucunu,
+doğrulanmış kaynakları, eksik bilgi tamamlama adımını, insan onayını ve LaTeX
+çıktı indirmeyi tek ekranda sunar. Adım adım kabul testi için
+[`MANUEL_TEST_SENARYOSU.md`](MANUEL_TEST_SENARYOSU.md) belgesini kullanın.
 
-## Test ve Kontroller
+## Test
 
-```bash
-make test
-make lint
+```powershell
+$env:PYTHONPATH="src"
+pytest
 ```
 
-Backend testleri Ollama olmadan çalışabilen servisleri kapsar. Gerçek model smoke testi, Ollama başlatıldıktan sonra arayüz veya API üzerinden yapılır.
+## Sayısal gold-set değerlendirmesi
 
-İnsan tarafından onaylanmış tahmin/gold karşılaştırması için:
+48 kurgusal evraktan oluşan sabit veri setinde sınıflandırma, yönlendirme,
+eksik alan, şablon seçimi ve mevzuat retrieval ölçümü yapmak için:
 
-```bash
-python3 scripts/evaluate_predictions.py predictions.jsonl
+```powershell
+$env:PYTHONPATH="src"
+python -m karayol_agent.cli evaluate
 ```
 
-Değerlendirici sınıflandırma macro-F1, alan exact-match F1, eksik alan recall ve yönlendirme top-1/top-3 ölçülerini üretir. `needs_review` kayıtlarıyla resmî metrik yazılmasını varsayılan olarak engeller.
+Rapor `reports/evaluation_baseline.json` dosyasına yazılır. Veri setindeki 40
+standart örnek ile doğrudan anahtar kelime kullanmayan 8 paraphrase challenge
+örneği ayrı dilimler hâlinde raporlanır. Mevcut kural tabanlı başlangıç sürümü
+standart dilimde başarılıdır; challenge dilimindeki düşük sonuçlar embedding,
+reranker ve LLM entegrasyonunun ölçülebilir geliştirme hedefidir. Bu sonuçlar
+gerçek saha başarımı olarak yorumlanmamalıdır.
 
-## Kaynak ve Lisans
+## Güvenlik ve veri sınırı
 
-Proje Apache License 2.0 ile lisanslanmıştır. Haricî kaynakların URL, lisans ve SHA-256 bilgileri `resources/manifests/sources.json` içindedir. Kamuya açık fakat açık veri lisansı belirtilmemiş resmî PDF'ler, uygulama verisi olarak yeniden lisanslanmamalıdır.
+- Model/kural motoru kaynakta bulunmayan kritik alanları uydurmaz.
+- Eksik alanlar `kullanici_girdisi_gerekli` olarak işaretlenir.
+- LaTeX özel karakterleri kaçış işleminden geçirilir.
+- Şablonlar çalışma sırasında değiştirilemez.
+- Shell escape kullanılmaz; derleme zaman aşımıyla sınırlandırılır.
+- Gerçek vatandaş evrakı veya kapalı kamu verisi demo veri setine eklenmez.

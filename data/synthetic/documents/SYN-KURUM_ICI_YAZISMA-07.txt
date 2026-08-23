@@ -1,9 +1,0 @@
-SENTETİK BELGE - GERÇEK KAMU VERİSİ DEĞİLDİR
-
-Belge Türü: Kurum İçi Yazışma
-Gonderen Birim: SENTETIK BIRIM A
-Muhatap Birim: SENTETIK BIRIM B
-Konu: Gece saatlerinde gürültü şikâyeti
-Metin: Gece saatlerinde gürültü şikâyeti konusunda gerekli işlemin yapılması arz olunur.
-
-Sayın Yetkili, Gece saatlerinde gürültü şikâyeti hakkında gerekli incelemenin yapılmasını ve sonucun tarafıma bildirilmesini arz ederim.
