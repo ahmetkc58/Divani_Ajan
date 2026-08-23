@@ -1,0 +1,265 @@
+{
+  "schema_version": "1.0",
+  "inventory_date": "2026-08-24",
+  "purpose": "Adım 3 için çalışma alanında fiziksel olarak bulunan çekirdek kaynak envanteri",
+  "policy": "Bu dosya yalnız kaynak adayı envanteridir. approved_for_active_rag=false olan hiçbir belge aktif indekse alınamaz.",
+  "sources": [
+    {
+      "document_id": "official-writing-regulation",
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "domain": "official_writing",
+      "subdomain": "formal_correspondence",
+      "collection": "official_writing",
+      "local_path": "mevzuat-1.pdf",
+      "source_url": null,
+      "bytes": 13689739,
+      "sha256": "aabd2d739037fff061f348c4a1f239afac5e1a58241fe041f15728775d6ccab9",
+      "text_layer_status": "ocr_required",
+      "pipeline_audit": {
+        "page_count": 49,
+        "extracted_character_count": 6440,
+        "quality": "insufficient",
+        "requires_ocr": true
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "official_source_url_missing",
+        "validity_not_verified",
+        "ocr_and_visual_verification_required",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "official-writing-guide",
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik Kılavuzu",
+      "document_type": "kilavuz",
+      "domain": "official_writing",
+      "subdomain": "formal_correspondence",
+      "collection": "official_writing",
+      "local_path": "mevzuat-kılavuz.pdf",
+      "source_url": null,
+      "bytes": 7599373,
+      "sha256": "0716b0e39b62fadf8d9ded7b20f6be3660199eea397f417e127b81775ca129e1",
+      "text_layer_status": "ocr_required",
+      "pipeline_audit": {
+        "page_count": 26,
+        "extracted_character_count": 0,
+        "quality": "insufficient",
+        "requires_ocr": true
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "official_source_url_missing",
+        "validity_not_verified",
+        "full_ocr_and_visual_verification_required",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "uab-road-expropriation-regulation",
+      "title": "Karayolu Yapımı Amaçlı Kamulaştırmalarda Hazine Taşınmazlarının Trampası Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "domain": "kgm_infrastructure",
+      "subdomain": "expropriation",
+      "collection": "kgm_infrastructure",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/01_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/iejpzo3a/karayolu-yapimi-amaçli-kamulaştirmalarda-hazine-taşinmazlarinin-trampasi-hakkinda-yoenetmelik.pdf",
+      "bytes": 42165,
+      "sha256": "6318e04b71eaf295b66c76fc27c206bdf849c7922f7dec64d22b69a1d7aa7d75",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 3,
+        "extracted_character_count": 12787,
+        "chunk_count": 56,
+        "distinct_article_labels": 12,
+        "clause_chunk_count": 35,
+        "maximum_chunk_characters": 797,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "legal_identity_not_verified",
+        "validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "uab-road-infrastructure-safety-regulation",
+      "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "domain": "kgm_infrastructure",
+      "subdomain": "traffic_safety",
+      "collection": "kgm_infrastructure",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+      "bytes": 43901,
+      "sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 3,
+        "extracted_character_count": 12423,
+        "chunk_count": 49,
+        "distinct_article_labels": 16,
+        "clause_chunk_count": 11,
+        "maximum_chunk_characters": 555,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "legal_identity_not_verified",
+        "validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "uab-road-traffic-regulation",
+      "title": "Karayolları Trafik Yönetmeliği",
+      "document_type": "yonetmelik",
+      "domain": "kgm_infrastructure",
+      "subdomain": "traffic_safety",
+      "collection": "kgm_infrastructure",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+      "bytes": 1678165,
+      "sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 114,
+        "extracted_character_count": 419816,
+        "chunk_count": 944,
+        "distinct_article_labels": 192,
+        "clause_chunk_count": 761,
+        "maximum_chunk_characters": 1795,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "version_and_validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "law-2918",
+      "title": "2918 Sayılı Karayolları Trafik Kanunu",
+      "document_type": "kanun",
+      "domain": "kgm_infrastructure",
+      "subdomain": "traffic_safety",
+      "collection": "kgm_infrastructure",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+      "bytes": 1188796,
+      "sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 90,
+        "extracted_character_count": 234760,
+        "chunk_count": 473,
+        "distinct_article_labels": 183,
+        "clause_chunk_count": 308,
+        "maximum_chunk_characters": 1800,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "version_and_validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "law-4925",
+      "title": "4925 Sayılı Karayolu Taşıma Kanunu",
+      "document_type": "kanun",
+      "domain": "road_transport",
+      "subdomain": "transport_operations",
+      "collection": "road_transport",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/07_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/gbabqkkn/karayolu-taşima-kanunu.pdf",
+      "bytes": 391477,
+      "sha256": "e117603dd4fa383ec8844902b79d90fdd84abb4a766ca613cb30a4e438bfba96",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 14,
+        "extracted_character_count": 33397,
+        "chunk_count": 83,
+        "distinct_article_labels": 41,
+        "clause_chunk_count": 38,
+        "maximum_chunk_characters": 1799,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "version_and_validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    },
+    {
+      "document_id": "uab-road-transport-regulation",
+      "title": "Karayolu Taşıma Yönetmeliği",
+      "document_type": "yonetmelik",
+      "domain": "road_transport",
+      "subdomain": "transport_operations",
+      "collection": "road_transport",
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/08_uab_mevzuat.pdf",
+      "source_url": "https://www.uab.gov.tr/media/potlbwur/karayolu-taşima-yoenetmeliği.pdf",
+      "bytes": 1175538,
+      "sha256": "13b6d0dec53030f70bcc2c78eb2ded5215fa0f9ef185e63feba45a1eb5af9feb",
+      "text_layer_status": "pipeline_quality_passed_human_verification_pending",
+      "pipeline_audit": {
+        "page_count": 54,
+        "extracted_character_count": 229791,
+        "chunk_count": 859,
+        "distinct_article_labels": 92,
+        "clause_chunk_count": 518,
+        "maximum_chunk_characters": 1800,
+        "missing_page_metadata_count": 0
+      },
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "activation_blockers": [
+        "version_and_validity_not_verified",
+        "human_structure_review_not_completed",
+        "human_review_not_approved"
+      ]
+    }
+  ],
+  "excluded_local_sources": [
+    {
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/02_uab_mevzuat.pdf",
+      "reason": "aviation_out_of_scope"
+    },
+    {
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/04_uab_mevzuat.pdf",
+      "reason": "aviation_out_of_scope"
+    },
+    {
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/09_uab_mevzuat.pdf",
+      "reason": "separate_transport_collection_and_ocr_required"
+    },
+    {
+      "local_path": "veri_kaynaklari/karayolu/uab_pdf/10_uab_mevzuat.pdf",
+      "reason": "covid_period_circular_validity_and_ocr_review_required"
+    }
+  ],
+  "missing_required_sources": [
+    "3071 Sayılı Dilekçe Hakkının Kullanılmasına Dair Kanun",
+    "4982 Sayılı Bilgi Edinme Hakkı Kanunu",
+    "6001 Sayılı Karayolları Genel Müdürlüğünün Hizmetleri Hakkında Kanun",
+    "KGM görev ve yetki düzenlemesi",
+    "Trafik işaretleri ve yol çalışmalarında trafik güvenliği düzenlemeleri",
+    "Tünel işletme ve yol kenarı tesis düzenlemeleri"
+  ],
+  "legacy_manifest_warning": "uab_legislation_manifest.json içindeki 501 PDF yolunun hiçbiri mevcut çalışma alanında bulunmuyor; bu kayıtlar fiziksel kaynak geri gelmeden indekslenemez."
+}

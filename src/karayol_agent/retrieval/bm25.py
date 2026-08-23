@@ -43,7 +43,14 @@ class BM25Index:
 
         for chunk in chunks:
             searchable = " ".join(
-                [chunk.title, chunk.section, chunk.article or "", chunk.text, *chunk.tags]
+                [
+                    chunk.context_text or "",
+                    chunk.title,
+                    chunk.section,
+                    chunk.article or "",
+                    chunk.text,
+                    *chunk.tags,
+                ]
             )
             tokens = _search_tokens(searchable)
             frequencies = Counter(tokens)

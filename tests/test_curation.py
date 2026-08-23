@@ -11,9 +11,13 @@ from karayol_agent.curation import (
     CurationDomain,
     CurationError,
     LegislationDomainClassifier,
+    LegislationManifestRecord,
     LegislationManifestService,
     PdfMatchStatus,
+    ReviewStatus,
     ScopeStatus,
+    TextLayerStatus,
+    ValidityStatus,
 )
 
 
@@ -141,7 +145,161 @@ def test_manifest_rejects_duplicate_source_ids(tmp_path: Path) -> None:
         LegislationManifestService(project_root=tmp_path).build(records, archive)
 
 
-def test_curate_legislation_cli_writes_manifest(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_active_rag_approval_requires_complete_human_review_chain(
+    tmp_path: Path,
+) -> None:
+    with pytest.raises(ValueError, match="güvenlik kapılarını"):
+        LegislationManifestRecord(
+            legislation_id=42,
+            document_id="uab-kaysis-42",
+            title="Karayolu Taşıma Yönetmeliği",
+            document_type="Yönetmelik",
+            local_pdfs=[str(tmp_path / "42.pdf")],
+            pdf_match_status=PdfMatchStatus.MATCHED,
+            domain=CurationDomain.ROAD_TRANSPORT,
+            subdomain="transport_operations",
+            classification_confidence=1.0,
+            scope_status=ScopeStatus.ACTIVE,
+            review_status=ReviewStatus.NEEDS_HUMAN_REVIEW,
+            validity_status=ValidityStatus.NEEDS_VERIFICATION,
+            approved_for_active_rag=True,
+        )
+
+
+def test_review_csv_round_trip_activates_only_fully_verified_record(
+    tmp_path: Path,
+) -> None:
+    records_path = tmp_path / "mevzuatlar.json"
+    records_path.write_text(
+        json.dumps(
+            {
+                "data": [
+                    {
+                        "mevzuatId": 42,
+                        "ad": "Karayolu Taşıma Yönetmeliği",
+                        "tur": "Yönetmelik",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    pdf = archive / "42_karayolu.pdf"
+    pdf.write_bytes(b"reviewed source")
+
+    service = LegislationManifestService(project_root=tmp_path)
+    manifest = service.build(records_path, archive)
+    record = manifest.data[0]
+    record.source_sha256 = "a" * 64
+    record.source_bytes = pdf.stat().st_size
+    record.text_layer_status = TextLayerStatus.AVAILABLE
+    record.ocr_required = False
+    _, review_path = service.write(manifest, tmp_path / "manifest.json")
+
+    with review_path.open(encoding="utf-8-sig", newline="") as source:
+        reader = csv.DictReader(source)
+        rows = list(reader)
+        fieldnames = reader.fieldnames
+    rows[0].update(
+        {
+            "human_domain": CurationDomain.ROAD_TRANSPORT.value,
+            "human_subdomain": "transport_operations",
+            "scope_status": ScopeStatus.ACTIVE.value,
+            "review_status": "approved",
+            "validity_status": ValidityStatus.VERIFIED.value,
+            "approved_for_active_rag": "true",
+            "reviewed_by": "Test Doğrulayıcısı",
+            "review_notes": "Kapsam ve yürürlük doğrulandı.",
+        }
+    )
+    with review_path.open("w", encoding="utf-8-sig", newline="") as output:
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    reviewed = service.apply_review_csv(manifest, review_path)
+
+    assert reviewed.data[0].approved_for_active_rag
+    assert reviewed.data[0].reviewed_at is not None
+    assert reviewed.data[0].activation_blockers() == []
+    assert reviewed.summary.approved_for_active_rag_count == 1
+
+
+def test_review_csv_rejects_changed_source_hash(tmp_path: Path) -> None:
+    records_path = tmp_path / "mevzuatlar.json"
+    records_path.write_text(
+        json.dumps(
+            {
+                "data": [
+                    {
+                        "mevzuatId": 42,
+                        "ad": "Karayolu Taşıma Yönetmeliği",
+                        "tur": "Yönetmelik",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    (archive / "42_karayolu.pdf").write_bytes(b"reviewed source")
+    service = LegislationManifestService(project_root=tmp_path)
+    manifest = service.build(records_path, archive)
+    manifest.data[0].source_sha256 = "a" * 64
+    _, review_path = service.write(manifest, tmp_path / "manifest.json")
+
+    with review_path.open(encoding="utf-8-sig", newline="") as source:
+        reader = csv.DictReader(source)
+        rows = list(reader)
+        fieldnames = reader.fieldnames
+    rows[0]["source_sha256"] = "b" * 64
+    with review_path.open("w", encoding="utf-8-sig", newline="") as output:
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    with pytest.raises(CurationError, match="SHA-256 değişmiş"):
+        service.apply_review_csv(manifest, review_path)
+
+
+def test_manifest_write_revalidates_bypassed_active_approval(tmp_path: Path) -> None:
+    records_path = tmp_path / "mevzuatlar.json"
+    records_path.write_text(
+        json.dumps(
+            {
+                "data": [
+                    {
+                        "mevzuatId": 42,
+                        "ad": "Karayolu Taşıma Yönetmeliği",
+                        "tur": "Yönetmelik",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    archive = tmp_path / "archive"
+    archive.mkdir()
+    (archive / "42_karayolu.pdf").write_bytes(b"unreviewed source")
+    service = LegislationManifestService(project_root=tmp_path)
+    manifest = service.build(records_path, archive)
+    manifest.data[0] = manifest.data[0].model_copy(
+        update={"approved_for_active_rag": True}
+    )
+
+    with pytest.raises(CurationError, match="güvenlik doğrulamasını"):
+        service.write(manifest, tmp_path / "invalid.json")
+
+    assert not (tmp_path / "invalid.json").exists()
+
+
+def test_curate_legislation_cli_writes_manifest(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     records = tmp_path / "records.json"
     records.write_text(
         json.dumps(

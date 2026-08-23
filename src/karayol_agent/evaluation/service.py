@@ -36,7 +36,9 @@ class EvaluationService:
         retrieval_top_k: int = 5,
         low_confidence_threshold: float = 0.60,
     ) -> None:
-        chunks = LegislationRepository(legislation_path).load()
+        chunks = LegislationRepository(
+            legislation_path, trusted_synthetic=True
+        ).load()
         self.classifier = ClassificationAgent()
         self.analyzer = ContentAnalysisAgent()
         self.researcher = LegislationResearchAgent(

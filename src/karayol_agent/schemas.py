@@ -57,6 +57,12 @@ class DocumentAnalysis(BaseModel):
 
 class LegislationChunk(BaseModel):
     chunk_id: str
+    document_id: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=120,
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]+$",
+    )
     title: str
     section: str
     article: str | None = None
@@ -64,8 +70,23 @@ class LegislationChunk(BaseModel):
     clause: str | None = None
     text: str
     source: str
-    page: int | None = None
-    status: str = "sentetik_demo_kurali"
+    source_sha256: str | None = Field(
+        default=None, pattern=r"^[0-9a-fA-F]{64}$"
+    )
+    # Eski/sentetik kayıtların yanlışlıkla kamu mevzuatı sayılmaması için
+    # varsayılan değer bilinçli olarak fail-closed tutulur.
+    source_kind: str = "unknown"
+    page: int | None = Field(default=None, ge=1)
+    page_end: int | None = Field(default=None, ge=1)
+    source_url: str | None = None
+    document_type: str = "unknown"
+    domain: str = "unknown"
+    subdomain: str = "unknown"
+    validity_status: str = "needs_verification"
+    approved_for_active_rag: bool = False
+    ocr_status: str = "not_inspected"
+    context_text: str | None = None
+    status: str = "unknown"
     tags: list[str] = Field(default_factory=list)
 
 
@@ -80,12 +101,15 @@ class TextQualityReport(BaseModel):
 
 
 class IngestionReport(BaseModel):
+    document_id: str | None = None
     source_file: str
     title: str
     source_status: str
     quality: TextQualityReport
     chunk_count: int
     output_file: str | None = None
+    approved_for_active_rag: bool = False
+    activation_blockers: list[str] = Field(default_factory=list)
 
 
 class SearchHit(BaseModel):

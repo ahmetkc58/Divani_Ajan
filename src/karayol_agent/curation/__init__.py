@@ -8,6 +8,7 @@ from karayol_agent.curation.models import (
     ReviewStatus,
     ScopeStatus,
     TextLayerStatus,
+    ValidityStatus,
 )
 from karayol_agent.curation.service import CurationError, LegislationManifestService
 
@@ -23,4 +24,5 @@ __all__ = [
     "ReviewStatus",
     "ScopeStatus",
     "TextLayerStatus",
+    "ValidityStatus",
 ]

@@ -34,7 +34,7 @@ Bu plan, "ideal/kapsamlı mimari" değil, **7 gün içinde uçtan uca çalışan
 |---|---|---|
 | `2026_TYDA_SARTNAME_...pdf` | Yarışma teknik şartnamesi | Gereksinim kaynağı (bu plan buradan türetildi) |
 | `mevzuat-1.pdf` | **Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik** (49 sayfa) | Görev 2'nin "resmi üsluba uygunluk" ve format kurallarının **birincil kaynağı** |
-| `mevzuat-2-1.pdf` | Aynı yönetmeliğin **Kılavuzu** (26 sayfa, örnek/şablon içerikli) | Taslak üretimi için örnek doküman kaynağı |
+| `mevzuat-kılavuz.pdf` | Aynı yönetmeliğin **Kılavuzu** (26 sayfa, örnek/şablon içerikli) | Taslak üretimi için örnek doküman kaynağı |
 
 **Teknik not:** Bu iki mevzuat PDF'i, gömülü font kodlamasından dolayı `pdftotext`/`pypdf` ile metne çevrilince Türkçe'ye özgü harfler (ı, ş, ğ, ü, ö, ç) düşüyor. Sayfaları görsel olarak render edip (PyMuPDF ile) doğruladık — içerik doğru ama **standart metin çıkarımı bu dosyalarda güvenilir değil**. Bu, projenin kendi evrak-okuma modülü için de gerçek bir tasarım girdisi: OCR/görsel tabanlı çıkarım (veya en azından font/encoding doğrulama adımı), yalnızca "nice to have" değil, **gerçek bir ihtiyaç** olarak Tier 0'a alınmalı.
 
@@ -47,18 +47,27 @@ Yönetmelikten şimdiye kadar görsel olarak doğrulanan içerik: Amaç/Kapsam/D
 Şartname madde 6.5 gerçek kamu verisini yasaklıyor. Buna göre:
 
 1. **Sentetik evrak korpüsü:** En az 6-8 evrak türü (dilekçe, üst yazı, cevap yazısı, bilgi talebi, ihbar/şikayet, bilgilendirme yazısı, iç yazışma) × her türden 5-10 örnek → toplam ~40-60 kurgu evrak. LLM ile üretilip, biçimsel çeşitlilik (eksik alanlı, bozuk formatlı, taranmış görüntü kalitesinde) kasıtlı olarak eklenmeli ki sistemin "eksik bilgi tespiti" yeteneği gerçekten test edilsin.
-2. **Mevzuat corpus:** `mevzuat-1.pdf` + `mevzuat-2-1.pdf` madde bazlı chunk'lanarak RAG kaynağı yapılacak (kamuya açık, gerçek kamu verisi değil — yönetmelik metni).
+2. **Mevzuat corpus:** `mevzuat-1.pdf`, `mevzuat-kılavuz.pdf` ve doğrulanmış çekirdek karayolu mevzuatı Bölüm → Madde → Fıkra → Bent yapısında parçalanarak RAG kaynağı yapılacak (kamuya açık mevzuat metni; yarışmacıya ait gerçek kamu evrakı değil).
 3. **Kurum/birim listesi (DETSİS esinli, sentetik):** Gerçek DETSİS kayıtları çekilmeyecek (hem erişim kısıtlı hem de "gerçek kamu verisi" riski var — bkz. önceki tartışma). Bunun yerine DETSİS'in **numaralandırma formatı ve hiyerarşi mantığı** referans alınarak kurgu bir kurum/birim ağacı (örn. "Örnek Bakanlık > Örnek Genel Müdürlük > Örnek Daire Başkanlığı") oluşturulacak. Bu liste, birim yönlendirme agent'ının hedef havuzu olacak.
 
-**Uygulama durumu — 23 Ağustos 2026:** Kamuya açık DETSİS/UAB kayıtları yalnızca
-kaynak araştırması ve kapsam doğrulaması için ayrı arşivde tutulmaktadır; çalışma
-zamanındaki kurum/birim havuzu hâlâ sentetiktir. 501 mevzuat kaydı 501 PDF ile
-eşleştirilmiş, tüm sayfaların metin kalitesi denetlenmiş ve
-`data/manifests/uab_legislation_manifest.json` oluşturulmuştur. Otomatik sistem
-50 karayolu/genel kaynak adayı ve 58 OCR gerektiren PDF belirlemiştir. İnsan
-kapsam ve yürürlük doğrulaması yapılmadığı için aktif RAG onayı verilen gerçek
-kayıt sayısı sıfırdır. İnceleme kararları
-`data/manifests/uab_legislation_manifest_review.csv` üzerinde tutulacaktır.
+**Veri denetimi — 24 Ağustos 2026:** Kamuya açık DETSİS/UAB kayıtları yalnızca
+kaynak araştırması ve kapsam doğrulaması için ayrı tutulmaktadır; çalışma
+zamanındaki kurum/birim havuzu hâlâ sentetiktir. Eski
+`data/manifests/uab_legislation_manifest.json`, 501 PDF eşleşmesi kaydetmektedir;
+ancak bu yolların bağlı olduğu arşiv çalışma alanında yoktur ve mevcut dosya
+sayısı **0/501**'dir. Bu manifest fiziksel arşiv geri gelmeden indeks kaynağı
+değildir. Depoda gerçekten bulunan sekiz çekirdek kaynak, boyut ve SHA-256
+değerleriyle `data/manifests/core_legislation_sources.json` içinde ayrı
+envantere alınmıştır. İnsan kapsam/yürürlük/OCR doğrulaması tamamlanmadığı için
+aktif RAG onayı verilen gerçek kayıt sayısı sıfırdır.
+
+**Adım 3 uygulama durumu — 24 Ağustos 2026:** Sayfa izini koruyan Bölüm → Madde
+→ Fıkra → Bent chunker'ı, uzun hüküm bölme, kararlı `document_id` tabanlı chunk
+kimliği, kaynak SHA-256 kontrolü, review CSV geri-alımı, onaylı manifestten toplu
+ingestion ve public korpus için fail-closed aktif-RAG filtresi kodlanmıştır.
+`allow_low_quality` yalnız karantina çıktısı üretebilir; aktif korpus kapısını
+aşamaz. OCR motorunun çalıştırılması ve insan doğrulaması, ortam ayağa kaldırma
+aşamasında tamamlanacaktır.
 
 ---
 
@@ -106,7 +115,7 @@ kayıt sayısı sıfırdır. İnceleme kararları
 | Metin çıkarımı | OCR (Tesseract/EasyOCR) + doğrudan metin fallback; encoding doğrulama adımı |
 | Sınıflandırma | LLM ile zero/few-shot evrak türü sınıflandırma (kapalı etiket seti) |
 | İçerik analizi | LLM ile yapılandırılmış bilgi çıkarımı (JSON: gönderen, konu, tarih, talep vb.) |
-| Mevzuat eşleştirme | Klasik vektör RAG: yönetmelik+kılavuz chunk'ları → embedding → benzerlik araması |
+| Mevzuat eşleştirme | Hibrit RAG: mevzuat yapısına göre parçalama → bağlamsallaştırma → `jina-embeddings-v3` + BM25 → Qdrant/RRF → kaynak doğrulama |
 | Özet | LLM ile kısa özet üretimi |
 | Eksik bilgi tespiti | Evrak türüne göre zorunlu alan listesi + LLM kontrolü |
 | Taslak oluşturma | Sürümlü ve onaylı LaTeX şablonu + LLM'in şemaya uygun JSON alanları üretmesi + güvenli PDF derleme |
@@ -116,8 +125,9 @@ kayıt sayısı sıfırdır. İnceleme kararları
 ### Tier 1 — Zaman kalırsa eklenecek (Gün 5-6)
 | Teknik | Neden bu sırada |
 |---|---|
-| **Late Chunking** | Uygulaması ucuz (uzun bağlamlı embedding modeli + sonradan chunk'lama), mevzuat maddelerinin başlık/bağlam bütünlüğünü korur → düşük risk, gerçek getiri |
+| **Contextual Retrieval** | Her yapısal parçaya belge içindeki yerini açıklayan kısa bağlam eklenir; aynı bağlamsal metin hem Jina embedding hem BM25 indeksine verilir. Hukuk metninin Bölüm/Madde/Fıkra/Bent yapısı birincil sınır olarak korunur. |
 | **CRAG** (Self-RAG değil) | Hazır modelle çalışır, fine-tuning gerektirmez (şartname "model eğitmek zorunlu değil" diyor); yanlış/alakasız mevzuat eşleşmesini yakalayıp düzeltir |
+| **Reranker** | Hibrit aramanın geniş aday kümesini sorguya göre yeniden sıralar; yalnızca doğrulanacak en güçlü parçaların ajanlara aktarılmasını sağlar. |
 
 ### Tier 2 — Dokümante edilecek, muhtemelen kodlanmayacak (vizyon/gelecek iş)
 > Bu teknikler jüriye "biz bu alanı araştırdık" göstermek için **Yöntem ve Teknik Yaklaşım** bölümünde mimari vizyon olarak anlatılabilir, ama 7 günlük takvimde tam entegrasyonu riskli:
@@ -125,6 +135,231 @@ kayıt sayısı sıfırdır. İnceleme kararları
 - **Search-o1 tarzı agentic sorgu** — taslak üretimi sırasında anlık mevzuat sorgusu (basit tool-calling ile kısmen zaten Tier 0'da örtük var, "Search-o1" markasıyla ayrı bir sistem kurmaya gerek yok)
 - **A-MEM** — geçmiş yönlendirme kararlarının kalıcı/ilişkisel hafızası
 - **ColPali** — evrakı görüntü olarak embed etme (OCR yerine). Test evrakları temiz/taranmış kalitede kalacaksa gereksiz risk; gerçekten karmaşık layout (damga, tablo, logo) demo'da öne çıkacaksa değerlendirilebilir.
+
+### 5.1. Kesinleşen Embedding, Hibrit RAG ve GraphRAG Mimarisi
+
+**Mimari karar — 24 Ağustos 2026:** Mevzuat ve kurum/birim semantik aramasında
+`jinaai/jina-embeddings-v3` kullanılacaktır. Vektör veritabanı olarak Qdrant,
+kelime-temelli arama için mevcut BM25 katmanı korunacaktır. Dense ve lexical
+sonuçlar ham skorları doğrudan toplanarak değil, başlangıçta Reciprocal Rank
+Fusion (RRF) ile birleştirilecektir. Bu katman mevcut kural tabanlı MVP'yi
+kaldırmayacak; çevrimdışı ve açıklanabilir fallback olarak koruyacaktır.
+
+#### Jina embedding sözleşmesi
+
+| Ayar | Karar |
+|---|---|
+| Model | `jinaai/jina-embeddings-v3` |
+| Belge/chunk görevi | `retrieval.passage` |
+| Kullanıcı sorgusu görevi | `retrieval.query` |
+| Başlangıç vektör boyutu | `1024` |
+| Benzerlik metriği | Cosine |
+| Azami model bağlamı | 8192 token; ancak retrieval chunk'ları hukuk yapısına göre daha küçük tutulur |
+| Sürümleme | Model adı, boyut, görev adaptörü ve indeks sürümü her kaydın metadata'sında tutulur |
+
+Model Matryoshka Representation Learning ile daha düşük boyutlarda çıktı
+üretebilse de boyut azaltma ancak proje gold setinde `Recall@5`, MRR, depolama
+ve gecikme birlikte ölçüldükten sonra yapılacaktır. İndeks oluştururken
+`retrieval.passage`, çalışma zamanında sorgu vektörü üretirken
+`retrieval.query` kullanılmaması bir yapılandırma hatası sayılacaktır.
+
+**Lisans notu:** Model kartında yerel model ağırlıkları CC BY-NC 4.0 olarak
+belirtilmektedir. Yarışma kullanımı, depoda model ağırlığı paylaşımı ve gelecekteki
+ticari kullanım ayrı ayrı değerlendirilecek; model dosyası depoya eklenmeyecek,
+sürüm, erişim bağlantısı ve lisans bilgisi dokümante edilecektir.
+
+#### Yapısal ve bağlamsal parçalama
+
+Hukuk metni için birincil sınırlar sabit token pencereleri değil, metnin kendi
+yapısıdır:
+
+```text
+Mevzuat
+  → Bölüm
+    → Madde
+      → Fıkra
+        → Bent
+```
+
+Bir fıkra model/indeks sınırını aşıyorsa yalnızca o fıkra cümle sınırlarında alt
+parçalara ayrılır; her alt parça üst `mevzuat_id`, bölüm, madde, fıkra, bent,
+sayfa ve yürürlük metadata'sını taşır. `arXiv:2605.19806` çalışmasının hukuk
+metninin doğal section/subsection yapısını koruyan daha basit parçalamanın daha
+karmaşık stratejilerden daha başarılı olabildiği bulgusu bu kararın deneysel
+dayanağıdır.
+
+Her orijinal parçaya, bütün belge içindeki konumunu açıklayan yaklaşık 50-100
+tokenlık kısa bir `context_text` üretilecektir. İndekslenecek metin
+`context_text + original_text` olur; aynı metin hem Jina embedding'e hem BM25'e
+verilir. `context_text` yardımcı ve sentetik açıklamadır; kullanıcıya mevzuat
+hükmü olarak gösterilemez. Nihai atıf her zaman `original_text`, kaynak PDF,
+madde/fıkra ve mümkünse sayfaya döner.
+
+#### Qdrant koleksiyonları ve payload
+
+İlk uygulamada gereksiz koleksiyon parçalanmasını önlemek için üç fiziksel
+koleksiyon kullanılacaktır:
+
+```text
+legal_chunks_v1        # Mevzuat ve resmî yazışma kuralları
+organization_units_v1  # Sentetik kurum/birim görevleri
+graph_nodes_v1         # Graf düğümü açıklamaları ve topluluk özetleri
+```
+
+`legal_chunks_v1` içindeki her nokta en az şu payload alanlarını taşır:
+
+```json
+{
+  "chunk_id": "MEV-...",
+  "document_id": "...",
+  "title": "...",
+  "domain": "kgm_infrastructure",
+  "subdomain": "traffic_safety",
+  "document_type": "yonetmelik",
+  "article": "MADDE 7",
+  "paragraph": "2",
+  "clause": "a",
+  "page": 14,
+  "source_path": "...",
+  "source_url": "...",
+  "validity_status": "verified",
+  "approved_for_active_rag": true,
+  "ocr_status": "verified",
+  "context_text": "...",
+  "original_text": "...",
+  "embedding_model": "jinaai/jina-embeddings-v3",
+  "embedding_dimension": 1024,
+  "embedding_task": "retrieval.passage",
+  "index_version": "1.0"
+}
+```
+
+`domain`, `subdomain`, `validity_status`, `approved_for_active_rag`,
+`document_type` ve `document_id` alanları Qdrant payload indeksi alacaktır.
+Üretim aramasında `approved_for_active_rag=true` ve
+`validity_status=verified` zorunlu filtredir. Alan sınıflandırma ajanı ayrıca
+`domain` filtresini belirler; karayolu sorgusuna denizcilik/havacılık kaynağı
+karışması bu katmanda engellenir.
+
+#### Hibrit retrieval akışı
+
+```text
+Kullanıcı evrakı/sorgusu
+      ↓
+Alan ve sorgu türü sınıflandırması
+      ↓
+Sorgu zenginleştirme (evrak türü + konu + talep + anahtar kavramlar)
+      ↓
+┌─────────────────────────┬──────────────────────────┐
+│ Jina retrieval.query    │ Contextual BM25          │
+│ Qdrant dense top-N      │ lexical top-N            │
+└─────────────┬───────────┴─────────────┬────────────┘
+              └───────────RRF───────────┘
+                           ↓
+                    Reranker top-K
+                           ↓
+             Kaynak/yürürlük/OCR doğrulaması
+                           ↓
+             Doğrulanmış kanıt paketi + atıflar
+```
+
+İlk sürümde her kanal `top-N=20` aday üretecek, RRF sonrası reranker'a en fazla
+30 benzersiz aday verilecek ve üretim ajanlarına en fazla 5-10 doğrulanmış
+parça aktarılacaktır. Bu sayılar sabit ürün gerçeği değil, gold set üzerinde
+ayarlanacak başlangıç değerleridir. Ham cosine ve BM25 skorları farklı
+ölçeklerde olduğundan normalizasyon olmadan `alpha * dense + beta * bm25`
+uygulanmayacaktır.
+
+#### GraphRAG ve LegalGraphRAG uyarlaması
+
+Microsoft GraphRAG'ın tüm paketini doğrudan kurmak yerine sorgu türüne göre
+seçici bir graf katmanı geliştirilecektir:
+
+- **Local/hybrid arama:** Belirli evrak, madde, kurum veya birim soruları için
+  varsayılan yoldur; doğrulanmış kaynak parçalarını getirir.
+- **Global arama:** Bütün korpustaki ortak temalar, yükümlülükler ve etkiler gibi
+  topluluk özeti gerektiren sorular için kullanılır.
+- **Multi-hop graf araması:** Mevzuat → görev → birim → şablon gibi birden çok
+  ilişki üzerinden cevap gerektiren sorgularda kullanılır.
+
+İlk graf düğümleri `Mevzuat`, `Madde`, `Fıkra`, `Bent`, `Kurum`, `Birim`,
+`Görev`, `Süreç`, `EvrakTürü`, `YazıŞablonu`, `ZorunluAlan` ve `Konu` olacaktır.
+İlişki türleri başlangıçta `CONTAINS`, `CITES`, `AMENDS`, `REPEALS`,
+`APPLIES_TO`, `ASSIGNED_TO`, `RESPONSIBLE_FOR`, `REQUIRES_FIELD`,
+`SUPPORTS_TEMPLATE`, `SUPERSEDES` ve `RELATED_TO` ile sınırlandırılır.
+
+LegalGraphRAG'daki üç rol mevcut sisteme şu şekilde uyarlanacaktır:
+
+1. **Researcher / Mevzuat Araştırma Ajanı:** Dense, BM25 ve gerektiğinde graf
+   üzerinden aday kanıtları getirir.
+2. **Auditor / Kaynak Doğrulama Ajanı:** Her adayın kaynak metnini, atfını,
+   yürürlük ve kapsam durumunu doğrular; doğrulanmayan parçayı eler.
+3. **Adjudicator / Karar ve Taslak Ajanı:** Yalnızca doğrulanmış kanıt paketini
+   kullanarak yazı türü, yönlendirme ve taslak kararını gerekçelendirir.
+
+Uygunluk Denetçisi, Adjudicator çıktısını resmî yazışma kuralları ve kaynak
+sadakati açısından ikinci kez kontrol eder. Böylece graf ilişkisi veya LLM
+çıktısı tek başına kesin mevzuat kanıtı sayılmaz.
+
+#### Cross-Document Topic-Aligned Chunking sınırı
+
+`arXiv:2601.05265` içindeki Cross-Document Topic-Aligned (CDTA) yaklaşımı,
+birden fazla belgede dağılmış aynı konuya ait bilgileri corpus seviyesinde
+birleştirmeyi önermektedir. Bu projede CDTA yalnızca deneysel olarak sorgu
+genişletme, konu haritası ve graf topluluk özeti üretiminde kullanılabilir.
+LLM tarafından sentezlenmiş CDTA parçası mevzuat hükmü veya birincil kanıt
+olarak sunulamaz; cevap üretmeden önce ilişkili orijinal maddelere geri dönmek
+zorunludur.
+
+#### Aşamalı uygulama ve kabul ölçütleri
+
+1. **Tamamlandı (24 Ağustos):** Bölüm/Madde/Fıkra/Bent chunker'ını sayfa, kaynak hash'i, onay metadata'sı ve uzun fıkra bölme desteğiyle tamamla.
+2. Jina embedding sağlayıcı arayüzünü ve çevrimdışı hata/fallback davranışını ekle.
+3. Qdrant koleksiyon şeması, payload indeksleri ve sürümlü ingestion komutunu ekle.
+4. Mevcut BM25 ile Jina/Qdrant sonuçlarını RRF üzerinden birleştir.
+5. Gold retrieval setinde BM25-only ve hybrid sonuçlarını ayrı raporla.
+6. Reranker ekle; katkısını ablation olarak ölç.
+7. Researcher/Auditor kanıt sözleşmesini uygula.
+8. Küçük, elle doğrulanabilir mevzuat-birim-şablon grafını oluştur.
+9. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
+10. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
+
+Kabul ölçütleri:
+
+- Karayolu retrieval gold setinde `Recall@5 >= %90` hedefi.
+- Kaynaksız veya `approved_for_active_rag=false` mevzuat iddiası sayısı `0`.
+- Paraphrase challenge retrieval sonucunun BM25 baseline `%12,5` değerinin
+  üzerine çıkması; iyileşmenin aynı sabit veri setinde raporlanması.
+- Her sonuçta chunk kimliği, belge, madde/fıkra, sayfa, skor kanalları ve
+  doğrulama kararının izlenebilir olması.
+- Jina/Qdrant kullanılamadığında mevcut BM25 tabanlı demo akışının açık bir
+  uyarıyla çalışmaya devam etmesi.
+
+#### Bilimsel ve teknik kaynaklar
+
+1. Sturua, S. ve diğerleri (2024), *jina-embeddings-v3: Multilingual
+   Embeddings With Task LoRA*, arXiv:2409.10173 —
+   <https://arxiv.org/abs/2409.10173>
+2. Edge, D. ve diğerleri (2024), *From Local to Global: A Graph RAG Approach
+   to Query-Focused Summarization*, arXiv:2404.16130 —
+   <https://arxiv.org/abs/2404.16130>
+3. Chen, Z. ve diğerleri (2026), *LegalGraphRAG: Multi-Agent Graph
+   Retrieval-Augmented Generation for Reliable Legal Reasoning*,
+   arXiv:**2605.28120** — <https://arxiv.org/abs/2605.28120> ve resmî kod:
+   <https://github.com/XMUDeepLIT/LegalGraphRAG>
+4. Prior, M., Milanova, N. ve Schultz, A. (2026), *Chunking German Legal
+   Code*, arXiv:2605.19806 — <https://arxiv.org/abs/2605.19806>
+5. Stankovic, M. (2026), *Cross-Document Topic-Aligned Chunking for
+   Retrieval-Augmented Generation*, arXiv:2601.05265 —
+   <https://arxiv.org/abs/2601.05265>
+6. Anthropic (2024), *Introducing Contextual Retrieval* —
+   <https://www.anthropic.com/engineering/contextual-retrieval>
+7. Qdrant, *Hybrid and Multi-Stage Queries* —
+   <https://qdrant.tech/documentation/search/hybrid-queries/>
+
+Not: Daha önce LegalGraphRAG için verilen `arXiv:2605.19806` kimliği doğru
+değildir; bu kimlik *Chunking German Legal Code* çalışmasına aittir.
+LegalGraphRAG'ın doğru kimliği `arXiv:2605.28120`'dir.
 
 ---
 

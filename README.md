@@ -40,7 +40,8 @@ python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
 `xelatex`, `pdflatex` veya `tectonic` varsa PDF de derlenir; yoksa güvenli
 `.tex` taslağı ve yapılandırılmış JSON çıktı üretilir.
 
-Mevzuat PDF'sinin metin katmanını denetlemek ve Madde/Fıkra yapısında parçalamak:
+Mevzuat PDF'sinin metin katmanını denetlemek ve Bölüm/Madde/Fıkra/Bent
+yapısında karantina çıktısına parçalamak:
 
 ```powershell
 python -m karayol_agent.cli ingest `
@@ -51,16 +52,22 @@ python -m karayol_agent.cli ingest `
 
 Kalite eşiğini geçmeyen PDF indekslenmez ve OCR gerektiği raporlanır. Düşük
 kaliteli metni zorla indekslemek yalnızca inceleme amacıyla
-`--allow-low-quality` seçeneğiyle mümkündür; üretim korpusunda önerilmez.
+`--allow-low-quality` seçeneğiyle mümkündür. Bu seçenek aktif RAG onayı veremez.
+Genel `ingest` komutu hiçbir kamu kaynağını doğrudan aktif korpusa alamaz.
 
 ## Mevzuat kapsam ayırma ve doğrulama manifesti
 
-DETSİS mevzuat kayıtlarını yerel PDF arşiviyle eşleştirmek, ulaşım alanı adayı
-üretmek ve OCR kuyruğunu belirlemek için:
+DETSİS mevzuat kayıtlarını fiziksel bir yerel PDF arşiviyle eşleştirmek, ulaşım
+alanı adayı üretmek ve OCR kuyruğunu belirlemek için:
 
 ```powershell
 $env:PYTHONPATH="src"
-python -m karayol_agent.cli curate-legislation --inspect-pdfs
+python -m karayol_agent.cli curate-legislation `
+  --records veri_kaynaklari\karayolu\detsis\mevzuatlar.json `
+  --archive "C:\veri\uab-mevzuat-pdf" `
+  --output data\manifests\uab_legislation_manifest_v2.json `
+  --review-csv data\manifests\uab_legislation_manifest_v2_review.csv `
+  --inspect-pdfs
 ```
 
 Komut iki çıktı üretir:
@@ -74,6 +81,27 @@ Otomatik sınıflandırma hiçbir kaydı kendiliğinden aktif RAG verisi yapmaz.
 `approved_for_active_rag` alanı insan doğrulaması tamamlanana kadar `false`
 kalır. Böylece denizcilik, havacılık ve demiryolu mevzuatının karayolu
 cevaplarına yanlışlıkla karışması önlenir.
+
+İnceleme CSV'sini güvenlik kapılarıyla doğrulayıp yeni manifeste uygulamak ve
+yalnız onaylı kayıtları parçalamak için:
+
+```powershell
+python -m karayol_agent.cli apply-legislation-review `
+  --manifest data\manifests\uab_legislation_manifest_v2.json `
+  --review-csv data\manifests\uab_legislation_manifest_v2_review.csv `
+  --output data\manifests\uab_legislation_reviewed.json
+
+python -m karayol_agent.cli ingest-approved-manifest `
+  --manifest data\manifests\uab_legislation_reviewed.json `
+  --output-dir data\processed\active_legislation
+```
+
+Aktivasyon için tekil PDF, geçerli SHA-256, insan kapsam onayı, doğrulanmış
+yürürlük, doğrulanmış metin/OCR, inceleyen kişi ve inceleme zamanı birlikte
+zorunludur. Çalışma alanında gerçekten bulunan ilk sekiz aday kaynak
+`data/manifests/core_legislation_sources.json` dosyasında kayıtlıdır. Eski 501
+kayıtlık manifestin işaret ettiği PDF arşivi bu çalışma alanında bulunmadığından
+o kayıtlar şu anda ingestion girdisi değildir.
 
 ## API
 

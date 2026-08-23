@@ -10,6 +10,7 @@ from karayol_agent.curation import CurationError, LegislationManifestService
 from karayol_agent.documents import ExtractionError
 from karayol_agent.evaluation import EvaluationError, EvaluationService
 from karayol_agent.ingestion import (
+    IngestionError,
     LegislationIngestionService,
     StructureNotFoundError,
 )
@@ -62,6 +63,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     ingest.add_argument("--output", type=Path, required=True)
     ingest.add_argument("--allow-low-quality", action="store_true")
+    ingest.add_argument("--document-id")
+    ingest.add_argument("--source-url")
+    ingest.add_argument("--document-type", default="unknown")
+    ingest.add_argument("--domain", default="unknown")
+    ingest.add_argument("--subdomain", default="unknown")
+    ingest.add_argument("--validity-status", default="needs_verification")
 
     curate = subcommands.add_parser(
         "curate-legislation",
@@ -93,6 +100,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Tüm PDF'lerin metin katmanını denetle ve OCR kuyruğunu belirle",
     )
 
+    apply_review = subcommands.add_parser(
+        "apply-legislation-review",
+        help="İnsan inceleme CSV'sini doğrulayıp yeni mevzuat manifestine uygula",
+    )
+    apply_review.add_argument("--manifest", type=Path, required=True)
+    apply_review.add_argument("--review-csv", type=Path, required=True)
+    apply_review.add_argument("--output", type=Path, required=True)
+
+    ingest_manifest = subcommands.add_parser(
+        "ingest-approved-manifest",
+        help="Yalnız aktif RAG için onaylanmış manifest kayıtlarını parçala",
+    )
+    ingest_manifest.add_argument("--manifest", type=Path, required=True)
+    ingest_manifest.add_argument("--output-dir", type=Path, required=True)
+
     evaluate = subcommands.add_parser(
         "evaluate",
         help="Sentetik gold veri setinde sınıflandırma, yönlendirme ve RAG ölçümü yap",
@@ -122,6 +144,7 @@ def main(argv: list[str] | None = None) -> int:
         ProcessNotFoundError,
         ProcessValidationError,
         StructureNotFoundError,
+        IngestionError,
         CurationError,
         EvaluationError,
         OSError,
@@ -167,6 +190,12 @@ def _run(arguments: argparse.Namespace) -> int:
             source_status=arguments.source_status,
             output_path=arguments.output.resolve(),
             allow_low_quality=arguments.allow_low_quality,
+            document_id=arguments.document_id,
+            source_url=arguments.source_url,
+            document_type=arguments.document_type,
+            domain=arguments.domain,
+            subdomain=arguments.subdomain,
+            validity_status=arguments.validity_status,
         )
         print(json.dumps(report.model_dump(mode="json"), ensure_ascii=False, indent=2))
         return 2 if report.quality.requires_ocr and not arguments.allow_low_quality else 0
@@ -198,6 +227,45 @@ def _run(arguments: argparse.Namespace) -> int:
                     "manifest": str(json_path),
                     "review_csv": str(review_path),
                     "summary": manifest.summary.model_dump(mode="json"),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
+    elif arguments.command == "apply-legislation-review":
+        service = LegislationManifestService(project_root=settings.project_root)
+        manifest = service.load(arguments.manifest)
+        reviewed_manifest = service.apply_review_csv(manifest, arguments.review_csv)
+        json_path, review_path = service.write(reviewed_manifest, arguments.output)
+        print(
+            json.dumps(
+                {
+                    "manifest": str(json_path),
+                    "review_csv": str(review_path),
+                    "summary": reviewed_manifest.summary.model_dump(mode="json"),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
+    elif arguments.command == "ingest-approved-manifest":
+        curation_service = LegislationManifestService(
+            project_root=settings.project_root
+        )
+        manifest = curation_service.load(arguments.manifest)
+        reports = LegislationIngestionService().ingest_approved_manifest(
+            manifest,
+            project_root=settings.project_root,
+            output_dir=arguments.output_dir,
+        )
+        print(
+            json.dumps(
+                {
+                    "approved_document_count": len(reports),
+                    "chunk_count": sum(report.chunk_count for report in reports),
+                    "outputs": [report.output_file for report in reports],
                 },
                 ensure_ascii=False,
                 indent=2,

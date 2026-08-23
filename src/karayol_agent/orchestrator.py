@@ -51,7 +51,8 @@ class EvrakOrchestrator:
         self.settings = app_settings
         app_settings.ensure_runtime_dirs()
         chunks = LegislationRepository(
-            app_settings.data_dir / "synthetic_legislation.json"
+            app_settings.data_dir / "synthetic_legislation.json",
+            trusted_synthetic=True,
         ).load()
         self.index = BM25Index(chunks)
         self.extractor = DocumentExtractor(max_chars=app_settings.max_text_chars)
