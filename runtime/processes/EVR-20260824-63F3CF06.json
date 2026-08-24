@@ -1,0 +1,883 @@
+{
+  "document_id": "EVR-20260824-63F3CF06",
+  "status": "eksik_bilgi_bekleniyor",
+  "current_stage": "eksik_bilgi_bekleniyor",
+  "completed_steps": [
+    "Evrak sınıflandırıldı ve önemli bilgiler çıkarıldı.",
+    "5 kaynak adayı bulundu. Retrieval uyarısı: Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+    "5 yarışma snapshot kaynağı retrieval/kaynak izi açısından kabul edildi. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+    "ust_yazi yazı türü seçildi.",
+    "Önerilen birim: Örnek Yol Yapım ve Bakım Şube Müdürlüğü.",
+    "LaTeX taslağı güvenli şablondan üretildi.",
+    "Uygunluk skoru: 0.92."
+  ],
+  "pending_actions": [
+    "Eksik alanları doldurun: sayi, imzalayan, unvan",
+    "Güncellenen taslağı tekrar kontrol edin."
+  ],
+  "missing_information": [
+    "sayi",
+    "imzalayan",
+    "unvan"
+  ],
+  "next_step": "Eksik bilgileri girerek taslağı yeniden oluşturunuz.",
+  "possible_actions": [
+    "bilgi_gir",
+    "taslagi_goruntule"
+  ],
+  "provided_information": {},
+  "source_name": "yol_bakim_talebi.txt",
+  "raw_text": "Adı Soyadı: Ayşe Yılmaz\nTarih: 23.08.2026\nKonu: D-100 bağlantı yolundaki asfalt bozulması\nKonum: Örnek İl, Örnek İlçe, D-100 bağlantı yolu 12. kilometre\nTelefon: 0555 111 22 33\n\nBelirtilen konumda yol yüzeyinde geniş çukurlar ve asfalt bozulmaları oluşmuştur.\nTrafik güvenliği açısından gerekli yol bakım ve onarım çalışmasının yapılmasını talep ediyorum.",
+  "analysis": {
+    "document_type": "yol_bakim_talebi",
+    "confidence": 0.86,
+    "summary": "kilometre Belirtilen konumda yol yüzeyinde geniş çukurlar ve asfalt bozulmaları oluşmuştur.",
+    "fields": {
+      "gonderen": {
+        "value": "Ayşe Yılmaz",
+        "status": "metinden_cikarildi",
+        "source": "etiket:gonderen"
+      },
+      "konu": {
+        "value": "D-100 bağlantı yolundaki asfalt bozulması",
+        "status": "metinden_cikarildi",
+        "source": "etiket:konu"
+      },
+      "konum": {
+        "value": "Örnek İl, Örnek İlçe, D-100 bağlantı yolu 12. kilometre",
+        "status": "metinden_cikarildi",
+        "source": "etiket:konum"
+      },
+      "tarih": {
+        "value": "23.08.2026",
+        "status": "metinden_cikarildi",
+        "source": "etiket:tarih"
+      },
+      "eposta": {
+        "value": null,
+        "status": "kullanici_girdisi_gerekli",
+        "source": "metin:eposta"
+      },
+      "telefon": {
+        "value": "0555 111 22 33",
+        "status": "metinden_cikarildi",
+        "source": "metin:telefon"
+      },
+      "talep": {
+        "value": "Trafik güvenliği açısından gerekli yol bakım ve onarım çalışmasının yapılmasını talep ediyorum.",
+        "status": "metinden_cikarildi",
+        "source": "metin:talep"
+      }
+    },
+    "missing_fields": [],
+    "keywords": [
+      "yol bakım",
+      "asfalt",
+      "çukur",
+      "trafik",
+      "bakım",
+      "onarım"
+    ]
+  },
+  "search_hits": [
+    {
+      "chunk": {
+        "chunk_id": "MEV-C863A805478FFC53",
+        "document_id": "uab-road-infrastructure-safety-regulation",
+        "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+        "section": "İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri",
+        "article": "Madde 7",
+        "paragraph": "4",
+        "clause": null,
+        "text": "Onarım çalışması yürütülen ve yol kullanıcılarının güvenliğini tehdit eden karayolu kesimlerinde uygun işaretlerin gerekli yerlere yerleştirilmesi, işaretlerin gündüz ve gece görülebilecek özellikte ve güvenli mesafelerde olması sağlanır.",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+        "source_sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+        "source_kind": "competition_snapshot",
+        "page": 2,
+        "page_end": 2,
+        "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+        "document_type": "yonetmelik",
+        "domain": "kgm_infrastructure",
+        "subdomain": "traffic_safety",
+        "validity_status": "needs_verification",
+        "approved_for_active_rag": false,
+        "ocr_status": "text_layer_available",
+        "context_text": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik > İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri > Madde 7 > Fıkra 4",
+        "status": "competition_snapshot_not_currentness_verified",
+        "tags": [
+          "İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri",
+          "Madde 7",
+          "fıkra 4"
+        ]
+      },
+      "score": 0.029551337359792925,
+      "matched_terms": [
+        "yol",
+        "onarım",
+        "gerekli"
+      ],
+      "fusion_method": "rrf",
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 16,
+          "raw_score": 12.755777,
+          "rrf_contribution": 0.013157894736842105
+        },
+        {
+          "channel": "dense",
+          "rank": 1,
+          "raw_score": 0.4056363147067179,
+          "rrf_contribution": 0.01639344262295082
+        }
+      ]
+    },
+    {
+      "chunk": {
+        "chunk_id": "MEV-56214B1A9589A5DA",
+        "document_id": "law-2918",
+        "title": "2918 Sayılı Karayolları Trafik Kanunu",
+        "section": "İkinci Bölüm — Tanımlar",
+        "article": "Madde 17",
+        "paragraph": null,
+        "clause": null,
+        "text": "Karayollarında her iki taraftan sınır çizgisine elli metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç bakım, onarım ve satım işyerleri ve benzeri trafik güvenliğini etkileyecek yapı ve tesisler için, o karayolunun yapım ve bakımı ile sorumlu kuruluştan izin alınması zorunludur. Verilen izinler, ilgili valiliğe bildirilir. İzinsiz yapılan bu gibi tesislerin yapımı ve işletilmesi yetkililerce durdurulacağı gibi, yönetmelikteki şartlar yerine getirilmeden işletme izni verilmez ve bağlantı yolu, her türlü gider sorumlulara ait olmak üzere yolun yapım ve bakımı ile ilgili kuruluşca ortadan kaldırılır. (Değişik: 21/5/1997-4262/4 md.) Bu madde hükümlerine uymayanlar 72 000 000 lira para cezası ile cezalandırılırlar. Belediye sınırları içinde bulunan karayolu kenarındaki yapı ve tesisler:",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+        "source_sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+        "source_kind": "competition_snapshot",
+        "page": 16,
+        "page_end": 17,
+        "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+        "document_type": "kanun",
+        "domain": "kgm_infrastructure",
+        "subdomain": "traffic_safety",
+        "validity_status": "needs_verification",
+        "approved_for_active_rag": false,
+        "ocr_status": "text_layer_available",
+        "context_text": "2918 Sayılı Karayolları Trafik Kanunu > İkinci Bölüm — Tanımlar > Madde 17",
+        "status": "competition_snapshot_not_currentness_verified",
+        "tags": [
+          "İkinci Bölüm — Tanımlar",
+          "Madde 17"
+        ]
+      },
+      "score": 0.028371628371628373,
+      "matched_terms": [
+        "bakım",
+        "trafik",
+        "onarım",
+        "bağlantı"
+      ],
+      "fusion_method": "rrf",
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 17,
+          "raw_score": 12.321471,
+          "rrf_contribution": 0.012987012987012988
+        },
+        {
+          "channel": "dense",
+          "rank": 5,
+          "raw_score": 0.36778912712911815,
+          "rrf_contribution": 0.015384615384615385
+        }
+      ]
+    },
+    {
+      "chunk": {
+        "chunk_id": "MEV-9DFE7B7E895F4F01",
+        "document_id": "uab-road-traffic-regulation",
+        "title": "Karayolları Trafik Yönetmeliği",
+        "section": "Üçüncü Bölüm — Yapı ve Tesisler",
+        "article": "Madde 26",
+        "paragraph": null,
+        "clause": null,
+        "text": "(Değişik birinci fıkra:RG-1/9/2010-27689) Karayollarında her iki taraftan sınır çizgisine 50 metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç bakım, onarım ve satım işyerleri ve benzeri trafik güvenliğini etkileyecek yapı ve tesisler için, o karayolunun yapımı, bakımı, işletilmesi ile ilgili kuruluştan izin alınması zorunludur. Verilen izinler, ilgili valiliğe bildirilir. (Değişik üçüncü fıkra:RG-1/9/2010-27689) İzinsiz yapılan bu gibi tesislerin yapımı ve işletilmesi yetkililerce durdurulacağı gibi, tesislerle ilgili yönetmelikteki şartlar yerine getirilmeden işletme izni verilmez ve bağlantı yolu, her türlü gider sorumlulara ait olmak üzere yolun yapımı, bakımı, işletilmesi ile ilgili kuruluşça ortadan kaldırılır. Belediye Sınırları İçinde Bulunan Karayolu Kenarındaki Yapı ve Tesisler",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+        "source_sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+        "source_kind": "competition_snapshot",
+        "page": 16,
+        "page_end": 17,
+        "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+        "document_type": "yonetmelik",
+        "domain": "kgm_infrastructure",
+        "subdomain": "traffic_safety",
+        "validity_status": "needs_verification",
+        "approved_for_active_rag": false,
+        "ocr_status": "text_layer_available",
+        "context_text": "Karayolları Trafik Yönetmeliği > Üçüncü Bölüm — Yapı ve Tesisler > Madde 26",
+        "status": "competition_snapshot_not_currentness_verified",
+        "tags": [
+          "Üçüncü Bölüm — Yapı ve Tesisler",
+          "Madde 26"
+        ]
+      },
+      "score": 0.027745885954841176,
+      "matched_terms": [
+        "bakım",
+        "trafik",
+        "onarım",
+        "bağlantı"
+      ],
+      "fusion_method": "rrf",
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 18,
+          "raw_score": 12.321471,
+          "rrf_contribution": 0.01282051282051282
+        },
+        {
+          "channel": "dense",
+          "rank": 7,
+          "raw_score": 0.36530630788490004,
+          "rrf_contribution": 0.014925373134328358
+        }
+      ]
+    },
+    {
+      "chunk": {
+        "chunk_id": "MEV-A3D9C53A8E200047",
+        "document_id": "uab-road-infrastructure-safety-regulation",
+        "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+        "section": "İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri",
+        "article": "Madde 8",
+        "paragraph": "2",
+        "clause": null,
+        "text": "Karayolu güvenlik teftişleri, yol ağının karayolu altyapısı güvenliği açısından incelenmesini ve yol çalışmalarının trafik akışının güvenliği üzerindeki olası etkilerinin belirlenmesine yönelik çalışmaları kapsar.",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+        "source_sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+        "source_kind": "competition_snapshot",
+        "page": 2,
+        "page_end": 2,
+        "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+        "document_type": "yonetmelik",
+        "domain": "kgm_infrastructure",
+        "subdomain": "traffic_safety",
+        "validity_status": "needs_verification",
+        "approved_for_active_rag": false,
+        "ocr_status": "text_layer_available",
+        "context_text": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik > İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri > Madde 8 > Fıkra 2",
+        "status": "competition_snapshot_not_currentness_verified",
+        "tags": [
+          "İkinci Bölüm — Karayolu Altyapısı Güvenlik Yönetimi Bileşenleri",
+          "Madde 8",
+          "fıkra 2"
+        ]
+      },
+      "score": 0.01639344262295082,
+      "matched_terms": [
+        "yol",
+        "trafik",
+        "güvenliği",
+        "açısından"
+      ],
+      "fusion_method": "rrf",
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 1,
+          "raw_score": 16.91524,
+          "rrf_contribution": 0.01639344262295082
+        }
+      ]
+    },
+    {
+      "chunk": {
+        "chunk_id": "MEV-311383AB24A5855D",
+        "document_id": "uab-road-traffic-regulation",
+        "title": "Karayolları Trafik Yönetmeliği",
+        "section": "Onuncu Bölüm — Çeşitli Kurallar",
+        "article": "Madde 153",
+        "paragraph": null,
+        "clause": "c",
+        "text": "c) Araç bakım, onarım, servis istasyonu, garaj ve otopark sahip veya sorumluları; 1) Tesislerine; bakım, onarım için muhafaza veya parkedilmek üzere bırakılan motorlu araçlardan, bir kaza geçirdiği belli olan veya üzerinde suç belirtisi bulunanları gecikmeden zabıtaya bildirmek, 2) Bunları bir deftere (Ek:38) işlemek, Zorundadırlar. Trafik Kazalarına El Konulması",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+        "source_sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+        "source_kind": "competition_snapshot",
+        "page": 80,
+        "page_end": 80,
+        "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+        "document_type": "yonetmelik",
+        "domain": "kgm_infrastructure",
+        "subdomain": "traffic_safety",
+        "validity_status": "needs_verification",
+        "approved_for_active_rag": false,
+        "ocr_status": "text_layer_available",
+        "context_text": "Karayolları Trafik Yönetmeliği > Onuncu Bölüm — Çeşitli Kurallar > Madde 153 > Bent c > Yerel bağlam: Karayollarında meydana gelen trafik kazaları ile ilgili olarak;",
+        "status": "competition_snapshot_not_currentness_verified",
+        "tags": [
+          "Onuncu Bölüm — Çeşitli Kurallar",
+          "Madde 153",
+          "bent c"
+        ]
+      },
+      "score": 0.016129032258064516,
+      "matched_terms": [
+        "bakım",
+        "trafik",
+        "onarım"
+      ],
+      "fusion_method": "rrf",
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 2,
+          "raw_score": 15.955207,
+          "rrf_contribution": 0.016129032258064516
+        }
+      ]
+    }
+  ],
+  "retrieval_diagnostics": {
+    "mode": "hybrid",
+    "dense_status": "used",
+    "fallback_used": false,
+    "warning": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+    "dense_error_type": null,
+    "lexical_candidate_count": 20,
+    "dense_candidate_count": 20,
+    "fused_candidate_count": 37,
+    "channel_top_n": 20,
+    "rrf_k": 60
+  },
+  "verified_references": [
+    {
+      "chunk_id": "MEV-C863A805478FFC53",
+      "document_id": "uab-road-infrastructure-safety-regulation",
+      "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+      "article": "Madde 7",
+      "paragraph": "4",
+      "clause": null,
+      "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+      "page": 2,
+      "page_end": 2,
+      "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+      "source_kind": "competition_snapshot",
+      "corpus_mode": "competition_snapshot",
+      "currentness_verified": false,
+      "legal_reliance_allowed": false,
+      "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "domain": "kgm_infrastructure",
+      "excerpt": "Onarım çalışması yürütülen ve yol kullanıcılarının güvenliğini tehdit eden karayolu kesimlerinde uygun işaretlerin gerekli yerlere yerleştirilmesi, işaretlerin gündüz ve gece görülebilecek özellikte ve güvenli mesafelerde olması sağlanır.",
+      "score": 1.0,
+      "verified": true,
+      "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "evidence_channels": [
+        "lexical",
+        "dense"
+      ],
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 16,
+          "raw_score": 12.755777,
+          "rrf_contribution": 0.013157894736842105
+        },
+        {
+          "channel": "dense",
+          "rank": 1,
+          "raw_score": 0.4056363147067179,
+          "rrf_contribution": 0.01639344262295082
+        }
+      ]
+    },
+    {
+      "chunk_id": "MEV-56214B1A9589A5DA",
+      "document_id": "law-2918",
+      "title": "2918 Sayılı Karayolları Trafik Kanunu",
+      "article": "Madde 17",
+      "paragraph": null,
+      "clause": null,
+      "source": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+      "page": 16,
+      "page_end": 17,
+      "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+      "source_kind": "competition_snapshot",
+      "corpus_mode": "competition_snapshot",
+      "currentness_verified": false,
+      "legal_reliance_allowed": false,
+      "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "domain": "kgm_infrastructure",
+      "excerpt": "Karayollarında her iki taraftan sınır çizgisine elli metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç…",
+      "score": 0.9601,
+      "verified": true,
+      "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "evidence_channels": [
+        "lexical",
+        "dense"
+      ],
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 17,
+          "raw_score": 12.321471,
+          "rrf_contribution": 0.012987012987012988
+        },
+        {
+          "channel": "dense",
+          "rank": 5,
+          "raw_score": 0.36778912712911815,
+          "rrf_contribution": 0.015384615384615385
+        }
+      ]
+    },
+    {
+      "chunk_id": "MEV-9DFE7B7E895F4F01",
+      "document_id": "uab-road-traffic-regulation",
+      "title": "Karayolları Trafik Yönetmeliği",
+      "article": "Madde 26",
+      "paragraph": null,
+      "clause": null,
+      "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+      "page": 16,
+      "page_end": 17,
+      "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+      "source_kind": "competition_snapshot",
+      "corpus_mode": "competition_snapshot",
+      "currentness_verified": false,
+      "legal_reliance_allowed": false,
+      "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "domain": "kgm_infrastructure",
+      "excerpt": "(Değişik birinci fıkra:RG-1/9/2010-27689) Karayollarında her iki taraftan sınır çizgisine 50 metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harm…",
+      "score": 0.9389,
+      "verified": true,
+      "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "evidence_channels": [
+        "lexical",
+        "dense"
+      ],
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 18,
+          "raw_score": 12.321471,
+          "rrf_contribution": 0.01282051282051282
+        },
+        {
+          "channel": "dense",
+          "rank": 7,
+          "raw_score": 0.36530630788490004,
+          "rrf_contribution": 0.014925373134328358
+        }
+      ]
+    },
+    {
+      "chunk_id": "MEV-A3D9C53A8E200047",
+      "document_id": "uab-road-infrastructure-safety-regulation",
+      "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+      "article": "Madde 8",
+      "paragraph": "2",
+      "clause": null,
+      "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+      "page": 2,
+      "page_end": 2,
+      "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+      "source_kind": "competition_snapshot",
+      "corpus_mode": "competition_snapshot",
+      "currentness_verified": false,
+      "legal_reliance_allowed": false,
+      "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "domain": "kgm_infrastructure",
+      "excerpt": "Karayolu güvenlik teftişleri, yol ağının karayolu altyapısı güvenliği açısından incelenmesini ve yol çalışmalarının trafik akışının güvenliği üzerindeki olası etkilerinin belirlenmesine yönelik çalışmaları kapsar.",
+      "score": 0.5547,
+      "verified": true,
+      "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "evidence_channels": [
+        "lexical"
+      ],
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 1,
+          "raw_score": 16.91524,
+          "rrf_contribution": 0.01639344262295082
+        }
+      ]
+    },
+    {
+      "chunk_id": "MEV-311383AB24A5855D",
+      "document_id": "uab-road-traffic-regulation",
+      "title": "Karayolları Trafik Yönetmeliği",
+      "article": "Madde 153",
+      "paragraph": null,
+      "clause": "c",
+      "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+      "page": 80,
+      "page_end": 80,
+      "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+      "source_kind": "competition_snapshot",
+      "corpus_mode": "competition_snapshot",
+      "currentness_verified": false,
+      "legal_reliance_allowed": false,
+      "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "domain": "kgm_infrastructure",
+      "excerpt": "c) Araç bakım, onarım, servis istasyonu, garaj ve otopark sahip veya sorumluları; 1) Tesislerine; bakım, onarım için muhafaza veya parkedilmek üzere bırakılan motorlu araçlardan, bir kaza geçirdiği belli olan veya üzerinde suç belirtisi bulunanları gecikmeden zabıtaya bildirmek, 2) Bunları bir deftere (Ek:38) işlemek, Zorundadırlar. Trafik Kazalarına El Kon…",
+      "score": 0.5458,
+      "verified": true,
+      "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "evidence_channels": [
+        "lexical"
+      ],
+      "channel_contributions": [
+        {
+          "channel": "lexical",
+          "rank": 2,
+          "raw_score": 15.955207,
+          "rrf_contribution": 0.016129032258064516
+        }
+      ]
+    }
+  ],
+  "template_decision": {
+    "document_type": "ust_yazi",
+    "template_id": "ust_yazi_v1",
+    "rationale": "Evrak 'yol_bakim_talebi' olarak sınıflandırıldığı ve 5 kaynak doğrulandığı için bu yazı türü seçildi.",
+    "confidence": 0.9,
+    "user_approval_required": false,
+    "alternatives": []
+  },
+  "routing": {
+    "unit_id": "ORKGM-YB-001",
+    "unit_name": "Örnek Yol Yapım ve Bakım Şube Müdürlüğü",
+    "hierarchy": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Yol Yapım ve Bakım Şube Müdürlüğü",
+    "rationale": "Evrak içeriği birimin sorumluluklarıyla eşleşti: yol bakım, onarım, asfalt, çukur, bakım, ve.",
+    "score": 0.98,
+    "alternatives": [
+      {
+        "unit_id": "ORKGM-AF-001",
+        "unit_name": "Örnek Acil Müdahale ve Sanat Yapıları Şube Müdürlüğü",
+        "score": 0.11
+      },
+      {
+        "unit_id": "ORKGM-TG-001",
+        "unit_name": "Örnek Trafik Güvenliği Şube Müdürlüğü",
+        "score": 0.11
+      }
+    ]
+  },
+  "draft": {
+    "template_id": "ust_yazi_v1",
+    "institution_name": {
+      "value": "Örnek Karayolu Genel Müdürlüğü",
+      "status": "yonlendirmeden_uretildi",
+      "source": "sentetik_demo_kurumu"
+    },
+    "date": {
+      "value": "23.08.2026",
+      "status": "metinden_cikarildi",
+      "source": "etiket:tarih"
+    },
+    "number": {
+      "value": null,
+      "status": "kullanici_girdisi_gerekli",
+      "source": null
+    },
+    "subject": {
+      "value": "D-100 bağlantı yolundaki asfalt bozulması",
+      "status": "metinden_cikarildi",
+      "source": "etiket:konu"
+    },
+    "recipient": {
+      "value": "Örnek Yol Yapım ve Bakım Şube Müdürlüğü",
+      "status": "yonlendirmeden_uretildi",
+      "source": "birim_yonlendirme:ORKGM-YB-001"
+    },
+    "paragraphs": [
+      "İlgili başvuruda belirtilen husus incelenmiştir: Trafik güvenliği açısından gerekli yol bakım ve onarım çalışmasının yapılmasını talep ediyorum.",
+      "Başvurunun görev ve sorumluluk alanı bakımından Örnek Yol Yapım ve Bakım Şube Müdürlüğü tarafından değerlendirilmesi uygun görülmüştür.",
+      "Taslak hazırlanırken yarışma veri kümesindeki şu sabit kaynak parçaları yalnız retrieval ve kaynak izi açısından eşleştirilmiştir: Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik Madde 7, 2918 Sayılı Karayolları Trafik Kanunu Madde 17, Karayolları Trafik Yönetmeliği Madde 26.",
+      "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "Gereğini rica ederim."
+    ],
+    "signer": {
+      "value": null,
+      "status": "kullanici_girdisi_gerekli",
+      "source": null
+    },
+    "signer_title": {
+      "value": null,
+      "status": "kullanici_girdisi_gerekli",
+      "source": null
+    },
+    "attachments": [],
+    "references": [
+      {
+        "chunk_id": "MEV-C863A805478FFC53",
+        "document_id": "uab-road-infrastructure-safety-regulation",
+        "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+        "article": "Madde 7",
+        "paragraph": "4",
+        "clause": null,
+        "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+        "page": 2,
+        "page_end": 2,
+        "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+        "source_kind": "competition_snapshot",
+        "corpus_mode": "competition_snapshot",
+        "currentness_verified": false,
+        "legal_reliance_allowed": false,
+        "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "domain": "kgm_infrastructure",
+        "excerpt": "Onarım çalışması yürütülen ve yol kullanıcılarının güvenliğini tehdit eden karayolu kesimlerinde uygun işaretlerin gerekli yerlere yerleştirilmesi, işaretlerin gündüz ve gece görülebilecek özellikte ve güvenli mesafelerde olması sağlanır.",
+        "score": 1.0,
+        "verified": true,
+        "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "evidence_channels": [
+          "lexical",
+          "dense"
+        ],
+        "channel_contributions": [
+          {
+            "channel": "lexical",
+            "rank": 16,
+            "raw_score": 12.755777,
+            "rrf_contribution": 0.013157894736842105
+          },
+          {
+            "channel": "dense",
+            "rank": 1,
+            "raw_score": 0.4056363147067179,
+            "rrf_contribution": 0.01639344262295082
+          }
+        ]
+      },
+      {
+        "chunk_id": "MEV-56214B1A9589A5DA",
+        "document_id": "law-2918",
+        "title": "2918 Sayılı Karayolları Trafik Kanunu",
+        "article": "Madde 17",
+        "paragraph": null,
+        "clause": null,
+        "source": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+        "page": 16,
+        "page_end": 17,
+        "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+        "source_kind": "competition_snapshot",
+        "corpus_mode": "competition_snapshot",
+        "currentness_verified": false,
+        "legal_reliance_allowed": false,
+        "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "domain": "kgm_infrastructure",
+        "excerpt": "Karayollarında her iki taraftan sınır çizgisine elli metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç…",
+        "score": 0.9601,
+        "verified": true,
+        "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "evidence_channels": [
+          "lexical",
+          "dense"
+        ],
+        "channel_contributions": [
+          {
+            "channel": "lexical",
+            "rank": 17,
+            "raw_score": 12.321471,
+            "rrf_contribution": 0.012987012987012988
+          },
+          {
+            "channel": "dense",
+            "rank": 5,
+            "raw_score": 0.36778912712911815,
+            "rrf_contribution": 0.015384615384615385
+          }
+        ]
+      },
+      {
+        "chunk_id": "MEV-9DFE7B7E895F4F01",
+        "document_id": "uab-road-traffic-regulation",
+        "title": "Karayolları Trafik Yönetmeliği",
+        "article": "Madde 26",
+        "paragraph": null,
+        "clause": null,
+        "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+        "page": 16,
+        "page_end": 17,
+        "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+        "source_kind": "competition_snapshot",
+        "corpus_mode": "competition_snapshot",
+        "currentness_verified": false,
+        "legal_reliance_allowed": false,
+        "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "domain": "kgm_infrastructure",
+        "excerpt": "(Değişik birinci fıkra:RG-1/9/2010-27689) Karayollarında her iki taraftan sınır çizgisine 50 metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harm…",
+        "score": 0.9389,
+        "verified": true,
+        "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "evidence_channels": [
+          "lexical",
+          "dense"
+        ],
+        "channel_contributions": [
+          {
+            "channel": "lexical",
+            "rank": 18,
+            "raw_score": 12.321471,
+            "rrf_contribution": 0.01282051282051282
+          },
+          {
+            "channel": "dense",
+            "rank": 7,
+            "raw_score": 0.36530630788490004,
+            "rrf_contribution": 0.014925373134328358
+          }
+        ]
+      },
+      {
+        "chunk_id": "MEV-A3D9C53A8E200047",
+        "document_id": "uab-road-infrastructure-safety-regulation",
+        "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+        "article": "Madde 8",
+        "paragraph": "2",
+        "clause": null,
+        "source": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+        "page": 2,
+        "page_end": 2,
+        "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+        "source_kind": "competition_snapshot",
+        "corpus_mode": "competition_snapshot",
+        "currentness_verified": false,
+        "legal_reliance_allowed": false,
+        "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "domain": "kgm_infrastructure",
+        "excerpt": "Karayolu güvenlik teftişleri, yol ağının karayolu altyapısı güvenliği açısından incelenmesini ve yol çalışmalarının trafik akışının güvenliği üzerindeki olası etkilerinin belirlenmesine yönelik çalışmaları kapsar.",
+        "score": 0.5547,
+        "verified": true,
+        "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "evidence_channels": [
+          "lexical"
+        ],
+        "channel_contributions": [
+          {
+            "channel": "lexical",
+            "rank": 1,
+            "raw_score": 16.91524,
+            "rrf_contribution": 0.01639344262295082
+          }
+        ]
+      },
+      {
+        "chunk_id": "MEV-311383AB24A5855D",
+        "document_id": "uab-road-traffic-regulation",
+        "title": "Karayolları Trafik Yönetmeliği",
+        "article": "Madde 153",
+        "paragraph": null,
+        "clause": "c",
+        "source": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+        "page": 80,
+        "page_end": 80,
+        "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+        "source_kind": "competition_snapshot",
+        "corpus_mode": "competition_snapshot",
+        "currentness_verified": false,
+        "legal_reliance_allowed": false,
+        "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "domain": "kgm_infrastructure",
+        "excerpt": "c) Araç bakım, onarım, servis istasyonu, garaj ve otopark sahip veya sorumluları; 1) Tesislerine; bakım, onarım için muhafaza veya parkedilmek üzere bırakılan motorlu araçlardan, bir kaza geçirdiği belli olan veya üzerinde suç belirtisi bulunanları gecikmeden zabıtaya bildirmek, 2) Bunları bir deftere (Ek:38) işlemek, Zorundadırlar. Trafik Kazalarına El Kon…",
+        "score": 0.5458,
+        "verified": true,
+        "verification_note": "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli skor eşiğini geçti. Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; mevzuat güncelliği/yürürlüğü doğrulanmadı. Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "evidence_channels": [
+          "lexical"
+        ],
+        "channel_contributions": [
+          {
+            "channel": "lexical",
+            "rank": 2,
+            "raw_score": 15.955207,
+            "rrf_contribution": 0.016129032258064516
+          }
+        ]
+      }
+    ],
+    "missing_fields": [
+      "sayi",
+      "imzalayan",
+      "unvan"
+    ]
+  },
+  "artifact": {
+    "tex_path": "C:\\Users\\matri\\OneDrive\\Desktop\\testing3\\Divani_Ajan\\Divani_Ajan\\output\\EVR-20260824-63F3CF06\\taslak.tex",
+    "pdf_path": null,
+    "tex_download_url": "/v1/process/EVR-20260824-63F3CF06/artifacts/tex",
+    "pdf_download_url": null,
+    "compiled": false,
+    "compiler": null,
+    "warnings": [
+      "PDF derleme istenmedi; yalnızca LaTeX taslağı üretildi."
+    ]
+  },
+  "compliance": {
+    "passed": true,
+    "score": 0.92,
+    "errors": [],
+    "warnings": [
+      "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+      "Kullanıcı tarafından doldurulması gereken alanlar: sayi, imzalayan, unvan"
+    ]
+  },
+  "events": [
+    {
+      "status": "alindi",
+      "message": "Evrak sisteme alındı.",
+      "agent": "Alım Ajanı",
+      "timestamp": "2026-08-24T12:15:23.995540Z"
+    },
+    {
+      "status": "okunuyor",
+      "message": "Evrak metni okundu.",
+      "agent": "Alım Ajanı",
+      "timestamp": "2026-08-24T12:15:24.000245Z"
+    },
+    {
+      "status": "siniflandiriliyor",
+      "message": "Evrak türü ve içerik alanları analiz ediliyor.",
+      "agent": "Sınıflandırma Ajanı",
+      "timestamp": "2026-08-24T12:15:24.002246Z"
+    },
+    {
+      "status": "mevzuat_araniyor",
+      "message": "İlgili mevzuat ve iş akışı kuralları aranıyor.",
+      "agent": "Mevzuat Araştırma Ajanı",
+      "timestamp": "2026-08-24T12:15:24.014649Z"
+    },
+    {
+      "status": "kaynak_dogrulaniyor",
+      "message": "Kaynak adaylarının sorguyla ilişkisi doğrulanıyor.",
+      "agent": "Kaynak Doğrulama Ajanı",
+      "timestamp": "2026-08-24T12:15:40.076656Z"
+    },
+    {
+      "status": "yazi_turu_seciliyor",
+      "message": "Uygun resmî yazı türü ve şablon seçiliyor.",
+      "agent": "Yazı Türü ve Şablon Seçimi Ajanı",
+      "timestamp": "2026-08-24T12:15:40.083670Z"
+    },
+    {
+      "status": "birim_yonlendiriliyor",
+      "message": "Evrak için sorumlu sentetik birim belirleniyor.",
+      "agent": "Birim Yönlendirme Ajanı",
+      "timestamp": "2026-08-24T12:15:40.091519Z"
+    },
+    {
+      "status": "taslak_hazirlaniyor",
+      "message": "Yapılandırılmış resmî yazı taslağı hazırlanıyor.",
+      "agent": "Taslak Oluşturma Ajanı",
+      "timestamp": "2026-08-24T12:15:40.099736Z"
+    },
+    {
+      "status": "uygunluk_kontrolunde",
+      "message": "Taslak biçim, kaynak ve zorunlu alan kurallarına göre denetleniyor.",
+      "agent": "Uygunluk Denetçisi",
+      "timestamp": "2026-08-24T12:15:40.120720Z"
+    },
+    {
+      "status": "eksik_bilgi_bekleniyor",
+      "message": "Taslak üretildi; zorunlu kullanıcı bilgileri bekleniyor.",
+      "agent": "Kullanıcı Bilgilendirme Ajanı",
+      "timestamp": "2026-08-24T12:15:40.129766Z"
+    }
+  ],
+  "created_at": "2026-08-24T12:15:23.995540Z",
+  "updated_at": "2026-08-24T12:15:40.129766Z"
+}

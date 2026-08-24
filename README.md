@@ -209,10 +209,11 @@ python -m karayol_agent.cli ingest-manifest-quarantine `
 24 Ağustos 2026 ilk Aşama 3 geçişinde 8 kaynağın 6'sı 2.407 yapısal parçaya
 ayrılmış, 2 kaynak OCR kuyruğuna alınmış ve hiçbir parçaya public aktif-RAG onayı
 verilmemiştir. Seçili 6 karantina JSON'u ve 3 OCR metin girdisi bilinçli olarak
-Git'te sürümlenmiştir. Bunlardan türetilen birleşik
-`data/processed/competition_snapshot.json` ile kalıcı
-`runtime/qdrant-competition-snapshot/` yeniden üretilebilir çıktılardır ve
-`.gitignore` altında tutulur.
+Git'te sürümlenmiştir. Normalde yeniden üretilebilir sayılan birleşik
+`data/processed/competition_snapshot.json`, iki yapısal OCR JSON'u, kalıcı
+Qdrant verisi, süreç kaydı ve örnek LaTeX çıktısı da teslim bütünlüğü için
+24 Ağustos 2026 artifact commit'ine açıkça dahil edilmiştir. Geçici kilit ve
+Python/test cache dosyaları dahil edilmez.
 
 Ardından yarışma snapshot'ı için iki OCR adayı da ayrı ingestion sözleşmesiyle
 işlendi. Bu işlem public aktif-RAG onayı vermedi; yalnızca açık uyarı taşıyan
@@ -276,10 +277,12 @@ python -m karayol_agent.cli index-snapshot-vectors `
 ```
 
 Varsayılan kalıcı dizin `runtime/qdrant-competition-snapshot`, ayrı koleksiyon
-`competition_snapshot_chunks_v1` olur. Dizin yaklaşık 32,8 MB'dir ve yeniden
-üretilebilir çalışma çıktısı olduğu için Git'e eklenmez. İndeks kanıtı
+`competition_snapshot_chunks_v1` olur. Yaklaşık 32,8 MB'lık kalıcı SQLite
+deposu bu teslimde Git'e artifact olarak eklenmiştir. İndeks kanıtı
 `reports/competition_snapshot_index_2026-08-24.json`, yeniden açma/readiness
-kanıtı `reports/competition_snapshot_readiness_2026-08-24.json` dosyasındadır.
+kanıtı `reports/competition_snapshot_readiness_2026-08-24.json`, tüm teslim
+dosyalarının boyut/hash listesi ise
+`reports/competition_snapshot_artifact_manifest_2026-08-24.json` dosyasındadır.
 
 Uygulamayı aynı snapshot ve hibrit retrieval ile çalıştırmak için:
 

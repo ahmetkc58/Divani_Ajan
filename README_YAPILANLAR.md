@@ -254,15 +254,17 @@ aksiyonlarını taşır.
 - [`jina_qdrant_smoke_2026-08-24.json`](reports/jina_qdrant_smoke_2026-08-24.json)
 - [`competition_snapshot_index_2026-08-24.json`](reports/competition_snapshot_index_2026-08-24.json)
 - [`competition_snapshot_readiness_2026-08-24.json`](reports/competition_snapshot_readiness_2026-08-24.json)
+- [`competition_snapshot_artifact_manifest_2026-08-24.json`](reports/competition_snapshot_artifact_manifest_2026-08-24.json)
 - [`synthetic_evidence_graph_2026-08-24.json`](reports/synthetic_evidence_graph_2026-08-24.json)
 
 OCR aday metinleri `data/processed/ocr_review/`, yapısal OCR parçaları
 `data/processed/stage3_quarantine/` ve birleşik corpus
 `data/processed/competition_snapshot.json` altındadır. Seçili 6 karantina JSON'u
-ile 3 OCR metin girdisi Git'te sürümlenmiştir. Türetilmiş birleşik snapshot ve
-`runtime/qdrant-competition-snapshot/` yeniden üretilebilir oldukları için
-`.gitignore` altında kalır; kalıcı denetim izi `reports/` altındaki hash'li JSON
-raporlarıdır.
+ile 3 OCR metin girdisine ek olarak, kullanıcı talebiyle türetilmiş birleşik
+snapshot, iki yapısal OCR JSON'u, kalıcı Qdrant SQLite deposu, süreç kaydı ve
+örnek LaTeX çıktısı da artifact commit'ine alınmıştır. Dosyaların boyut ve
+SHA-256 değerleri artifact manifestinde kayıtlıdır. Yalnız `.lock`, Python cache
+ve test cache gibi taşınabilir olmayan geçici çalışma artıkları dışarıda kalır.
 
 ## 10. Kurulum ve komutlar
 
