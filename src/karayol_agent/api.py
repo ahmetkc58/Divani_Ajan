@@ -6,9 +6,9 @@ from pathlib import Path
 from fastapi import FastAPI, File, HTTPException, Response, UploadFile, status
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 
 from karayol_agent import __version__
-from karayol_agent.config import settings
 from karayol_agent.documents import ExtractionError
 from karayol_agent.orchestrator import (
     ProcessNotFoundError,
@@ -63,6 +63,7 @@ def health() -> dict[str, object]:
         "corpus_size": len(orchestrator.index.documents),
         "latex_compiler": orchestrator.renderer._find_compiler(),
         **orchestrator.corpus_disclosure(),
+        **orchestrator.decision_disclosure(),
         "retrieval_mode": orchestrator.settings.retrieval_mode,
         "retrieval_setup_warning": orchestrator.retrieval_setup_warning,
     }
@@ -96,8 +97,8 @@ async def process_file(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail="Yalnızca TXT, MD ve PDF dosyaları kabul edilir.",
         )
-    content = await file.read(settings.max_upload_bytes + 1)
-    if len(content) > settings.max_upload_bytes:
+    content = await file.read(orchestrator.settings.max_upload_bytes + 1)
+    if len(content) > orchestrator.settings.max_upload_bytes:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail="Dosya izin verilen boyut sınırını aşıyor.",
@@ -108,9 +109,12 @@ async def process_file(
         with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temporary:
             temporary.write(content)
             temporary_path = Path(temporary.name)
-        text = orchestrator.extractor.extract(temporary_path)
-        return orchestrator.process_text(
-            text, source_name=filename, compile_pdf=compile_pdf
+        text = await run_in_threadpool(orchestrator.extractor.extract, temporary_path)
+        return await run_in_threadpool(
+            orchestrator.process_text,
+            text,
+            source_name=filename,
+            compile_pdf=compile_pdf,
         )
     except ExtractionError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

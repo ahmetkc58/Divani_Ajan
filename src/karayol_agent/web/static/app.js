@@ -55,6 +55,29 @@ const statusLabels = {
   hata: "İşlem hatası"
 };
 
+const llmRoleLabels = {
+  document_understanding: "LLM Yapılandırılmış Anlama Ajanı",
+  adjudicator: "LLM Karar Ajanı (Adjudicator)"
+};
+
+const llmStatusLabels = {
+  success: "Başarılı",
+  disabled: "Devre dışı",
+  policy_rejected: "Güvenlik politikasıyla engellendi",
+  invalid_request: "Geçersiz istek",
+  timeout: "Zaman aşımı",
+  provider_error: "Sağlayıcı hatası",
+  invalid_response: "Geçersiz yanıt",
+  schema_rejected: "Şema doğrulaması başarısız"
+};
+
+const llmDataClassificationLabels = {
+  synthetic: "Sentetik",
+  public: "Kamuya açık",
+  redacted: "Maskelenmiş",
+  restricted: "Kısıtlı"
+};
+
 const documentTypeLabels = {
   yol_bakim_talebi: "Yol bakım talebi",
   trafik_guvenligi_bildirimi: "Trafik güvenliği bildirimi",
@@ -286,6 +309,22 @@ function renderOverview(state) {
   const complianceScore = safePercent(compliance.score);
   const verifiedCount = (state.verified_references || []).filter((item) => item.verified).length;
   const warnings = (compliance.warnings || []).map((item) => escapeHtml(item)).join(" · ");
+  const llm = state.llm_trace || {};
+  const graph = state.graph_decision_trace || {};
+  const partialLlmFallback = Boolean(llm.used && llm.deterministic_fallback_used);
+  const llmLabel = partialLlmFallback
+    ? "Kısmi LLM · güvenli fallback"
+    : llm.used
+      ? `${llm.provider || "LLM"} · ${llm.model || "yapılandırılmış çıktı"}`
+      : "Yerel deterministik akış";
+  const llmStatus = llm.warning || (partialLlmFallback
+    ? "Bazı aşamalarda yerel deterministik karar korundu"
+    : llm.used
+      ? "Kapalı JSON şeması doğrulandı"
+      : "Güvenli fallback kullanıldı");
+  const graphLabel = graph.applied
+    ? "Seçici çok-adımlı graf izi"
+    : "Graf abstention / devre dışı";
 
   return `
     ${scenarioExpectation(state)}
@@ -294,6 +333,8 @@ function renderOverview(state) {
       <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")}</small></div>
       <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong><small>${escapeHtml(template.template_id || "")}</small></div>
       <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
+      <div class="info-card"><span>LLM orkestrasyonu</span><strong>${escapeHtml(llmLabel)}</strong><small>${escapeHtml(llmStatus)}</small></div>
+      <div class="info-card"><span>Kanıt grafı</span><strong>${escapeHtml(graphLabel)}</strong><small>${escapeHtml(graph.graph_id || graph.strategy || "Graf yok")}</small></div>
       <div class="info-card wide"><span>Özet</span><strong>${escapeHtml(analysis.summary || "Özet oluşturulamadı.")}</strong>${warnings ? `<small>${warnings}</small>` : ""}</div>
       <div class="info-card wide"><span>Yönlendirme gerekçesi</span><strong>${escapeHtml(routing.rationale || "—")}</strong></div>
     </div>
@@ -410,13 +451,62 @@ function renderDraft(state) {
     <article class="draft-sheet"><div class="draft-letterhead"><strong>${escapeHtml(draftValue(draft.institution_name))}</strong></div><div class="draft-meta"><span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span><span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span><span><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</span><span><b>Şablon:</b> ${escapeHtml(draft.template_id)}</span></div><div class="draft-recipient">${escapeHtml(draftValue(draft.recipient))}</div>${paragraphs}<div class="draft-signature"><strong>${escapeHtml(draftValue(draft.signer))}</strong><br />${escapeHtml(draftValue(draft.signer_title))}</div></article>`;
 }
 
+function llmStepDescription(step) {
+  const descriptions = {
+    success: "Yapılandırılmış LLM çağrısı ve kapalı JSON şeması doğrulaması tamamlandı.",
+    disabled: "LLM sağlayıcısı etkin olmadığı için yerel deterministik sonuç kullanıldı.",
+    policy_rejected: "Ağ çağrısından önce veri güvenliği politikası uygulandı; yerel deterministik sonuç korundu.",
+    invalid_request: "LLM isteği doğrulanamadı; yerel deterministik sonuç korundu.",
+    timeout: "LLM çağrısı zaman aşımına uğradı; yerel deterministik sonuç korundu.",
+    provider_error: "LLM sağlayıcısı çağrıyı tamamlayamadı; yerel deterministik sonuç korundu.",
+    invalid_response: "LLM yanıtı geçerli bir yapılandırılmış çıktı üretmedi; yerel deterministik sonuç korundu.",
+    schema_rejected: "LLM yanıtı kapalı JSON şemasından geçmedi; yerel deterministik sonuç korundu."
+  };
+  const details = [descriptions[step.status] || "LLM adımı kayda alındı."];
+  if (step.decision_applied === true) {
+    details.push("Öneri güven ve kanıt kapılarından geçerek uygulandı.");
+  } else if (step.decision_applied === false) {
+    details.push("Öneri uygulanmadı; deterministik karar korundu.");
+  }
+  if (step.human_review_required) details.push("İnsan incelemesi gerekli.");
+  if (step.detail) details.push(step.detail);
+  return details.join(" ");
+}
+
+function renderLlmTimeline(llmTrace) {
+  const steps = llmTrace?.steps || [];
+  if (!steps.length) return "";
+  const items = steps.map((step) => {
+    const role = llmRoleLabels[step.role] || step.role || "LLM ajanı";
+    const status = llmStatusLabels[step.status] || step.status || "Durum bilinmiyor";
+    const provider = step.provider || llmTrace.provider;
+    const model = step.model || llmTrace.model;
+    const classification = llmDataClassificationLabels[step.data_classification]
+      || step.data_classification;
+    const metadata = [
+      provider ? `Sağlayıcı: ${provider}${model ? ` / ${model}` : ""}` : "",
+      classification ? `Veri sınıfı: ${classification}` : "",
+      `Harici API izni: ${step.external_data_allowed ? "verildi" : "verilmedi"}`,
+      `Ağ çağrısı: ${step.network_attempted ? "yapıldı" : "yapılmadı"}`,
+      step.failure_code ? `Hata kodu: ${step.failure_code}${step.retryable ? " (yeniden denenebilir)" : ""}` : "",
+      step.redacted ? `Maskeleme: ${step.redaction_count || 0} alan` : ""
+    ].filter(Boolean).join(" · ");
+    return `<div class="timeline-item"><span class="timeline-dot" aria-hidden="true"></span><div><strong>${escapeHtml(role)} · ${escapeHtml(status)}</strong><p>${escapeHtml(llmStepDescription(step))}</p><small>${escapeHtml(metadata)}</small></div></div>`;
+  }).join("");
+  return `<section class="timeline-group" aria-label="LLM orkestrasyon adımları"><h4>LLM orkestrasyon adımları</h4><div class="timeline">${items}</div></section>`;
+}
+
 function renderTimeline(state) {
   const events = state.events || [];
-  return `<div class="timeline">${events.map((event) => {
+  const eventItems = events.map((event) => {
     const date = new Date(event.timestamp);
     const time = Number.isNaN(date.valueOf()) ? "" : date.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     return `<div class="timeline-item"><span class="timeline-dot" aria-hidden="true"></span><div><strong>${escapeHtml(event.agent)} · ${escapeHtml(statusLabels[event.status] || event.status)}</strong><p>${escapeHtml(event.message)}</p><time>${escapeHtml(time)}</time></div></div>`;
-  }).join("")}</div>`;
+  }).join("");
+  const localTimeline = events.length
+    ? `<section class="timeline-group" aria-label="Yerel ajan olayları"><h4>Yerel ajan olayları</h4><div class="timeline">${eventItems}</div></section>`
+    : "";
+  return `${renderLlmTimeline(state.llm_trace)}${localTimeline}`;
 }
 
 function renderState(state) {

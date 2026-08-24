@@ -1,6 +1,22 @@
+import io
+import shutil
+import subprocess
+import time
 from pathlib import Path
 
-from karayol_agent.documents import DocumentExtractor
+import pytest
+
+from karayol_agent.documents import DocumentExtractor, ExtractionError
+
+
+def _make_blank_pdf(path: Path, *, page_count: int = 1) -> None:
+    import pymupdf
+
+    document = pymupdf.open()
+    for _ in range(page_count):
+        document.new_page()
+    document.save(path)
+    document.close()
 
 
 def test_text_extractor_preserves_labeled_lines(tmp_path: Path) -> None:
@@ -12,3 +28,326 @@ def test_text_extractor_preserves_labeled_lines(tmp_path: Path) -> None:
     assert "Ayşe Yılmaz\nKonu:" in text
     assert "\n\nTalep" in text
 
+
+def test_text_extractor_rejects_oversized_text_instead_of_truncating(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "uzun.txt"
+    source.write_text("Gönderen: Ayşe Yılmaz\n" + "x" * 80, encoding="utf-8")
+
+    with pytest.raises(ExtractionError, match="sessiz kesme yapılmadı"):
+        DocumentExtractor(max_chars=40).extract(source)
+
+
+def test_text_extractor_repairs_only_safe_ocr_wrapped_words(tmp_path: Path) -> None:
+    source = tmp_path / "ocr-evrak.txt"
+    source.write_text(
+        "\ufeffGönde-\nren:\u200b Ayşe Yılmaz\nD-100 bağlantı yolu\n\nTalep metni",
+        encoding="utf-8",
+    )
+
+    text = DocumentExtractor().extract(source)
+
+    assert text.startswith("Gönderen: Ayşe Yılmaz")
+    assert "D-100 bağlantı yolu" in text
+    assert "\n\nTalep metni" in text
+
+
+def test_text_extractor_preserves_meaningful_cross_line_hyphen(tmp_path: Path) -> None:
+    source = tmp_path / "konum-evrak.txt"
+    source.write_text(
+        "Gönderen: Ayşe Yılmaz\nKonum: Ankara-\nçevre yolu\nTalep metni",
+        encoding="utf-8",
+    )
+
+    text = DocumentExtractor().extract(source)
+
+    assert "Ankara-\nçevre yolu" in text
+
+
+def test_mixed_pdf_pages_ocr_only_the_weak_page(
+    monkeypatch, tmp_path: Path
+) -> None:
+    extractor = DocumentExtractor()
+    path = tmp_path / "karma.pdf"
+    page_texts = [
+        "Konu: Yol bakım talebi. Bu sayfanın okunabilir bir metin katmanı var.",
+        "",
+    ]
+    calls: list[set[int] | None] = []
+
+    def fake_ocr_pages(
+        _path: Path, *, page_numbers: set[int] | None
+    ) -> dict[int, str]:
+        calls.append(page_numbers)
+        return {2: "Gönderen: Ayşe Yılmaz\nKonum: Ankara"}
+
+    monkeypatch.setattr(extractor, "_ocr_pdf_pages", fake_ocr_pages)
+
+    text = extractor._merge_pdf_page_texts(path, page_texts)
+
+    assert calls == [{2}]
+    assert page_texts[0] in text
+    assert text.endswith("Gönderen: Ayşe Yılmaz\nKonum: Ankara")
+
+
+def test_weak_page_with_empty_ocr_result_fails_closed(
+    monkeypatch, tmp_path: Path
+) -> None:
+    extractor = DocumentExtractor()
+    monkeypatch.setattr(
+        extractor,
+        "_ocr_pdf_pages",
+        lambda _path, *, page_numbers: {2: ""},
+    )
+
+    with pytest.raises(ExtractionError, match="eksik sayfayla"):
+        extractor._merge_pdf_page_texts(
+            tmp_path / "karma.pdf",
+            ["Konu: Okunabilir yol bakım başvurusu metni.", ""],
+        )
+
+
+def test_short_but_readable_text_page_does_not_require_ocr(
+    monkeypatch, tmp_path: Path
+) -> None:
+    extractor = DocumentExtractor()
+
+    def fail_ocr(*_args, **_kwargs):
+        raise AssertionError("Okunabilir kısa metin sayfası OCR'a gönderilmemeli.")
+
+    monkeypatch.setattr(extractor, "_ocr_pdf_pages", fail_ocr)
+
+    text = extractor._merge_pdf_page_texts(
+        tmp_path / "kisa.pdf", ["İmza\nAli Veli"]
+    )
+
+    assert text == "İmza\nAli Veli"
+
+
+def test_short_watermark_text_layer_still_triggers_page_ocr(
+    monkeypatch, tmp_path: Path
+) -> None:
+    extractor = DocumentExtractor()
+    calls: list[set[int] | None] = []
+
+    def fake_ocr_pages(
+        _path: Path, *, page_numbers: set[int] | None
+    ) -> dict[int, str]:
+        calls.append(page_numbers)
+        return {1: "Gönderen: Ayşe Yılmaz\nKonu: Yol bakım talebi"}
+
+    monkeypatch.setattr(extractor, "_ocr_pdf_pages", fake_ocr_pages)
+
+    text = extractor._merge_pdf_page_texts(tmp_path / "scan.pdf", ["Scan"])
+
+    assert calls == [{1}]
+    assert text.startswith("Gönderen: Ayşe Yılmaz")
+
+
+def test_image_page_with_signature_like_watermark_still_triggers_ocr(
+    monkeypatch, tmp_path: Path
+) -> None:
+    import pymupdf
+
+    pdf_path = tmp_path / "watermark-scan.pdf"
+    document = pymupdf.open()
+    page = document.new_page()
+    pixmap = pymupdf.Pixmap(
+        pymupdf.csRGB,
+        pymupdf.IRect(0, 0, 10, 10),
+        False,
+    )
+    pixmap.clear_with(255)
+    page.insert_image(page.rect, stream=pixmap.tobytes("png"))
+    page.insert_text((72, 72), "Imza Adobe Scan")
+    document.save(pdf_path)
+    document.close()
+    extractor = DocumentExtractor()
+    calls: list[set[int] | None] = []
+
+    def fake_ocr_pages(
+        _path: Path, *, page_numbers: set[int] | None
+    ) -> dict[int, str]:
+        calls.append(page_numbers)
+        return {1: "Gönderen: Ayşe Yılmaz\nKonu: Yol bakım talebi"}
+
+    monkeypatch.setattr(extractor, "_ocr_pdf_pages", fake_ocr_pages)
+
+    text = extractor._extract_pdf(pdf_path)
+
+    assert calls == [{1}]
+    assert text.startswith("Gönderen: Ayşe Yılmaz")
+
+
+@pytest.mark.parametrize(
+    "ocr_noise", ["aa", "OK", "...", "Imza Adobe Scan", "ADOBE SCAN"]
+)
+def test_partial_ocr_noise_fails_closed(
+    monkeypatch, tmp_path: Path, ocr_noise: str
+) -> None:
+    extractor = DocumentExtractor()
+    monkeypatch.setattr(
+        extractor,
+        "_ocr_pdf_pages",
+        lambda _path, *, page_numbers: {1: ocr_noise},
+    )
+
+    with pytest.raises(ExtractionError, match="eksik sayfayla"):
+        extractor._merge_pdf_page_texts(tmp_path / "scan.pdf", ["Scan"])
+
+
+def test_short_scanned_signature_with_uppercase_surname_is_preserved(
+    monkeypatch, tmp_path: Path
+) -> None:
+    extractor = DocumentExtractor()
+    monkeypatch.setattr(
+        extractor,
+        "_ocr_pdf_pages",
+        lambda _path, *, page_numbers: {2: "Ahmet\nYILMAZ"},
+    )
+    first_page = (
+        "Konu: Yol bakım talebi. Konum: Ankara. "
+        "Çukurun giderilmesini arz ederim."
+    )
+
+    text = extractor._merge_pdf_page_texts(
+        tmp_path / "imza.pdf", [first_page, ""]
+    )
+
+    assert text.endswith("Ahmet\nYILMAZ")
+
+
+def test_pdf_page_limit_is_enforced() -> None:
+    extractor = DocumentExtractor(max_pdf_pages=2)
+
+    with pytest.raises(ExtractionError, match="en fazla 2 sayfa"):
+        extractor._validate_pdf_page_count(3)
+
+
+def test_tesseract_timeout_is_sanitized(monkeypatch) -> None:
+    extractor = DocumentExtractor()
+
+    def timeout(*_args, **_kwargs):
+        raise subprocess.TimeoutExpired(
+            cmd=r"C:\Users\private\tesseract.exe",
+            timeout=1,
+            stderr=r"C:\Users\private\input.png",
+        )
+
+    monkeypatch.setattr(subprocess, "run", timeout)
+
+    with pytest.raises(ExtractionError, match="süre sınırını") as captured:
+        extractor._run_tesseract(
+            ["tesseract", "input.png"],
+            deadline=time.monotonic() + 10,
+            page_number=1,
+        )
+
+    assert "Users" not in str(captured.value)
+
+
+def test_tesseract_stderr_path_is_not_exposed(monkeypatch, tmp_path: Path) -> None:
+    pdf_path = tmp_path / "ocr.pdf"
+    _make_blank_pdf(pdf_path)
+    monkeypatch.setattr("shutil.which", lambda _name: "tesseract")
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=[],
+            returncode=2,
+            stdout="",
+            stderr=r"fatal: C:\Users\private\input.png",
+        ),
+    )
+
+    with pytest.raises(ExtractionError, match="çıkış kodu 2") as captured:
+        DocumentExtractor()._ocr_pdf_pages(pdf_path, page_numbers={1})
+
+    assert "Users" not in str(captured.value)
+
+
+def test_ocr_per_page_pixel_limit_fails_closed(monkeypatch, tmp_path: Path) -> None:
+    pdf_path = tmp_path / "buyuk-sayfa.pdf"
+    _make_blank_pdf(pdf_path)
+    monkeypatch.setattr("shutil.which", lambda _name: "tesseract")
+
+    with pytest.raises(ExtractionError, match="sayfa 1 piksel sınırını"):
+        DocumentExtractor(max_ocr_pixels_per_page=100)._ocr_pdf_pages(
+            pdf_path, page_numbers={1}
+        )
+
+
+def test_ocr_total_pixel_limit_fails_closed(monkeypatch, tmp_path: Path) -> None:
+    pdf_path = tmp_path / "toplam-piksel.pdf"
+    _make_blank_pdf(pdf_path)
+    monkeypatch.setattr("shutil.which", lambda _name: "tesseract")
+
+    with pytest.raises(ExtractionError, match="toplam OCR piksel"):
+        DocumentExtractor(
+            max_ocr_pixels_per_page=20_000_000,
+            max_ocr_total_pixels=100,
+        )._ocr_pdf_pages(pdf_path, page_numbers={1})
+
+
+def test_ocr_document_deadline_fails_closed() -> None:
+    with pytest.raises(ExtractionError, match="toplam süre sınırını"):
+        DocumentExtractor._remaining_timeout(time.monotonic() - 1, 1)
+
+
+@pytest.mark.skipif(
+    shutil.which("tesseract") is None,
+    reason="Gerçek OCR entegrasyonu için Tesseract kurulu değil.",
+)
+def test_real_tesseract_scanned_pdf_extracts_sender_end_to_end(
+    tmp_path: Path,
+) -> None:
+    import pymupdf
+    from PIL import Image, ImageDraw, ImageFont
+
+    from karayol_agent.agents import ClassificationAgent, ContentAnalysisAgent
+
+    try:
+        font = ImageFont.truetype("DejaVuSans.ttf", 48)
+    except OSError:
+        try:
+            font = ImageFont.truetype("arial.ttf", 48)
+        except OSError:
+            pytest.skip("OCR fixture için ölçeklenebilir test fontu bulunamadı.")
+    image = Image.new("RGB", (1800, 1100), "white")
+    draw = ImageDraw.Draw(image)
+    lines = [
+        "GONDEREN: Ayse Yilmaz",
+        "KONU: Asfalt bozulmasi",
+        "KONUM: D-100 12. kilometre",
+        "Yol bakim ve onarimi yapilmasini talep ediyorum.",
+    ]
+    for index, line in enumerate(lines):
+        draw.text((100, 100 + index * 150), line, font=font, fill="black")
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+
+    pdf_path = tmp_path / "taranmis-gonderen.pdf"
+    document = pymupdf.open()
+    page = document.new_page(width=900, height=550)
+    page.insert_image(page.rect, stream=buffer.getvalue())
+    document.save(pdf_path)
+    document.close()
+
+    text = DocumentExtractor().extract(pdf_path)
+    classification = ClassificationAgent().run(text)
+    analysis = ContentAnalysisAgent().run(text, classification)
+
+    assert analysis.fields["gonderen"].value is not None
+    assert "ayse" in analysis.fields["gonderen"].value.casefold()
+    assert "yilmaz" in analysis.fields["gonderen"].value.casefold()
+
+
+def test_text_extractor_does_not_join_uppercase_layout_lines(tmp_path: Path) -> None:
+    source = tmp_path / "resmi-evrak.txt"
+    source.write_text("T.C.-\nKGM\nKonu: Yol bakım", encoding="utf-8")
+
+    text = DocumentExtractor().extract(source)
+
+    assert text.startswith("T.C.-\nKGM")

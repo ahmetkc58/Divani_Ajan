@@ -37,6 +37,16 @@ Teknik olarak tamamlanan adımlar:
 10. Snapshot kaynaklarını güncel/yürürlükte hukuk kaynağı gibi göstermeyen API,
     atıf, taslak ve uygunluk uyarıları; public fail-closed yoluyla koleksiyon
     ayrımı.
+11. Gemini Free Tier + `gemini-2.5-flash` için strict JSON Schema kullanan,
+    anahtarsız/kota/timeout/bozuk yanıt durumunda yerel kurallara dönen güvenli
+    LLM sağlayıcı katmanı.
+12. Researcher → Auditor → sentetik multi-hop graph → Adjudicator zinciri;
+    şablon, birim ve kaynak kararlarında allowlist, SHA-256 provenance ve insan
+    onayı kapıları.
+13. Gürültülü OCR etiketleri, satır kırılmaları ve imza bloğundan gönderen dahil
+    yapılandırılmış alan çıkarımını geliştiren yerel normalizasyon katmanı;
+    karma PDF'lerde yalnız zayıf sayfaların OCR'dan geçirilmesi ve boş sonuçta
+    durma; sayfa/piksel/süre kaynak sınırları.
 
 İnsan kararı gerektiren `verified_public` mevzuat aktivasyonu ayrı bir iş olarak
 tamamlanmamıştır; buna karşılık uyarılı `competition_snapshot` yolu hazırdır.
@@ -44,6 +54,15 @@ Sekiz kaydın tamamında
 `approved_for_active_rag=false` kalmıştır. Mevcut manifestle aktif corpus üretme
 komutu sınandığında “manifestte onaylı belge bulunmuyor” hatası vermiş ve hiçbir
 aktif corpus yazmamıştır. Bu beklenen güvenlik davranışıdır.
+
+Harici LLM yolu da aynı biçimde fail-closed'dur: yalnız pinli hash ile tanınan
+sentetik gold/UI demo evraklar Gemini'ye gönderilebilir. Snapshot Adjudicator
+özgün mevzuat metni yerine yalnız Auditor'ın kapalı aday kimliklerini ve kamuya
+açık metadata'yı görür. Gerçek/kısıtlı evraklar için LLM anahtarı bulunsa dahi
+ağ çağrısı yapılmaz. Gerçek Gemini kabul turunda Document Understanding ve
+Adjudicator çağrılarının ikisi de strict JSON şemasıyla başarıyla tamamlanmış;
+güncelliği doğrulanmamış snapshot nedeniyle deterministik karar ve insan onayı
+kapısı korunmuştur.
 
 ## 2. Depo ve commit incelemesi
 
@@ -344,10 +363,13 @@ $env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json
 $env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
 $env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
 $env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
-$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
+$env:KARAYOL_EMBEDDING_DEVICE="cpu"
 Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
 python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
 ```
+
+Bu çalışma ortamındaki PyTorch CPU derlemesidir; `cuda:0` yalnız
+`torch.cuda.is_available()` sonucu doğru olan CUDA kurulumunda seçilmelidir.
 
 Sunucu açıkken tekrar edilebilir production-demo kabul turu:
 
@@ -357,11 +379,17 @@ python -X utf8 scripts\run_production_demo_acceptance.py
 
 ## 11. Doğrulama
 
-- Test koleksiyonu: **315 test**. Bu makinede çalıştırılabilir küme:
-  **314/314 geçti**.
-- Proje Python `>=3.11` ister; kullanılan Python 3.10 makinede ham alt süreçte
-  3.11 `StrEnum` davranışını sınayan `test_cli_error_regression_1.py` ortam
-  uyumsuzluğu nedeniyle bu koşudan çıkarıldı.
+- Güncel koleksiyon: **421 test**. Yeni LLM/graf/OCR/API/orkestrasyon hedef
+  paketinde **111 geçti, 1 gerçek Tesseract entegrasyonu ikili kurulu olmadığı
+  için atlandı**.
+- Canlı LLM ürün yolu ve güvenlik sözleşmesi hedef paketi: **66/66 geçti**.
+- Tam koşu: **412 geçti, 1 atlandı, 6 başarısız, 2 hata**. Sekiz
+  sorun yeni koddan önce de bulunan artifact tutarsızlıklarıdır: iki OCR aday metninin
+  pinli SHA-256 değerleri, karantina JSON'larındaki başka bilgisayara ait mutlak
+  yollar ve snapshot relevance gold dosya hash'i. Güven kapılarını atlamak için
+  bu provenance kayıtları otomatik değiştirilmedi.
+- Proje Python `>=3.11` ister; güncel koşu bu sözleşmeyi karşılayan izole çalışma
+  ortamıyla yapıldı.
 - Python `compileall`: başarılı.
 - `pyproject.toml` ayrıştırma: başarılı.
 - Mevcut global Python 3.10 ortamında `pip check`, projeden bağımsız kurulmuş
@@ -402,7 +430,8 @@ chunk/madde/sayfa kanıtıyla bağlı dinamik zorunlu alan çıkarımı yalnız 
 kalırsa **opsiyonel Tier 1** olarak değerlendirilebilir; yapılmaması MVP'yi veya
 teslimi engellemez. Uygulanırsa statik alanlar güvenlik tabanı olarak korunacak
 ve snapshot adayları güncel hukuk zorunluluğu gibi gösterilmeyecektir.
-Multi-hop/global GraphRAG yolu da ayrı bir opsiyonel geliştirmedir.
+Sentetik ve SHA-doğrulamalı multi-hop GraphRAG karar yolu bu turda bağlandı;
+public mevzuat grafı ve korpus-geneli global özet yolu ayrı geliştirmelerdir.
 
 İleride gerçek public corpus hedeflendiğinde eski dört dosyanın güncel kanonik
 kopyaları, tam 102 sayfalık kılavuz, kanonik yönetmelik kaynağı ve yetkili kişinin

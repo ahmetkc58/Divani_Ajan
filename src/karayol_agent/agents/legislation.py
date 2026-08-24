@@ -45,7 +45,7 @@ class _SourceDecision:
 
 
 class LegislationResearchAgent:
-    name = "Mevzuat Araştırma Ajanı"
+    name = "Mevzuat Araştırma Ajanı (Researcher)"
 
     def __init__(self, index: RankedRetriever, *, top_k: int = 5) -> None:
         # ``index`` remains as a compatibility attribute for existing callers.
@@ -135,7 +135,7 @@ class LegislationResearchAgent:
 
 
 class SourceVerificationAgent:
-    name = "Kaynak Doğrulama Ajanı"
+    name = "Kaynak Doğrulama Ajanı (Auditor)"
 
     def __init__(self, min_retrieval_score: float = 0.20) -> None:
         if (

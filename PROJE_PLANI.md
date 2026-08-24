@@ -421,7 +421,19 @@ zorunludur.
     dinamik zorunlu alan adayları çıkar; statik güvenlik tabanıyla birleştir ve
     her alanın madde/sayfa/chunk gerekçesini kullanıcıya göster. Bu özellik MVP,
     yarışma demosu veya teslim için zorunlu değildir.
-13. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
+13. **Sentetik multi-hop karar yolu tamamlandı (24 Ağustos):** Grafı her sorguda
+    genel arama yerine yalnız doğrulanmış sentetik kuraldan birim/şablon/zorunlu
+    alan ilişkisi gereken karar yolunda çalıştır; girdi SHA-256'larını yeniden
+    doğrula. Researcher ve Auditor çıktısını strict JSON şemalı, ücretsiz
+    Gemini 2.5 Flash Adjudicator'a yalnız kapalı aday listesi olarak aktar. Anahtar,
+    kota, şema veya veri politikası sorunu varsa deterministik fallback kullan;
+    gerçek/kısıtlı evrakı harici API'ye gönderme. Public/global graf bu adımla
+    tamamlanmış sayılmaz. **25 Ağustos canlı kabulü:** Pinli sentetik UI evrakı
+    için Document Understanding çağrısı çalıştı; snapshot yolundaki Adjudicator
+    yalnız Auditor kimlikleri ve kamuya açık kaynak metadata'sıyla çalıştı,
+    özgün mevzuat paragrafı dışarı çıkmadı. Her iki Gemini çağrısı strict JSON
+    şemasını geçti; snapshot güncelliği doğrulanmadığından insan onayı ve
+    deterministik karar koruması kaldırılmadı.
 14. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
 
 Kabul ölçütleri:

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -96,6 +97,48 @@ def test_manual_ui_uses_real_readiness_and_exposes_safety_contract(
     assert "relevance_query_reasons" in script.text
     assert "Chunk: ${escapeHtml(reference.chunk_id)}" in script.text
     assert "Sayfa izi yok" in script.text
+
+
+def test_manual_ui_exposes_llm_roles_and_outcomes_in_flow_tab(
+    monkeypatch, tmp_path: Path
+) -> None:
+    client = build_client(monkeypatch, tmp_path)
+
+    script = client.get("/ui-assets/app.js")
+
+    assert script.status_code == 200
+    assert 'document_understanding: "LLM Yapılandırılmış Anlama Ajanı"' in script.text
+    assert 'adjudicator: "LLM Karar Ajanı (Adjudicator)"' in script.text
+    assert "LLM orkestrasyon adımları" in script.text
+    assert "llmTrace?.steps || []" in script.text
+    assert "llmStatusLabels[step.status]" in script.text
+    assert "step.provider || llmTrace.provider" in script.text
+    assert "step.model || llmTrace.model" in script.text
+    assert "step.data_classification" in script.text
+    assert "step.external_data_allowed" in script.text
+    assert "step.network_attempted" in script.text
+    assert "step.failure_code" in script.text
+    assert "step.retryable" in script.text
+    assert "step.decision_applied === true" in script.text
+    assert "step.decision_applied === false" in script.text
+    assert "step.detail" in script.text
+    assert "Ağ çağrısından önce veri güvenliği politikası uygulandı" in script.text
+
+
+def test_ui_demo_texts_are_bound_to_server_attested_fixtures(
+    monkeypatch, tmp_path: Path
+) -> None:
+    client = build_client(monkeypatch, tmp_path)
+    script = client.get("/ui-assets/app.js")
+    fixture_payload = json.loads(
+        (ROOT / "data" / "synthetic_ui_fixtures.json").read_text("utf-8")
+    )
+
+    assert script.status_code == 200
+    assert fixture_payload["data_classification"] == "synthetic"
+    assert fixture_payload["records"][0]["text"] == MAINTENANCE_TEXT
+    for record in fixture_payload["records"]:
+        assert record["text"] in script.text
 
 
 def test_primary_manual_scenario_reaches_approval_and_download(

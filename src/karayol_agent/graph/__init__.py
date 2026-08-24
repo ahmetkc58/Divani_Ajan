@@ -14,6 +14,10 @@ from karayol_agent.graph.evidence_graph import (
     GraphBuildError,
     RuleTrace,
 )
+from karayol_agent.graph.decision_support import (
+    EvidenceGraphAdvisor,
+    SYNTHETIC_GRAPH_WARNING,
+)
 
 __all__ = [
     "EvidenceEdge",
@@ -23,4 +27,6 @@ __all__ = [
     "EvidenceNode",
     "GraphBuildError",
     "RuleTrace",
+    "EvidenceGraphAdvisor",
+    "SYNTHETIC_GRAPH_WARNING",
 ]

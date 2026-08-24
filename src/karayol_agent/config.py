@@ -56,6 +56,29 @@ class Settings:
     runtime_dir: Path = PROJECT_ROOT / "runtime"
     max_upload_bytes: int = 20 * 1024 * 1024
     max_text_chars: int = 200_000
+    max_pdf_pages: int = field(
+        default_factory=lambda: _environment_int("KARAYOL_MAX_PDF_PAGES", 50)
+    )
+    max_ocr_pixels_per_page: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_MAX_OCR_PIXELS_PER_PAGE", 20_000_000
+        )
+    )
+    max_ocr_total_pixels: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_MAX_OCR_TOTAL_PIXELS", 100_000_000
+        )
+    )
+    ocr_document_timeout_seconds: float = field(
+        default_factory=lambda: _environment_float(
+            "KARAYOL_OCR_DOCUMENT_TIMEOUT_SECONDS", 120
+        )
+    )
+    ocr_page_timeout_seconds: float = field(
+        default_factory=lambda: _environment_float(
+            "KARAYOL_OCR_PAGE_TIMEOUT_SECONDS", 60
+        )
+    )
     retrieval_top_k: int = 5
     # Jina cosine için mutlak kanıt kabul eşiği. RRF skoru göreli sıralama
     # içindir ve tek başına hukuki kanıt doğrulaması yapamaz.
@@ -79,6 +102,26 @@ class Settings:
     )
     low_confidence_threshold: float = 0.60
     latex_timeout_seconds: int = 30
+    evidence_graph_enabled: bool = field(
+        default_factory=lambda: _environment_bool(
+            "KARAYOL_EVIDENCE_GRAPH_ENABLED", True
+        )
+    )
+    evidence_graph_path: Path = field(
+        default_factory=lambda: Path(
+            _environment(
+                "KARAYOL_EVIDENCE_GRAPH_PATH",
+                str(
+                    PROJECT_ROOT
+                    / "reports"
+                    / "synthetic_evidence_graph_2026-08-24.json"
+                ),
+            )
+            or PROJECT_ROOT
+            / "reports"
+            / "synthetic_evidence_graph_2026-08-24.json"
+        )
+    )
     retrieval_mode: str = field(
         default_factory=lambda: _environment("KARAYOL_RETRIEVAL_MODE", "bm25") or "bm25"
     )
@@ -259,11 +302,27 @@ class Settings:
                 "competition_snapshot_path",
                 self.project_root / self.competition_snapshot_path,
             )
+        if not self.evidence_graph_path.is_absolute():
+            object.__setattr__(
+                self,
+                "evidence_graph_path",
+                self.project_root / self.evidence_graph_path,
+            )
         if self.embedding_dimension not in {32, 64, 128, 256, 512, 768, 1024}:
             raise ValueError(
                 "Jina embedding boyutu desteklenen Matryoshka "
                 "boyutlarından biri olmalı."
             )
+        if min(
+            self.max_upload_bytes,
+            self.max_text_chars,
+            self.max_pdf_pages,
+            self.max_ocr_pixels_per_page,
+            self.max_ocr_total_pixels,
+            self.ocr_document_timeout_seconds,
+            self.ocr_page_timeout_seconds,
+        ) <= 0:
+            raise ValueError("Belge/OCR kaynak sınırları pozitif olmalıdır.")
         if self.embedding_batch_size < 1:
             raise ValueError("Embedding batch boyutu en az 1 olmalı.")
         if (

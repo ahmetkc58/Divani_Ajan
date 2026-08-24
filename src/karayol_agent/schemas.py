@@ -169,6 +169,61 @@ class RetrievalDiagnostics(BaseModel):
     relevance_query_evidence_basis: str | None = None
 
 
+class GraphDecisionTrace(BaseModel):
+    """Auditable, non-authoritative evidence-graph advice for one run."""
+
+    strategy: str = "not_applied"
+    graph_id: str | None = None
+    applied: bool = False
+    matched_rule_ids: list[str] = Field(default_factory=list)
+    candidate_template_ids: list[str] = Field(default_factory=list)
+    candidate_unit_ids: list[str] = Field(default_factory=list)
+    required_fields: list[str] = Field(default_factory=list)
+    paths: list[list[str]] = Field(default_factory=list)
+    evidence_record_ids: list[str] = Field(default_factory=list)
+    legal_reliance_allowed: bool = False
+    warning: str | None = None
+
+
+class LLMStepTrace(BaseModel):
+    """Persistable outcome of a guarded LLM role invocation."""
+
+    role: str
+    status: str
+    provider: str | None = None
+    model: str | None = None
+    detail: str | None = None
+    data_classification: str | None = None
+    external_data_allowed: bool = False
+    network_attempted: bool = False
+    redacted: bool = False
+    redaction_count: int = Field(default=0, ge=0)
+    failure_code: str | None = None
+    retryable: bool = False
+    confidence: float | None = Field(default=None, ge=0, le=1)
+    candidate_document_type: str | None = None
+    candidate_summary: str | None = Field(default=None, max_length=500)
+    selected_template_id: str | None = None
+    selected_unit_id: str | None = None
+    accepted_reference_ids: list[str] = Field(default_factory=list)
+    human_review_required: bool = False
+    decision_applied: bool | None = None
+
+
+class LLMRunTrace(BaseModel):
+    """Run-level disclosure for optional external LLM assistance."""
+
+    mode: str = "disabled"
+    enabled: bool = False
+    provider: str | None = None
+    model: str | None = None
+    used: bool = False
+    deterministic_fallback_used: bool = True
+    external_data_allowed: bool = False
+    steps: list[LLMStepTrace] = Field(default_factory=list)
+    warning: str | None = None
+
+
 class VerifiedReference(BaseModel):
     """A retrieval/provenance decision and its legal-reliance disclosure.
 
@@ -289,6 +344,8 @@ class ProcessState(BaseModel):
     analysis: DocumentAnalysis | None = None
     search_hits: list[SearchHit] = Field(default_factory=list)
     retrieval_diagnostics: RetrievalDiagnostics | None = None
+    graph_decision_trace: GraphDecisionTrace | None = None
+    llm_trace: LLMRunTrace | None = None
     verified_references: list[VerifiedReference] = Field(default_factory=list)
     template_decision: TemplateDecision | None = None
     routing: RoutingRecommendation | None = None

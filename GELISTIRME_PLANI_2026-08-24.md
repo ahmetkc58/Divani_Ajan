@@ -22,6 +22,15 @@ onayı birlikte tamamlanır.
 
 **Durum: Kısmi**
 
+Bu turda kapanan alt işler:
+
+- Ücretsiz Gemini 2.5 Flash için strict JSON Schema kullanan opsiyonel LLM sınırı;
+  anahtarsız, kısıtlı veri ve sağlayıcı hatalarında deterministik fallback.
+- Researcher/Auditor/Adjudicator ayrımı ile sentetik multi-hop kanıt grafının
+  şablon ve birim kararına allowlist olarak bağlanması.
+- LLM/graf kararından sonra deterministik uygunluk ve insan onayı kapılarının
+  korunması.
+
 - Metin/PDF alımı, sınıflandırma, alan çıkarımı, mevzuat arama, şablon seçimi,
   kurgu birim yönlendirme ve taslak akışı tek demo senaryosunda doğrulanmalı.
 - Eksik bilgi, düşük güven, alakasız belge ve uygunluk hatası akışı otomasyonu
@@ -66,10 +75,23 @@ Açık:
 
 ## P4 — Belge/OCR dayanımı
 
-**Durum: Açık**
+**Durum: Kısmi**
 
-- PNG/JPG/TIFF yükleme, magic-byte ve piksel sınırı.
-- PDF için sayfa bazlı metin kalite kararı ve yalnız zayıf sayfalarda OCR.
+Bu turda kapanan alt işler:
+
+- OCR gürültüsünde Unicode/görünmez karakter ve güvenli satır-sonu düzeltmesi.
+- Gönderen/başvuran etiket varyantları, OCR-glif bozulmaları, ayrı/yapışık
+  alanlar, devam satırları ve kontrollü imza bloğu fallback'i.
+- Geçersiz tarih ve düz metin false-positive kapıları; alan çıkarım yönteminin
+  `source` izinde saklanması.
+- PDF için sayfa bazlı metin kalite kararı; yalnız zayıf/boş sayfaların OCR'dan
+  geçirilmesi ve sayfa sırasının korunması.
+- OCR boş sonucunda fail-closed durma; PDF sayfa, piksel ve toplam/sayfa süre
+  sınırları; API event loop'undan threadpool izolasyonu.
+
+Açık:
+
+- PNG/JPG/TIFF yükleme ile bu formatlarda magic-byte ve piksel sınırı.
 - OCR alanlarına sayfa/güven izi ve kullanıcı düzeltme akışı.
 - İnsan doğrulamalı taranmış sayfa setinde CER/WER ve alan F1 ölçümü.
 

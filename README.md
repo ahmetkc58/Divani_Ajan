@@ -22,6 +22,78 @@ BM25'e döner. Varsayılan BM25 demo verileri sentetiktir. İsteğe bağlı
 güncellik/hukuki görüş uyarısıyla kullanır; `verified_public` yolu ise insan
 onayı olmadan hâlâ fail-closed kalır.
 
+## Yapılandırılmış LLM, LegalGraph karar zinciri ve OCR alan çıkarımı
+
+24 Ağustos 2026 geliştirme turunda proje planındaki açık LLM orkestrasyonu,
+seçici graf karar desteği ve OCR'dan alan tanıma katmanı birbirine bağlandı:
+
+```text
+Yerel OCR/alan çıkarımı
+  → Researcher: BM25 veya Jina/Qdrant/RRF adayları
+  → Auditor: kaynak, alaka, güncellik ve kullanım kapıları
+  → sentetik multi-hop graf: kural → evrak türü → birim/şablon/zorunlu alan
+  → Adjudicator: yalnız doğrulanmış kanıt ve kapalı aday listesi
+  → deterministik uygunluk denetimi → insan onayı
+```
+
+- Ücretsiz LLM seçimi Google AI Studio Free Tier üzerindeki
+  `gemini-2.5-flash` modelidir.
+  Sağlayıcı çağrıları SDK bağımlılığı olmadan, strict JSON Schema ile yapılır.
+- `GEMINI_API_KEY` yoksa ağ çağrısı yapılmaz; mevcut deterministik akış devam
+  eder. Timeout, kota, bozuk JSON veya şema ihlalinde de sonuç serbest metin
+  olarak kabul edilmez.
+- Harici ücretsiz LLM'e yalnız sabit SHA-256 ile tanınan sentetik gold/UI demo
+  evrakları çıkabilir. Snapshot Adjudicator çağrısında özgün mevzuat paragrafı
+  dışarı verilmez; yalnız Auditor'ın kapalı aday kimlikleri, başlık/madde/sayfa
+  metadata'sı ve `currentness_verified=false` / `legal_reliance_allowed=false`
+  bayrakları aktarılır. Gerçek/kısıtlı evrak, API anahtarı bulunsa bile ağdan
+  önce engellenir. Bu sınır gönderen, iletişim ve hukuk belgesi verilerini
+  korumak için bilinçlidir; Gemini Free Tier içerikleri sağlayıcının ürün
+  geliştirme politikasına tabi olabilir.
+- Graf girdilerinin SHA-256'ları çalışma anında doğrulanır ve graf aynı
+  girdilerden yeniden üretilip semantik olarak karşılaştırılır. Mevcut graf
+  yalnız sentetik benchmark içindir; `legal_reliance_allowed=false` kalır ve
+  üretim mevzuatı sayılmaz.
+- OCR sonrası alan çıkarımı artık `Gönderici`, `Gönderen`, `Başvuru Sahibi`,
+  `Müracaatçı`, `G0NDEREN`, `K0NU`, `TARlH`, ayrı satırdaki değerler ve güvenli
+  imza bloğu fallback'ini tanır. Kullanılan yöntem alanın `source` izinde
+  saklanır; özgün retrieval kanıt metni değiştirilmez.
+- Karma PDF'lerde metin kalitesi sayfa bazında ölçülür; yalnız zayıf/boş
+  sayfalar OCR'dan geçirilir ve özgün sayfa sırası korunur. Boş OCR sonucu
+  belgeyi durdurur; PDF sayfa/piksel/süre sınırları ve API threadpool izolasyonu
+  kaynak tüketimini sınırlar. Raster görüntülü sayfadaki kısa tarayıcı watermark'i
+  text-layer sayılmaz; kısa imza OCR'ı yalnız yapısal ad/soyad kapısından geçer.
+
+LLM'i sentetik demo/evaluasyon için etkinleştirmek üzere anahtarı yalnız çalışma
+ortamında tanımlayın:
+
+```powershell
+$env:KARAYOL_LLM_PROVIDER="gemini"
+$env:KARAYOL_LLM_MODEL="gemini-2.5-flash"
+$env:GEMINI_API_KEY="<yerel-secret>"
+```
+
+Yerel `.env` dosyasını kullanarak güvenli demo yapılandırmasını tek komutla
+başlatmak için `powershell -ExecutionPolicy Bypass -File
+scripts/start_local_gemini.ps1` kullanılabilir. `.env` Git tarafından yok
+sayılır ve depoya eklenmemelidir.
+
+Çalışan serviste hem iki gerçek Gemini rolünü hem de değiştirilmiş fixture'ın
+ağdan önce engellendiğini tekrar doğrulamak için:
+
+```powershell
+$env:PYTHONPATH="src"
+python scripts/run_llm_live_acceptance.py
+```
+
+`/health`, `/ready` ve her `ProcessState`; LLM sağlayıcısı/modeli, fallback,
+graf readiness'i, graf karar yolları ve rol bazlı LLM adımlarını anahtar
+sızdırmadan açıklar. Ayrıntılı yapılandırma örneği `.env.example` içindedir.
+
+Bu tur P4 OCR işinin tamamını kapatmaz: PNG/JPG/TIFF ana akışı ile bu formatların
+magic-byte/piksel sınırları, sayfa bazlı OCR güven izi ve insan doğrulamalı
+CER/WER-alan F1 ölçümü hâlâ ayrı kabul işleri olarak açıktır.
+
 ## Tamamlanan uygulama — 8 belgeli yarışma snapshot'ı
 
 Bu geliştirme turunda yeni/güncel mevzuat kopyalarını edinme, proje planını
