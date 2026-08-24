@@ -14,10 +14,14 @@ from karayol_agent.agents import (
     SourceVerificationAgent,
     TemplateSelectionAgent,
 )
+from karayol_agent.agents.legislation import RankedRetriever
 from karayol_agent.config import Settings, settings
 from karayol_agent.documents import DocumentExtractor
 from karayol_agent.latex import LatexRenderer
 from karayol_agent.retrieval import BM25Index, LegislationRepository
+from karayol_agent.retrieval.hybrid import HybridRetriever
+from karayol_agent.retrieval.qdrant_store import QdrantUnavailable, SchemaMismatch
+from karayol_agent.retrieval.runtime import build_retrieval_runtime
 from karayol_agent.schemas import (
     ExtractedField,
     FieldStatus,
@@ -47,7 +51,12 @@ class EvrakOrchestrator:
         "unvan": "signer_title",
     }
 
-    def __init__(self, app_settings: Settings = settings) -> None:
+    def __init__(
+        self,
+        app_settings: Settings = settings,
+        *,
+        retriever: RankedRetriever | None = None,
+    ) -> None:
         self.settings = app_settings
         app_settings.ensure_runtime_dirs()
         chunks = LegislationRepository(
@@ -55,13 +64,19 @@ class EvrakOrchestrator:
             trusted_synthetic=True,
         ).load()
         self.index = BM25Index(chunks)
+        self.retrieval_setup_warning: str | None = None
+        self.retriever = (
+            retriever if retriever is not None else self._build_retriever()
+        )
         self.extractor = DocumentExtractor(max_chars=app_settings.max_text_chars)
         self.classifier = ClassificationAgent()
         self.analyzer = ContentAnalysisAgent()
         self.researcher = LegislationResearchAgent(
-            self.index, top_k=app_settings.retrieval_top_k
+            self.retriever, top_k=app_settings.retrieval_top_k
         )
-        self.verifier = SourceVerificationAgent()
+        self.verifier = SourceVerificationAgent(
+            min_retrieval_score=app_settings.min_retrieval_score
+        )
         self.template_selector = TemplateSelectionAgent(
             app_settings.low_confidence_threshold
         )
@@ -74,6 +89,87 @@ class EvrakOrchestrator:
             timeout=app_settings.latex_timeout_seconds,
         )
         self.store = FileProcessStore(app_settings.runtime_dir / "processes")
+
+    def _build_retriever(self) -> RankedRetriever:
+        if self.settings.retrieval_mode.casefold() == "bm25":
+            return self.index
+
+        try:
+            active_chunks, corpus_binding = LegislationRepository(
+                self.settings.active_legislation_path
+            ).load_with_binding()
+            if not active_chunks:
+                raise ValueError("Aktif kamu mevzuatı korpusu boş.")
+        except (OSError, ValueError) as exc:
+            self.retrieval_setup_warning = (
+                "Aktif kamu mevzuatı korpusu kullanılamadı "
+                f"({type(exc).__name__}); sentetik BM25 fallback etkin."
+            )
+            return HybridRetriever(
+                self.index,
+                dense_retriever=None,
+                channel_top_n=self.settings.hybrid_candidate_top_k,
+                rrf_k=self.settings.rrf_k,
+            )
+
+        # In hybrid mode both lexical and dense channels must represent the
+        # same strict public corpus. Never fuse synthetic BM25 with Qdrant.
+        self.index = BM25Index(active_chunks)
+        runtime = build_retrieval_runtime(
+            self.settings,
+            corpus_binding=corpus_binding,
+        )
+        return runtime.hybrid_for(
+            self.index,
+            channel_top_n=self.settings.hybrid_candidate_top_k,
+            rrf_k=self.settings.rrf_k,
+        )
+
+    def readiness(self) -> dict[str, object]:
+        """Report retrieval readiness without creating or repairing resources."""
+
+        mode = self.settings.retrieval_mode.casefold()
+        if mode == "bm25":
+            return {
+                "ready": True,
+                "retrieval_mode": mode,
+                "detail": f"Sentetik BM25 corpus hazır: {len(self.index.documents)} parça.",
+            }
+        if self.retrieval_setup_warning:
+            return {
+                "ready": False,
+                "retrieval_mode": mode,
+                "detail": self.retrieval_setup_warning,
+            }
+
+        vector_store = getattr(self.retriever, "vector_store", None)
+        if vector_store is None or not hasattr(vector_store, "validate_readiness"):
+            return {
+                "ready": False,
+                "retrieval_mode": mode,
+                "detail": "Hibrit retriever Qdrant readiness sözleşmesi taşımıyor.",
+            }
+        try:
+            report = vector_store.validate_readiness()
+        except (QdrantUnavailable, SchemaMismatch, OSError, ValueError) as exc:
+            return {
+                "ready": False,
+                "retrieval_mode": mode,
+                "detail": str(exc),
+            }
+        return {
+            "ready": True,
+            "retrieval_mode": mode,
+            "detail": (
+                f"Qdrant hazır: {report.compatible_point_count}/"
+                f"{report.expected_point_count} uyumlu nokta."
+            ),
+            "collection": report.collection_name,
+            "corpus_fingerprint": report.corpus_fingerprint,
+            "embedding_model": report.embedding_model,
+            "embedding_dimension": report.embedding_dimension,
+            "index_version": report.index_version,
+        }
 
     def process_file(self, path: Path, *, compile_pdf: bool = False) -> ProcessState:
         text = self.extractor.extract(path)
@@ -219,8 +315,21 @@ class EvrakOrchestrator:
             "İlgili mevzuat ve iş akışı kuralları aranıyor.",
             self.researcher.name,
         )
-        state.search_hits = self.researcher.run(state.analysis)
-        self._complete(state, f"{len(state.search_hits)} kaynak adayı bulundu.")
+        retrieval = self.researcher.run_with_diagnostics(state.analysis)
+        state.search_hits = retrieval.hits
+        diagnostics = retrieval.diagnostics
+        if self.retrieval_setup_warning:
+            diagnostics = diagnostics.model_copy(
+                update={
+                    "fallback_used": True,
+                    "warning": self.retrieval_setup_warning,
+                }
+            )
+        state.retrieval_diagnostics = diagnostics
+        retrieval_message = f"{len(state.search_hits)} kaynak adayı bulundu."
+        if diagnostics.warning:
+            retrieval_message += f" Retrieval uyarısı: {diagnostics.warning}"
+        self._complete(state, retrieval_message)
 
         self._transition(
             state,

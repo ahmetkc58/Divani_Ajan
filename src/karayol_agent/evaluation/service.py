@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import json
 from collections import defaultdict
+from collections.abc import Mapping, Sequence
+from inspect import Parameter, signature
 from pathlib import Path
+from typing import Any
+
+from pydantic import ValidationError
 
 from karayol_agent.agents import (
     ClassificationAgent,
@@ -16,9 +21,12 @@ from karayol_agent.evaluation.models import (
     EvaluationMetric,
     EvaluationRecordResult,
     EvaluationReport,
+    EvaluationRetrievalHitTrace,
     GoldDataset,
 )
 from karayol_agent.retrieval import BM25Index, LegislationRepository
+from karayol_agent.retrieval.runtime import build_analysis_query
+from karayol_agent.schemas import DocumentAnalysis, RetrievalDiagnostics, SearchHit
 
 
 class EvaluationError(RuntimeError):
@@ -34,17 +42,41 @@ class EvaluationService:
         legislation_path: Path,
         units_path: Path,
         retrieval_top_k: int = 5,
+        min_retrieval_score: float = 0.20,
         low_confidence_threshold: float = 0.60,
+        retriever: Any | None = None,
+        retrieval_mode: str = "bm25",
     ) -> None:
-        chunks = LegislationRepository(
-            legislation_path, trusted_synthetic=True
-        ).load()
+        normalized_mode = retrieval_mode.strip().casefold()
+        if normalized_mode not in {"bm25", "hybrid"}:
+            raise ValueError("retrieval_mode yalnızca 'bm25' veya 'hybrid' olabilir.")
+        if retriever is None and normalized_mode != "bm25":
+            raise ValueError(
+                "hybrid evaluation için açık bir retriever enjekte edilmelidir."
+            )
+
         self.classifier = ClassificationAgent()
         self.analyzer = ContentAnalysisAgent()
-        self.researcher = LegislationResearchAgent(
-            BM25Index(chunks), top_k=retrieval_top_k
+        self.retrieval_top_k = retrieval_top_k
+        self.retrieval_mode = normalized_mode
+        self.retriever = retriever
+        if retriever is None:
+            chunks = LegislationRepository(
+                legislation_path, trusted_synthetic=True
+            ).load()
+            self.researcher: LegislationResearchAgent | None = (
+                LegislationResearchAgent(
+                    BM25Index(chunks), top_k=retrieval_top_k
+                )
+            )
+        else:
+            # An injected retriever owns its corpus/backends. In particular, a
+            # production analysis-aware hybrid retriever already contains its
+            # lexical index and should not trigger a second repository load.
+            self.researcher = None
+        self.verifier = SourceVerificationAgent(
+            min_retrieval_score=min_retrieval_score
         )
-        self.verifier = SourceVerificationAgent()
         self.template_selector = TemplateSelectionAgent(low_confidence_threshold)
         self.router = RoutingAgent(units_path)
 
@@ -58,12 +90,20 @@ class EvaluationService:
         for gold in dataset.data:
             classification = self.classifier.run(gold.text)
             analysis = self.analyzer.run(gold.text, classification)
-            hits = self.researcher.run(analysis)
+            hits, raw_retrieval_diagnostics = self._retrieve(analysis)
+            retrieval_diagnostics = self._normalize_retrieval_diagnostics(
+                raw_retrieval_diagnostics,
+                hits,
+            )
+            retrieval_channel_trace = self._channel_trace(hits)
             references = self.verifier.run(hits, analysis)
             template = self.template_selector.run(analysis, references)
             routing = self.router.run(analysis)
 
-            top3_units = [routing.unit_id, *[str(item["unit_id"]) for item in routing.alternatives]]
+            top3_units = [
+                routing.unit_id,
+                *[str(item["unit_id"]) for item in routing.alternatives],
+            ]
             retrieved_ids = [hit.chunk.chunk_id for hit in hits]
             expected_missing = set(gold.expected_missing_fields)
             actual_missing = set(analysis.missing_fields)
@@ -108,6 +148,15 @@ class EvaluationService:
                     missing_fields_exact=expected_missing == actual_missing,
                     template_correct=template.template_id == gold.expected_template_id,
                     retrieval_hit=retrieval_hit,
+                    verified_reference_count=sum(
+                        reference.verified for reference in references
+                    ),
+                    legal_evidence_abstained=not any(
+                        reference.verified for reference in references
+                    ),
+                    retrieval_mode=self.retrieval_mode,
+                    retrieval_diagnostics=retrieval_diagnostics,
+                    retrieval_channel_trace=retrieval_channel_trace,
                 )
             )
 
@@ -116,12 +165,19 @@ class EvaluationService:
         f1 = self._ratio(2 * precision * recall, precision + recall)
         metrics = self._metric_bundle(results)
         standard_results = [
-            result for result in results if "challenge_paraphrase" not in result.tags
+            result
+            for result in results
+            if "challenge_paraphrase" not in result.tags
+            and "challenge_no_answer" not in result.tags
         ]
         challenge_results = [
             result for result in results if "challenge_paraphrase" in result.tags
         ]
+        no_answer_results = [
+            result for result in results if "challenge_no_answer" in result.tags
+        ]
         return EvaluationReport(
+            retrieval_mode=self.retrieval_mode,
             dataset_name=dataset.dataset_name,
             dataset_version=dataset.version,
             total_records=len(dataset.data),
@@ -130,6 +186,12 @@ class EvaluationService:
             slices={
                 "standard": self._metric_bundle(standard_results),
                 "challenge_paraphrase": self._metric_bundle(challenge_results),
+                "challenge_no_answer": {
+                    "legal_evidence_abstention_rate": self._metric(
+                        no_answer_results,
+                        "legal_evidence_abstained",
+                    )
+                },
             },
             missing_field_precision=round(precision, 4),
             missing_field_recall=round(recall, 4),
@@ -145,6 +207,182 @@ class EvaluationService:
                 for expected, actual in sorted(confusion.items())
             },
             results=results,
+        )
+
+    def _retrieve(
+        self, analysis: DocumentAnalysis
+    ) -> tuple[list[SearchHit], Any | None]:
+        if self.retriever is None:
+            if self.researcher is None:  # pragma: no cover - constructor invariant
+                raise EvaluationError("Varsayılan BM25 researcher oluşturulamadı.")
+            # Keep the existing baseline path byte-for-byte equivalent at the
+            # call boundary: LegislationResearchAgent still builds the query and
+            # invokes the same BM25Index with the same top-k value.
+            return list(self.researcher.run(analysis)), None
+
+        diagnostic_search = getattr(
+            self.retriever, "search_with_diagnostics", None
+        )
+        search = diagnostic_search if callable(diagnostic_search) else getattr(
+            self.retriever, "search", None
+        )
+        if callable(search):
+            argument: DocumentAnalysis | str
+            analysis_aware = getattr(self.retriever, "analysis_aware", None)
+            if (
+                bool(analysis_aware)
+                if analysis_aware is not None
+                else self._method_uses_analysis(search)
+            ):
+                argument = analysis
+            else:
+                argument = build_analysis_query(analysis)
+            response = search(argument, top_k=self.retrieval_top_k)
+            return self._unpack_retrieval_response(response)
+
+        run = getattr(self.retriever, "run", None)
+        if callable(run):
+            return self._coerce_hits(run(analysis)), None
+        raise EvaluationError(
+            "Enjekte edilen retriever search/search_with_diagnostics/run "
+            "işlemlerinden birini sağlamalıdır."
+        )
+
+    @staticmethod
+    def _method_uses_analysis(method: Any) -> bool:
+        marker = getattr(method, "analysis_aware", None)
+        if marker is not None:
+            return bool(marker)
+        try:
+            parameters = [
+                parameter
+                for parameter in signature(method).parameters.values()
+                if parameter.kind
+                in {Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD}
+            ]
+        except (TypeError, ValueError):
+            return False
+        if not parameters:
+            return False
+        first = parameters[0]
+        if first.name in {"analysis", "document_analysis"}:
+            return True
+        annotation = first.annotation
+        return "DocumentAnalysis" in str(annotation)
+
+    @classmethod
+    def _unpack_retrieval_response(
+        cls, response: Any
+    ) -> tuple[list[SearchHit], Any | None]:
+        if hasattr(response, "hits"):
+            hits = getattr(response, "hits")
+            diagnostics = getattr(response, "diagnostics", None)
+        else:
+            hits = response
+            diagnostics = None
+        return cls._coerce_hits(hits), diagnostics
+
+    @staticmethod
+    def _coerce_hits(hits: Any) -> list[SearchHit]:
+        if isinstance(hits, SearchHit):
+            values: Sequence[Any] = [hits]
+        elif isinstance(hits, Sequence) and not isinstance(
+            hits, (str, bytes, bytearray)
+        ):
+            values = hits
+        else:
+            try:
+                values = list(hits)
+            except TypeError as exc:
+                raise EvaluationError(
+                    "Retriever sonucu SearchHit dizisi olmalıdır."
+                ) from exc
+        try:
+            return [
+                hit if isinstance(hit, SearchHit) else SearchHit.model_validate(hit)
+                for hit in values
+            ]
+        except (ValidationError, TypeError) as exc:
+            raise EvaluationError(
+                f"Retriever geçersiz SearchHit döndürdü: {exc}"
+            ) from exc
+
+    def _normalize_retrieval_diagnostics(
+        self,
+        raw: Any | None,
+        hits: list[SearchHit],
+    ) -> RetrievalDiagnostics:
+        if raw is None:
+            unique_count = len({hit.chunk.chunk_id for hit in hits})
+            if self.retrieval_mode == "bm25":
+                return RetrievalDiagnostics(
+                    mode="bm25",
+                    dense_status="not_requested",
+                    lexical_candidate_count=len(hits),
+                    dense_candidate_count=0,
+                    fused_candidate_count=unique_count,
+                )
+            return RetrievalDiagnostics(
+                mode=self.retrieval_mode,
+                dense_status="not_reported",
+                warning="Enjekte edilen retriever tanılama bilgisi sağlamadı.",
+                lexical_candidate_count=self._channel_hit_count(hits, "lexical"),
+                dense_candidate_count=self._channel_hit_count(hits, "dense"),
+                fused_candidate_count=unique_count,
+            )
+
+        if isinstance(raw, Mapping):
+            payload = dict(raw)
+        elif hasattr(raw, "model_dump"):
+            payload = raw.model_dump(mode="python")
+        else:
+            payload = {
+                field_name: getattr(raw, field_name)
+                for field_name in RetrievalDiagnostics.model_fields
+                if hasattr(raw, field_name)
+            }
+        payload["mode"] = self.retrieval_mode
+        try:
+            return RetrievalDiagnostics.model_validate(payload)
+        except ValidationError as exc:
+            raise EvaluationError(
+                f"Retriever diagnostics şeması doğrulanamadı: {exc}"
+            ) from exc
+
+    def _channel_trace(
+        self, hits: list[SearchHit]
+    ) -> list[EvaluationRetrievalHitTrace]:
+        trace: list[EvaluationRetrievalHitTrace] = []
+        for rank, hit in enumerate(hits, start=1):
+            channels = list(
+                dict.fromkeys(
+                    contribution.channel
+                    for contribution in hit.channel_contributions
+                )
+            )
+            if not channels and self.retrieval_mode == "bm25":
+                channels = ["lexical"]
+            trace.append(
+                EvaluationRetrievalHitTrace(
+                    rank=rank,
+                    chunk_id=hit.chunk.chunk_id,
+                    score=hit.score,
+                    fusion_method=hit.fusion_method,
+                    matched_terms=list(hit.matched_terms),
+                    channels=channels,
+                    channel_contributions=list(hit.channel_contributions),
+                )
+            )
+        return trace
+
+    @staticmethod
+    def _channel_hit_count(hits: list[SearchHit], channel: str) -> int:
+        return sum(
+            any(
+                contribution.channel == channel
+                for contribution in hit.channel_contributions
+            )
+            for hit in hits
         )
 
     @staticmethod

@@ -112,22 +112,61 @@ class IngestionReport(BaseModel):
     activation_blockers: list[str] = Field(default_factory=list)
 
 
+class RetrievalChannelContribution(BaseModel):
+    """Observable contribution of one ranked retrieval channel."""
+
+    channel: str = Field(min_length=1)
+    rank: int = Field(ge=1)
+    raw_score: float
+    rrf_contribution: float = Field(gt=0)
+
+
 class SearchHit(BaseModel):
     chunk: LegislationChunk
     score: float
     matched_terms: list[str] = Field(default_factory=list)
+    fusion_method: str | None = None
+    channel_contributions: list[RetrievalChannelContribution] = Field(
+        default_factory=list
+    )
+
+
+class RetrievalDiagnostics(BaseModel):
+    """Persistable retrieval health information for one process run."""
+
+    mode: str = "bm25"
+    dense_status: str = "not_requested"
+    fallback_used: bool = False
+    warning: str | None = None
+    dense_error_type: str | None = None
+    lexical_candidate_count: int = Field(default=0, ge=0)
+    dense_candidate_count: int = Field(default=0, ge=0)
+    fused_candidate_count: int = Field(default=0, ge=0)
+    channel_top_n: int | None = Field(default=None, ge=1)
+    rrf_k: int | None = Field(default=None, ge=0)
 
 
 class VerifiedReference(BaseModel):
     chunk_id: str
+    document_id: str | None = None
     title: str
     article: str | None = None
+    paragraph: str | None = None
+    clause: str | None = None
     source: str
     page: int | None = None
+    page_end: int | None = None
+    source_url: str | None = None
+    source_kind: str = "unknown"
+    domain: str = "unknown"
     excerpt: str
     score: float
     verified: bool
     verification_note: str
+    evidence_channels: list[str] = Field(default_factory=list)
+    channel_contributions: list[RetrievalChannelContribution] = Field(
+        default_factory=list
+    )
 
 
 class TemplateDecision(BaseModel):
@@ -209,6 +248,7 @@ class ProcessState(BaseModel):
     raw_text: str | None = None
     analysis: DocumentAnalysis | None = None
     search_hits: list[SearchHit] = Field(default_factory=list)
+    retrieval_diagnostics: RetrievalDiagnostics | None = None
     verified_references: list[VerifiedReference] = Field(default_factory=list)
     template_decision: TemplateDecision | None = None
     routing: RoutingRecommendation | None = None

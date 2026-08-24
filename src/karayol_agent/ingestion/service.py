@@ -7,9 +7,11 @@ from hashlib import sha256
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from pydantic import ValidationError
+
 from karayol_agent.ingestion.chunker import LegalStructureChunker
 from karayol_agent.ingestion.quality import assess_text_layer
-from karayol_agent.schemas import IngestionReport
+from karayol_agent.schemas import IngestionReport, LegislationChunk
 
 if TYPE_CHECKING:
     from karayol_agent.curation.models import (
@@ -196,6 +198,10 @@ class LegislationIngestionService:
     ) -> Path:
         """Onaylı tekil ingestion çıktılarını taşınabilir tek korpusta birleştirir."""
 
+        # Local import avoids coupling module initialization while keeping the
+        # active-corpus writer and every reader on one fail-closed contract.
+        from karayol_agent.retrieval.repository import LegislationRepository
+
         if not reports:
             raise IngestionApprovalError(
                 "Aktif corpus üretilemedi: manifestte onaylı belge bulunmuyor."
@@ -232,6 +238,7 @@ class LegislationIngestionService:
                 raise IngestionApprovalError(
                     f"{source_path}: geçerli kaynak SHA-256 değeri bulunmuyor."
                 )
+            source_url = payload.get("source_url")
             if not payload.get("reviewed_by") or not payload.get("reviewed_at"):
                 raise IngestionApprovalError(
                     f"{source_path}: insan inceleme izi eksik."
@@ -250,24 +257,22 @@ class LegislationIngestionService:
                     raise IngestionApprovalError(
                         f"{source_path}: chunk_id eksik veya yineleniyor: {chunk_id!r}"
                     )
-                if (
-                    chunk.get("approved_for_active_rag") is not True
-                    or chunk.get("validity_status") != "verified"
-                    or chunk.get("source_kind") != "public_legislation"
-                    or chunk.get("ocr_status")
-                    not in {"text_layer_available", "ocr_verified"}
-                ):
+                try:
+                    legal_chunk = LegislationChunk.model_validate(chunk)
+                except ValidationError as exc:
                     raise IngestionApprovalError(
-                        f"{chunk_id}: aktif corpus güvenlik sözleşmesini karşılamıyor."
+                        f"{chunk_id}: aktif corpus chunk şeması geçersiz: {exc}"
+                    ) from exc
+                blockers = LegislationRepository.public_chunk_blockers(legal_chunk)
+                if blockers:
+                    raise IngestionApprovalError(
+                        f"{chunk_id}: aktif corpus güvenlik sözleşmesini "
+                        "karşılamıyor: " + ", ".join(blockers) + "."
                     )
                 if (
                     chunk.get("document_id") != document_id
                     or chunk.get("source_sha256") != source_sha256
-                    or not chunk.get("article")
-                    or not chunk.get("context_text")
-                    or not isinstance(chunk.get("page"), int)
-                    or not isinstance(chunk.get("page_end"), int)
-                    or int(chunk["page_end"]) < int(chunk["page"])
+                    or chunk.get("source_url") != source_url
                 ):
                     raise IngestionApprovalError(
                         f"{chunk_id}: kaynak, yapı veya sayfa izi eksik/tutarsız."
@@ -278,7 +283,7 @@ class LegislationIngestionService:
                 {
                     "document_id": document_id,
                     "title": payload.get("dataset_name"),
-                    "source_url": payload.get("source_url"),
+                    "source_url": source_url,
                     "source_sha256": payload.get("source_sha256"),
                     "chunk_count": len(records),
                     "reviewed_by": payload.get("reviewed_by"),
@@ -298,6 +303,12 @@ class LegislationIngestionService:
             "documents": documents,
             "data": chunks,
         }
+        try:
+            LegislationRepository.validate_active_corpus_envelope(corpus)
+        except ValueError as exc:
+            raise IngestionApprovalError(
+                f"Aktif corpus zarfı doğrulanamadı: {exc}"
+            ) from exc
         output_path.write_text(
             json.dumps(corpus, ensure_ascii=False, indent=2), encoding="utf-8"
         )

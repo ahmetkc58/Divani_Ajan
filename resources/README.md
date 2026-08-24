@@ -17,6 +17,12 @@ Bu dizin, proje için indirilen resmî referansları ve haricî veri/araç lisan
 4. `tool_licenses/augraphy_LICENSE.txt`: Augraphy MIT lisansı.
 5. `tool_licenses/trdg_LICENSE.txt`: TextRecognitionDataGenerator MIT lisansı.
 
+`manifests/sources.json` içindeki `hash_scope=normalized_lf_utf8_text`, metnin
+UTF-8 olarak çözümlenip CRLF/CR satır sonlarının LF'ye kanonikleştirilmesinden
+sonraki byte sayısı ve SHA-256 değerini ifade eder. Böylece lisans metni kimliği
+Windows ve POSIX çalışma ağaçlarında aynıdır. `hash_scope` bulunmayan yerel
+artefaktlarda byte sayısı ve SHA-256 doğrudan dosyanın ham byte'larına aittir.
+
 ## Bilinçli Olarak İndirilmeyenler
 
 - TR-DocVQA-Synth'in tamamı yaklaşık 5,15 GB'tır. Kamu evrakı değil, ticari belge ağırlıklı olduğu için önce küçük bir alt küme ve alan şeması incelenecektir.

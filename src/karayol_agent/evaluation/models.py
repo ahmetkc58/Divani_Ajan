@@ -4,7 +4,11 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
-from karayol_agent.schemas import utc_now
+from karayol_agent.schemas import (
+    RetrievalChannelContribution,
+    RetrievalDiagnostics,
+    utc_now,
+)
 
 
 class GoldRecord(BaseModel):
@@ -31,6 +35,20 @@ class EvaluationMetric(BaseModel):
     denominator: int
 
 
+class EvaluationRetrievalHitTrace(BaseModel):
+    """Auditable rank and channel evidence for one retrieved chunk."""
+
+    rank: int = Field(ge=1)
+    chunk_id: str
+    score: float
+    fusion_method: str | None = None
+    matched_terms: list[str] = Field(default_factory=list)
+    channels: list[str] = Field(default_factory=list)
+    channel_contributions: list[RetrievalChannelContribution] = Field(
+        default_factory=list
+    )
+
+
 class EvaluationRecordResult(BaseModel):
     record_id: str
     tags: list[str] = Field(default_factory=list)
@@ -50,11 +68,19 @@ class EvaluationRecordResult(BaseModel):
     missing_fields_exact: bool
     template_correct: bool
     retrieval_hit: bool | None = None
+    verified_reference_count: int = Field(default=0, ge=0)
+    legal_evidence_abstained: bool = False
+    retrieval_mode: str = "bm25"
+    retrieval_diagnostics: RetrievalDiagnostics | None = None
+    retrieval_channel_trace: list[EvaluationRetrievalHitTrace] = Field(
+        default_factory=list
+    )
 
 
 class EvaluationReport(BaseModel):
-    schema_version: str = "1.0"
+    schema_version: str = "1.2"
     generated_at: datetime = Field(default_factory=utc_now)
+    retrieval_mode: str = "bm25"
     dataset_name: str
     dataset_version: str
     total_records: int

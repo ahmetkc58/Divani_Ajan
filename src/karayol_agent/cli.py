@@ -3,12 +3,19 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import asdict, replace
 from pathlib import Path
 
 from karayol_agent.config import settings
 from karayol_agent.curation import CurationError, LegislationManifestService
 from karayol_agent.documents import ExtractionError
-from karayol_agent.evaluation import EvaluationError, EvaluationService
+from karayol_agent.evaluation import (
+    EvaluationError,
+    EvaluationService,
+    SyntheticBenchmarkError,
+    build_synthetic_hybrid_benchmark,
+)
+from karayol_agent.graph import EvidenceGraphBuilder, GraphBuildError
 from karayol_agent.ingestion import (
     IngestionError,
     LegislationIngestionService,
@@ -19,6 +26,48 @@ from karayol_agent.orchestrator import (
     ProcessValidationError,
     build_orchestrator,
 )
+from karayol_agent.retrieval.embeddings import (
+    EmbeddingUnavailableError,
+    EmbeddingValidationError,
+    JinaEmbeddingProvider,
+)
+from karayol_agent.retrieval.qdrant_store import (
+    QdrantUnavailable,
+    SchemaMismatch,
+)
+from karayol_agent.retrieval.repository import (
+    LegislationRepository,
+    RepositoryApprovalError,
+)
+from karayol_agent.retrieval.reranker import (
+    JinaRerankerProvider,
+    RerankerUnavailableError,
+    RerankerValidationError,
+    RerankingRetriever,
+)
+from karayol_agent.retrieval.runtime import build_retrieval_runtime
+from karayol_agent.retrieval.vector_indexing import VectorIndexingError
+
+
+class RagConfigurationError(RuntimeError):
+    """Jina/Qdrant komutu zorunlu çalışma zamanı ayarlarını bulamadığında."""
+
+
+def _positive_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("pozitif bir tam sayı bekleniyor") from exc
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("değer en az 1 olmalıdır")
+    return parsed
+
+
+def _non_empty(value: str) -> str:
+    stripped = value.strip()
+    if not stripped:
+        raise argparse.ArgumentTypeError("boş değer kullanılamaz")
+    return stripped
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -142,6 +191,77 @@ def build_parser() -> argparse.ArgumentParser:
     )
     evaluate.add_argument("--dataset", type=Path, help="Gold veri seti JSON dosyası")
     evaluate.add_argument("--output", type=Path, help="Değerlendirme raporu JSON dosyası")
+
+    benchmark = subcommands.add_parser(
+        "benchmark-retrieval",
+        help=(
+            "Dondurulmuş sentetik gold sette BM25 ile gerçek yerel "
+            "Jina/Qdrant hibrit retrieval'ı karşılaştır"
+        ),
+    )
+    benchmark.add_argument("--dataset", type=Path)
+    benchmark.add_argument("--legislation", type=Path)
+    benchmark.add_argument("--units", type=Path)
+    benchmark.add_argument("--bm25-output", type=Path)
+    benchmark.add_argument("--hybrid-output", type=Path)
+    benchmark.add_argument("--summary-output", type=Path)
+    benchmark.add_argument(
+        "--qdrant-path",
+        type=Path,
+        help="Verilmezse Qdrant yalnız bellek içinde çalışır",
+    )
+    benchmark.add_argument("--batch-size", type=_positive_int)
+    benchmark.add_argument(
+        "--with-reranker",
+        action="store_true",
+        help="Pinli çok dilli Jina reranker ablation'ını da çalıştır",
+    )
+    benchmark.add_argument("--reranked-output", type=Path)
+    benchmark.add_argument(
+        "--local-files-only",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Pinli Jina modelini yalnız yerel Hugging Face önbelleğinden yükle",
+    )
+
+    build_graph = subcommands.add_parser(
+        "build-synthetic-graph",
+        help=(
+            "Dondurulmuş sentetik gold setten kanıt izli küçük "
+            "mevzuat-birim-şablon grafı üret"
+        ),
+    )
+    build_graph.add_argument("--dataset", type=Path)
+    build_graph.add_argument("--legislation", type=Path)
+    build_graph.add_argument("--units", type=Path)
+    build_graph.add_argument("--output", type=Path)
+
+    index_vectors = subcommands.add_parser(
+        "index-vectors",
+        help="Onaylı kamu mevzuatı parçalarını Jina v3 ile Qdrant'a indeksle",
+    )
+    index_vectors.add_argument(
+        "--corpus",
+        type=Path,
+        help="Onaylı aktif corpus JSON (varsayılan: yapılandırılmış aktif corpus)",
+    )
+    index_vectors.add_argument(
+        "--qdrant-url",
+        type=_non_empty,
+        help="Qdrant URL; verilmezse QDRANT_URL kullanılır",
+    )
+    index_vectors.add_argument(
+        "--collection",
+        type=_non_empty,
+        help="Sürümlü koleksiyon adı; verilmezse KARAYOL_QDRANT_COLLECTION kullanılır",
+    )
+    index_vectors.add_argument("--batch-size", type=_positive_int)
+    index_vectors.add_argument(
+        "--local-files-only",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Jina modelini yalnız yerel Hugging Face önbelleğinden yükle",
+    )
     return parser
 
 
@@ -153,6 +273,179 @@ def _parse_fields(values: list[str]) -> dict[str, str]:
         key, field_value = value.split("=", 1)
         result[key.strip()] = field_value.strip()
     return result
+
+
+def _retrieval_metric_values(report: object) -> dict[str, float]:
+    metrics = getattr(report, "metrics")
+    return {
+        name: float(metric.value)
+        for name, metric in metrics.items()
+    } | {"retrieval_mrr": float(getattr(report, "retrieval_mrr"))}
+
+
+def _portable_artifact_path(path: Path, project_root: Path | None) -> str:
+    """Keep persisted reports portable and free of workstation/user paths."""
+
+    if not path.is_absolute():
+        return path.as_posix()
+    if project_root is not None:
+        try:
+            return path.resolve().relative_to(project_root.resolve()).as_posix()
+        except ValueError:
+            pass
+    return path.name
+
+
+def _strict_dense_benchmark_health(
+    report: object,
+    *,
+    label: str,
+) -> dict[str, int]:
+    """Require a real dense result for every benchmark record before writing."""
+
+    results = getattr(report, "results", None)
+    total_records = getattr(report, "total_records", None)
+    if not isinstance(results, list) or total_records != len(results) or not results:
+        raise SyntheticBenchmarkError(
+            f"{label} raporu eksik/tutarsız sonuç listesi taşıyor; rapor yazılmadı."
+        )
+
+    success_count = 0
+    fallback_count = 0
+    failed_records: list[str] = []
+    for position, result in enumerate(results):
+        diagnostics = getattr(result, "retrieval_diagnostics", None)
+        if isinstance(diagnostics, dict):
+            dense_status = diagnostics.get("dense_status")
+            fallback_used = diagnostics.get("fallback_used") is True
+        else:
+            dense_status = getattr(diagnostics, "dense_status", None)
+            fallback_used = getattr(diagnostics, "fallback_used", None) is True
+        if fallback_used:
+            fallback_count += 1
+        if dense_status == "used" and not fallback_used:
+            success_count += 1
+            continue
+        record_id = getattr(result, "record_id", None)
+        failed_records.append(str(record_id or f"sonuç[{position}]"))
+
+    error_count = len(results) - success_count
+    if error_count:
+        preview = ", ".join(failed_records[:5])
+        suffix = f" (+{error_count - 5})" if error_count > 5 else ""
+        raise SyntheticBenchmarkError(
+            f"{label} dense kanalı tüm kayıtlarda kullanılamadı: "
+            f"başarılı={success_count}/{len(results)}, hata={error_count}, "
+            f"fallback={fallback_count}; kayıtlar={preview}{suffix}. "
+            "BM25 fallback sonucu hibrit benchmark olarak yazılmadı."
+        )
+    return {
+        "dense_success_count": success_count,
+        "dense_error_count": error_count,
+        "dense_fallback_count": fallback_count,
+    }
+
+
+def _retrieval_comparison_summary(
+    *,
+    bm25_report: object,
+    hybrid_report: object,
+    index_report: dict[str, object],
+    dense_query_count: int,
+    dense_query_seconds: float,
+    bm25_report_path: Path,
+    hybrid_report_path: Path,
+    reranked_report: object | None = None,
+    reranked_report_path: Path | None = None,
+    reranker_metadata: dict[str, object] | None = None,
+    reranked_dense_query_count: int = 0,
+    reranked_dense_query_seconds: float = 0.0,
+    project_root: Path | None = None,
+) -> dict[str, object]:
+    hybrid_health = _strict_dense_benchmark_health(
+        hybrid_report,
+        label="Hybrid Jina/Qdrant benchmark",
+    )
+    if dense_query_count != hybrid_health["dense_success_count"]:
+        raise SyntheticBenchmarkError(
+            "Hybrid Jina/Qdrant benchmark dense çağrı sayısı başarılı kayıt "
+            "sayısıyla eşleşmiyor; rapor yazılmadı."
+        )
+    bm25_metrics = _retrieval_metric_values(bm25_report)
+    hybrid_metrics = _retrieval_metric_values(hybrid_report)
+    deltas = {
+        name: round(hybrid_metrics[name] - bm25_metrics[name], 4)
+        for name in sorted(bm25_metrics.keys() & hybrid_metrics.keys())
+    }
+    summary: dict[str, object] = {
+        "schema_version": "1.2",
+        "generated_at": getattr(hybrid_report, "generated_at").isoformat(),
+        "dataset_name": getattr(hybrid_report, "dataset_name"),
+        "dataset_version": getattr(hybrid_report, "dataset_version"),
+        "total_records": getattr(hybrid_report, "total_records"),
+        "benchmark_only": True,
+        "production_legal_evidence": False,
+        "bm25": {
+            "report": _portable_artifact_path(bm25_report_path, project_root),
+            "metrics": bm25_metrics,
+        },
+        "hybrid_jina_qdrant": {
+            "report": _portable_artifact_path(hybrid_report_path, project_root),
+            "metrics": hybrid_metrics,
+            "index": index_report,
+            "dense_query_count": dense_query_count,
+            **hybrid_health,
+            "dense_query_seconds": round(dense_query_seconds, 6),
+            "average_dense_query_ms": round(
+                dense_query_seconds * 1000 / dense_query_count,
+                3,
+            )
+            if dense_query_count
+            else 0.0,
+        },
+        "hybrid_minus_bm25": deltas,
+    }
+    if reranked_report is not None:
+        if reranked_report_path is None or reranker_metadata is None:
+            raise ValueError("Reranked rapor için yol ve metadata birlikte gereklidir.")
+        reranked_health = _strict_dense_benchmark_health(
+            reranked_report,
+            label="Reranked Jina/Qdrant benchmark",
+        )
+        if reranked_dense_query_count != reranked_health["dense_success_count"]:
+            raise SyntheticBenchmarkError(
+                "Reranked benchmark ek dense çağrı sayısı başarılı kayıt sayısıyla "
+                "eşleşmiyor; rapor yazılmadı."
+            )
+        reranked_metrics = _retrieval_metric_values(reranked_report)
+        summary["hybrid_jina_qdrant_reranked"] = {
+            "report": _portable_artifact_path(reranked_report_path, project_root),
+            "metrics": reranked_metrics,
+            "reranker": reranker_metadata,
+            "additional_dense_query_count": reranked_dense_query_count,
+            "additional_dense_success_count": reranked_health[
+                "dense_success_count"
+            ],
+            "additional_dense_error_count": reranked_health["dense_error_count"],
+            "additional_dense_fallback_count": reranked_health[
+                "dense_fallback_count"
+            ],
+            "additional_dense_query_seconds": round(
+                reranked_dense_query_seconds,
+                6,
+            ),
+            "average_additional_dense_query_ms": round(
+                reranked_dense_query_seconds * 1000 / reranked_dense_query_count,
+                3,
+            )
+            if reranked_dense_query_count
+            else 0.0,
+        }
+        summary["reranked_minus_hybrid"] = {
+            name: round(reranked_metrics[name] - hybrid_metrics[name], 4)
+            for name in sorted(reranked_metrics.keys() & hybrid_metrics.keys())
+        }
+    return summary
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -168,6 +461,17 @@ def main(argv: list[str] | None = None) -> int:
         IngestionError,
         CurationError,
         EvaluationError,
+        SyntheticBenchmarkError,
+        GraphBuildError,
+        EmbeddingUnavailableError,
+        EmbeddingValidationError,
+        QdrantUnavailable,
+        SchemaMismatch,
+        RepositoryApprovalError,
+        RerankerUnavailableError,
+        RerankerValidationError,
+        VectorIndexingError,
+        RagConfigurationError,
         OSError,
     ) as exc:
         print(
@@ -363,6 +667,7 @@ def _run(arguments: argparse.Namespace) -> int:
             legislation_path=settings.data_dir / "synthetic_legislation.json",
             units_path=settings.data_dir / "synthetic_units.json",
             retrieval_top_k=settings.retrieval_top_k,
+            min_retrieval_score=settings.min_retrieval_score,
             low_confidence_threshold=settings.low_confidence_threshold,
         )
         report = evaluator.evaluate(dataset_path)
@@ -372,6 +677,7 @@ def _run(arguments: argparse.Namespace) -> int:
                 {
                     "report": str(report_path),
                     "dataset": report.dataset_name,
+                    "retrieval_mode": report.retrieval_mode,
                     "records": report.total_records,
                     "metrics": {
                         name: metric.model_dump(mode="json")
@@ -381,6 +687,253 @@ def _run(arguments: argparse.Namespace) -> int:
                     "missing_field_recall": report.missing_field_recall,
                     "missing_field_f1": report.missing_field_f1,
                     "retrieval_mrr": report.retrieval_mrr,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
+    elif arguments.command == "build-synthetic-graph":
+        dataset_path = (
+            arguments.dataset or settings.data_dir / "synthetic_gold.json"
+        ).resolve()
+        legislation_path = (
+            arguments.legislation
+            or settings.data_dir / "synthetic_legislation.json"
+        ).resolve()
+        units_path = (
+            arguments.units or settings.data_dir / "synthetic_units.json"
+        ).resolve()
+        output_path = (
+            arguments.output
+            or settings.project_root / "reports" / "synthetic_evidence_graph.json"
+        ).resolve()
+        builder = EvidenceGraphBuilder()
+        graph = builder.build(
+            dataset_path=dataset_path,
+            legislation_path=legislation_path,
+            units_path=units_path,
+        )
+        builder.write(graph, output_path)
+        print(
+            json.dumps(
+                {
+                    "output": str(output_path),
+                    "graph_id": graph.graph_id,
+                    "benchmark_only": graph.benchmark_only,
+                    "production_legal_evidence": graph.production_legal_evidence,
+                    "node_counts": graph.node_counts,
+                    "edge_counts": graph.edge_counts,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
+    elif arguments.command == "benchmark-retrieval":
+        dataset_path = (
+            arguments.dataset or settings.data_dir / "synthetic_gold.json"
+        ).resolve()
+        legislation_path = (
+            arguments.legislation
+            or settings.data_dir / "synthetic_legislation.json"
+        ).resolve()
+        units_path = (
+            arguments.units or settings.data_dir / "synthetic_units.json"
+        ).resolve()
+        bm25_output = (
+            arguments.bm25_output
+            or settings.project_root / "reports" / "evaluation_bm25_comparison.json"
+        ).resolve()
+        hybrid_output = (
+            arguments.hybrid_output
+            or settings.project_root
+            / "reports"
+            / "evaluation_hybrid_jina_qdrant.json"
+        ).resolve()
+        summary_output = (
+            arguments.summary_output
+            or settings.project_root
+            / "reports"
+            / "evaluation_retrieval_comparison.json"
+        ).resolve()
+        reranked_output = (
+            arguments.reranked_output
+            or settings.project_root
+            / "reports"
+            / "evaluation_hybrid_jina_qdrant_reranked.json"
+        ).resolve()
+
+        bm25_evaluator = EvaluationService(
+            legislation_path=legislation_path,
+            units_path=units_path,
+            retrieval_top_k=settings.retrieval_top_k,
+            min_retrieval_score=settings.min_retrieval_score,
+            low_confidence_threshold=settings.low_confidence_threshold,
+        )
+        bm25_report = bm25_evaluator.evaluate(dataset_path)
+
+        provider = JinaEmbeddingProvider(
+            model_name=settings.embedding_model,
+            dimension=settings.embedding_dimension,
+            backend=settings.embedding_backend,
+            model_revision=settings.embedding_revision,
+            code_revision=settings.embedding_code_revision,
+            local_files_only=(
+                settings.embedding_local_files_only
+                if arguments.local_files_only is None
+                else arguments.local_files_only
+            ),
+            batch_size=arguments.batch_size or settings.embedding_batch_size,
+        )
+        runtime = build_synthetic_hybrid_benchmark(
+            legislation_path=legislation_path,
+            embedding_provider=provider,
+            qdrant_path=arguments.qdrant_path,
+            channel_top_n=settings.hybrid_candidate_top_k,
+            rrf_k=settings.rrf_k,
+        )
+        try:
+            hybrid_evaluator = EvaluationService(
+                legislation_path=legislation_path,
+                units_path=units_path,
+                retrieval_top_k=settings.retrieval_top_k,
+                min_retrieval_score=settings.min_retrieval_score,
+                low_confidence_threshold=settings.low_confidence_threshold,
+                retriever=runtime.retriever,
+                retrieval_mode="hybrid",
+            )
+            hybrid_report = hybrid_evaluator.evaluate(dataset_path)
+            hybrid_dense_query_count = runtime.dense_retriever.query_count
+            hybrid_dense_query_seconds = runtime.dense_retriever.query_seconds
+            reranked_report: object | None = None
+            reranker_metadata: dict[str, object] | None = None
+            reranked_dense_query_count = 0
+            reranked_dense_query_seconds = 0.0
+            reranked_evaluator: EvaluationService | None = None
+            if arguments.with_reranker:
+                reranker = JinaRerankerProvider(
+                    model_name=settings.reranker_model,
+                    revision=settings.reranker_revision,
+                    code_revision=settings.reranker_code_revision,
+                    local_files_only=(
+                        settings.embedding_local_files_only
+                        if arguments.local_files_only is None
+                        else arguments.local_files_only
+                    ),
+                    batch_size=settings.reranker_batch_size,
+                    device="cpu",
+                    use_flash_attn=False,
+                )
+                reranked_retriever = RerankingRetriever(
+                    runtime.retriever,
+                    reranker,
+                    candidate_top_k=settings.reranker_candidate_top_k,
+                )
+                reranked_evaluator = EvaluationService(
+                    legislation_path=legislation_path,
+                    units_path=units_path,
+                    retrieval_top_k=settings.retrieval_top_k,
+                    min_retrieval_score=settings.min_retrieval_score,
+                    low_confidence_threshold=settings.low_confidence_threshold,
+                    retriever=reranked_retriever,
+                    retrieval_mode="hybrid",
+                )
+                reranked_report = reranked_evaluator.evaluate(dataset_path)
+                reranked_dense_query_count = (
+                    runtime.dense_retriever.query_count - hybrid_dense_query_count
+                )
+                reranked_dense_query_seconds = (
+                    runtime.dense_retriever.query_seconds - hybrid_dense_query_seconds
+                )
+                reranker_metadata = {
+                    "model": reranker.model_name,
+                    "revision": reranker.revision,
+                    "code_revision": reranker.code_revision,
+                    "candidate_top_k": settings.reranker_candidate_top_k,
+                    "batch_size": settings.reranker_batch_size,
+                    "score_calls": reranker.score_calls,
+                    "score_seconds": round(reranker.score_seconds, 6),
+                    "average_score_call_ms": round(
+                        reranker.score_seconds * 1000 / reranker.score_calls,
+                        3,
+                    )
+                    if reranker.score_calls
+                    else 0.0,
+                }
+            summary = _retrieval_comparison_summary(
+                bm25_report=bm25_report,
+                hybrid_report=hybrid_report,
+                index_report=asdict(runtime.index_report),
+                dense_query_count=hybrid_dense_query_count,
+                dense_query_seconds=hybrid_dense_query_seconds,
+                bm25_report_path=bm25_output,
+                hybrid_report_path=hybrid_output,
+                reranked_report=reranked_report,
+                reranked_report_path=(
+                    reranked_output if reranked_report is not None else None
+                ),
+                reranker_metadata=reranker_metadata,
+                reranked_dense_query_count=reranked_dense_query_count,
+                reranked_dense_query_seconds=reranked_dense_query_seconds,
+                project_root=settings.project_root,
+            )
+            # Health validation in the summary is intentionally completed before
+            # any benchmark report is persisted. A dense failure must not leave
+            # a BM25 fallback artifact labelled as Jina/Qdrant hybrid.
+            bm25_evaluator.write(bm25_report, bm25_output)
+            hybrid_evaluator.write(hybrid_report, hybrid_output)
+            if reranked_report is not None and reranked_evaluator is not None:
+                reranked_evaluator.write(reranked_report, reranked_output)
+        finally:
+            runtime.dense_retriever.close()
+
+        summary_output.parent.mkdir(parents=True, exist_ok=True)
+        summary_output.write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(json.dumps({"summary": str(summary_output), **summary}, ensure_ascii=False, indent=2))
+        return 0
+    elif arguments.command == "index-vectors":
+        qdrant_url = arguments.qdrant_url or settings.qdrant_url
+        if not qdrant_url:
+            raise RagConfigurationError(
+                "Qdrant URL zorunludur: --qdrant-url veya QDRANT_URL verin."
+            )
+        corpus_path = (arguments.corpus or settings.active_legislation_path).resolve()
+        chunks, corpus_binding = LegislationRepository(
+            corpus_path
+        ).load_with_binding()
+        if not chunks:
+            raise RagConfigurationError(
+                "Aktif corpus boş; Qdrant indeksi oluşturulmadı."
+            )
+        rag_settings = replace(
+            settings,
+            qdrant_url=qdrant_url.strip(),
+            qdrant_collection=arguments.collection or settings.qdrant_collection,
+            embedding_batch_size=(
+                arguments.batch_size or settings.embedding_batch_size
+            ),
+            embedding_local_files_only=(
+                settings.embedding_local_files_only
+                if arguments.local_files_only is None
+                else arguments.local_files_only
+            ),
+        )
+        runtime = build_retrieval_runtime(
+            rag_settings,
+            corpus_binding=corpus_binding,
+        )
+        report = runtime.indexing_service(
+            batch_size=rag_settings.embedding_batch_size
+        ).index(chunks)
+        print(
+            json.dumps(
+                {
+                    "corpus": str(corpus_path),
+                    **asdict(report),
                 },
                 ensure_ascii=False,
                 indent=2,

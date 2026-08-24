@@ -7,9 +7,10 @@
 
 | | |
 |---|---|
-| Bugünün tarihi | **19 Ağustos 2026** |
+| Plan başlangıcı | **19 Ağustos 2026** |
+| Son uygulama denetimi | **24 Ağustos 2026** |
 | Çevrimiçi süreç son tarihi | **26 Ağustos 2026** |
-| Kalan süre | **~7 gün** |
+| Kalan süre | **~2 gün** |
 | Final | Ağustos (tarih TEKNOFEST takviminde ilan edilecek) |
 
 Bu plan, "ideal/kapsamlı mimari" değil, **7 gün içinde uçtan uca çalışan, demo edilebilir bir sistem** teslim etme gerçeğine göre kurgulanmıştır. Puanlamada Uygulama (35) + Demo (15) = **100 puanın yarısı çalışırlığa bağlı**; yarım kalmış ama "teorik olarak ileri" bir mimari, sade ama sağlam çalışan bir mimariden daha düşük puan alır. Bu nedenle aşağıdaki her bölüm **Tier 0 (zorunlu) / Tier 1 (zaman kalırsa) / Tier 2 (dokümante edilir, muhtemelen kodlanmaz)** şeklinde önceliklendirilmiştir.
@@ -229,19 +230,29 @@ graph_nodes_v1         # Graf düğümü açıklamaları ve topluluk özetleri
   "paragraph": "2",
   "clause": "a",
   "page": 14,
+  "page_end": 14,
   "source_path": "...",
   "source_url": "...",
+  "source_sha256": "...",
+  "source_kind": "public_legislation",
   "validity_status": "verified",
   "approved_for_active_rag": true,
-  "ocr_status": "verified",
+  "ocr_status": "text_layer_available",
   "context_text": "...",
   "original_text": "...",
   "embedding_model": "jinaai/jina-embeddings-v3",
   "embedding_dimension": 1024,
   "embedding_task": "retrieval.passage",
+  "embedding_model_revision": "ab036b...",
+  "embedding_code_revision": "bd55a5e...",
   "index_version": "1.0"
 }
 ```
+
+`embedding_code_revision`, modelin `auto_map` ile kullandığı ayrı
+`jinaai/xlm-roberta-flash-implementation` deposunun commit'idir. Model ağırlığı
+commit'i bu ayrı kod deposunda bulunmadığından iki revision bilinçli olarak
+farklı ve ayrı ayrı sabitlenir.
 
 `domain`, `subdomain`, `validity_status`, `approved_for_active_rag`,
 `document_type` ve `document_id` alanları Qdrant payload indeksi alacaktır.
@@ -323,13 +334,31 @@ zorunludur.
 #### Aşamalı uygulama ve kabul ölçütleri
 
 1. **Tamamlandı (24 Ağustos):** Bölüm/Madde/Fıkra/Bent chunker'ını sayfa, kaynak hash'i, onay metadata'sı ve uzun fıkra bölme desteğiyle tamamla.
-2. Jina embedding sağlayıcı arayüzünü ve çevrimdışı hata/fallback davranışını ekle.
-3. Qdrant koleksiyon şeması, payload indeksleri ve sürümlü ingestion komutunu ekle.
-4. Mevcut BM25 ile Jina/Qdrant sonuçlarını RRF üzerinden birleştir.
-5. Gold retrieval setinde BM25-only ve hybrid sonuçlarını ayrı raporla.
-6. Reranker ekle; katkısını ablation olarak ölç.
-7. Researcher/Auditor kanıt sözleşmesini uygula.
-8. Küçük, elle doğrulanabilir mevzuat-birim-şablon grafını oluştur.
+2. **Tamamlandı (24 Ağustos):** Jina v3 passage/query sağlayıcı arayüzünü,
+   ağırlık/kod revision pinlerini ve açık BM25 fallback sözleşmesini ekle.
+3. **Tamamlandı (24 Ağustos):** Qdrant `legal_chunks_v1` cosine/1024 şemasını,
+   payload indekslerini, fail-closed public kaynak kapılarını, insan-onay zarfını,
+   exact-corpus SHA-256 fingerprint/allow-list bağını, kimlik başına kanonik tam
+   içerik SHA-256 doğrulamasını ve `index-vectors` komutunu ekle. Eski, başka
+   korpusa ait veya aynı kimlikle değiştirilmiş noktalar sorgu sonucuna giremez.
+4. **Tamamlandı (24 Ağustos):** Contextual BM25 ile Jina/Qdrant sonuçlarını
+   kanal başına top-20 ve klasik `k=60` RRF üzerinden birleştir; kanal izi ile
+   çalışma zamanı teşhisini süreç kaydında sakla. RRF yalnız sıralamadır;
+   dense-only hukuki kanıt ham cosine `>= 0,20` mutlak eşiğini geçmelidir.
+5. **Tamamlandı (24 Ağustos):** Aynı sabit sentetik gold set üzerinde BM25-only,
+   gerçek ve sabit revizyonlu Jina-v3/Qdrant hybrid ve reranked koşularını ayrı
+   raporla. Hybrid Recall@5 `%100`, MRR `%90,97`; BM25'e göre Recall@5 artışı
+   `+%19,44` olarak ölçüldü. Onaylı public korpus oluştuğunda aynı protokol tekrar
+   çalıştırılacak.
+6. **Tamamlandı (24 Ağustos):** Sabit revizyonlu çok dilli reranker eklendi ve
+   ablation ölçüldü. Recall@5 `%97,22`'ye gerilediği ve belirgin ek gecikme
+   getirdiği için varsayılan olarak kapalı bırakıldı.
+7. **Researcher/Auditor sözleşmesi tamamlandı (24 Ağustos):** Dense-only kanıtı
+   yalnız tam public kaynak kapılarıyla kabul et; sentetik demo kuralını public
+   mevzuat gibi göstermeden ayrı doğrula.
+8. **Tamamlandı (24 Ağustos):** Küçük, elle doğrulanabilir sentetik
+   mevzuat-birim-şablon grafı; üç girdinin SHA-256 kimliği, veri seti/sürümü ve
+   yeniden hesaplanan düğüm/kenar sayaçlarıyla üretildi.
 9. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
 10. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
 
@@ -343,6 +372,10 @@ Kabul ölçütleri:
   doğrulama kararının izlenebilir olması.
 - Jina/Qdrant kullanılamadığında mevcut BM25 tabanlı demo akışının açık bir
   uyarıyla çalışmaya devam etmesi.
+- Hibrit benchmark'ta her sorgunun `dense_status=used`, `fallback_used=false`
+  olması; aksi durumda BM25 sonucunun hibrit etiketiyle raporlanmaması.
+- `challenge_no_answer` diliminde düşük benzerlikli dense-only sonuç için açık
+  hukuki kanıt abstention kararının ölçülmesi.
 
 #### Bilimsel ve teknik kaynaklar
 
@@ -553,6 +586,33 @@ temel metrikler `%100`; challenge diliminde sınıflandırma `%0`, yönlendirme 
 entegrasyonu için dürüst başlangıç hedefi olarak korunacaktır. Bu sentetik baseline
 gerçek saha başarımı iddiası değildir.
 
+**Uygulama durumu — 24 Ağustos 2026, gerçek Jina/Qdrant ablation'ı:** Pinli
+`jinaai/jina-embeddings-v3` modeli CPU'da `retrieval.passage` ve
+`retrieval.query` görevleriyle çalıştırıldı; 1024 boyutlu vektörler yerel Qdrant
+koleksiyonuna yazıldı. Aynı 48 kayıtlık dondurulmuş sette hibrit
+BM25+dense+RRF yolu Recall@5'i `%80,56`dan `%100`e, MRR'ı `%80,56`dan `%90,97`ye
+çıkardı. Paraphrase challenge Recall@5 `%12,5`ten `%100`e yükseldi. Bu deney
+yalnız sentetik veridir ve kamu mevzuatı başarımı değildir.
+
+Ölçümden sonra çok dilli Jina reranker ayrıca denendi. Recall@5 `%97,22`, MRR
+`%88,06` değerine düştüğü ve CPU'da skor çağrısı başına ortalama yaklaşık 3,7
+saniye eklediği için entegrasyon ablation olarak korunmuş, varsayılan akışta
+etkinleştirilmemiştir. Bu karar hedef metrik yerine ölçülen sonuçla verilmiştir.
+
+GraphRAG planının ilk dar dilimi de sentetik gold ilişkilerinden üretildi:
+`MevzuatKurali`, `EvrakTuru`, `Birim`, `YaziSablonu` ve `ZorunluAlan`
+düğümleri; `APPLIES_TO`, `ASSIGNED_TO`, `SUPPORTS_TEMPLATE` ve
+`REQUIRES_FIELD` ilişkileri. Her kenar dayandığı gold kayıt kimliklerini taşır.
+Builder yalnız sentetik işaretli girdiyi kabul eder; gerçek kamu grafı sekiz
+kaynağın insan hukuk/kapsam onayı tamamlanana kadar boş kalır.
+
+Sekiz çekirdek kamu kaynağı için ayrıca resmî kaynak/güncellik paketi üretildi:
+dört dosya kesin eski, kılavuz yerel kopyası eksik ve yönetmelik kopyası kanonik
+değildir. İki zayıf metin katmanlı PDF'nin Türkçe OCR aday metinleri üretilmiş
+olsa da `approved_for_active_rag=false` korunmuştur. İnsan hukuk uzmanının
+`approve`, `reject` veya `needs_replacement` kararı, gerçek aktif corpus ve kamu
+Qdrant indeksi için hâlâ zorunlu dış kapıdır.
+
 ---
 
 ## 9. Zaman Çizelgesi (19-26 Ağustos)
@@ -604,4 +664,4 @@ gerçek saha başarımı iddiası değildir.
 
 ---
 
-*Bu plan, şartname (2026_TYDA_SARTNAME_Birinci_Senaryo) ve proje klasöründeki mevzuat kaynaklarına dayanılarak hazırlanmıştır. Yönetmelik'in görsel olarak henüz doğrulanmamış maddeleri (format ölçüleri, imza/ek/dağıtım kuralları) ekip tarafından `mevzuat-1.pdf` üzerinden teyit edilmelidir.*
+*Bu plan, şartname (2026_TYDA_SARTNAME_Birinci_Senaryo) ve proje klasöründeki mevzuat kaynaklarına dayanılarak hazırlanmıştır. Yönetmelik ve kılavuz için makine OCR çıktısı ile örnek sayfa render kontrolleri tamamlanmıştır; format ölçüleri, imza/ek/dağıtım kuralları yine de yetkili insan tarafından sayfa bazında teyit edilmeden üretim kuralı veya aktif hukuk kanıtı sayılmamalıdır.*

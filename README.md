@@ -6,17 +6,19 @@ uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 1. metin/PDF alımı ve OCR fallback,
 2. evrak sınıflandırma ve önemli alan çıkarımı,
 3. eksik bilgi tespiti,
-4. BM25 tabanlı mevzuat/kurum içi kural araması,
+4. bağlamsal BM25 veya Jina Embeddings v3 + Qdrant + RRF hibrit arama,
 5. kaynak doğrulama,
 6. resmî yazı türü ve LaTeX şablonu seçimi,
 7. sentetik birime yönlendirme,
 8. güvenli LaTeX taslağı oluşturma,
 9. uygunluk kontrolü ve süreç bilgilendirmesi.
 
-İlk sürüm çevrimdışı ve kural tabanlıdır. Ajan arayüzleri daha sonra LLM,
-embedding, reranker ve grafik arama sağlayıcılarına bağlanabilecek şekilde
-ayrılmıştır. Demo verileri sentetiktir; `veri_kaynaklari/` altındaki gerçek ve
-herkese açık kayıtlar çalışma zamanında otomatik olarak kullanılmaz.
+Çevrimdışı demo akışı varsayılan olarak kural tabanlı BM25 ile çalışır. İsteğe
+bağlı RAG katmanı aynı sorguyu Jina Embeddings v3 (`retrieval.query`) ve
+contextual BM25 kanallarına gönderir, Qdrant dense sonuçlarını klasik RRF ile
+birleştirir ve dense kanal kullanılamazsa bunu süreç teşhisinde açıkça belirterek
+BM25'e döner. Demo verileri sentetiktir; `veri_kaynaklari/` altındaki gerçek ve
+herkese açık kayıtlar insan onayı olmadan çalışma zamanında kullanılmaz.
 
 ## Kurulum
 
@@ -24,6 +26,18 @@ herkese açık kayıtlar çalışma zamanında otomatik olarak kullanılmaz.
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
+```
+
+Jina v3 + Qdrant bileşenleri için isteğe bağlı RAG bağımlılıklarını da kurun:
+
+```powershell
+python -m pip install -e ".[dev,rag]"
+```
+
+Karantinadaki taranmış PDF'ler için Türkçe OCR inceleme aracını da kullanacaksanız:
+
+```powershell
+python -m pip install -e ".[dev,rag,ocr]"
 ```
 
 Bu çalışma ortamında ana bağımlılıklar zaten kuruluysa kurulumsuz da
@@ -169,6 +183,29 @@ Git'e eklenmez; kalıcı inceleme girdileri
 `core_legislation_manifest.json` ve `core_legislation_manifest_review.csv`
 dosyalarıdır.
 
+İki zayıf metin katmanlı PDF için Türkçe/İngilizce OCR aday metni ve sayfa
+bazlı güven raporu üretmek için:
+
+```powershell
+python -X utf8 scripts\ocr_review.py `
+  --document "official-writing-guide=mevzuat-kılavuz.pdf" `
+  --document "official-writing-regulation=mevzuat-1.pdf" `
+  --output-dir data\processed\ocr_review `
+  --report reports\ocr_review.json `
+  --model-dir runtime\easyocr-models `
+  --force-ocr-all `
+  --allow-model-download
+```
+
+Araç kaynak ve model SHA-256 değerlerini, sayfa yöntemini, karakter sayısını,
+OCR güvenini ve süreyi raporlar. Çıktıyı her zaman
+`ocr_candidate_human_verification_required` ve
+`approved_for_active_rag=false` olarak işaretler; OCR çalıştırmak insan onayı
+yerine geçmez. 24 Ağustos incelemesinin kaynak/güncellik paketi
+`reports/MEVZUAT_KAYNAK_INCELEME_2026-08-24.md` altındadır. Sekiz kaydın dördü
+kesin eski, biri kesik kopya, biri kanonik olmayan OCR adayıdır; bu nedenle
+otomatik aktif corpus hâlâ boş tutulmaktadır.
+
 İnsan kapsam, yürürlük ve OCR doğrulamasından sonra tekil çıktılarla beraber tek
 aktif corpus dosyası üretmek için:
 
@@ -182,6 +219,109 @@ python -m karayol_agent.cli ingest-approved-manifest `
 Kaynakların güncel sürümle değiştirilmesi ve hukuk uzmanı onayı Aşama 3'ün
 teknik kapanışını engellemeyen, fakat gerçek kamu corpusunu aktive etmeden önce
 zorunlu olan içerik doğrulama işidir.
+
+## Jina Embeddings v3 ve Qdrant indeksi
+
+Önce `.env.example` içindeki değişkenleri ortamınıza aktarın ve Qdrant'ı
+çalıştırın. İnsan doğrulamasından geçmiş aktif corpusu sürümlü
+`legal_chunks_v1` koleksiyonuna yazmak için:
+
+```powershell
+$env:QDRANT_URL="http://localhost:6333"
+$env:PYTHONPATH="src"
+python -m karayol_agent.cli index-vectors `
+  --corpus data\processed\active_legislation.json `
+  --collection legal_chunks_v1
+```
+
+İndeksleme sözleşmesi:
+
+- model: `jinaai/jina-embeddings-v3`, 1024 boyut, cosine;
+- belge görevi: `retrieval.passage`, sorgu görevi: `retrieval.query`;
+- indeks metni: `context_text + "\n\n" + text`;
+- kullanıcıya gösterilen kanıt: yalnız orijinal `text` ile belge/madde/sayfa izi;
+- model ağırlığı ile ayrı `auto_map` remote-code deposu kendi doğrulanmış
+  commit'lerine pinlenir;
+- Jina remote-code uyumu için `transformers` 4.x ile sınırlandırılır;
+- payload model/kod revizyonu ile indeks sürümünü taşır;
+- aktif corpusun kanonik SHA-256 parmak izi ve her `chunk_id` için tam kanonik
+  içerik SHA-256 değeri payload ile yerel sonuç doğrulamasına bağlanır; önceki,
+  başka korpusa ait veya aynı kimlikle değiştirilmiş noktalar BM25 korpusuna
+  karışamaz;
+- kamu kaynağı yalnız onay, yürürlük, OCR/metin, SHA-256, sayfa, alan,
+  madde/bağlam ve geçerli HTTP(S) kaynak URL kapılarının tamamını geçerse yazılır;
+  ayrıca `schema_version=2.0` aktif-corpus zarfı, belge sayaçları,
+  belge/chunk URL eşleşmesi ve `reviewed_by`/`reviewed_at` izi zorunludur. Kısmi
+  batch yazımından önce tüm kayıtlar doğrulanır.
+
+Hibrit çalışma zamanını etkinleştirmek için:
+
+```powershell
+$env:KARAYOL_RETRIEVAL_MODE="hybrid"
+$env:QDRANT_URL="http://localhost:6333"
+python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
+```
+
+Her kanal varsayılan olarak 20 aday üretir; ham BM25 ve cosine skorları birbirine
+eklenmez, sıralar `k=60` klasik Reciprocal Rank Fusion ile birleştirilir. Kanal
+sıraları, ham skorlar, RRF katkıları ve fallback durumu süreç JSON'unda korunur.
+RRF skoru yalnız sıralamadır: lexical kanıt yoksa dense-only kaynak, ham Jina
+cosine skoru `KARAYOL_MIN_RETRIEVAL_SCORE` (varsayılan `0.20`) eşiğini geçmeden
+doğrulanmış hukuki kanıt sayılmaz. Düşük skor açık abstention üretir.
+Mevcut çekirdek kamu kaynaklarının insan onayı henüz sıfır olduğu için bu depo
+aktif public koleksiyonu kendiliğinden doldurmaz. Varsayılan `bm25` modu sentetik
+demo akışını çevrimdışı tutar.
+
+**Lisans notu:** Jina Embeddings v3, ayrı remote-code uygulaması ve Jina
+Reranker v2 `CC BY-NC 4.0`; EasyOCR 1.7.2 kodu `Apache-2.0` kapsamındadır.
+EasyOCR CRAFT ve Latin G2 ağırlıkları için ayrı lisans beyanı doğrulanamadığı
+için bunlar depoda dağıtılmaz. Yarışma/demodan ticari ürüne geçmeden önce model
+lisans uygunluğu ayrıca değerlendirilmelidir. Sabit revizyon ve hash kayıtları
+`resources/manifests/sources.json` içindedir.
+
+### Sentetik retrieval karşılaştırması ve reranker kararı
+
+Dondurulmuş sentetik sette gerçek yerel Jina modeli ve Qdrant istemcisiyle
+BM25/hibrit karşılaştırmasını tekrarlamak için:
+
+```powershell
+python -m karayol_agent.cli benchmark-retrieval `
+  --local-files-only `
+  --summary-output reports\evaluation_retrieval_comparison.json
+```
+
+24 Ağustos 2026 CPU ölçümünde BM25 Recall@5 `0,8056`, MRR `0,8056`; Jina v3 +
+Qdrant + BM25 + RRF Recall@5 `1,0000`, MRR `0,9097` verdi. Parafraz diliminde
+Recall@5 `0,1250` değerinden `1,0000` değerine çıktı. Bunlar yalnız 48 sentetik
+kayıt üzerindeki benchmark sonuçlarıdır; kamu mevzuatı veya saha başarımı
+değildir.
+
+Şema `1.2` benchmark'ı her iki dense geçişte de `48/48` başarı ve `0` fallback
+doğrulamıştır. Tek bir dense hata, boş sonuç veya fallback halinde BM25 sonucu
+hibrit etiketiyle yazılmaz ve tüm benchmark raporları fail-closed durur.
+
+`--with-reranker` ile ölçülen `jina-reranker-v2-base-multilingual` Recall@5'i
+`0,9722`, MRR'ı `0,8806` değerine düşürdü ve CPU'da skor çağrısı başına ortalama
+yaklaşık `3,7 sn` ekledi. Entegrasyon ablation için korunur, fakat varsayılan
+akışta kapalıdır. Ayrıntı `reports/RETRIEVAL_ABLATION_2026-08-24.md`
+dosyasındadır.
+
+### Küçük sentetik kanıt grafı
+
+Ölçümden sonra eklenen denetlenebilir grafı üretmek için:
+
+```powershell
+python -m karayol_agent.cli build-synthetic-graph `
+  --output reports\synthetic_evidence_graph.json
+```
+
+Graf; sentetik kural, evrak türü, birim, şablon ve zorunlu alan düğümlerini
+`APPLIES_TO`, `ASSIGNED_TO`, `SUPPORTS_TEMPLATE` ve `REQUIRES_FIELD`
+ilişkileriyle bağlar. Her ilişki gold kayıt kimliklerini kanıt izi olarak taşır.
+Builder sentetik olarak işaretlenmemiş girdiyi reddeder; çıktı
+`benchmark_only=true` ve `production_legal_evidence=false` olarak sabittir.
+Graf ayrıca üç giriş dosyasının proje-göreli yolunu ve SHA-256 değerini taşır;
+özet düğüm/kenar sayaçları dosya okunurken yeniden hesaplanır.
 
 ## API
 
@@ -238,7 +378,10 @@ standart örnek ile doğrudan anahtar kelime kullanmayan 8 paraphrase challenge
 örneği ayrı dilimler hâlinde raporlanır. Mevcut kural tabanlı başlangıç sürümü
 standart dilimde başarılıdır; challenge dilimindeki düşük sonuçlar embedding,
 reranker ve LLM entegrasyonunun ölçülebilir geliştirme hedefidir. Bu sonuçlar
-gerçek saha başarımı olarak yorumlanmamalıdır.
+gerçek saha başarımı olarak yorumlanmamalıdır. Yeni rapor şeması retrieval
+modunu, fallback teşhisini ve her sonuç için kanal/sıra/ham skor/RRF katkısını
+saklar. Gerçek Jina/Qdrant sentetik benchmark raporu ayrıca üretilmiştir;
+onaysız kamu korpusu bu ölçüme veya aktif indekse karıştırılmamıştır.
 
 ## Güvenlik ve veri sınırı
 

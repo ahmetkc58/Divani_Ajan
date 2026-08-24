@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-08-24T03:58:52.550756+00:00",
+  "dataset_name": "Sentetik Karayolu Evrak Gold Değerlendirme Seti",
+  "dataset_version": "1.0.0",
+  "total_records": 48,
+  "benchmark_only": true,
+  "production_legal_evidence": false,
+  "bm25": {
+    "report": "reports/evaluation_bm25_2026-08-24.json",
+    "metrics": {
+      "classification_accuracy": 0.8333,
+      "routing_top1_accuracy": 0.8542,
+      "routing_top3_accuracy": 0.9375,
+      "missing_fields_exact_match": 1.0,
+      "template_accuracy": 0.9375,
+      "retrieval_recall_at_5": 0.8056,
+      "retrieval_mrr": 0.8056
+    }
+  },
+  "hybrid_jina_qdrant": {
+    "report": "reports/evaluation_hybrid_jina_qdrant_2026-08-24.json",
+    "metrics": {
+      "classification_accuracy": 0.8333,
+      "routing_top1_accuracy": 0.8542,
+      "routing_top3_accuracy": 0.9375,
+      "missing_fields_exact_match": 1.0,
+      "template_accuracy": 0.9375,
+      "retrieval_recall_at_5": 1.0,
+      "retrieval_mrr": 0.9097
+    },
+    "index": {
+      "collection_name": "benchmark_synthetic_legal_77cd84020df74b6abe3e117e9301b643",
+      "chunk_count": 7,
+      "embedding_model": "jinaai/jina-embeddings-v3",
+      "embedding_dimension": 1024,
+      "embedding_model_revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+      "embedding_code_revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+      "passage_task": "retrieval.passage",
+      "query_task": "retrieval.query",
+      "corpus_fingerprint": "a738259a093dec921bee157d8ec207c50bdb6a8b0a31f3863b01ed1e1d35d734",
+      "corpus_source_path": "data/synthetic_legislation.json",
+      "corpus_source_sha256": "5de0c3d41e40836ed471b762d9e10660f7ecf95565bc98c9498a638090f0dbe0",
+      "index_seconds": 6.711657,
+      "benchmark_only": true
+    },
+    "dense_query_count": 48,
+    "dense_success_count": 48,
+    "dense_error_count": 0,
+    "dense_fallback_count": 0,
+    "dense_query_seconds": 37.510201,
+    "average_dense_query_ms": 781.463
+  },
+  "hybrid_minus_bm25": {
+    "classification_accuracy": 0.0,
+    "missing_fields_exact_match": 0.0,
+    "retrieval_mrr": 0.1041,
+    "retrieval_recall_at_5": 0.1944,
+    "routing_top1_accuracy": 0.0,
+    "routing_top3_accuracy": 0.0,
+    "template_accuracy": 0.0
+  },
+  "hybrid_jina_qdrant_reranked": {
+    "report": "reports/evaluation_hybrid_reranked_2026-08-24.json",
+    "metrics": {
+      "classification_accuracy": 0.8333,
+      "routing_top1_accuracy": 0.8542,
+      "routing_top3_accuracy": 0.9375,
+      "missing_fields_exact_match": 1.0,
+      "template_accuracy": 0.9375,
+      "retrieval_recall_at_5": 0.9722,
+      "retrieval_mrr": 0.8806
+    },
+    "reranker": {
+      "model": "jinaai/jina-reranker-v2-base-multilingual",
+      "revision": "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+      "code_revision": "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+      "candidate_top_k": 30,
+      "batch_size": 8,
+      "score_calls": 48,
+      "score_seconds": 178.757154,
+      "average_score_call_ms": 3724.107
+    },
+    "additional_dense_query_count": 48,
+    "additional_dense_success_count": 48,
+    "additional_dense_error_count": 0,
+    "additional_dense_fallback_count": 0,
+    "additional_dense_query_seconds": 32.678964,
+    "average_additional_dense_query_ms": 680.812
+  },
+  "reranked_minus_hybrid": {
+    "classification_accuracy": 0.0,
+    "missing_fields_exact_match": 0.0,
+    "retrieval_mrr": -0.0291,
+    "retrieval_recall_at_5": -0.0278,
+    "routing_top1_accuracy": 0.0,
+    "routing_top3_accuracy": 0.0,
+    "template_accuracy": 0.0
+  }
+}

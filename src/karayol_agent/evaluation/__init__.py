@@ -5,6 +5,14 @@ from karayol_agent.evaluation.models import (
     GoldDataset,
     GoldRecord,
 )
+from karayol_agent.evaluation.hybrid_benchmark import (
+    SyntheticBenchmarkError,
+    SyntheticBenchmarkIndexReport,
+    SyntheticHybridBenchmarkRuntime,
+    SyntheticQdrantDenseRetriever,
+    build_synthetic_hybrid_benchmark,
+    contextualize_synthetic_chunks,
+)
 from karayol_agent.evaluation.service import EvaluationError, EvaluationService
 
 __all__ = [
@@ -15,4 +23,10 @@ __all__ = [
     "EvaluationService",
     "GoldDataset",
     "GoldRecord",
+    "SyntheticBenchmarkError",
+    "SyntheticBenchmarkIndexReport",
+    "SyntheticHybridBenchmarkRuntime",
+    "SyntheticQdrantDenseRetriever",
+    "build_synthetic_hybrid_benchmark",
+    "contextualize_synthetic_chunks",
 ]

@@ -48,7 +48,8 @@ def test_manual_test_interface_and_local_assets(monkeypatch, tmp_path: Path) -> 
     assert stylesheet.status_code == 200
     assert stylesheet.headers["content-type"].startswith("text/css")
     assert script.status_code == 200
-    assert "application/javascript" in script.headers["content-type"]
+    javascript_media_type = script.headers["content-type"].split(";", 1)[0]
+    assert javascript_media_type in {"application/javascript", "text/javascript"}
     assert "handleInformationSubmit" in script.text
     assert "handleApprovalSubmit" in script.text
 
@@ -120,4 +121,3 @@ def test_file_upload_path_matches_primary_scenario(monkeypatch, tmp_path: Path) 
     payload = response.json()
     assert payload["analysis"]["document_type"] == "yol_bakim_talebi"
     assert payload["routing"]["unit_id"] == "ORKGM-YB-001"
-

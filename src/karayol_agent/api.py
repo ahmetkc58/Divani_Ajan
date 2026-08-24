@@ -3,7 +3,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile, status
+from fastapi import FastAPI, File, HTTPException, Response, UploadFile, status
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -57,13 +57,30 @@ def manual_test_interface() -> FileResponse:
 
 @app.get("/health")
 def health() -> dict[str, object]:
+    source_kinds = {
+        document.chunk.source_kind for document in orchestrator.index.documents
+    }
     return {
         "status": "ok",
         "version": __version__,
         "corpus_size": len(orchestrator.index.documents),
         "latex_compiler": orchestrator.renderer._find_compiler(),
-        "data_mode": "sentetik_demo",
+        "data_mode": (
+            "verified_public_legislation"
+            if source_kinds == {"public_legislation"}
+            else "sentetik_demo"
+        ),
+        "retrieval_mode": orchestrator.settings.retrieval_mode,
+        "retrieval_setup_warning": orchestrator.retrieval_setup_warning,
     }
+
+
+@app.get("/ready")
+def readiness(response: Response) -> dict[str, object]:
+    report = orchestrator.readiness()
+    if report["ready"] is not True:
+        response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    return {"status": "ready" if report["ready"] else "not_ready", **report}
 
 
 @app.post("/v1/process/text", response_model=ProcessState)

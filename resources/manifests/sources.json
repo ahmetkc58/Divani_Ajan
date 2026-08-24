@@ -1,6 +1,6 @@
 {
-  "manifest_version": "1.0",
-  "retrieved_at": "2026-08-20",
+  "manifest_version": "1.1",
+  "retrieved_at": "2026-08-24",
   "items": [
     {
       "id": "ssdp_v4_2024",
@@ -53,6 +53,7 @@
       "publisher": "Sparkfish LLC",
       "bytes": 1070,
       "sha256": "752e0d24ad4c1bc6394021c162281240151a78c8e508c7ffc5aaa8a47345e5c1",
+      "hash_scope": "normalized_lf_utf8_text",
       "license": "MIT",
       "usage": "Sentetik tarama/faks/fotokopi bozulmaları için aday",
       "download_status": "Yalnızca lisans; araç kurulmadı"
@@ -64,9 +65,85 @@
       "publisher": "Edouard Belval",
       "bytes": 1071,
       "sha256": "6451a49275ddf393b9e113e70cdc358db35e4356c97fd9688183e49bc8e24409",
+      "hash_scope": "normalized_lf_utf8_text",
       "license": "MIT",
       "usage": "Sentetik OCR satırı/görüntüsü üretimi için aday",
       "download_status": "Yalnızca lisans; araç kurulmadı"
+    },
+    {
+      "id": "jina_embeddings_v3",
+      "source_url": "https://huggingface.co/jinaai/jina-embeddings-v3/tree/ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+      "paper_url": "https://arxiv.org/abs/2409.10173",
+      "publisher": "Jina AI",
+      "revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+      "license": "CC BY-NC 4.0",
+      "usage": "retrieval.query ve retrieval.passage görevleriyle çok dilli embedding",
+      "download_status": "Haricî Hugging Face cache; model dosyaları depoya alınmadı",
+      "redistribution": "Depoda yeniden dağıtılmaz; ticari kullanım için Jina AI'dan ayrı lisans gerekir"
+    },
+    {
+      "id": "jina_xlm_roberta_flash_implementation",
+      "source_url": "https://huggingface.co/jinaai/xlm-roberta-flash-implementation/tree/bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+      "publisher": "Jina AI",
+      "revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+      "license": "CC BY-NC 4.0",
+      "usage": "jina-embeddings-v3 için trust_remote_code uygulaması",
+      "download_status": "Haricî Hugging Face cache; kod depoya alınmadı",
+      "redistribution": "Depoda yeniden dağıtılmaz; yalnız sabit code_revision ile yüklenir"
+    },
+    {
+      "id": "jina_reranker_v2_base_multilingual",
+      "source_url": "https://huggingface.co/jinaai/jina-reranker-v2-base-multilingual/tree/9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+      "publisher": "Jina AI",
+      "revision": "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+      "code_revision": "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9",
+      "license": "CC BY-NC 4.0; model kartına göre araştırma ve değerlendirme kullanımı",
+      "usage": "İsteğe bağlı retrieval reranking; benchmark sonucuna göre varsayılan kapalı",
+      "download_status": "Haricî Hugging Face cache; model dosyaları depoya alınmadı",
+      "redistribution": "Depoda yeniden dağıtılmaz; ticari kullanım için ayrı lisans gerekir"
+    },
+    {
+      "id": "easyocr_1_7_2",
+      "source_url": "https://github.com/JaidedAI/EasyOCR/tree/v1.7.2",
+      "package_url": "https://pypi.org/project/easyocr/1.7.2/",
+      "publisher": "JaidedAI",
+      "version": "1.7.2",
+      "revision": "c4f3cd7225efd4f85451bd8b4a7646ae9a092420",
+      "distribution_filename": "easyocr-1.7.2-py3-none-any.whl",
+      "bytes": 2870178,
+      "sha256": "5be12f9b0e595d443c9c3d10b0542074b50f0ec2d98b141a109cd961fd1c177c",
+      "hash_scope": "pypi_wheel",
+      "license": "Apache-2.0",
+      "usage": "PDF OCR inceleme adayı üretimi",
+      "download_status": "Haricî çalışma venv'ine kuruldu; wheel depoya alınmadı"
+    },
+    {
+      "id": "easyocr_craft_mlt_25k_weights",
+      "source_url": "https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip",
+      "publisher": "JaidedAI/EasyOCR; CRAFT upstream NAVER/Clova AI",
+      "filename": "craft_mlt_25k.pth",
+      "bytes": 83152330,
+      "sha256": "4a5efbfb48b4081100544e75e1e2b57f8de3d84f213004b14b85fd4b3748db17",
+      "upstream_md5": "2f8227d2def4037cdb3b34389dcf9ec1",
+      "hash_scope": "extracted_model_file",
+      "license": "BELİRSİZ — resmî release ağırlığı için ayrı lisans beyanı bulunamadı",
+      "usage": "EasyOCR CRAFT metin algılama",
+      "download_status": "Haricî model cache; ağırlık depoya alınmadı",
+      "redistribution": "Açık ağırlık lisansı veya hukuk onayı olmadan yeniden dağıtılmaz"
+    },
+    {
+      "id": "easyocr_latin_g2_weights",
+      "source_url": "https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/latin_g2.zip",
+      "publisher": "JaidedAI/EasyOCR",
+      "filename": "latin_g2.pth",
+      "bytes": 15406141,
+      "sha256": "aaa95be1c4a9cb3496879bed7c520886ce1164f89e026f0c54488394e74e8c55",
+      "upstream_md5": "469869130aad1a34e8f9086f4262bc59",
+      "hash_scope": "extracted_model_file",
+      "license": "BELİRSİZ — resmî release ağırlığı için ayrı lisans beyanı bulunamadı",
+      "usage": "EasyOCR Latin G2 Türkçe/İngilizce metin tanıma",
+      "download_status": "Haricî model cache; ağırlık depoya alınmadı",
+      "redistribution": "Açık ağırlık lisansı veya hukuk onayı olmadan yeniden dağıtılmaz"
     }
   ]
 }

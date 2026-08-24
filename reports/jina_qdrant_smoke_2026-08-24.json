@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.1",
+  "observed_date": "2026-08-24",
+  "benchmark_only": true,
+  "production_legal_evidence": false,
+  "runtime": {
+    "platform": "Windows 10",
+    "device": "cpu",
+    "cpu_threads": 14,
+    "python": "3.12.13",
+    "torch": "2.13.0+cpu",
+    "transformers": "4.57.6",
+    "qdrant_client": "1.19.0"
+  },
+  "embedding": {
+    "model": "jinaai/jina-embeddings-v3",
+    "model_revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+    "code_repository": "jinaai/xlm-roberta-flash-implementation",
+    "code_revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+    "dimension": 1024,
+    "passage_task": "retrieval.passage",
+    "query_task": "retrieval.query",
+    "vector_norms": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "same_text_task_vectors_differ": true,
+    "matched_cosines": [
+      0.550065,
+      0.609037
+    ],
+    "cross_cosines": [
+      -0.059888,
+      0.116792
+    ],
+    "initial_load_and_two_passages_seconds": 4.757547,
+    "warm_two_queries_seconds": 0.799754
+  },
+  "qdrant": {
+    "mode": "local_in_memory",
+    "distance": "cosine",
+    "synthetic_chunk_count": 7,
+    "corpus_source_path": "data/synthetic_legislation.json",
+    "corpus_source_sha256": "5de0c3d41e40836ed471b762d9e10660f7ecf95565bc98c9498a638090f0dbe0",
+    "corpus_fingerprint": "a738259a093dec921bee157d8ec207c50bdb6a8b0a31f3863b01ed1e1d35d734",
+    "expected_chunk": "SENT-KRY-001",
+    "expected_chunk_rank": 1,
+    "fusion": "rrf",
+    "index_seconds": 7.6969,
+    "query_seconds": 0.731
+  },
+  "result": "passed"
+}

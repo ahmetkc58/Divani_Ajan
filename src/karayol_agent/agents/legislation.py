@@ -1,34 +1,135 @@
 from __future__ import annotations
 
-from karayol_agent.retrieval import BM25Index
-from karayol_agent.schemas import DocumentAnalysis, SearchHit, VerifiedReference
+import math
+from collections.abc import Sequence
+from dataclasses import dataclass
+from typing import Any, Protocol
+
+from karayol_agent.retrieval.repository import LegislationRepository
+from karayol_agent.retrieval.runtime import build_analysis_query
+from karayol_agent.schemas import (
+    DocumentAnalysis,
+    LegislationChunk,
+    RetrievalDiagnostics,
+    SearchHit,
+    VerifiedReference,
+)
 from karayol_agent.text_utils import truncate
+
+
+class RankedRetriever(Protocol):
+    """Minimal interface implemented by the legacy BM25 index."""
+
+    def search(self, query: str, top_k: int = 5) -> Sequence[SearchHit]: ...
+
+
+@dataclass(frozen=True, slots=True)
+class LegislationSearchResult:
+    hits: list[SearchHit]
+    diagnostics: RetrievalDiagnostics
 
 
 class LegislationResearchAgent:
     name = "Mevzuat Araştırma Ajanı"
 
-    def __init__(self, index: BM25Index, *, top_k: int = 5) -> None:
+    def __init__(self, index: RankedRetriever, *, top_k: int = 5) -> None:
+        # ``index`` remains as a compatibility attribute for existing callers.
         self.index = index
+        self.retriever = index
         self.top_k = top_k
 
     def run(self, analysis: DocumentAnalysis) -> list[SearchHit]:
-        query_parts = [
-            analysis.document_type.replace("_", " "),
-            analysis.summary,
-            *analysis.keywords,
-        ]
-        subject = analysis.fields.get("konu")
-        request = analysis.fields.get("talep")
-        if subject and subject.value:
-            query_parts.append(subject.value)
-        if request and request.value:
-            query_parts.append(request.value)
-        return self.index.search(" ".join(query_parts), top_k=self.top_k)
+        """Preserve the legacy list-returning API used by evaluation code."""
+
+        return self.run_with_diagnostics(analysis).hits
+
+    def run_with_diagnostics(
+        self, analysis: DocumentAnalysis
+    ) -> LegislationSearchResult:
+        query = self._query_for(analysis)
+        search_for_analysis = getattr(self.retriever, "search_for_analysis", None)
+        search_with_diagnostics = getattr(
+            self.retriever, "search_with_diagnostics", None
+        )
+        if callable(search_for_analysis):
+            response = search_for_analysis(query, analysis, top_k=self.top_k)
+        elif callable(search_with_diagnostics):
+            # Runtime AnalysisAwareHybridRetriever exposes ``bind`` and accepts
+            # the structured analysis. A direct HybridRetriever accepts text.
+            search_input: DocumentAnalysis | str = (
+                analysis
+                if callable(getattr(self.retriever, "bind", None))
+                or getattr(self.retriever, "expects_analysis", False)
+                else query
+            )
+            response = search_with_diagnostics(search_input, top_k=self.top_k)
+        else:
+            response = self.retriever.search(query, top_k=self.top_k)
+        return self._coerce_result(response)
+
+    @staticmethod
+    def _query_for(analysis: DocumentAnalysis) -> str:
+        return build_analysis_query(analysis)
+
+    def _coerce_result(self, response: Any) -> LegislationSearchResult:
+        response_hits = getattr(response, "hits", None)
+        raw_diagnostics = getattr(response, "diagnostics", None)
+        if response_hits is None:
+            try:
+                hits = list(response)
+            except TypeError as exc:
+                raise TypeError(
+                    "Retriever bir hit listesi veya tanılı sonuç döndürmeli."
+                ) from exc
+        else:
+            hits = list(response_hits)
+
+        for position, hit in enumerate(hits, start=1):
+            if not isinstance(hit, SearchHit):
+                raise TypeError(
+                    f"Retriever sonucu {position} SearchHit değil: "
+                    f"{type(hit).__name__}."
+                )
+
+        if raw_diagnostics is None:
+            mode = str(getattr(self.retriever, "retrieval_mode", "bm25"))
+            diagnostics = RetrievalDiagnostics(
+                mode=mode,
+                dense_status=(
+                    "not_requested" if mode == "bm25" else "not_reported"
+                ),
+                lexical_candidate_count=len(hits),
+                fused_candidate_count=len({hit.chunk.chunk_id for hit in hits}),
+                channel_top_n=self.top_k,
+            )
+        elif isinstance(raw_diagnostics, RetrievalDiagnostics):
+            diagnostics = raw_diagnostics
+        else:
+            model_dump = getattr(raw_diagnostics, "model_dump", None)
+            if callable(model_dump):
+                diagnostic_data = model_dump()
+            elif isinstance(raw_diagnostics, dict):
+                diagnostic_data = dict(raw_diagnostics)
+            else:
+                raise TypeError("Retriever diagnostics sözleşmesi geçersiz.")
+            diagnostic_data.setdefault(
+                "mode", str(getattr(self.retriever, "retrieval_mode", "hybrid"))
+            )
+            diagnostics = RetrievalDiagnostics.model_validate(diagnostic_data)
+        return LegislationSearchResult(hits=hits, diagnostics=diagnostics)
 
 
 class SourceVerificationAgent:
     name = "Kaynak Doğrulama Ajanı"
+
+    def __init__(self, min_retrieval_score: float = 0.20) -> None:
+        if (
+            isinstance(min_retrieval_score, bool)
+            or not math.isfinite(min_retrieval_score)
+            or not 0 <= min_retrieval_score <= 1
+        ):
+            raise ValueError("Dense retrieval kabul eşiği 0 ile 1 arasında olmalıdır.")
+        self.min_retrieval_score = float(min_retrieval_score)
 
     def run(
         self, hits: list[SearchHit], analysis: DocumentAnalysis
@@ -39,25 +140,104 @@ class SourceVerificationAgent:
         verified: list[VerifiedReference] = []
         for hit in hits:
             relative_score = hit.score / top_score if top_score else 0.0
-            has_evidence = len(hit.matched_terms) >= 1
-            accepted = relative_score >= 0.30 and has_evidence
-            note = (
-                "Sorgu terimleri kaynak parçasında bulundu ve göreli skor eşiğini geçti."
-                if accepted
-                else "Kaynak parçası göreli skor veya terim eşleşmesi eşiğini geçemedi."
+            contributions = list(hit.channel_contributions)
+            channels = list(
+                dict.fromkeys(contribution.channel for contribution in contributions)
             )
+            has_lexical_evidence = len(hit.matched_terms) >= 1
+            if has_lexical_evidence and "lexical" not in channels:
+                channels.insert(0, "lexical")
+            dense_raw_scores = [
+                contribution.raw_score
+                for contribution in contributions
+                if contribution.channel == "dense"
+                and math.isfinite(contribution.raw_score)
+            ]
+            best_dense_score = max(dense_raw_scores, default=None)
+            has_accepted_dense_evidence = (
+                best_dense_score is not None
+                and best_dense_score >= self.min_retrieval_score
+            )
+            has_ranked_evidence = (
+                has_lexical_evidence or has_accepted_dense_evidence
+            )
+            trusted_source, source_note = self._trusted_source(hit.chunk)
+
+            accepted = (
+                relative_score >= 0.30 and has_ranked_evidence and trusted_source
+            )
+            if relative_score < 0.30:
+                note = "Kaynak parçası göreli skor eşiğini geçemedi."
+            elif not trusted_source:
+                note = "Kaynak güven sınırını geçemedi: " + source_note
+            elif not has_ranked_evidence and dense_raw_scores:
+                note = (
+                    "Dense ham benzerlik skoru mutlak kabul eşiğini geçemedi: "
+                    f"en_yuksek={best_dense_score:.4f}, "
+                    f"esik={self.min_retrieval_score:.4f}."
+                )
+            elif has_lexical_evidence:
+                note = (
+                    "Sorgu terimleri güvenilir kaynak parçasında bulundu ve göreli "
+                    "skor eşiğini geçti."
+                )
+            elif has_accepted_dense_evidence:
+                note = (
+                    "Dense kanal katkısı ile kaynak türü, onay, yürürlük, metin ve "
+                    "atıf doğrulamaları tekrar denetlendi."
+                )
+            else:
+                note = "Kaynak parçasında doğrulanabilir retrieval kanıtı bulunamadı."
+
             verified.append(
                 VerifiedReference(
                     chunk_id=hit.chunk.chunk_id,
+                    document_id=hit.chunk.document_id,
                     title=hit.chunk.title,
                     article=hit.chunk.article,
+                    paragraph=hit.chunk.paragraph,
+                    clause=hit.chunk.clause,
                     source=hit.chunk.source,
                     page=hit.chunk.page,
+                    page_end=hit.chunk.page_end,
+                    source_url=hit.chunk.source_url,
+                    source_kind=hit.chunk.source_kind,
+                    domain=hit.chunk.domain,
                     excerpt=truncate(hit.chunk.text, 360),
                     score=round(relative_score, 4),
                     verified=accepted,
                     verification_note=note,
+                    evidence_channels=channels,
+                    channel_contributions=contributions,
                 )
             )
         return verified
 
+    @staticmethod
+    def _trusted_source(chunk: LegislationChunk) -> tuple[bool, str]:
+        if chunk.source_kind == "public_legislation":
+            blockers = LegislationRepository.public_chunk_blockers(chunk)
+            return (
+                not blockers,
+                "kamu kaynağı doğrulama engelleri: " + ", ".join(blockers)
+                if blockers
+                else "doğrulanmış kamu mevzuatı",
+            )
+        if (
+            chunk.source_kind == "synthetic"
+            and chunk.status == "sentetik_demo_kurali"
+        ):
+            return True, "açıkça işaretlenmiş sentetik demo kuralı"
+        return (
+            False,
+            "kaynak ne tam doğrulanmış kamu mevzuatı ne de açıkça işaretlenmiş "
+            "sentetik demo kuralı",
+        )
+
+
+__all__ = [
+    "LegislationResearchAgent",
+    "LegislationSearchResult",
+    "RankedRetriever",
+    "SourceVerificationAgent",
+]
