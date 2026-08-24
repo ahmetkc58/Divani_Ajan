@@ -20,6 +20,26 @@ birleştirir ve dense kanal kullanılamazsa bunu süreç teşhisinde açıkça b
 BM25'e döner. Demo verileri sentetiktir; `veri_kaynaklari/` altındaki gerçek ve
 herkese açık kayıtlar insan onayı olmadan çalışma zamanında kullanılmaz.
 
+## Geçici uygulama kararı — mevcut mevzuat snapshot'ı
+
+Bu geliştirme turunda yeni/güncel mevzuat kopyalarını edinme, proje planını
+snapshot politikası için yeniden yazma ve mevcut aktivasyon kurallarını yeniden
+tasarlama adımları **atlanmıştır**. Çalışma, depoda bulunan kaynakların güncel
+hukuk metni olduğu iddia edilmeden mevcut proje snapshot'ı üzerinden devam
+edecektir.
+
+Sıradaki teknik hedef, metin katmanı hazır olan 6 belgeden daha önce üretilen
+2.407 yapısal parçaya mevcut iki OCR adayını sayfa izini koruyarak yapısal
+chunk'lar halinde eklemek ve 8 belgelik birleşik snapshot'ı kalıcı Jina
+Embeddings v3 + Qdrant indeksine almaktır. Kaynak başlığı, madde/fıkra/bent,
+sayfa, URL ve SHA-256 izi korunacak; kullanıcıya sunulan atıflar bu sabit
+snapshot'a ait olduğunu açıkça belirtecektir.
+
+Bu karar mevcut fail-closed kodu kendiliğinden değiştirmez: karantina parçaları
+halen `approved_for_active_rag=false` taşır ve normal `index-vectors` akışı
+onaysız corpus'u reddeder. Dolayısıyla bu not, hukuki güncellik veya uzman onayı
+iddiası değil, sonraki uygulama işinin kapsam ve öncelik kaydıdır.
+
 ## Kurulum
 
 ```powershell
