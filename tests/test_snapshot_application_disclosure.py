@@ -11,6 +11,7 @@ from karayol_agent.agents.legislation import SourceVerificationAgent
 from karayol_agent.config import Settings
 from karayol_agent.orchestrator import EvrakOrchestrator
 from karayol_agent.retrieval.bm25 import BM25Index
+from karayol_agent.retrieval.relevance import AnalysisAwareDeterministicReranker
 from karayol_agent.retrieval.contracts import (
     COMPETITION_SNAPSHOT_NOTICE,
     COMPETITION_SNAPSHOT_STATUS,
@@ -83,6 +84,10 @@ def _snapshot_reference() -> VerifiedReference:
                 chunk=chunk,
                 score=1.0,
                 matched_terms=["yol", "bakım"],
+                relevance_score=1.0,
+                relevance_accepted=True,
+                relevance_profile="road_surface_maintenance_v1",
+                relevance_basis="query_and_text",
             )
         ],
         _analysis(),
@@ -122,13 +127,39 @@ def test_snapshot_reference_is_accepted_only_for_retrieval_and_provenance() -> N
     assert restored.model_dump() == reference.model_dump()
 
 
+def test_snapshot_reference_without_relevance_decision_fails_closed() -> None:
+    reference = SourceVerificationAgent().run(
+        [
+            SearchHit(
+                chunk=_snapshot_chunk(),
+                score=1.0,
+                matched_terms=["yol", "bakım"],
+            )
+        ],
+        _analysis(),
+    )[0]
+
+    assert reference.verified is False
+    assert "alaka kapısından geçmedi" in reference.verification_note
+
+
 def test_snapshot_reference_fails_closed_when_snapshot_contract_has_blockers() -> None:
     invalid_chunk = _snapshot_chunk().model_copy(
         update={"approved_for_active_rag": True}
     )
 
     reference = SourceVerificationAgent().run(
-        [SearchHit(chunk=invalid_chunk, score=1.0, matched_terms=["yol"])],
+        [
+            SearchHit(
+                chunk=invalid_chunk,
+                score=1.0,
+                matched_terms=["yol"],
+                relevance_score=1.0,
+                relevance_accepted=True,
+                relevance_profile="road_surface_maintenance_v1",
+                relevance_basis="query_and_text",
+            )
+        ],
         _analysis(),
     )[0]
 
@@ -219,6 +250,24 @@ def test_snapshot_notice_is_in_draft_and_enforced_by_compliance() -> None:
     assert any("zorunlu güncellik/yürürlük uyarısı" in item for item in rejected.errors)
 
 
+def test_snapshot_notice_is_preserved_in_missing_information_draft() -> None:
+    reference = _snapshot_reference()
+    analysis = _analysis().model_copy(update={"missing_fields": ["gonderen"]})
+    decision = TemplateDecision(
+        document_type="eksik_bilgi_talebi",
+        template_id="eksik_bilgi_talebi_v1",
+        rationale="Eksik alan testi",
+        confidence=0.95,
+    )
+
+    draft = DraftingAgent().run(analysis, decision, _routing(), [reference])
+    compliance = ComplianceAgent().run(draft, decision)
+
+    assert COMPETITION_SNAPSHOT_NOTICE in draft.paragraphs
+    assert compliance.passed is True
+    assert compliance.errors == []
+
+
 def test_health_labels_snapshot_explicitly_instead_of_synthetic(
     monkeypatch, tmp_path: Path
 ) -> None:
@@ -243,3 +292,53 @@ def test_health_labels_snapshot_explicitly_instead_of_synthetic(
     assert payload["currentness_verified"] is False
     assert payload["legal_reliance_allowed"] is False
     assert payload["usage_notice"] == COMPETITION_SNAPSHOT_NOTICE
+
+
+def test_snapshot_bm25_mode_keeps_relevance_gate_without_qdrant(
+    tmp_path: Path,
+) -> None:
+    app_settings = Settings(
+        project_root=ROOT,
+        data_dir=ROOT / "data",
+        templates_dir=ROOT / "templates",
+        output_dir=tmp_path / "output",
+        runtime_dir=tmp_path / "runtime",
+        retrieval_mode="bm25",
+        corpus_mode=CorpusMode.COMPETITION_SNAPSHOT.value,
+        competition_snapshot_path=(
+            ROOT / "data" / "processed" / "competition_snapshot.json"
+        ),
+    )
+
+    orchestrator = EvrakOrchestrator(app_settings)
+
+    assert isinstance(
+        orchestrator.retriever,
+        AnalysisAwareDeterministicReranker,
+    )
+    assert orchestrator.retriever.retrieval_mode == "bm25"
+    readiness = orchestrator.readiness()
+    assert readiness["ready"] is True
+    assert readiness["retrieval_mode"] == "bm25"
+    assert readiness["corpus_mode"] == CorpusMode.COMPETITION_SNAPSHOT.value
+
+    positive = orchestrator.process_text(
+        "Konu: Asfalt yol bakım talebi\n"
+        "Konum: Örnek yol\n"
+        "Yol yüzeyindeki çukurların onarılmasını talep ediyorum."
+    )
+    assert positive.search_hits
+    assert positive.retrieval_diagnostics is not None
+    assert positive.retrieval_diagnostics.relevance_query_supported is True
+    assert positive.retrieval_diagnostics.relevance_candidate_top_k == 40
+    assert all(hit.relevance_accepted is True for hit in positive.search_hits)
+
+    negative = orchestrator.process_text(
+        "Konu: Yol bakım ve asfalt çukuru\n"
+        "Çukura girince jantım kırıldı; tazminat ve değer kaybı istiyorum."
+    )
+    assert negative.search_hits == []
+    assert negative.verified_references == []
+    assert negative.retrieval_diagnostics is not None
+    assert negative.retrieval_diagnostics.relevance_query_supported is False
+    assert negative.retrieval_diagnostics.relevance_abstained is True

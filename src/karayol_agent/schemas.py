@@ -50,6 +50,9 @@ class DocumentAnalysis(BaseModel):
     document_type: str
     confidence: float = Field(ge=0, le=1)
     summary: str
+    # Retrieval safety checks need evidence from the submitted document, not
+    # labels or expansion phrases produced later in the pipeline.
+    retrieval_evidence_text: str | None = None
     fields: dict[str, ExtractedField]
     missing_fields: list[str] = Field(default_factory=list)
     keywords: list[str] = Field(default_factory=list)
@@ -125,10 +128,16 @@ class SearchHit(BaseModel):
     chunk: LegislationChunk
     score: float
     matched_terms: list[str] = Field(default_factory=list)
+    expansion_matched_terms: list[str] = Field(default_factory=list)
     fusion_method: str | None = None
     channel_contributions: list[RetrievalChannelContribution] = Field(
         default_factory=list
     )
+    relevance_score: float | None = Field(default=None, ge=0, le=1)
+    relevance_accepted: bool | None = None
+    relevance_reasons: list[str] = Field(default_factory=list)
+    relevance_profile: str | None = None
+    relevance_basis: str | None = None
 
 
 class RetrievalDiagnostics(BaseModel):
@@ -144,6 +153,20 @@ class RetrievalDiagnostics(BaseModel):
     fused_candidate_count: int = Field(default=0, ge=0)
     channel_top_n: int | None = Field(default=None, ge=1)
     rrf_k: int | None = Field(default=None, ge=0)
+    relevance_strategy: str = "not_applied"
+    relevance_profile: str | None = None
+    relevance_candidate_top_k: int | None = Field(default=None, ge=1)
+    relevance_candidate_count: int = Field(default=0, ge=0)
+    relevance_accepted_count: int = Field(default=0, ge=0)
+    relevance_rejected_count: int = Field(default=0, ge=0)
+    relevance_threshold: float | None = Field(default=None, ge=0, le=1)
+    relevance_abstained: bool = False
+    relevance_query_expansion: list[str] = Field(default_factory=list)
+    relevance_query_supported: bool | None = None
+    relevance_query_score: float | None = Field(default=None, ge=0, le=1)
+    relevance_query_concepts: list[str] = Field(default_factory=list)
+    relevance_query_reasons: list[str] = Field(default_factory=list)
+    relevance_query_evidence_basis: str | None = None
 
 
 class VerifiedReference(BaseModel):
@@ -179,6 +202,11 @@ class VerifiedReference(BaseModel):
     channel_contributions: list[RetrievalChannelContribution] = Field(
         default_factory=list
     )
+    relevance_score: float | None = Field(default=None, ge=0, le=1)
+    relevance_accepted: bool | None = None
+    relevance_reasons: list[str] = Field(default_factory=list)
+    relevance_profile: str | None = None
+    relevance_basis: str | None = None
 
 
 class TemplateDecision(BaseModel):

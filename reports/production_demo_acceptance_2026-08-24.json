@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T16:53:31.985770+00:00",
+  "result": "passed",
+  "required_checks": {
+    "passed": 21,
+    "total": 21
+  },
+  "runtime": {
+    "api_url": "http://127.0.0.1:8010",
+    "retrieval_mode": "hybrid",
+    "corpus_mode": "competition_snapshot",
+    "collection": "competition_snapshot_chunks_v1",
+    "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "embedding_model": "jinaai/jina-embeddings-v3",
+    "embedding_dimension": 1024,
+    "embedding_device": "cuda:0",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "compatible_vectors": 2603,
+    "expected_vectors": 2603,
+    "currentness_verified": false,
+    "legal_reliance_allowed": false
+  },
+  "scenarios": {
+    "A_yol_bakim": {
+      "document_id": "EVR-20260824-CA7179C4",
+      "document_type": "yol_bakim_talebi",
+      "unit_id": "ORKGM-YB-001",
+      "initial_template": "ust_yazi_v1",
+      "initial_missing_information": [
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "dense_status": "used",
+      "fallback_used": false,
+      "verified_reference_count": 5,
+      "relevance_profile": "road_surface_maintenance_v1",
+      "relevance_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-09E4E088C59D4D13",
+        "MEV-94ECA73AA07B2D39",
+        "MEV-D1B127E868E39891"
+      ],
+      "relevance_precision_at_5": 1.0,
+      "relevance_rejected_candidates": 28,
+      "final_compliance_score": 0.96,
+      "latex_size_bytes": 2274,
+      "final_status": "tamamlandi"
+    },
+    "B_eksik_trafik": {
+      "document_id": "EVR-20260824-CEB6F135",
+      "document_type": "trafik_guvenligi_bildirimi",
+      "unit_id": "ORKGM-TG-001",
+      "initial_template": "eksik_bilgi_talebi_v1",
+      "initial_missing_information": [
+        "gonderen",
+        "konum",
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "initial_compliance_score": 0.92,
+      "relevance_profile": "traffic_sign_damage_v1",
+      "relevance_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-557C8DA8A10F2BA5",
+        "MEV-06B1C9050FB89590",
+        "MEV-E65ACF3F7612C808"
+      ],
+      "relevance_precision_at_5": 1.0,
+      "relevance_rejected_candidates": 29,
+      "template_after_information": "ust_yazi_v1",
+      "final_compliance_score": 0.96,
+      "latex_size_bytes": 2218,
+      "final_status": "tamamlandi"
+    },
+    "C_paraphrase_known_boundary": {
+      "document_id": "EVR-20260824-4BC27B57",
+      "observed_document_type": "genel_basvuru",
+      "observed_unit_id": "ORKGM-EB-001",
+      "observed_template": "cevap_yazisi_v1",
+      "dense_status": "empty",
+      "fallback_used": false,
+      "required_acceptance_check": false
+    },
+    "TXT_upload": {
+      "document_id": "EVR-20260824-E0F08D09",
+      "source_name": "manuel_test_yol_bakim_talebi.txt",
+      "document_type": "yol_bakim_talebi",
+      "unit_id": "ORKGM-YB-001",
+      "result": "passed"
+    }
+  },
+  "automated_tests": {
+    "collected": 297,
+    "executable_on_python_3_10": 296,
+    "passed": 296,
+    "excluded": [
+      {
+        "test": "tests/test_cli_error_regression_1.py",
+        "reason": "Alt süreç Python 3.10 kullanıyor; proje ve test sözleşmesi Python >=3.11 enum.StrEnum gerektiriyor."
+      }
+    ]
+  },
+  "known_boundaries": [
+    "Yarışma snapshot'ı güncel/yürürlükte mevzuat veya hukuki görüş değildir.",
+    "Paraphrase C sınıflandırması hâlâ kural tabanlı olduğundan genel_basvuru sonucunu üretir.",
+    "Query-focused relevance gold'u yalnız iki ana demo olayını kapsar; genel saha başarımı iddiası değildir.",
+    "Yerel makinede LaTeX derleyicisi yoktur; indirilebilir .tex üretimi doğrulanmıştır.",
+    "Global Python 3.10 ortamı proje gereksinimi olan Python >=3.11'in altındadır ve proje dışı paket sürüm çakışmaları taşır."
+  ]
+}

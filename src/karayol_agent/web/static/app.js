@@ -90,6 +90,19 @@ const fieldStatusLabels = {
   kullanici_girdisi_gerekli: "Kullanıcı girdisi gerekli"
 };
 
+const fieldSourceLabels = {
+  kullanici_girdisi: "Kullanıcı girişi",
+  sentetik_demo_kurumu: "Sentetik demo kurumu"
+};
+
+const corpusModeLabels = {
+  competition_snapshot: "Sabit yarışma snapshot'ı",
+  verified_public: "Doğrulanmış kamu mevzuatı",
+  trusted_synthetic: "Sentetik demo kaynağı",
+  mixed_or_unknown: "Karma veya bilinmeyen korpus",
+  unknown: "Kaynak türü bilinmiyor"
+};
+
 const suggestedValues = {
   gonderen: "Ayşe Örnek",
   konu: "D-100 bağlantı yolundaki asfalt bozulması",
@@ -309,18 +322,77 @@ function renderNextAction(state) {
   return `<div class="action-card"><h4>Sıradaki adım</h4><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div>`;
 }
 
+function fieldSourceText(field) {
+  const status = fieldStatusLabels[field?.status] || field?.status || "Durum bilinmiyor";
+  const rawSource = field?.source;
+  const source = rawSource
+    ? fieldSourceLabels[rawSource] || rawSource
+    : field?.status === "kullanici_girdisi_gerekli"
+      ? "Kullanıcı girişi bekleniyor"
+      : "Kaynak belirtilmedi";
+  return `${status} · Kaynak: ${source}`;
+}
+
+function renderFieldRows(entries) {
+  return entries.map(([name, field]) => `
+    <div class="data-row"><dt>${escapeHtml(fieldLabel(name))}</dt><dd>${escapeHtml(field?.value || "[EKSİK]")}<span class="field-source">${escapeHtml(fieldSourceText(field))}</span></dd></div>`).join("");
+}
+
 function renderFields(state) {
-  const fields = state.analysis?.fields || {};
-  const rows = Object.entries(fields).map(([name, field]) => `
-    <div class="data-row"><dt>${escapeHtml(fieldLabel(name))}</dt><dd>${escapeHtml(field.value || "[EKSİK]")}<span class="field-source">${escapeHtml(fieldStatusLabels[field.status] || field.status)}${field.source ? ` · ${escapeHtml(field.source)}` : ""}</span></dd></div>`).join("");
-  return `<dl class="data-list">${rows || "<p>Çıkarılmış alan bulunmuyor.</p>"}</dl>`;
+  const analysisEntries = Object.entries(state.analysis?.fields || {});
+  const draftEntries = state.draft ? [
+    ["sayi", state.draft.number],
+    ["imzalayan", state.draft.signer],
+    ["unvan", state.draft.signer_title]
+  ] : [];
+  const sections = [];
+
+  if (analysisEntries.length) {
+    sections.push(`<section class="field-group"><h4>Belgeden çıkarılan alanlar</h4><dl class="data-list">${renderFieldRows(analysisEntries)}</dl></section>`);
+  }
+  if (draftEntries.length) {
+    sections.push(`<section class="field-group"><h4>Zorunlu taslak alanları</h4><p>Sayı, imzalayan ve unvan taslağın tamamlanması için kullanıcı tarafından doğrulanmalıdır.</p><dl class="data-list">${renderFieldRows(draftEntries)}</dl></section>`);
+  }
+  return sections.join("") || `<div class="empty-state"><h3>Alan bulunamadı</h3><p>Henüz çıkarılmış veya taslağa bağlı bir alan yok.</p></div>`;
 }
 
 function renderReferences(state) {
   const references = state.verified_references || [];
-  if (!references.length) return `<div class="empty-state"><h3>Kaynak bulunamadı</h3><p>Bu evrak için mevzuat eşleşmesi üretilemedi.</p></div>`;
-  return references.map((reference) => `
-    <article class="reference-card"><div class="reference-top"><strong>${escapeHtml(reference.title)}${reference.article ? ` · ${escapeHtml(reference.article)}` : ""}</strong><span class="verification-badge${reference.verified ? "" : " is-rejected"}">${reference.verified ? "Doğrulandı" : "Eşik altı"}</span></div><p>${escapeHtml(reference.excerpt)}</p><div class="reference-meta"><span>Skor: %${safePercent(reference.score)}</span><span>${escapeHtml(reference.source)}</span></div></article>`).join("");
+  if (!references.length) {
+    const diagnostics = state.retrieval_diagnostics || {};
+    const warning = diagnostics.warning || "Bu evrak için mevzuat eşleşmesi üretilemedi.";
+    const queryReasons = (diagnostics.relevance_query_reasons || []).join(" ");
+    return `<div class="empty-state"><h3>Kaynak üretilmedi</h3><p>${escapeHtml(warning)}</p>${queryReasons ? `<p><strong>Sorgu kapısı:</strong> ${escapeHtml(queryReasons)}</p>` : ""}</div>`;
+  }
+  return references.map((reference) => {
+    const isSnapshot = reference.corpus_mode === "competition_snapshot";
+    const currentnessVerified = reference.currentness_verified === true;
+    const legalRelianceAllowed = reference.legal_reliance_allowed === true;
+    const relevanceAccepted = reference.relevance_accepted === true;
+    const relevanceScore = Number(reference.relevance_score);
+    const pageLabel = reference.page
+      ? `Sayfa: ${reference.page_end && reference.page_end !== reference.page ? `${reference.page}-${reference.page_end}` : reference.page}`
+      : "Sayfa izi yok";
+    const corpusLabel = corpusModeLabels[reference.corpus_mode] || reference.corpus_mode || corpusModeLabels.unknown;
+    const usageNotice = reference.usage_notice || (isSnapshot
+      ? "Bu sabit yarışma snapshot'ının güncelliği ve yürürlük durumu doğrulanmamıştır; yalnız retrieval ve kaynak izi için kullanılabilir."
+      : "");
+    return `
+      <article class="reference-card${isSnapshot ? " is-snapshot" : ""}">
+        <div class="reference-top"><strong>${escapeHtml(reference.title)}${reference.article ? ` · ${escapeHtml(reference.article)}` : ""}</strong><span class="verification-badge${reference.verified ? "" : " is-rejected"}">${reference.verified ? "Kaynak sözleşmesi geçti" : "Kaynak reddedildi"}</span></div>
+        <div class="reference-disclosures" aria-label="Kaynak güvenilirlik durumu">
+          <span>${escapeHtml(corpusLabel)}</span>
+          <span class="${currentnessVerified ? "is-positive" : "is-caution"}">Güncellik: ${currentnessVerified ? "doğrulandı" : "doğrulanmadı"}</span>
+          <span class="${legalRelianceAllowed ? "is-positive" : "is-caution"}">Hukuki dayanak: ${legalRelianceAllowed ? "kullanılabilir" : "kullanılamaz"}</span>
+          ${Number.isFinite(relevanceScore) ? `<span class="${relevanceAccepted ? "is-positive" : "is-caution"}">Sorgu alakası: %${safePercent(relevanceScore)}</span>` : ""}
+        </div>
+        ${usageNotice ? `<div class="reference-warning" role="note"><strong>${isSnapshot ? "Snapshot uyarısı" : "Kaynak kullanım uyarısı"}</strong><span>${escapeHtml(usageNotice)}</span></div>` : ""}
+        <p>${escapeHtml(reference.excerpt)}</p>
+        ${reference.verification_note ? `<p class="verification-note"><strong>Doğrulama notu:</strong> ${escapeHtml(reference.verification_note)}</p>` : ""}
+        ${(reference.relevance_reasons || []).length ? `<p class="verification-note"><strong>Alaka gerekçesi:</strong> ${escapeHtml(reference.relevance_reasons.join(" "))}</p>` : ""}
+        <div class="reference-meta"><span>Chunk: ${escapeHtml(reference.chunk_id)}</span><span>${escapeHtml(pageLabel)}</span><span>Retrieval skoru: %${safePercent(reference.score)}</span><span>${escapeHtml(reference.source)}</span></div>
+      </article>`;
+  }).join("");
 }
 
 function draftValue(field) {
@@ -440,17 +512,29 @@ async function handleApprovalSubmit(event) {
   }
 }
 
-async function checkHealth() {
+async function checkReadiness() {
   const pill = document.querySelector("#health-pill");
   const label = document.querySelector("#health-label");
+  const environmentBadge = document.querySelector("#environment-badge");
+  pill.classList.remove("is-online", "is-offline");
   try {
-    const health = await requestJson("/health");
+    const response = await fetch("/ready", { headers: { "Accept": "application/json" } });
+    const readiness = await response.json().catch(() => ({}));
+    if (!response.ok || readiness.ready !== true) {
+      throw new Error(readiness.detail || "Retrieval altyapısı hazır değil.");
+    }
     pill.classList.add("is-online");
-    const compiler = health.latex_compiler ? ` · ${health.latex_compiler}` : " · PDF derleyicisi yok";
-    label.textContent = `Sistem hazır · ${health.corpus_size} kural${compiler}`;
-  } catch {
+    environmentBadge.textContent = corpusModeLabels[readiness.corpus_mode]
+      || readiness.data_mode
+      || corpusModeLabels.unknown;
+    label.textContent = `RAG hazır · ${readiness.detail || readiness.retrieval_mode || "readiness doğrulandı"}`;
+    pill.title = readiness.detail || "RAG ve retrieval altyapısı hazır.";
+  } catch (error) {
     pill.classList.add("is-offline");
-    label.textContent = "Sistem bağlantısı yok";
+    environmentBadge.textContent = "Korpus doğrulanamadı";
+    const detail = error instanceof Error ? error.message : "Readiness kontrolü tamamlanamadı.";
+    label.textContent = `RAG HAZIR DEĞİL · ${detail}`;
+    pill.title = detail;
   }
 }
 
@@ -533,4 +617,4 @@ processForm.addEventListener("submit", async (event) => {
 });
 
 setScenario("maintenance", false);
-checkHealth();
+checkReadiness();

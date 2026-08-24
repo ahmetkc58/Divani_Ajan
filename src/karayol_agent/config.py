@@ -65,6 +65,18 @@ class Settings:
             0.20,
         )
     )
+    min_relevance_score: float = field(
+        default_factory=lambda: _environment_float(
+            "KARAYOL_MIN_RELEVANCE_SCORE",
+            0.75,
+        )
+    )
+    relevance_candidate_top_k: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_RELEVANCE_CANDIDATE_TOP_K",
+            40,
+        )
+    )
     low_confidence_threshold: float = 0.60
     latex_timeout_seconds: int = 30
     retrieval_mode: str = field(
@@ -260,6 +272,17 @@ class Settings:
         ):
             raise ValueError(
                 "KARAYOL_MIN_RETRIEVAL_SCORE 0 ile 1 arasında olmalıdır."
+            )
+        if (
+            isinstance(self.min_relevance_score, bool)
+            or not 0 <= self.min_relevance_score <= 1
+        ):
+            raise ValueError(
+                "KARAYOL_MIN_RELEVANCE_SCORE 0 ile 1 arasında olmalıdır."
+            )
+        if self.relevance_candidate_top_k < self.retrieval_top_k:
+            raise ValueError(
+                "Relevance aday sayısı nihai retrieval top-k değerinden küçük olamaz."
             )
         if self.embedding_backend not in {
             "transformers",

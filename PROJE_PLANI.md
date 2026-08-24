@@ -93,9 +93,10 @@ kontrolünde 2.603/2.603 uyumlu nokta ve corpus parmak izi doğrulanmıştır.
 
 Bu uygulama `legal_chunks_v1` public kapısını değiştirmez: snapshot atıfları
 zorunlu güncellik/hukuki kullanım uyarısı taşır, `currentness_verified=false` ve
-`legal_reliance_allowed=false` kalır. Sıradaki teknik iş, bu hazır hibrit yolu
-manuel uçtan uca kabul senaryolarında atıf, taslak, yönlendirme, uyarı ve
-abstention davranışlarıyla doğrulamaktır.
+`legal_reliance_allowed=false` kalır. Hibrit yol; atıf, taslak, yönlendirme,
+uyarı, olumlu alaka ve abstention davranışlarıyla canlı kabul testinde
+doğrulanmıştır. Sıradaki ölçüm işi geliştirme fixture'ından bağımsız kör seti
+15-20 sorguya genişletmektir.
 
 ---
 
@@ -402,12 +403,32 @@ zorunludur.
    2.603 benzersiz parçayla üret; GPU'da Jina v3 ile kalıcı ve ayrı Qdrant
    koleksiyonuna indeksle; yeniden açma/readiness, hibrit BM25+dense+RRF ve
    kullanıcı uyarısı sözleşmesini doğrula.
-10. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
-11. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
+10. **Tamamlandı (24 Ağustos):** Kalıcı snapshot + GPU/Jina/Qdrant hibrit akışını
+    gerçek HTTP arayüzü üzerinden 23 zorunlu production-demo kabul kontrolüyle
+    doğrula. Yol bakım ve eksik trafik akışlarında eksik bilgi, kaynak güven
+    açıklaması, şablon değişimi, LaTeX indirme, uygunluk ve insan onayı uçtan uca
+    geçti; kullanıcı-niyeti uyuşmayan üç yakın/desteklenmeyen örnek fail-closed
+    abstention üretti ve UI readiness'i gerçek `/ready` kapısına bağlandı.
+11. **Tamamlandı (24 Ağustos):** Yol yüzeyi bakım talebi ile hasarlı trafik
+    işareti için korpus fingerprint'ine bağlı dereceli relevance fixture'ı kur;
+    madde/chunk allowlist'i kullanmadan özgün kullanıcı-niyeti denetimi, sorgu
+    genişletme, concept-group rerank, eşik altı filtreleme ve yanlış-atıf
+    abstention'ı uygula. Dört cevaplanabilir kaydın her biri 5/5 ilgili metinsel
+    adayla `%100` `Precision@5/Recall@5` verdi; dört no-answer kaydın tamamında
+    abstention oluştu, yanlış cevap ve hard-negative sayısı `0` oldu. Bu sekiz
+    kayıt geliştirme fixture'ıdır, bağımsız hukuk validasyonu değildir.
+12. **Opsiyonel Tier 1 — zaman kalırsa:** Doğrulanan RAG parçalarından kanıt bağlı
+    dinamik zorunlu alan adayları çıkar; statik güvenlik tabanıyla birleştir ve
+    her alanın madde/sayfa/chunk gerekçesini kullanıcıya göster. Bu özellik MVP,
+    yarışma demosu veya teslim için zorunlu değildir.
+13. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
+14. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
 
 Kabul ölçütleri:
 
 - Karayolu retrieval gold setinde `Recall@5 >= %90` hedefi.
+- Snapshot relevance setinde `Precision@5 >= %90`, hard-negative@5 `0` ve
+  yetersiz kanıtta açık abstention hedefi.
 - Trust modu açıklanmayan mevzuat iddiası sayısı `0`: public kanıt
   `approved_for_active_rag=true`/`verified` olmalı; snapshot atfı ise
   `currentness_verified=false`, `legal_reliance_allowed=false` ve sabit kullanım
@@ -465,6 +486,111 @@ Beklenen yetenekler (şartname 6.4.1): OCR/metin okuma, tür belirleme, bilgi ç
   "onerilen_mevzuat": [{"madde": "...", "kaynak": "mevzuat-1.pdf", "aciklama": "..."}]
 }
 ```
+
+#### Mevzuat kanıtlı dinamik zorunlu alan çıkarımı — uygulanabilir plan
+
+**Durum:** Opsiyonel Tier 1; mevcut kod yalnız evrak türüne bağlı sabit
+`REQUIRED_FIELDS` listesini kullanmaktadır ve bu mevcut MVP için yeterli kabul
+edilir. Dinamik katman yalnız zaman kalır ve temel uçtan uca kabul senaryoları
+başarıyla kapanırsa ele alınabilir. Yapılmaması Aşama 3'ü, çalışan RAG'ı,
+yarışma demosunu veya teslimi bloke etmez; multi-hop GraphRAG için de zorunlu bir
+ön koşul değildir.
+
+**Amaç:** Evrak türü, talep, konu ve alan sınıflandırmasına göre RAG ile bulunan
+mevzuat parçalarından “bu işlem için hangi ek bilgiler zorunlu/koşullu?” sorusuna
+kanıtlı alan adayları üretmek. Model veya graf tek başına yeni bir zorunluluk
+uyduramaz; her dinamik alan özgün kaynak metnindeki doğrulanabilir bir ifadeye
+bağlanır.
+
+**Güvenlik ve kapsam sözleşmesi:**
+
+- Mevcut statik alan listesi asgari güvenlik tabanıdır; dinamik katman bu alanları
+  kaldıramaz, yalnız kanıtlı alan ekleyebilir veya insan incelemesine önerebilir.
+- Kanıt yalnız `original_text` içinden alınır; sentetik `context_text` zorunluluk
+  kanıtı olarak kullanılamaz.
+- `verified_public` kaynağından geçen alan `verified_requirement` olabilir.
+- Mevcut `competition_snapshot` kaynağından gelen alan yalnız
+  `snapshot_requirement_candidate` olur; `currentness_verified=false`,
+  `legal_reliance_allowed=false` ve sabit snapshot uyarısıyla gösterilir.
+- Açık kaynak cümlesi, chunk kimliği, belge, madde ve sayfa bulunmayan aday
+  reddedilir. Çelişen maddeler, koşulu belirsiz hükümler ve düşük güvenli adaylar
+  otomatik zorunlu alana dönüşmez; `human_review_required` durumuna alınır.
+- RAG kapalıysa, fallback kullanılmışsa veya yeterli kanıt bulunamazsa sistem
+  mevcut statik alan listesiyle devam eder ve dinamik katmanın kullanılmadığını
+  süreç teşhisinde açıkça bildirir.
+
+**Çalışma sırası:**
+
+1. İçerik Analizi Ajanı mevcut statik zorunlu alanları ve evraktan çıkarılan
+   bilgileri üretir.
+2. Mevzuat Araştırma Ajanı; evrak türü + talep + konu + alan bilgisiyle ayrıca
+   “başvuru/işlem için gerekli bilgi, belge ve koşullar” sorgusu oluşturur.
+3. Hibrit RAG top-N adayları getirir; yalnız Kaynak Doğrulama Ajanının corpus
+   sözleşmesini geçen parçaları dinamik alan çıkarıcısına aktarılır.
+4. Yeni `Dinamik Zorunlu Alan Ajanı`, önce deterministik zorunluluk kalıplarını
+   (`zorunludur`, `sunulur`, `belgelendirilir`, `... bilgisi bulunur`) tarar;
+   gerekirse LLM'den yalnız tanımlı JSON şemasında alan adayı ister.
+5. Auditor; aday alanın dayandığı metin aralığını özgün chunk içinde birebir
+   bulur, hükmün evrak türüne/işleme uygulanabilirliğini ve varsa koşulunu
+   doğrular. Birebir metin eşleşmeyen çıktı fail-closed reddedilir.
+6. Doğrulanan dinamik adaylar statik listeyle normalize edilip birleştirilir;
+   aynı alan tekilleştirilir, koşullu alanlar ayrı gösterilir ve kullanıcının
+   daha önce verdiği bilgiler listeden düşürülür.
+7. Şablon Seçim Ajanı birleşik eksik alan listesini kullanır. Eksik alan varsa
+   `eksik_bilgi_talebi_v1`, tamamlandığında normal üst/cevap/bilgilendirme yazısı
+   yeniden üretilir.
+8. API ve arayüz her dinamik alan için “neden isteniyor?” açıklamasını, kaynak
+   başlığını, maddeyi, sayfayı, chunk kimliğini, güven durumunu ve snapshot
+   uyarısını gösterir.
+
+**Çıktı sözleşmesi:**
+
+```json
+{
+  "field_name": "yetki_belgesi_numarasi",
+  "display_name": "Yetki belgesi numarası",
+  "requirement_status": "snapshot_requirement_candidate",
+  "condition": "Yetki belgesine tabi taşıma faaliyeti yürütülüyorsa",
+  "evidence": {
+    "chunk_id": "MEV-...",
+    "document_id": "law-4925",
+    "article": "Madde 5",
+    "page": 3,
+    "text_span": "... yetki belgesi alınması zorunludur ..."
+  },
+  "confidence": 0.93,
+  "human_review_required": true
+}
+```
+
+**Kodlama iş paketleri:**
+
+1. `schemas.py`: `RequirementEvidence`, `DynamicRequirement` ve birleşik eksik
+   alan kaynağı modelleri.
+2. `agents/requirements.py`: aday çıkarma, kanıt-span doğrulama, koşul ve güven
+   kararı.
+3. `orchestrator.py`: kaynak doğrulamadan sonra, şablon seçiminden önce dinamik
+   alan aşaması; kullanıcı bilgi eklediğinde yeniden hesaplama.
+4. API/UI: statik ve dinamik alan ayrımı, kanıt görüntüleme, insan kabul/red
+   seçeneği ve süreç olayları.
+5. GraphRAG adaptörü çekirdek dinamik alan özelliğinden sonraki ayrı entegrasyon
+   adımıdır; eklendiğinde yalnız doğrulanmış `REQUIRES_FIELD` kenarlarını aday
+   genişletme için kullanır ve özgün mevzuat chunk'ına geri dönemeyen kenarı
+   reddeder. Çekirdek özellik bu adaptörü beklemeden tamamlanır.
+6. Test/rapor: sabit gold set, no-answer/çelişki/fallback vakaları ve ayrı
+   `dynamic_requirements_evaluation.json` raporu.
+
+**Bu opsiyonel iş paketi uygulanırsa kabul ölçütleri:**
+
+- En az 20 gold senaryoda alan düzeyi precision `>= %90`, recall `>= %85`.
+- En az 5 no-answer/ilgisiz mevzuat vakasında kanıtsız dinamik alan sayısı `0`.
+- Dinamik alanların `%100`ünde özgün `text_span` + chunk + belge + madde + sayfa
+  izi bulunması.
+- Snapshot kaynaklı alanların `%100`ünde güncellik/hukuki kullanım bayraklarının
+  `false` ve sabit kullanım uyarısının görünür olması.
+- Çelişkili veya koşulu belirsiz adayların `%100`ünün insan incelemesine düşmesi.
+- Dinamik katman devre dışı/fallback olduğunda mevcut statik eksik-alan
+  testlerinde gerileme olmaması.
 
 ### Görev 2 — Resmî Yazı Taslaklama ve Birim Yönlendirme
 Beklenen yetenekler (şartname 6.4.2): taslak oluşturma (üst yazı/cevap/bilgilendirme), resmi üsluba uygunluk, birim yönlendirme önerisi, süreç bilgilendirmesi, gerektiğinde eksik bilgi talebi.
@@ -612,12 +738,23 @@ Kullanıcı arayüzünde en az bir ilerleme göstergesi, mevcut aşama, tamamlan
 4. **Gerçek zamanlı çalıştırma tercih edilmeli** (şartname bunu avantaj sayıyor); kayıttan sunum seçilirse jürinin canlı çalıştırma talebine anında yanıt verilebilmeli.
 5. **İnternet kesintisi yedek planı:** Yerel/offline çalışabilen bir fallback (örn. önceden çalıştırılmış kayıt + yerel model) hazır tutulmalı.
 
+**Uygulama durumu — 24 Ağustos 2026:** Demo arayüzü kalıcı
+`competition_snapshot_chunks_v1` koleksiyonuyla GPU üzerinde açıldı. Ana yol
+bakım, eksik trafik, paraphrase/near-miss abstention ve TXT yükleme akışları
+gerçek HTTP endpoint'leri üzerinden çalıştırıldı; niyet/metin alaka kontrolleri
+dahil zorunlu production-demo kontrolleri **23/23 geçti**. Tekrar koşulabilir kabul betiği
+`scripts/run_production_demo_acceptance.py`, ayrıntılı kayıt ise
+`reports/PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md` altındadır.
+
 ---
 
 ## 8. Test / Değerlendirme Planı
 
 - En az 15-20 sentetik evrak içeren gizli bir test seti (gold-label: doğru tür, doğru birim, gerekli mevzuat).
-- Ölçütler: sınıflandırma doğruluğu, yönlendirme başarımı (top-1/top-3), eksik bilgi tespit recall'ü, taslak formatının Yönetmelik kurallarına uyum yüzdesi.
+- Zorunlu ölçütler: sınıflandırma doğruluğu, yönlendirme başarımı (top-1/top-3),
+  statik eksik bilgi tespit recall'ü ve taslak formatının Yönetmelik kurallarına
+  uyum yüzdesi. Opsiyonel dinamik alan katmanı uygulanırsa ayrıca kanıtlı dinamik
+  zorunlu alan precision/recall'ü ve kanıtsız alan oranı raporlanır.
 - Bu sonuçlar teknik raporda ve sunumda **sayısal olarak** gösterilmeli (jüri "Uygulama" kriterinde performans ölçütlerini açıkça arıyor — madde 9).
 
 **Uygulama durumu — 23 Ağustos 2026:** `data/synthetic_gold.json` içinde 48
@@ -666,6 +803,28 @@ ve exact corpus fingerprint eşleşti; üç örnek dense sorgu ile tam hibrit aj
 akışı BM25+dense+RRF kanallarını fallback olmadan kullandı. Bu sonuç teknik
 production-demo hazırlığıdır, güncel mevzuat veya hukuki doğruluk iddiası
 değildir.
+
+Ardından production-demo kabul turu gerçek API/UI sınırında tamamlandı. Yol bakım
+ve eksik trafik senaryolarında hibrit dense kanal fallback olmadan kullanıldı,
+her birinde beş kaynak sözleşmesi geçti, eksik alanlar tamamlandıktan sonra
+uygunluk skoru `%96` oldu, LaTeX indirildi ve insan onayıyla süreç tamamlandı.
+UI'ın gerçek Qdrant readiness'i, snapshot güven uyarıları, fail-closed uygunluk
+kapısı, paraphrase bilinen sınırı ve TXT multipart yükleme sözleşmesi regresyon
+testlerine bağlandı. Zorunlu canlı kontroller **23/23**, bu makinede
+çalıştırılabilir otomatik paket **314/314** geçti.
+
+Sonrasında ilk gerçek-snapshot niyet/alaka seti iki ana sorgu, iki olumlu
+paraphrase ve dört no-answer/near-miss mühendislik fixture'ıyla korpus
+fingerprint'ine bağlandı.
+Eski hibrit RRF sonucu yol bakımında strict `0/5`, levha hasarında `2/5`; makro
+`Precision@5`, `Recall@5` ve aile recall'ü sırasıyla `%20`, `%20`, `%12,5` idi.
+Özgün kullanıcı metninde niyet kavramlarını, ardından görünür chunk metninde
+nesne+görev/giderme kavramlarını zorunlu tutan v2 kapısı sonrasında dört
+cevaplanabilir kayıt da `5/5`; makro `Precision@5`, `Recall@5`, `nDCG@5` ve aile
+recall'ü `%100` oldu. Dört no-answer kaydın tamamı abstain etti; yanlış cevap,
+yanlış abstention ve hard-negative sayısı `0`dır. Bu yalnız geliştirme sırasında
+kullanılmış küçük mühendislik regresyonudur; bağımsız test, hukuki güncellik veya
+uygulanabilirlik kanıtı değildir.
 
 ---
 

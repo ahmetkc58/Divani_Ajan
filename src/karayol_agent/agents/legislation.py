@@ -173,17 +173,41 @@ class SourceVerificationAgent:
                 best_dense_score is not None
                 and best_dense_score >= self.min_retrieval_score
             )
+            has_concept_gate_evidence = hit.relevance_accepted is True
+            if has_concept_gate_evidence and "concept_gate" not in channels:
+                channels.append("concept_gate")
             has_ranked_evidence = (
-                has_lexical_evidence or has_accepted_dense_evidence
+                has_lexical_evidence
+                or has_accepted_dense_evidence
+                or has_concept_gate_evidence
             )
             source_decision = self._source_decision(hit.chunk)
             trusted_source = source_decision.trusted
             source_note = source_decision.note
+            snapshot_requires_relevance = (
+                source_decision.corpus_mode
+                == CorpusMode.COMPETITION_SNAPSHOT.value
+            )
+            relevance_gate_passed = (
+                hit.relevance_accepted is True
+                if snapshot_requires_relevance
+                else hit.relevance_accepted is not False
+            )
+            ranking_score_passed = (
+                hit.relevance_accepted is True or relative_score >= 0.30
+            )
 
             accepted = (
-                relative_score >= 0.30 and has_ranked_evidence and trusted_source
+                ranking_score_passed
+                and has_ranked_evidence
+                and trusted_source
+                and relevance_gate_passed
             )
-            if relative_score < 0.30:
+            if snapshot_requires_relevance and hit.relevance_accepted is not True:
+                note = "Snapshot kaynağı incelenmiş alaka kapısından geçmedi."
+            elif hit.relevance_accepted is False:
+                note = "Kaynak niyet ve metin alaka kapısını geçemedi."
+            elif not ranking_score_passed:
                 note = "Kaynak parçası göreli skor eşiğini geçemedi."
             elif not trusted_source:
                 note = "Kaynak güven sınırını geçemedi: " + source_note
@@ -203,8 +227,25 @@ class SourceVerificationAgent:
                     "Dense kanal katkısı ile kaynak türü, onay, yürürlük, metin ve "
                     "atıf doğrulamaları tekrar denetlendi."
                 )
+            elif has_concept_gate_evidence:
+                note = (
+                    "Girdi kavram grubu görünür hüküm kavram grubuyla "
+                    "deterministik olarak eşlendi."
+                )
             else:
                 note = "Kaynak parçasında doğrulanabilir retrieval kanıtı bulunamadı."
+
+            if accepted and hit.relevance_accepted is True:
+                relevance_score = (
+                    f"{hit.relevance_score:.2f}"
+                    if hit.relevance_score is not None
+                    else "belirtilmedi"
+                )
+                note = (
+                    "Niyet ve görünür metin alaka kapısı geçti "
+                    f"(profil={hit.relevance_profile}, "
+                    f"skor={relevance_score}). {note}"
+                )
 
             if (
                 accepted
@@ -239,6 +280,11 @@ class SourceVerificationAgent:
                     verification_note=note,
                     evidence_channels=channels,
                     channel_contributions=contributions,
+                    relevance_score=hit.relevance_score,
+                    relevance_accepted=hit.relevance_accepted,
+                    relevance_reasons=list(hit.relevance_reasons),
+                    relevance_profile=hit.relevance_profile,
+                    relevance_basis=hit.relevance_basis,
                 )
             )
         return verified

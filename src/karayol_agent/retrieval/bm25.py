@@ -29,6 +29,8 @@ class _IndexedDocument:
 class BM25Index:
     """Küçük/orta MVP koleksiyonları için bağımlılıksız Okapi BM25."""
 
+    retrieval_mode = "bm25"
+
     def __init__(
         self,
         chunks: list[LegislationChunk],

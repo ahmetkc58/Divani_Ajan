@@ -1,0 +1,348 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T16:53:08.658612+00:00",
+  "variant": "query_relevance_v1_gpu",
+  "production_legal_evidence": false,
+  "dataset": {
+    "path": "data\\evaluation\\competition_snapshot_relevance_v1.json",
+    "sha256": "11d56f2c02197652d111e3e041dab91bd8b52efa60bc0e32f4ed547c5c79b8e8",
+    "name": "competition_snapshot_query_relevance",
+    "version": "2026-08-24.1"
+  },
+  "corpus": {
+    "mode": "competition_snapshot",
+    "path": "data/processed/competition_snapshot.json",
+    "fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "file_sha256": "305b1d8575969545414a5fb976a7a63a9e5cdbd8849921064b7e211f23e86576"
+  },
+  "runtime": {
+    "base_url": "http://127.0.0.1:8010",
+    "retrieval_mode": "hybrid",
+    "collection": "competition_snapshot_chunks_v1",
+    "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "embedding_model": "jinaai/jina-embeddings-v3",
+    "embedding_dimension": 1024,
+    "currentness_verified": false,
+    "legal_reliance_allowed": false
+  },
+  "aggregate": {
+    "precision_at_returned": 1.0,
+    "precision_at_k": 1.0,
+    "recall_at_k": 1.0,
+    "family_recall_at_k": 1.0,
+    "reciprocal_rank": 1.0,
+    "ndcg_at_k": 1.0,
+    "hard_negative_count_at_k": 0.0
+  },
+  "query_count": 2,
+  "results": [
+    {
+      "query_id": "ROAD-MAINT-01",
+      "profile": "road_surface_maintenance_v1",
+      "document_id": "EVR-20260824-451F59B9",
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_abstain": false,
+      "actual_abstain": false,
+      "ranked_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-09E4E088C59D4D13",
+        "MEV-94ECA73AA07B2D39",
+        "MEV-D1B127E868E39891"
+      ],
+      "verified_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-09E4E088C59D4D13",
+        "MEV-94ECA73AA07B2D39",
+        "MEV-D1B127E868E39891"
+      ],
+      "ranked_results": [
+        {
+          "rank": 1,
+          "chunk_id": "MEV-F3938057B283C03C",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 21",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini; 1) Üzerine yazı yazarak, çizerek, kırarak, delerek, sökerek veya başka şekillerde bozmak, 2) Yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. (Değişik ikinci fıkra:RG-1/9/2010-27689) Yaratılan tehlike ve engeller trafik zabıtası veya gerektiğinde genel zabıta ile iş birliği yapılmak suretiyle yolun yapımı, bakımı, işletilmesinden sorumlu kuruluşlar tarafından ortadan kaldırılır, bozukluk ve eksiklikler derhal giderilir. Zarar karşılıkları ve masraflar sorumlulara ödetilir. (Değişik üçüncü fıkra:RG-1/9/2010-27689) Işıklı trafik işaret cihazları, trafik işaret levhaları, kenar taşları, oto korkuluk ve benzeri yol ve trafik güvenliği elemanlarına zarar veren kişilerin yetkililerce tespiti halinde bu durumun, yolun yapımı, bakımı, işletilmesi ile ilgili kuruluşa bildirilmesi zorunludur. Karayolu Sınırı İçinde veya Dışındaki Levhalar, Işıklar, İşaretleme ve Benzerleri",
+          "retrieval_score": 0.03128054740957967,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Karayolu/yol yapısı nesnesi bulundu.",
+            "Bozukluğu giderme veya yolu güvenli tutma görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 2,
+          "chunk_id": "MEV-B4102E4DDE97752F",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 14",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini, üzerlerine yazı yazarak, çizerek veya başka şekillerde bozmak, yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. Meydana gelen tehlike ve engeller, ilgili kuruluşlar ve zabıtaca ortadan kaldırılır, bozukluk ve eksiklikler yolun yapım ve bakımından sorumlu kuruluşca derhal giderilir, zarar karşılıkları ve masrafları sorumlulara ödetilir. (Değişik: 21/5/1997-4262/4 md.) Bu madde hükmüne uymayanlara 7 200 000 lira para cezası verilir. Trafik işaretleri:",
+          "retrieval_score": 0.030117753623188408,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Karayolu/yol yapısı nesnesi bulundu.",
+            "Bozukluğu giderme veya yolu güvenli tutma görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 3,
+          "chunk_id": "MEV-09E4E088C59D4D13",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 10",
+          "text": "b) Görev ve yetkiler 1. Yapım ve bakımından sorumlu olduğu yolları trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak, 2. Gerekli görülen kavşaklara ve yerlere trafik ışıklı işaretleri, işaret levhaları koymak ve yer işaretlemeleri yapmak, 3. Karayolu yapısında ve üzerinde yapılacak çalışmalarda gerekli tedbirleri almak, aldırmak ve denetlemek, 4. Karayolunda trafik için tehlike teşkil eden engelleri gece veya gündüze göre kolayca görülebilecek şekilde işaretlemek veya ortadan kaldırmak, 5. Yol yapısı veya işaretleme yetersizliği yüzünden trafik kazalarının vukubulduğu yerlerde, yetkililerce teklif edilen tedbirleri almak, 6. Çocuklar için trafik eğitim tesisleri yapmak veya yapılmasını sağlamak, 7. Bu Kanun ve bu Kanuna göre çıkarılan yönetmeliklerle verilen diğer görevleri yapmak. (Ek fıkra: 25/6/1988 - KHK 330/2 md.)13",
+          "retrieval_score": 0.01639344262295082,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Karayolu/yol yapısı nesnesi bulundu.",
+            "Bozukluğu giderme veya yolu güvenli tutma görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 4,
+          "chunk_id": "MEV-94ECA73AA07B2D39",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 13",
+          "text": "c) Zorunlu nedenlerle meydana gelen arıza, engel ve benzerlerini en kısa zamanda ortadan kaldırarak karayolunu kullananlara ve araçlara zarar vermeyecek duruma getirmek,",
+          "retrieval_score": 0.01639344262295082,
+          "relevance_score": 0.85,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Karayolu/yol yapısı nesnesi bulundu.",
+            "Bozukluğu giderme veya yolu güvenli tutma görevi bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 5,
+          "chunk_id": "MEV-D1B127E868E39891",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 16",
+          "text": "a) Yolun yapısını, trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak,",
+          "retrieval_score": 0.015873015873015872,
+          "relevance_score": 0.85,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Karayolu/yol yapısı nesnesi bulundu.",
+            "Bozukluğu giderme veya yolu güvenli tutma görevi bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        }
+      ],
+      "retrieval_diagnostics": {
+        "mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "warning": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "dense_error_type": null,
+        "lexical_candidate_count": 20,
+        "dense_candidate_count": 20,
+        "fused_candidate_count": 33,
+        "channel_top_n": 20,
+        "rrf_k": 60,
+        "relevance_strategy": "deterministic_concept_gate_v1",
+        "relevance_profile": "road_surface_maintenance_v1",
+        "relevance_candidate_count": 33,
+        "relevance_accepted_count": 5,
+        "relevance_rejected_count": 28,
+        "relevance_threshold": 0.75,
+        "relevance_abstained": false,
+        "relevance_query_expansion": [
+          "karayolu yapısı",
+          "yol yüzeyi",
+          "bozukluk ve eksiklik",
+          "bakım ve onarım",
+          "derhal giderilir",
+          "trafik güvenliğini sağlayacak durumda bulundurmak",
+          "yapım ve bakımından sorumlu kuruluş"
+        ]
+      },
+      "metrics": {
+        "returned_count": 5,
+        "strict_relevant_returned": 5,
+        "precision_at_returned": 1.0,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "family_recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hard_negative_count_at_k": 0,
+        "grades_by_rank": [
+          3,
+          3,
+          2,
+          2,
+          2
+        ],
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "query_id": "DAMAGED-SIGN-01",
+      "profile": "traffic_sign_damage_v1",
+      "document_id": "EVR-20260824-191F8F50",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": false,
+      "actual_abstain": false,
+      "ranked_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-557C8DA8A10F2BA5",
+        "MEV-06B1C9050FB89590",
+        "MEV-E65ACF3F7612C808"
+      ],
+      "verified_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-B4102E4DDE97752F",
+        "MEV-557C8DA8A10F2BA5",
+        "MEV-06B1C9050FB89590",
+        "MEV-E65ACF3F7612C808"
+      ],
+      "ranked_results": [
+        {
+          "rank": 1,
+          "chunk_id": "MEV-F3938057B283C03C",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 21",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini; 1) Üzerine yazı yazarak, çizerek, kırarak, delerek, sökerek veya başka şekillerde bozmak, 2) Yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. (Değişik ikinci fıkra:RG-1/9/2010-27689) Yaratılan tehlike ve engeller trafik zabıtası veya gerektiğinde genel zabıta ile iş birliği yapılmak suretiyle yolun yapımı, bakımı, işletilmesinden sorumlu kuruluşlar tarafından ortadan kaldırılır, bozukluk ve eksiklikler derhal giderilir. Zarar karşılıkları ve masraflar sorumlulara ödetilir. (Değişik üçüncü fıkra:RG-1/9/2010-27689) Işıklı trafik işaret cihazları, trafik işaret levhaları, kenar taşları, oto korkuluk ve benzeri yol ve trafik güvenliği elemanlarına zarar veren kişilerin yetkililerce tespiti halinde bu durumun, yolun yapımı, bakımı, işletilmesi ile ilgili kuruluşa bildirilmesi zorunludur. Karayolu Sınırı İçinde veya Dışındaki Levhalar, Işıklar, İşaretleme ve Benzerleri",
+          "retrieval_score": 0.03278688524590164,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Trafik işareti/işaret levhası nesnesi bulundu.",
+            "Hasar, giderme, bakım veya işlerlik görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 2,
+          "chunk_id": "MEV-B4102E4DDE97752F",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 14",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini, üzerlerine yazı yazarak, çizerek veya başka şekillerde bozmak, yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. Meydana gelen tehlike ve engeller, ilgili kuruluşlar ve zabıtaca ortadan kaldırılır, bozukluk ve eksiklikler yolun yapım ve bakımından sorumlu kuruluşca derhal giderilir, zarar karşılıkları ve masrafları sorumlulara ödetilir. (Değişik: 21/5/1997-4262/4 md.) Bu madde hükmüne uymayanlara 7 200 000 lira para cezası verilir. Trafik işaretleri:",
+          "retrieval_score": 0.03200204813108039,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Trafik işareti/işaret levhası nesnesi bulundu.",
+            "Hasar, giderme, bakım veya işlerlik görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 3,
+          "chunk_id": "MEV-557C8DA8A10F2BA5",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 15",
+          "text": "(Değişik birinci fıkra: 25/6/2010-6001/34 md.) Trafiği düzenlemede kullanılan işaret levhaları, ışıklı ve sesli işaretler, yer işaretlemeleri ile benzeri trafik işaretleri, karayolunun yapımı, bakımı, işletilmesi ile görevli kuruluşlarca temin ve tesis edilerek sürekliliği ve işlerliği sağlanır. (İkinci fıkra Mülga: 18/1/1985 - KHK 245/16 md.) Görülen eksiklikler ilgili kuruluşlara bildirilerek giderilmesi sağlatılır. Trafik işaretlerinin standart, anlam, nicelik ve nitelikleri ile diğer esasları İçişleri Bakanlığının görüşü alınarak Bayındırlık Bakanlığınca çıkarılacak yönetmelikte gösterilir. Karayolu dışında, kenarında veya üzerindeki diğer levhalar, ışıklar ve işaretlemeler:",
+          "retrieval_score": 0.0315136476426799,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Trafik işareti/işaret levhası nesnesi bulundu.",
+            "Hasar, giderme, bakım veya işlerlik görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 4,
+          "chunk_id": "MEV-06B1C9050FB89590",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 16",
+          "text": "c) Trafiği düzenleme amacı ile, 1) Trafik işaret levhaları, 2) Işıklı ve sesli trafik işaretleri, 3) Yer işaretlemeleri, Temin ve tesis etmek, bunların devamlılığını ve işlerliğini sağlamak,",
+          "retrieval_score": 0.03007688828584351,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Trafik işareti/işaret levhası nesnesi bulundu.",
+            "Hasar, giderme, bakım veya işlerlik görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        },
+        {
+          "rank": 5,
+          "chunk_id": "MEV-E65ACF3F7612C808",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 19",
+          "text": "b) Trafik işaretlerini, trafik güvenliğini sağlayacak şekilde yapmak ve bulundurmakla yükümlüdürler. Karayolu Yapısında Yapılacak Çalışmalar",
+          "retrieval_score": 0.014492753623188406,
+          "relevance_score": 1.0,
+          "relevance_accepted": true,
+          "relevance_reasons": [
+            "Trafik işareti/işaret levhası nesnesi bulundu.",
+            "Hasar, giderme, bakım veya işlerlik görevi bulundu.",
+            "Sorumlu/görevli kuruluş bağı bulundu.",
+            "Nesne ve görev/giderme kavram grupları birlikte doğrulandı."
+          ]
+        }
+      ],
+      "retrieval_diagnostics": {
+        "mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "warning": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "dense_error_type": null,
+        "lexical_candidate_count": 20,
+        "dense_candidate_count": 20,
+        "fused_candidate_count": 34,
+        "channel_top_n": 20,
+        "rrf_k": 60,
+        "relevance_strategy": "deterministic_concept_gate_v1",
+        "relevance_profile": "traffic_sign_damage_v1",
+        "relevance_candidate_count": 34,
+        "relevance_accepted_count": 5,
+        "relevance_rejected_count": 29,
+        "relevance_threshold": 0.75,
+        "relevance_abstained": false,
+        "relevance_query_expansion": [
+          "trafik işaretleri",
+          "trafik işaret levhaları",
+          "kırmak sökmek bozmak",
+          "bozukluk ve eksiklik",
+          "derhal giderilir",
+          "sürekliliği ve işlerliği",
+          "bakım onarım",
+          "sorumlu kuruluş"
+        ]
+      },
+      "metrics": {
+        "returned_count": 5,
+        "strict_relevant_returned": 5,
+        "precision_at_returned": 1.0,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "family_recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hard_negative_count_at_k": 0,
+        "grades_by_rank": [
+          3,
+          3,
+          3,
+          2,
+          2
+        ],
+        "first_relevant_rank": 1
+      }
+    }
+  ],
+  "limitations": [
+    "Etiketler yalnız sabit yarışma snapshot'ında metinsel sorgu alakası içindir.",
+    "Hukuki güncellik, yürürlük, yetki, olayın somut uygulanabilirliği veya hukuk görüşü doğrulanmaz.",
+    "Retrieval değerlendirmesi context_text ve text alanlarını; kullanıcıya gösterilecek atıf ise kendi text alanını dikkate alır."
+  ]
+}

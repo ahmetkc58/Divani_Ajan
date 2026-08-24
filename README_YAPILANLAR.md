@@ -98,6 +98,11 @@ aktif corpus yazmamıştır. Bu beklenen güvenlik davranışıdır.
   deterministik RRF, kanal katkıları ve açık fallback teşhisi.
 - `retrieval/runtime.py`: analysis-aware sorgu, domain sınırı ve yapılandırma
   bağlama.
+- `retrieval/relevance.py`: yol yüzeyi bakımı ve hasarlı trafik işareti için
+  madde/chunk allowlist'i içermeyen özgün-girdi niyet denetimi, sorgu genişletme,
+  concept-group rerank, `0.75` görünür metin kapısı ve fail-closed abstention.
+  Expansion eşleşmeleri özgün kullanıcı lexical kanıtından ayrılır; aynı kapı
+  snapshot'ın hibrit ve BM25 yollarında uygulanır.
 - `retrieval/vector_indexing.py`: contextual batch embedding ve model/Qdrant
   çağrısından önce tüm corpus için fail-closed doğrulama; kanonik corpus
   SHA-256 kimliğini indeks ve rapora bağlama.
@@ -256,6 +261,13 @@ aksiyonlarını taşır.
 - [`competition_snapshot_readiness_2026-08-24.json`](reports/competition_snapshot_readiness_2026-08-24.json)
 - [`competition_snapshot_artifact_manifest_2026-08-24.json`](reports/competition_snapshot_artifact_manifest_2026-08-24.json)
 - [`synthetic_evidence_graph_2026-08-24.json`](reports/synthetic_evidence_graph_2026-08-24.json)
+- [`PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md`](reports/PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md)
+- [`production_demo_acceptance_2026-08-24.json`](reports/production_demo_acceptance_2026-08-24.json)
+- [`SNAPSHOT_RELEVANCE_EVALUATION_2026-08-24.md`](reports/SNAPSHOT_RELEVANCE_EVALUATION_2026-08-24.md)
+- [`snapshot_relevance_baseline_2026-08-24.json`](reports/snapshot_relevance_baseline_2026-08-24.json)
+- [`snapshot_relevance_candidate_2026-08-24.json`](reports/snapshot_relevance_candidate_2026-08-24.json)
+- [`snapshot_relevance_candidate_v2_2026-08-24.json`](reports/snapshot_relevance_candidate_v2_2026-08-24.json)
+- [`production_demo_acceptance_live_v2_2026-08-24.json`](reports/production_demo_acceptance_live_v2_2026-08-24.json)
 
 OCR aday metinleri `data/processed/ocr_review/`, yapısal OCR parçaları
 `data/processed/stage3_quarantine/` ve birleşik corpus
@@ -322,16 +334,39 @@ python -m karayol_agent.cli index-snapshot-vectors `
 
 `QDRANT_URL` ile `KARAYOL_QDRANT_PATH` aynı anda verilmez.
 
+Kalıcı snapshot ile arayüzü açmak:
+
+```powershell
+$env:PYTHONPATH="src"
+$env:KARAYOL_RETRIEVAL_MODE="hybrid"
+$env:KARAYOL_CORPUS_MODE="competition_snapshot"
+$env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json"
+$env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
+$env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
+$env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
+$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
+Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
+python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
+```
+
+Sunucu açıkken tekrar edilebilir production-demo kabul turu:
+
+```powershell
+python -X utf8 scripts\run_production_demo_acceptance.py
+```
+
 ## 11. Doğrulama
 
-- Test koleksiyonu: **285 test**. Snapshot/GPU değişikliklerini kapsayan
-  çalıştırılabilir küme: **284/284 geçti**.
+- Test koleksiyonu: **315 test**. Bu makinede çalıştırılabilir küme:
+  **314/314 geçti**.
 - Proje Python `>=3.11` ister; kullanılan Python 3.10 makinede ham alt süreçte
   3.11 `StrEnum` davranışını sınayan `test_cli_error_regression_1.py` ortam
   uyumsuzluğu nedeniyle bu koşudan çıkarıldı.
 - Python `compileall`: başarılı.
 - `pyproject.toml` ayrıştırma: başarılı.
-- `pip check`: bağımlılık hatası yok.
+- Mevcut global Python 3.10 ortamında `pip check`, projeden bağımsız kurulmuş
+  paketler arasında sürüm çakışmaları raporluyor. Teslim çalıştırması proje
+  sözleşmesine uygun Python `>=3.11` izole sanal ortamında yapılmalıdır.
 - `git diff --check`: temiz.
 - `git fsck --full`: temiz.
 - `reports/` altındaki JSON raporları yeniden ayrıştırıldı.
@@ -341,6 +376,13 @@ python -m karayol_agent.cli index-snapshot-vectors `
   2.603 benzersiz parça**.
 - Kalıcı Qdrant yeniden açma kontrolü: **2.603/2.603 uyumlu vektör**, tam corpus
   parmak izi eşleşmesi.
+- Gerçek HTTP/UI production-demo kabul turu: **23/23 zorunlu kontrol geçti**.
+  Yol bakım ve eksik trafik akışları LaTeX indirme ve insan onayıyla tamamlandı;
+  iki ana akışın 5/5 ilgili metinsel adayı, sıfır hard-negative sonucu, üç ayrı
+  fail-closed abstention ve TXT multipart yükleme ayrıca kaydedildi.
+- UI artık gerçek `/ready` kapısını kullanıyor; sayı/imzalayan/unvan alanları ve
+  snapshot güncellik/hukuki-dayanak açıklamaları görünür durumda. Uygunluk
+  başarısızsa süreç fail-closed çalışıyor ve onay eylemi sunmuyor.
 
 Tam testte Windows/Starlette `.js` statik dosyasını geçerli modern MIME türü
 `text/javascript` ile döndürdü; test yalnız `application/javascript` kabul
@@ -350,11 +392,17 @@ edecek şekilde düzeltildi ve tüm paket yeniden geçirildi.
 ## 12. Sıradaki teknik adım ve ertelenen hukuk işleri
 
 Kullanıcı kararıyla güncel mevzuat edinme ve insan hukuk onayı bu turda
-ertelendi. Sıradaki teknik iş, hazır `competition_snapshot` + GPU/Qdrant hibrit
-akışını `MANUEL_TEST_SENARYOSU.md` üzerinden uçtan uca çalıştırmak; atıf,
-uyarı, taslak, yönlendirme ve düşük-güven/abstention davranışlarını kaydedip
-production-demo kabul raporu oluşturmaktır. Ardından yalnız multi-hop/global
-sorgular için küçük GraphRAG yolunun etkinleştirilmesi değerlendirilecektir.
+ertelendi. `competition_snapshot` + GPU/Qdrant hibrit akışının production-demo
+kabul turu ile dört cevaplanabilir ve dört no-answer kaydından oluşan ilk
+niyet/alaka regresyonu tamamlandı. Sıradaki zorunlu iş; bu geliştirme fixture'ından
+ayrı 15-20 kör sorguluk test seti hazırlamak, jüri demosunu baştan sona prova etmek, ekran
+görüntüsü/yedek demo kaydını hazırlamak ve teslim lisans/dokümantasyon
+kontrol listesini kapatmaktır. RAG'da bulunan özgün mevzuat metnine
+chunk/madde/sayfa kanıtıyla bağlı dinamik zorunlu alan çıkarımı yalnız zaman
+kalırsa **opsiyonel Tier 1** olarak değerlendirilebilir; yapılmaması MVP'yi veya
+teslimi engellemez. Uygulanırsa statik alanlar güvenlik tabanı olarak korunacak
+ve snapshot adayları güncel hukuk zorunluluğu gibi gösterilmeyecektir.
+Multi-hop/global GraphRAG yolu da ayrı bir opsiyonel geliştirmedir.
 
 İleride gerçek public corpus hedeflendiğinde eski dört dosyanın güncel kanonik
 kopyaları, tam 102 sayfalık kılavuz, kanonik yönetmelik kaynağı ve yetkili kişinin

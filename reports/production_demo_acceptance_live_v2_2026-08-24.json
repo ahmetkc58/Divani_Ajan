@@ -1,0 +1,629 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T17:27:29.945561+00:00",
+  "base_url": "http://127.0.0.1:8010",
+  "passed": true,
+  "required_check_count": 23,
+  "required_pass_count": 23,
+  "required_failures": [],
+  "readiness": {
+    "status": "ready",
+    "ready": true,
+    "retrieval_mode": "hybrid",
+    "detail": "Qdrant hazır: 2603/2603 uyumlu nokta.",
+    "collection": "competition_snapshot_chunks_v1",
+    "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "embedding_model": "jinaai/jina-embeddings-v3",
+    "embedding_dimension": 1024,
+    "index_version": "1.0",
+    "qdrant_storage_mode": "embedded_local",
+    "payload_indexes_enforced": false,
+    "payload_index_detail": "Gömülü yerel Qdrant payload indekslerini desteklemez; filtre metadata'sı readiness sayımıyla doğrulandı.",
+    "data_mode": "competition_snapshot",
+    "corpus_mode": "competition_snapshot",
+    "corpus_contract_valid": true,
+    "currentness_verified": false,
+    "legal_reliance_allowed": false,
+    "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir."
+  },
+  "scenarios": {
+    "A": {
+      "initial": {
+        "document_id": "EVR-20260824-F50D8598",
+        "status": "eksik_bilgi_bekleniyor",
+        "document_type": "yol_bakim_talebi",
+        "analysis_missing_fields": [],
+        "missing_information": [
+          "sayi",
+          "imzalayan",
+          "unvan"
+        ],
+        "unit_id": "ORKGM-YB-001",
+        "template_id": "ust_yazi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.92,
+        "event_count": 10
+      },
+      "final": {
+        "document_id": "EVR-20260824-F50D8598",
+        "status": "tamamlandi",
+        "document_type": "yol_bakim_talebi",
+        "analysis_missing_fields": [],
+        "missing_information": [],
+        "unit_id": "ORKGM-YB-001",
+        "template_id": "ust_yazi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.96,
+        "event_count": 19
+      }
+    },
+    "B": {
+      "initial": {
+        "document_id": "EVR-20260824-EB414120",
+        "status": "eksik_bilgi_bekleniyor",
+        "document_type": "trafik_guvenligi_bildirimi",
+        "analysis_missing_fields": [
+          "gonderen",
+          "konum"
+        ],
+        "missing_information": [
+          "gonderen",
+          "konum",
+          "sayi",
+          "imzalayan",
+          "unvan"
+        ],
+        "unit_id": "ORKGM-TG-001",
+        "template_id": "eksik_bilgi_talebi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.92,
+        "event_count": 10
+      },
+      "final": {
+        "document_id": "EVR-20260824-EB414120",
+        "status": "tamamlandi",
+        "document_type": "trafik_guvenligi_bildirimi",
+        "analysis_missing_fields": [],
+        "missing_information": [],
+        "unit_id": "ORKGM-TG-001",
+        "template_id": "ust_yazi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.96,
+        "event_count": 19
+      }
+    },
+    "C_known_boundary": {
+      "document_id": "EVR-20260824-558FBE6D",
+      "status": "eksik_bilgi_bekleniyor",
+      "document_type": "genel_basvuru",
+      "analysis_missing_fields": [],
+      "missing_information": [
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "unit_id": "ORKGM-EB-001",
+      "template_id": "cevap_yazisi_v1",
+      "retrieval_mode": "hybrid",
+      "dense_status": "not_used_query_gate",
+      "fallback_used": false,
+      "reference_count": 0,
+      "verified_reference_count": 0,
+      "compliance_passed": true,
+      "compliance_score": 0.92,
+      "event_count": 10
+    },
+    "D_road_no_answer": {
+      "document_id": "EVR-20260824-C59F9B81",
+      "status": "eksik_bilgi_bekleniyor",
+      "document_type": "yol_bakim_talebi",
+      "analysis_missing_fields": [
+        "gonderen"
+      ],
+      "missing_information": [
+        "gonderen",
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "unit_id": "ORKGM-YB-001",
+      "template_id": "eksik_bilgi_talebi_v1",
+      "retrieval_mode": "hybrid",
+      "dense_status": "not_used_query_gate",
+      "fallback_used": false,
+      "reference_count": 0,
+      "verified_reference_count": 0,
+      "compliance_passed": true,
+      "compliance_score": 0.92,
+      "event_count": 10
+    },
+    "E_sign_no_answer": {
+      "document_id": "EVR-20260824-71158793",
+      "status": "eksik_bilgi_bekleniyor",
+      "document_type": "trafik_guvenligi_bildirimi",
+      "analysis_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "missing_information": [
+        "gonderen",
+        "konum",
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "unit_id": "ORKGM-TG-001",
+      "template_id": "eksik_bilgi_talebi_v1",
+      "retrieval_mode": "hybrid",
+      "dense_status": "not_used_query_gate",
+      "fallback_used": false,
+      "reference_count": 0,
+      "verified_reference_count": 0,
+      "compliance_passed": true,
+      "compliance_score": 0.92,
+      "event_count": 10
+    },
+    "TXT": {
+      "document_id": "EVR-20260824-4B152488",
+      "status": "eksik_bilgi_bekleniyor",
+      "document_type": "yol_bakim_talebi",
+      "analysis_missing_fields": [],
+      "missing_information": [
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "unit_id": "ORKGM-YB-001",
+      "template_id": "ust_yazi_v1",
+      "retrieval_mode": "hybrid",
+      "dense_status": "used",
+      "fallback_used": false,
+      "reference_count": 5,
+      "verified_reference_count": 5,
+      "compliance_passed": true,
+      "compliance_score": 0.92,
+      "event_count": 10
+    }
+  },
+  "checks": [
+    {
+      "scenario": "readiness",
+      "name": "exact vector readiness",
+      "required": true,
+      "passed": true,
+      "expected": "hybrid and 2603/2603 compatible points",
+      "actual": {
+        "ready": true,
+        "retrieval_mode": "hybrid",
+        "detail": "Qdrant hazır: 2603/2603 uyumlu nokta."
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "classification and routing",
+      "required": true,
+      "passed": true,
+      "expected": [
+        "yol_bakim_talebi",
+        "ORKGM-YB-001",
+        "ust_yazi_v1"
+      ],
+      "actual": [
+        "yol_bakim_talebi",
+        "ORKGM-YB-001",
+        "ust_yazi_v1"
+      ]
+    },
+    {
+      "scenario": "A",
+      "name": "hybrid retrieval",
+      "required": true,
+      "passed": true,
+      "expected": "hybrid dense used without fallback and verified evidence",
+      "actual": {
+        "document_id": "EVR-20260824-F50D8598",
+        "status": "eksik_bilgi_bekleniyor",
+        "document_type": "yol_bakim_talebi",
+        "analysis_missing_fields": [],
+        "missing_information": [
+          "sayi",
+          "imzalayan",
+          "unvan"
+        ],
+        "unit_id": "ORKGM-YB-001",
+        "template_id": "ust_yazi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.92,
+        "event_count": 10
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "missing draft fields",
+      "required": true,
+      "passed": true,
+      "expected": [
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ],
+      "actual": [
+        "sayi",
+        "imzalayan",
+        "unvan"
+      ]
+    },
+    {
+      "scenario": "A",
+      "name": "snapshot disclosure",
+      "required": true,
+      "passed": true,
+      "expected": "all verified references are explicitly non-current/non-reliance",
+      "actual": {
+        "verified_count": 5,
+        "safe_count": 5
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "intent-and-text legal candidate relevance",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "profile": "road_surface_maintenance_v1",
+        "chunk_ids": [
+          "MEV-09E4E088C59D4D13",
+          "MEV-94ECA73AA07B2D39",
+          "MEV-B4102E4DDE97752F",
+          "MEV-D1B127E868E39891",
+          "MEV-F3938057B283C03C"
+        ],
+        "forbidden_absent": [
+          "MEV-311383AB24A5855D",
+          "MEV-56214B1A9589A5DA",
+          "MEV-9DFE7B7E895F4F01"
+        ],
+        "all_scores_at_least": 0.75
+      },
+      "actual": {
+        "profile": "road_surface_maintenance_v1",
+        "strategy": "intent_profile_concept_gate_v2",
+        "chunk_ids": [
+          "MEV-F3938057B283C03C",
+          "MEV-B4102E4DDE97752F",
+          "MEV-09E4E088C59D4D13",
+          "MEV-94ECA73AA07B2D39",
+          "MEV-D1B127E868E39891"
+        ],
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          0.85,
+          0.85
+        ],
+        "rejected_candidates": 28,
+        "abstained": false
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "all requested fields have safe fixture values",
+      "required": true,
+      "passed": true,
+      "expected": [],
+      "actual": []
+    },
+    {
+      "scenario": "A",
+      "name": "information transition",
+      "required": true,
+      "passed": true,
+      "expected": "kullanici_onayi_bekleniyor with no missing fields",
+      "actual": {
+        "status": "kullanici_onayi_bekleniyor",
+        "missing_information": []
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "compliance gate",
+      "required": true,
+      "passed": true,
+      "expected": true,
+      "actual": {
+        "passed": true,
+        "score": 0.96,
+        "errors": [],
+        "warnings": [
+          "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir."
+        ]
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "LaTeX artifact",
+      "required": true,
+      "passed": true,
+      "expected": "downloadable application/x-tex with source section",
+      "actual": {
+        "content_type": "application/x-tex",
+        "size_bytes": 2274
+      }
+    },
+    {
+      "scenario": "A",
+      "name": "human approval",
+      "required": true,
+      "passed": true,
+      "expected": "tamamlandi",
+      "actual": "tamamlandi"
+    },
+    {
+      "scenario": "B",
+      "name": "missing-information classification and template",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "document_type": "trafik_guvenligi_bildirimi",
+        "unit_id": "ORKGM-TG-001",
+        "template_id": "eksik_bilgi_talebi_v1",
+        "compliance_passed": true,
+        "missing": [
+          "gonderen",
+          "konum",
+          "sayi",
+          "imzalayan",
+          "unvan"
+        ]
+      },
+      "actual": {
+        "document_id": "EVR-20260824-EB414120",
+        "status": "eksik_bilgi_bekleniyor",
+        "document_type": "trafik_guvenligi_bildirimi",
+        "analysis_missing_fields": [
+          "gonderen",
+          "konum"
+        ],
+        "missing_information": [
+          "gonderen",
+          "konum",
+          "sayi",
+          "imzalayan",
+          "unvan"
+        ],
+        "unit_id": "ORKGM-TG-001",
+        "template_id": "eksik_bilgi_talebi_v1",
+        "retrieval_mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "reference_count": 5,
+        "verified_reference_count": 5,
+        "compliance_passed": true,
+        "compliance_score": 0.92,
+        "event_count": 10
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "snapshot disclosure",
+      "required": true,
+      "passed": true,
+      "expected": "all verified references are explicitly non-current/non-reliance",
+      "actual": {
+        "verified_count": 5,
+        "safe_count": 5
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "intent-and-text legal candidate relevance",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "profile": "traffic_sign_damage_v1",
+        "chunk_ids": [
+          "MEV-06B1C9050FB89590",
+          "MEV-557C8DA8A10F2BA5",
+          "MEV-B4102E4DDE97752F",
+          "MEV-E65ACF3F7612C808",
+          "MEV-F3938057B283C03C"
+        ],
+        "forbidden_absent": [
+          "MEV-031D0A3918F5F30E",
+          "MEV-097A621442A40371",
+          "MEV-9C1D2E3C962F54A1"
+        ],
+        "all_scores_at_least": 0.75
+      },
+      "actual": {
+        "profile": "traffic_sign_damage_v1",
+        "strategy": "intent_profile_concept_gate_v2",
+        "chunk_ids": [
+          "MEV-F3938057B283C03C",
+          "MEV-B4102E4DDE97752F",
+          "MEV-557C8DA8A10F2BA5",
+          "MEV-06B1C9050FB89590",
+          "MEV-E65ACF3F7612C808"
+        ],
+        "scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rejected_candidates": 29,
+        "abstained": false
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "all requested fields have safe fixture values",
+      "required": true,
+      "passed": true,
+      "expected": [],
+      "actual": []
+    },
+    {
+      "scenario": "B",
+      "name": "information transition",
+      "required": true,
+      "passed": true,
+      "expected": "kullanici_onayi_bekleniyor with no missing fields",
+      "actual": {
+        "status": "kullanici_onayi_bekleniyor",
+        "missing_information": []
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "compliance gate",
+      "required": true,
+      "passed": true,
+      "expected": true,
+      "actual": {
+        "passed": true,
+        "score": 0.96,
+        "errors": [],
+        "warnings": [
+          "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir."
+        ]
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "LaTeX artifact",
+      "required": true,
+      "passed": true,
+      "expected": "downloadable application/x-tex with source section",
+      "actual": {
+        "content_type": "application/x-tex",
+        "size_bytes": 2218
+      }
+    },
+    {
+      "scenario": "B",
+      "name": "human approval",
+      "required": true,
+      "passed": true,
+      "expected": "tamamlandi",
+      "actual": "tamamlandi"
+    },
+    {
+      "scenario": "C",
+      "name": "documented rule-based classification boundary",
+      "required": false,
+      "passed": true,
+      "expected": [
+        "genel_basvuru",
+        "ORKGM-EB-001"
+      ],
+      "actual": [
+        "genel_basvuru",
+        "ORKGM-EB-001"
+      ]
+    },
+    {
+      "scenario": "C",
+      "name": "near-miss abstention",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "profile": null,
+        "query_supported": false,
+        "abstained": true,
+        "verified_reference_count": 0
+      },
+      "actual": {
+        "profile": null,
+        "query_supported": false,
+        "abstained": true,
+        "hit_count": 0,
+        "verified_reference_count": 0,
+        "warning": "Bu evrak türü için incelenmiş bir snapshot alaka profili yok; yanlış atıf üretmemek için sonuçlardan kaçınıldı."
+      }
+    },
+    {
+      "scenario": "D",
+      "name": "near-miss abstention",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "profile": "road_surface_maintenance_v1",
+        "query_supported": false,
+        "abstained": true,
+        "verified_reference_count": 0
+      },
+      "actual": {
+        "profile": "road_surface_maintenance_v1",
+        "query_supported": false,
+        "abstained": true,
+        "hit_count": 0,
+        "verified_reference_count": 0,
+        "warning": "Evrak sınıfı eşleşti; ancak kullanıcı metninde incelenmiş olay kavramları birlikte bulunamadı. Yanlış atıf üretmemek için sonuçlardan kaçınıldı."
+      }
+    },
+    {
+      "scenario": "E",
+      "name": "near-miss abstention",
+      "required": true,
+      "passed": true,
+      "expected": {
+        "profile": "traffic_sign_damage_v1",
+        "query_supported": false,
+        "abstained": true,
+        "verified_reference_count": 0
+      },
+      "actual": {
+        "profile": "traffic_sign_damage_v1",
+        "query_supported": false,
+        "abstained": true,
+        "hit_count": 0,
+        "verified_reference_count": 0,
+        "warning": "Evrak sınıfı eşleşti; ancak kullanıcı metninde incelenmiş olay kavramları birlikte bulunamadı. Yanlış atıf üretmemek için sonuçlardan kaçınıldı."
+      }
+    },
+    {
+      "scenario": "TXT",
+      "name": "multipart upload",
+      "required": true,
+      "passed": true,
+      "expected": [
+        "manuel_test_yol_bakim_talebi.txt",
+        "yol_bakim_talebi",
+        "ORKGM-YB-001"
+      ],
+      "actual": [
+        "manuel_test_yol_bakim_talebi.txt",
+        "yol_bakim_talebi",
+        "ORKGM-YB-001"
+      ]
+    }
+  ]
+}

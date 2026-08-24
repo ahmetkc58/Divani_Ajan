@@ -28,8 +28,16 @@ def test_health_and_text_process(monkeypatch, tmp_path: Path) -> None:
     assert health.json()["retrieval_setup_warning"] is None
     ready = client.get("/ready")
     assert ready.status_code == 200
-    assert ready.json()["status"] == "ready"
-    assert ready.json()["retrieval_mode"] == "bm25"
+    ready_payload = ready.json()
+    assert ready_payload["status"] == "ready"
+    assert ready_payload["ready"] is True
+    assert ready_payload["retrieval_mode"] == "bm25"
+    assert ready_payload["data_mode"] == "sentetik_demo"
+    assert ready_payload["corpus_mode"] == "trusted_synthetic"
+    assert ready_payload["corpus_contract_valid"] is True
+    assert ready_payload["currentness_verified"] is False
+    assert ready_payload["legal_reliance_allowed"] is False
+    assert "BM25 corpus hazır" in ready_payload["detail"]
 
     text = (ROOT / "examples" / "yol_bakim_talebi.txt").read_text(encoding="utf-8")
     response = client.post(
@@ -59,5 +67,10 @@ def test_hybrid_readiness_fails_when_active_corpus_is_missing(
     response = TestClient(api_module.app).get("/ready")
 
     assert response.status_code == 503
-    assert response.json()["status"] == "not_ready"
-    assert "sentetik BM25 fallback" in response.json()["detail"]
+    payload = response.json()
+    assert payload["status"] == "not_ready"
+    assert payload["ready"] is False
+    assert payload["retrieval_mode"] == "hybrid"
+    assert payload["data_mode"] == "sentetik_demo"
+    assert payload["legal_reliance_allowed"] is False
+    assert "sentetik BM25 fallback" in payload["detail"]

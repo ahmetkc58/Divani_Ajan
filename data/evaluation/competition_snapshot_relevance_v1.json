@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "competition_snapshot_query_relevance",
+  "version": "2026-08-24.2",
+  "usage": "engineering_demo_only_not_legal_validation",
+  "corpus": {
+    "mode": "competition_snapshot",
+    "path": "data/processed/competition_snapshot.json",
+    "fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "file_sha256": "305b1d8575969545414a5fb976a7a63a9e5cdbd8849921064b7e211f23e86576"
+  },
+  "k": 5,
+  "binary_relevance_min_grade": 2,
+  "queries": [
+    {
+      "query_id": "ROAD-MAINT-01",
+      "profile": "road_surface_maintenance_v1",
+      "input_text": "Gönderen: Ayşe Örnek\nTarih: 23.08.2026\nKonu: D-100 bağlantı yolundaki asfalt bozulması\nKonum: Örnek İl, Örnek İlçe, D-100 bağlantı yolu 12. kilometre\nTelefon: 0555 111 22 33\n\nBelirtilen konumda yol yüzeyinde geniş çukurlar ve asfalt bozulmaları oluşmuştur.\nTrafik güvenliği açısından gerekli yol bakım ve onarım çalışmasının yapılmasını talep ediyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_abstain": false,
+      "judgments": [
+        {"chunk_id": "MEV-B4102E4DDE97752F", "grade": 3, "provision_family": "road_defect_remedy", "text_anchor": "bozukluk ve eksiklikler"},
+        {"chunk_id": "MEV-F3938057B283C03C", "grade": 3, "provision_family": "road_defect_remedy", "text_anchor": "bozukluk ve eksiklikler"},
+        {"chunk_id": "MEV-09E4E088C59D4D13", "grade": 2, "provision_family": "municipal_road_safety_duty", "text_anchor": "yolları trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak"},
+        {"chunk_id": "MEV-D1B127E868E39891", "grade": 2, "provision_family": "municipal_road_safety_duty", "text_anchor": "Yolun yapısını, trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak"},
+        {"chunk_id": "MEV-94ECA73AA07B2D39", "grade": 2, "provision_family": "road_obstacle_remedy", "text_anchor": "en kısa zamanda ortadan kaldırarak karayolunu"},
+        {"chunk_id": "MEV-B3CB8951AFDAFA10", "grade": 1, "provision_family": "kgm_general_safety_duty", "text_anchor": "can ve mal güvenliği"},
+        {"chunk_id": "MEV-5309419BF6FC994F", "grade": 1, "provision_family": "kgm_general_safety_duty", "text_anchor": "can ve mal güvenliği"},
+        {"chunk_id": "MEV-C863A805478FFC53", "grade": 1, "provision_family": "work_zone_signing", "text_anchor": "Onarım çalışması yürütülen"},
+        {"chunk_id": "MEV-CD368D3D73FF9FE8", "grade": 1, "provision_family": "work_created_hazard", "text_anchor": "ortadan kaldırılır"}
+      ],
+      "hard_negative_chunk_ids": [
+        "MEV-56214B1A9589A5DA",
+        "MEV-9DFE7B7E895F4F01",
+        "MEV-311383AB24A5855D"
+      ]
+    },
+    {
+      "query_id": "ROAD-PARAPHRASE-02",
+      "profile": "road_surface_maintenance_v1",
+      "input_text": "Konu: D-100 asfalt ve kaplama onarımı\nKonum: D-100 18. kilometre\n\nYol yüzeyindeki derin çukurlar kapatılsın ve bozulan asfalt kaplama trafik güvenliği için onarılsın.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_abstain": false,
+      "judgments": [
+        {"chunk_id": "MEV-B4102E4DDE97752F", "grade": 3, "provision_family": "road_defect_remedy", "text_anchor": "bozukluk ve eksiklikler"},
+        {"chunk_id": "MEV-F3938057B283C03C", "grade": 3, "provision_family": "road_defect_remedy", "text_anchor": "bozukluk ve eksiklikler"},
+        {"chunk_id": "MEV-09E4E088C59D4D13", "grade": 2, "provision_family": "municipal_road_safety_duty", "text_anchor": "yolları trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak"},
+        {"chunk_id": "MEV-D1B127E868E39891", "grade": 2, "provision_family": "municipal_road_safety_duty", "text_anchor": "Yolun yapısını, trafik düzeni ve güvenliğini sağlayacak durumda bulundurmak"},
+        {"chunk_id": "MEV-94ECA73AA07B2D39", "grade": 2, "provision_family": "road_obstacle_remedy", "text_anchor": "en kısa zamanda ortadan kaldırarak karayolunu"}
+      ],
+      "hard_negative_chunk_ids": [
+        "MEV-56214B1A9589A5DA",
+        "MEV-9DFE7B7E895F4F01",
+        "MEV-311383AB24A5855D"
+      ]
+    },
+    {
+      "query_id": "ROAD-NOANSWER-COMPENSATION-01",
+      "profile": "road_surface_maintenance_v1",
+      "input_text": "Konu: Yol bakım ve asfalt çukuru\nKonum: Örnek ilçe\n\nYoldaki çukura girince aracımın jantı kırıldı. Belediyeden tazminat ve değer kaybı almak istiyorum.",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_abstain": true,
+      "judgments": [],
+      "hard_negative_chunk_ids": []
+    },
+    {
+      "query_id": "ROAD-NOANSWER-SPEC-01",
+      "profile": "road_surface_maintenance_v1",
+      "input_text": "Konu: Asfalt kaplama yol bakım ölçüleri\n\nAsfalt yamasında bitüm oranı, tabaka kalınlığı ve teknik şartname nedir?",
+      "expected_document_type": "yol_bakim_talebi",
+      "expected_abstain": true,
+      "judgments": [],
+      "hard_negative_chunk_ids": []
+    },
+    {
+      "query_id": "DAMAGED-SIGN-01",
+      "profile": "traffic_sign_damage_v1",
+      "input_text": "Konu: Hasarlı trafik işaret levhası\n\nBölgemizde bulunan trafik işaret levhası devrilmiştir. Trafik güvenliği açısından gereğinin yapılmasını talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": false,
+      "judgments": [
+        {"chunk_id": "MEV-F3938057B283C03C", "grade": 3, "provision_family": "damaged_sign_remedy", "text_anchor": "trafik işaret levhaları"},
+        {"chunk_id": "MEV-B4102E4DDE97752F", "grade": 3, "provision_family": "damaged_sign_remedy", "text_anchor": "trafik işaretlerini"},
+        {"chunk_id": "MEV-557C8DA8A10F2BA5", "grade": 3, "provision_family": "sign_continuity_and_function", "text_anchor": "sürekliliği ve işlerliği sağlanır"},
+        {"chunk_id": "MEV-06B1C9050FB89590", "grade": 2, "provision_family": "municipal_sign_continuity", "text_anchor": "bunların devamlılığını ve işlerliğini sağlamak"},
+        {"chunk_id": "MEV-E65ACF3F7612C808", "grade": 2, "provision_family": "sign_safety_duty", "text_anchor": "trafik işaretlerini"},
+        {"chunk_id": "MEV-09E4E088C59D4D13", "grade": 1, "provision_family": "municipal_sign_installation", "text_anchor": "işaret levhaları koymak"},
+        {"chunk_id": "MEV-B3CB8951AFDAFA10", "grade": 1, "provision_family": "kgm_general_signing", "text_anchor": "düzenleme ve işaretlemeleri yaparak"},
+        {"chunk_id": "MEV-5309419BF6FC994F", "grade": 1, "provision_family": "kgm_general_signing", "text_anchor": "düzenleme ve işaretlemeleri yaparak"},
+        {"chunk_id": "MEV-7DE46C499D8EB2C9", "grade": 1, "provision_family": "signing_standards", "text_anchor": "işaretleme standartları"},
+        {"chunk_id": "MEV-C863A805478FFC53", "grade": 1, "provision_family": "work_zone_signing", "text_anchor": "Onarım çalışması yürütülen"}
+      ],
+      "hard_negative_chunk_ids": [
+        "MEV-097A621442A40371",
+        "MEV-031D0A3918F5F30E",
+        "MEV-9C1D2E3C962F54A1"
+      ]
+    },
+    {
+      "query_id": "DAMAGED-SIGN-PARAPHRASE-02",
+      "profile": "traffic_sign_damage_v1",
+      "input_text": "Konu: Kavşaktaki trafik yön levhası\nKonum: Örnek kavşak\n\nTrafik işaret levhası kırılmış, devrilmiş ve görünmüyor. Güvenlik için yenilenmesini talep ediyorum.",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": false,
+      "judgments": [
+        {"chunk_id": "MEV-F3938057B283C03C", "grade": 3, "provision_family": "damaged_sign_remedy", "text_anchor": "trafik işaret levhaları"},
+        {"chunk_id": "MEV-B4102E4DDE97752F", "grade": 3, "provision_family": "damaged_sign_remedy", "text_anchor": "trafik işaretlerini"},
+        {"chunk_id": "MEV-557C8DA8A10F2BA5", "grade": 3, "provision_family": "sign_continuity_and_function", "text_anchor": "sürekliliği ve işlerliği sağlanır"},
+        {"chunk_id": "MEV-06B1C9050FB89590", "grade": 2, "provision_family": "municipal_sign_continuity", "text_anchor": "bunların devamlılığını ve işlerliğini sağlamak"},
+        {"chunk_id": "MEV-E65ACF3F7612C808", "grade": 2, "provision_family": "sign_safety_duty", "text_anchor": "trafik işaretlerini"}
+      ],
+      "hard_negative_chunk_ids": [
+        "MEV-097A621442A40371",
+        "MEV-031D0A3918F5F30E",
+        "MEV-9C1D2E3C962F54A1"
+      ]
+    },
+    {
+      "query_id": "SIGN-NOANSWER-PENALTY-01",
+      "profile": "traffic_sign_damage_v1",
+      "input_text": "Konu: Trafik güvenliği ve işaret levhası cezası\n\nTrafik levhasına uymadığım için cezaya itiraz etmek istiyorum. İtiraz süresi kaç gündür?",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": true,
+      "judgments": [],
+      "hard_negative_chunk_ids": []
+    },
+    {
+      "query_id": "SIGN-NOANSWER-INSURANCE-01",
+      "profile": "traffic_sign_damage_v1",
+      "input_text": "Konu: Devrilen trafik işaret levhası\n\nKazada devrilen trafik levhasının bedelini trafik sigortası mı öder?",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": true,
+      "judgments": [],
+      "hard_negative_chunk_ids": []
+    }
+  ],
+  "limitations": [
+    "Etiketler yalnız sabit yarışma snapshot'ında metinsel sorgu alakası içindir.",
+    "Hukuki güncellik, yürürlük, yetki, olayın somut uygulanabilirliği veya hukuk görüşü doğrulanmaz.",
+    "Retrieval değerlendirmesi context_text ve text alanlarını; kullanıcıya gösterilecek atıf ise kendi text alanını dikkate alır.",
+    "Sekiz örnek bağımsız hukuk uzmanı validasyonu değildir; dört cevaplanabilir fixture ile dört no-answer/near-miss mühendislik regresyonudur."
+  ]
+}

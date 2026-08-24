@@ -31,6 +31,18 @@ from .hybrid import (
     reciprocal_rank_fusion,
 )
 from .qdrant_store import QdrantStore, QdrantUnavailable, SchemaMismatch
+from .relevance import (
+    AnalysisAwareDeterministicReranker,
+    AnalysisAwareTextRetrieverAdapter,
+    RELEVANCE_STRATEGY,
+    ROAD_SURFACE_PROFILE,
+    TRAFFIC_SIGN_PROFILE,
+    assess_query_relevance,
+    assess_query_intent,
+    build_query_evidence_text,
+    build_relevance_query,
+    resolve_relevance_profile,
+)
 from .reranker import (
     JinaRerankerProvider,
     RerankedSearchResponse,
@@ -57,6 +69,8 @@ from .vector_indexing import (
 
 __all__ = [
     "AnalysisAwareHybridRetriever",
+    "AnalysisAwareDeterministicReranker",
+    "AnalysisAwareTextRetrieverAdapter",
     "AnalysisDomainResolver",
     "BM25Index",
     "CorpusBinding",
@@ -76,6 +90,8 @@ __all__ = [
     "LegislationRepository",
     "QdrantStore",
     "QdrantUnavailable",
+    "RELEVANCE_STRATEGY",
+    "ROAD_SURFACE_PROFILE",
     "RepositoryApprovalError",
     "RerankedSearchResponse",
     "RerankerProvider",
@@ -84,6 +100,7 @@ __all__ = [
     "RerankingRetriever",
     "RetrievalRuntime",
     "SchemaMismatch",
+    "TRAFFIC_SIGN_PROFILE",
     "VectorIndexingError",
     "VectorIndexingReport",
     "VectorIndexingService",
@@ -91,6 +108,10 @@ __all__ = [
     "COMPETITION_SNAPSHOT_NOTICE",
     "COMPETITION_SNAPSHOT_STATUS",
     "build_analysis_query",
+    "assess_query_relevance",
+    "assess_query_intent",
+    "build_query_evidence_text",
+    "build_relevance_query",
     "build_corpus_binding",
     "build_passage_text",
     "build_retrieval_runtime",
@@ -99,4 +120,5 @@ __all__ = [
     "chunk_fingerprint",
     "competition_snapshot_chunk_blockers",
     "reciprocal_rank_fusion",
+    "resolve_relevance_profile",
 ]

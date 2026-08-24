@@ -71,11 +71,17 @@ class DraftingAgent:
         request_text = request.value if request and request.value else analysis.summary
         if decision.document_type == "eksik_bilgi_talebi":
             missing = ", ".join(analysis.missing_fields)
-            return [
+            paragraphs = [
                 "Başvurunuz ön incelemeye alınmıştır.",
                 f"İşlemin sürdürülebilmesi için şu bilgilerin tamamlanması gerekmektedir: {missing}.",
                 "Eksik bilgilerin iletilmesinin ardından başvurunuz yeniden değerlendirilecektir.",
             ]
+            if any(
+                reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+                for reference in references
+            ):
+                paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
+            return paragraphs
 
         paragraphs = [
             f"İlgili başvuruda belirtilen husus incelenmiştir: {request_text}",

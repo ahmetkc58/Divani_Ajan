@@ -7,7 +7,7 @@ uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 2. evrak sınıflandırma ve önemli alan çıkarımı,
 3. eksik bilgi tespiti,
 4. bağlamsal BM25 veya Jina Embeddings v3 + Qdrant + RRF hibrit arama,
-5. kaynak doğrulama,
+5. kullanıcı-niyeti + görünür metin alaka kapısı ve kaynak doğrulama,
 6. resmî yazı türü ve LaTeX şablonu seçimi,
 7. sentetik birime yönlendirme,
 8. güvenli LaTeX taslağı oluşturma,
@@ -42,6 +42,12 @@ Bu teknik hedef **24 Ağustos 2026'da tamamlandı**:
   `competition_snapshot_chunks_v1` koleksiyonuna yazıldı;
 - indeks kapatılıp yeniden açıldıktan sonra **2.603/2.603** uyumlu nokta ve tam
   corpus parmak izi doğrulandı.
+- Yol yüzeyi bakım talebi ve hasarlı trafik işareti için madde/ID allowlist'i
+  kullanmayan iki denetlenebilir alaka profili eklendi. Önce özgün kullanıcı
+  metninde olay kavramları doğrulanır; ardından RRF ile birleşen en fazla 40 aday
+  görünür chunk metni üzerinden incelenir. Nesne ve görev/giderme kavramları
+  birlikte bulunmazsa kaynak elenir, hiçbiri geçmezse yanlış atıf üretmek yerine
+  abstain edilir. Expansion terimleri kullanıcı lexical kanıtı sayılmaz.
 
 Bu yol, normal `verified_public` / `legal_chunks_v1` yolundan ayrıdır ve public
 fail-closed kapısını gevşetmez. Snapshot parçaları hâlâ güncel/yürürlükte mevzuat
@@ -349,7 +355,13 @@ eklenmez, sıralar `k=60` klasik Reciprocal Rank Fusion ile birleştirilir. Kana
 sıraları, ham skorlar, RRF katkıları ve fallback durumu süreç JSON'unda korunur.
 RRF skoru yalnız sıralamadır: lexical kanıt yoksa dense-only kaynak, ham Jina
 cosine skoru `KARAYOL_MIN_RETRIEVAL_SCORE` (varsayılan `0.20`) eşiğini geçmeden
-doğrulanmış hukuki kanıt sayılmaz. Düşük skor açık abstention üretir.
+doğrulanmış hukuki kanıt sayılmaz. `competition_snapshot` yolundaki incelenmiş
+iki profilde hem `hybrid` hem `bm25` modunda ayrıca
+`KARAYOL_MIN_RELEVANCE_SCORE` (varsayılan `0.75`) uygulanır. Sonuç JSON'unda
+alaka profili, özgün-sorgu desteği, skor, kabul gerekçeleri,
+incelenen/reddedilen aday sayısı ve abstention kararı ayrı alanlarda saklanır.
+İncelenmemiş snapshot evrak türleri pass-through edilmez; fail-closed boş sonuç
+üretir.
 Mevcut çekirdek kamu kaynaklarının insan onayı henüz sıfır olduğu için bu depo
 aktif public koleksiyonu kendiliğinden doldurmaz. Varsayılan `bm25` modu sentetik
 demo akışını çevrimdışı tutar; açıkça seçilen `competition_snapshot` + `hybrid`
@@ -389,6 +401,31 @@ yaklaşık `3,7 sn` ekledi. Entegrasyon ablation için korunur, fakat varsayıla
 akışta kapalıdır. Ayrıntı `reports/RETRIEVAL_ABLATION_2026-08-24.md`
 dosyasındadır.
 
+### Snapshot sorgu alakası ölçümü
+
+İki ana sorgu, iki olumlu paraphrase ve dört no-answer/near-miss kaydından oluşan
+sekiz mühendislik fixture'ı korpus fingerprint'ine bağlı setle ayrıca ölçülür:
+
+```powershell
+python -X utf8 scripts\evaluate_snapshot_relevance.py `
+  --variant intent-profile-gate-v2 `
+  --output reports\snapshot_relevance_candidate_v2_2026-08-24.json
+```
+
+Eski hibrit RRF ilk 5'i ilk iki ana fixture'da yol bakımında `0/5`, hasarlı
+levhada `2/5` strict ilgili metinsel aday döndürüyordu. V2 canlı turunda dört
+cevaplanabilir fixture'ın her biri `5/5`; `Precision@5`, `Recall@5`, `nDCG@5`
+ve hüküm ailesi recall'ü `%100`, hard-negative sayısı `0` oldu. Dört no-answer
+fixture'ın tamamında sistem abstain etti; yanlış cevap ve yanlış abstention `0`.
+Bu set kurallar geliştirilirken kullanılmış küçük bir regresyondur; bağımsız
+test, hukuk doğruluğu veya genel saha başarımı değildir. Baseline ve raporlar
+[`snapshot_relevance_baseline_2026-08-24.json`](reports/snapshot_relevance_baseline_2026-08-24.json)
+ile tarihsel v1
+[`snapshot_relevance_candidate_2026-08-24.json`](reports/snapshot_relevance_candidate_2026-08-24.json)
+ve güncel v2
+[`snapshot_relevance_candidate_v2_2026-08-24.json`](reports/snapshot_relevance_candidate_v2_2026-08-24.json)
+dosyalarındadır.
+
 ### Küçük sentetik kanıt grafı
 
 Ölçümden sonra eklenen denetlenebilir grafı üretmek için:
@@ -414,6 +451,7 @@ uvicorn karayol_agent.api:app --reload
 ```
 
 - `GET /health`
+- `GET /ready`
 - `POST /v1/process/text`
 - `POST /v1/process/file`
 - `GET /v1/process/{evrak_id}`
@@ -430,14 +468,32 @@ Yerel web arayüzünü örnek senaryolarla çalıştırmak için:
 
 ```powershell
 $env:PYTHONPATH="src"
-uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
+$env:KARAYOL_RETRIEVAL_MODE="hybrid"
+$env:KARAYOL_CORPUS_MODE="competition_snapshot"
+$env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json"
+$env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
+$env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
+$env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
+$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
+Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
+python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
 ```
 
 Tarayıcıdan `http://127.0.0.1:8010` adresini açın. Arayüz; hazır evrak
 senaryolarını, TXT/MD/PDF yüklemeyi, sınıflandırma ve yönlendirme sonucunu,
-doğrulanmış kaynakları, eksik bilgi tamamlama adımını, insan onayını ve LaTeX
-çıktı indirmeyi tek ekranda sunar. Adım adım kabul testi için
-[`MANUEL_TEST_SENARYOSU.md`](MANUEL_TEST_SENARYOSU.md) belgesini kullanın.
+kaynak sözleşmesi ve güncellik/hukuki-dayanak açıklamalarını, eksik bilgi
+tamamlama adımını, insan onayını ve LaTeX çıktı indirmeyi tek ekranda sunar.
+Önce `/ready` yanıtında 2.603/2.603 vektörün uyumlu olduğunu doğrulayın. Adım
+adım kabul testi için [`MANUEL_TEST_SENARYOSU.md`](MANUEL_TEST_SENARYOSU.md),
+otomatik canlı tur için şu komutu kullanın:
+
+```powershell
+python -X utf8 scripts\run_production_demo_acceptance.py
+```
+
+24 Ağustos kabul sonucu, olumlu alaka ve near-miss abstention kapılarıyla
+**23/23** zorunlu kontrol geçti:
+[`PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md`](reports/PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md).
 
 ## Test
 

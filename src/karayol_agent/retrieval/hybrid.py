@@ -52,6 +52,11 @@ class HybridSearchHit(SearchHit):
             matched_terms=list(self.matched_terms),
             fusion_method=self.fusion_method,
             channel_contributions=list(self.channel_contributions),
+            relevance_score=self.relevance_score,
+            relevance_accepted=self.relevance_accepted,
+            relevance_reasons=list(self.relevance_reasons),
+            relevance_profile=self.relevance_profile,
+            relevance_basis=self.relevance_basis,
         )
 
 

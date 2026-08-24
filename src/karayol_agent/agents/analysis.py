@@ -87,6 +87,7 @@ class ContentAnalysisAgent:
             document_type=classification.document_type,
             confidence=classification.confidence,
             summary=self._summarize(text),
+            retrieval_evidence_text=truncate(normalize_whitespace(text), 4000),
             fields=fields,
             missing_fields=missing,
             keywords=keywords,

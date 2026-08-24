@@ -18,7 +18,12 @@ from karayol_agent.agents.legislation import RankedRetriever
 from karayol_agent.config import Settings, settings
 from karayol_agent.documents import DocumentExtractor
 from karayol_agent.latex import LatexRenderer
-from karayol_agent.retrieval import BM25Index, LegislationRepository
+from karayol_agent.retrieval import (
+    AnalysisAwareDeterministicReranker,
+    AnalysisAwareTextRetrieverAdapter,
+    BM25Index,
+    LegislationRepository,
+)
 from karayol_agent.retrieval.contracts import (
     COMPETITION_SNAPSHOT_NOTICE,
     CorpusMode,
@@ -103,6 +108,13 @@ class EvrakOrchestrator:
 
     def _build_retriever(self) -> RankedRetriever:
         if self.settings.retrieval_mode.casefold() == "bm25":
+            if (
+                self.settings.corpus_mode
+                == CorpusMode.COMPETITION_SNAPSHOT.value
+            ):
+                return self._apply_snapshot_relevance(
+                    AnalysisAwareTextRetrieverAdapter(self.index, mode="bm25")
+                )
             return self.index
 
         try:
@@ -125,12 +137,20 @@ class EvrakOrchestrator:
                 f"{corpus_label} korpusu kullanılamadı "
                 f"({type(exc).__name__}); sentetik BM25 fallback etkin."
             )
-            return HybridRetriever(
+            fallback = HybridRetriever(
                 self.index,
                 dense_retriever=None,
                 channel_top_n=self.settings.hybrid_candidate_top_k,
                 rrf_k=self.settings.rrf_k,
             )
+            if (
+                self.settings.corpus_mode
+                == CorpusMode.COMPETITION_SNAPSHOT.value
+            ):
+                return self._apply_snapshot_relevance(
+                    AnalysisAwareTextRetrieverAdapter(fallback, mode="hybrid")
+                )
+            return fallback
 
         # In hybrid mode both lexical and dense channels must represent the
         # same strict corpus contract. Never fuse synthetic BM25 with a public
@@ -140,10 +160,23 @@ class EvrakOrchestrator:
             self.settings,
             corpus_binding=corpus_binding,
         )
-        return runtime.hybrid_for(
+        base_retriever = runtime.hybrid_for(
             self.index,
             channel_top_n=self.settings.hybrid_candidate_top_k,
             rrf_k=self.settings.rrf_k,
+        )
+        if corpus_mode == CorpusMode.COMPETITION_SNAPSHOT:
+            return self._apply_snapshot_relevance(base_retriever)
+        return base_retriever
+
+    def _apply_snapshot_relevance(
+        self,
+        base_retriever: object,
+    ) -> AnalysisAwareDeterministicReranker:
+        return AnalysisAwareDeterministicReranker(
+            base_retriever,
+            candidate_top_k=self.settings.relevance_candidate_top_k,
+            threshold=self.settings.min_relevance_score,
         )
 
     def readiness(self) -> dict[str, object]:
@@ -540,6 +573,7 @@ class EvrakOrchestrator:
 
     def _finalize_user_message(self, state: ProcessState) -> None:
         assert state.draft is not None
+        assert state.compliance is not None
         missing = list(dict.fromkeys(state.draft.missing_fields))
         state.missing_information = missing
         if missing:
@@ -552,6 +586,24 @@ class EvrakOrchestrator:
             state.add_event(
                 ProcessStatus.WAITING_FOR_INFO,
                 "Taslak üretildi; zorunlu kullanıcı bilgileri bekleniyor.",
+                "Kullanıcı Bilgilendirme Ajanı",
+            )
+        elif not state.compliance.passed:
+            compliance_errors = state.compliance.errors or [
+                "Uygunluk denetimi başarısız oldu."
+            ]
+            state.pending_actions = [
+                "Uygunluk hatalarını giderin: " + "; ".join(compliance_errors),
+                "Güncellenen taslağı yeniden uygunluk denetimine gönderin.",
+            ]
+            state.next_step = (
+                "Uygunluk hatalarını gidererek taslağı yeniden oluşturunuz; "
+                "mevcut taslak onaylanamaz."
+            )
+            state.possible_actions = ["taslagi_duzenle", "reddet"]
+            state.add_event(
+                ProcessStatus.ERROR,
+                "Taslak uygunluk denetimini geçemedi ve kullanıcı onayına sunulmadı.",
                 "Kullanıcı Bilgilendirme Ajanı",
             )
         else:
