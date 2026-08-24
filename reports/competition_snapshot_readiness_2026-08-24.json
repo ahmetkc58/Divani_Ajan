@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T15:16:39.7307480+03:00",
+  "corpus": "data/processed/competition_snapshot.json",
+  "corpus_mode": "competition_snapshot",
+  "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+  "document_count": 8,
+  "source_chunk_count": 2606,
+  "chunk_count": 2603,
+  "exact_duplicate_rows_consolidated": 3,
+  "embedding": {
+    "model": "jinaai/jina-embeddings-v3",
+    "dimension": 1024,
+    "task": "retrieval.passage",
+    "device": "cuda:0",
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "gpu_memory_mib": 4096,
+    "driver_version": "610.47",
+    "batch_size": 8,
+    "batch_count": 326,
+    "longest_batch_smoke": {
+      "passage_count": 8,
+      "max_input_characters": 2397,
+      "peak_reserved_memory_mib": 2142.0,
+      "output_dimension": 1024
+    }
+  },
+  "qdrant": {
+    "storage_mode": "embedded_local",
+    "path": "runtime/qdrant-competition-snapshot",
+    "collection": "competition_snapshot_chunks_v1",
+    "closed_and_reopened": true,
+    "expected_point_count": 2603,
+    "total_point_count": 2603,
+    "compatible_point_count": 2603,
+    "payload_indexes_enforced": false,
+    "payload_index_detail": "Gömülü yerel Qdrant payload indekslerini desteklemez; filtre metadata'sı readiness sayımıyla doğrulandı."
+  },
+  "dense_query_checks": [
+    {
+      "domain": "official_writing",
+      "query": "Resmî yazışmada konu alanı nasıl düzenlenir?",
+      "top_chunk_id": "MEV-ACADD56CAA976C89",
+      "top_article": "Madde 13",
+      "top_score": 0.633223
+    },
+    {
+      "domain": "road_transport",
+      "query": "Karayolu taşıma yetki belgesi ve faaliyet şartları nelerdir?",
+      "top_chunk_id": "MEV-D30325FD30505862",
+      "top_article": "Madde 5",
+      "top_score": 0.782135
+    },
+    {
+      "domain": "kgm_infrastructure",
+      "query": "Karayolu trafik güvenliği ve yol bakım sorumluluğu",
+      "top_chunk_id": "MEV-5B3B9B158CEE5D95",
+      "top_article": "Madde 13",
+      "top_score": 0.656738
+    }
+  ],
+  "hybrid_check": {
+    "mode": "hybrid",
+    "dense_status": "used",
+    "fallback_used": false,
+    "lexical_candidate_count": 20,
+    "dense_candidate_count": 20,
+    "fused_candidate_count": 37,
+    "returned_hit_count": 5,
+    "accepted_snapshot_reference_count": 5,
+    "query_device": "cuda:0"
+  },
+  "currentness_verified": false,
+  "legal_reliance_allowed": false,
+  "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir."
+}

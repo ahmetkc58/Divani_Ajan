@@ -70,6 +70,12 @@ class Settings:
     retrieval_mode: str = field(
         default_factory=lambda: _environment("KARAYOL_RETRIEVAL_MODE", "bm25") or "bm25"
     )
+    corpus_mode: str = field(
+        default_factory=lambda: (
+            _environment("KARAYOL_CORPUS_MODE", "verified_public")
+            or "verified_public"
+        )
+    )
     embedding_model: str = "jinaai/jina-embeddings-v3"
     embedding_revision: str = field(
         default_factory=lambda: _environment(
@@ -101,8 +107,18 @@ class Settings:
             "KARAYOL_EMBEDDING_LOCAL_FILES_ONLY", False
         )
     )
+    embedding_device: str | None = field(
+        default_factory=lambda: _environment("KARAYOL_EMBEDDING_DEVICE")
+    )
     qdrant_url: str | None = field(
         default_factory=lambda: _environment("QDRANT_URL")
+    )
+    qdrant_path: Path | None = field(
+        default_factory=lambda: (
+            Path(value)
+            if (value := _environment("KARAYOL_QDRANT_PATH")) is not None
+            else None
+        )
     )
     qdrant_api_key: str | None = field(
         default_factory=lambda: _environment("QDRANT_API_KEY"),
@@ -156,6 +172,23 @@ class Settings:
             or PROJECT_ROOT / "data" / "processed" / "active_legislation.json"
         )
     )
+    competition_snapshot_path: Path = field(
+        default_factory=lambda: Path(
+            _environment(
+                "KARAYOL_COMPETITION_SNAPSHOT_PATH",
+                str(
+                    PROJECT_ROOT
+                    / "data"
+                    / "processed"
+                    / "competition_snapshot.json"
+                ),
+            )
+            or PROJECT_ROOT
+            / "data"
+            / "processed"
+            / "competition_snapshot.json"
+        )
+    )
 
     def __post_init__(self) -> None:
         for attribute, environment_name in (
@@ -176,11 +209,43 @@ class Settings:
         if mode not in {"bm25", "hybrid"}:
             raise ValueError("KARAYOL_RETRIEVAL_MODE yalnızca 'bm25' veya 'hybrid' olabilir.")
         object.__setattr__(self, "retrieval_mode", mode)
+        corpus_mode = self.corpus_mode.casefold()
+        if corpus_mode not in {"verified_public", "competition_snapshot"}:
+            raise ValueError(
+                "KARAYOL_CORPUS_MODE yalnız 'verified_public' veya "
+                "'competition_snapshot' olabilir."
+            )
+        object.__setattr__(self, "corpus_mode", corpus_mode)
+        if (
+            corpus_mode == "competition_snapshot"
+            and self.qdrant_collection == "legal_chunks_v1"
+        ):
+            object.__setattr__(
+                self,
+                "qdrant_collection",
+                "competition_snapshot_chunks_v1",
+            )
+        if self.qdrant_url is not None and self.qdrant_path is not None:
+            raise ValueError(
+                "QDRANT_URL ve KARAYOL_QDRANT_PATH aynı anda kullanılamaz."
+            )
+        if self.qdrant_path is not None and not self.qdrant_path.is_absolute():
+            object.__setattr__(
+                self,
+                "qdrant_path",
+                (self.project_root / self.qdrant_path).resolve(),
+            )
         if not self.active_legislation_path.is_absolute():
             object.__setattr__(
                 self,
                 "active_legislation_path",
                 self.project_root / self.active_legislation_path,
+            )
+        if not self.competition_snapshot_path.is_absolute():
+            object.__setattr__(
+                self,
+                "competition_snapshot_path",
+                self.project_root / self.competition_snapshot_path,
             )
         if self.embedding_dimension not in {32, 64, 128, 256, 512, 768, 1024}:
             raise ValueError(
@@ -202,6 +267,15 @@ class Settings:
             "sentence_transformers",
         }:
             raise ValueError("Desteklenmeyen Jina embedding backend'i.")
+        if self.embedding_device is not None:
+            device = self.embedding_device.casefold()
+            if device != "cpu" and device != "cuda" and not (
+                device.startswith("cuda:") and device[5:].isdigit()
+            ):
+                raise ValueError(
+                    "KARAYOL_EMBEDDING_DEVICE 'cpu', 'cuda' veya 'cuda:N' olmalıdır."
+                )
+            object.__setattr__(self, "embedding_device", device)
         if self.hybrid_candidate_top_k < self.retrieval_top_k:
             raise ValueError("Hibrit aday sayısı nihai retrieval top-k değerinden küçük olamaz.")
         if self.rrf_k < 1:
@@ -214,6 +288,12 @@ class Settings:
     def ensure_runtime_dirs(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.runtime_dir.mkdir(parents=True, exist_ok=True)
+
+    @property
+    def retrieval_corpus_path(self) -> Path:
+        if self.corpus_mode == "competition_snapshot":
+            return self.competition_snapshot_path
+        return self.active_legislation_path
 
 
 settings = Settings()

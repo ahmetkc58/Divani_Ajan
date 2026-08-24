@@ -9,6 +9,11 @@ from dataclasses import dataclass
 from karayol_agent.schemas import LegislationChunk
 
 from .corpus import build_corpus_binding
+from .contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+    competition_snapshot_chunk_blockers,
+)
 from .embeddings import EmbeddingProvider
 from .qdrant_store import QdrantStore
 from .repository import LegislationRepository
@@ -31,9 +36,14 @@ class VectorIndexingReport:
     embedding_dimension: int
     embedding_model_revision: str | None
     embedding_code_revision: str | None
+    embedding_device: str | None
     embedding_task: str
     index_version: str
     corpus_fingerprint: str
+    corpus_mode: str
+    currentness_verified: bool
+    legal_reliance_allowed: bool
+    usage_notice: str | None
 
 
 def build_passage_text(chunk: LegislationChunk) -> str:
@@ -114,12 +124,28 @@ class VectorIndexingService:
         # Validate every record before binding the long-lived store, invoking an
         # expensive model, or allowing a partial Qdrant write.
         passage_texts: list[str] = []
+        corpus_mode = CorpusMode(
+            getattr(
+                self.vector_store,
+                "corpus_mode",
+                CorpusMode.VERIFIED_PUBLIC,
+            )
+        )
         for chunk in legal_chunks:
             passage_texts.append(build_passage_text(chunk))
-            blockers = LegislationRepository.public_chunk_blockers(chunk)
+            blockers = (
+                competition_snapshot_chunk_blockers(chunk)
+                if corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                else LegislationRepository.public_chunk_blockers(chunk)
+            )
             if blockers:
+                target_label = (
+                    "yarışma snapshot indeksine"
+                    if corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                    else "aktif indekse"
+                )
                 raise VectorIndexingError(
-                    f"{chunk.chunk_id} aktif indekse alınamaz: "
+                    f"{chunk.chunk_id} {target_label} alınamaz: "
                     + ", ".join(blockers)
                     + "."
                 )
@@ -165,9 +191,18 @@ class VectorIndexingService:
             embedding_dimension=passage_metadata.dimension,
             embedding_model_revision=passage_metadata.model_revision,
             embedding_code_revision=passage_metadata.code_revision,
+            embedding_device=getattr(self.embedding_provider, "device", None),
             embedding_task=passage_task,
             index_version=self.vector_store.index_version,
             corpus_fingerprint=corpus_binding.fingerprint,
+            corpus_mode=corpus_mode.value,
+            currentness_verified=(corpus_mode == CorpusMode.VERIFIED_PUBLIC),
+            legal_reliance_allowed=(corpus_mode == CorpusMode.VERIFIED_PUBLIC),
+            usage_notice=(
+                COMPETITION_SNAPSHOT_NOTICE
+                if corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                else None
+            ),
         )
 
     def index(

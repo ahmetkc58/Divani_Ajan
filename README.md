@@ -17,10 +17,12 @@ uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 bağlı RAG katmanı aynı sorguyu Jina Embeddings v3 (`retrieval.query`) ve
 contextual BM25 kanallarına gönderir, Qdrant dense sonuçlarını klasik RRF ile
 birleştirir ve dense kanal kullanılamazsa bunu süreç teşhisinde açıkça belirterek
-BM25'e döner. Demo verileri sentetiktir; `veri_kaynaklari/` altındaki gerçek ve
-herkese açık kayıtlar insan onayı olmadan çalışma zamanında kullanılmaz.
+BM25'e döner. Varsayılan BM25 demo verileri sentetiktir. İsteğe bağlı
+`competition_snapshot` modu depodaki 8 sabit yerel belgeyi zorunlu
+güncellik/hukuki görüş uyarısıyla kullanır; `verified_public` yolu ise insan
+onayı olmadan hâlâ fail-closed kalır.
 
-## Geçici uygulama kararı — mevcut mevzuat snapshot'ı
+## Tamamlanan uygulama — 8 belgeli yarışma snapshot'ı
 
 Bu geliştirme turunda yeni/güncel mevzuat kopyalarını edinme, proje planını
 snapshot politikası için yeniden yazma ve mevcut aktivasyon kurallarını yeniden
@@ -28,17 +30,23 @@ tasarlama adımları **atlanmıştır**. Çalışma, depoda bulunan kaynakların
 hukuk metni olduğu iddia edilmeden mevcut proje snapshot'ı üzerinden devam
 edecektir.
 
-Sıradaki teknik hedef, metin katmanı hazır olan 6 belgeden daha önce üretilen
-2.407 yapısal parçaya mevcut iki OCR adayını sayfa izini koruyarak yapısal
-chunk'lar halinde eklemek ve 8 belgelik birleşik snapshot'ı kalıcı Jina
-Embeddings v3 + Qdrant indeksine almaktır. Kaynak başlığı, madde/fıkra/bent,
-sayfa, URL ve SHA-256 izi korunacak; kullanıcıya sunulan atıflar bu sabit
-snapshot'a ait olduğunu açıkça belirtecektir.
+Bu teknik hedef **24 Ağustos 2026'da tamamlandı**:
 
-Bu karar mevcut fail-closed kodu kendiliğinden değiştirmez: karantina parçaları
-halen `approved_for_active_rag=false` taşır ve normal `index-vectors` akışı
-onaysız corpus'u reddeder. Dolayısıyla bu not, hukuki güncellik veya uzman onayı
-iddiası değil, sonraki uygulama işinin kapsam ve öncelik kaydıdır.
+- metin katmanı hazır 6 belge ile 2 OCR adayından gelen 2.606 kaynak satırı
+  birleştirildi; 3 tam tekrar güvenli biçimde konsolide edilerek 8 belge ve
+  **2.603 benzersiz yapısal parça** üretildi;
+- 2.404 parça metin katmanından, 199 parça OCR adaylarından geldi; kaynak
+  başlığı, madde/fıkra/bent, sayfa aralığı ve SHA-256 izi korundu;
+- parçalar RTX 3050 üzerinde `jinaai/jina-embeddings-v3`
+  (`retrieval.passage`, 1024D) ile gömülüp kalıcı gömülü Qdrant'taki ayrı
+  `competition_snapshot_chunks_v1` koleksiyonuna yazıldı;
+- indeks kapatılıp yeniden açıldıktan sonra **2.603/2.603** uyumlu nokta ve tam
+  corpus parmak izi doğrulandı.
+
+Bu yol, normal `verified_public` / `legal_chunks_v1` yolundan ayrıdır ve public
+fail-closed kapısını gevşetmez. Snapshot parçaları hâlâ güncel/yürürlükte mevzuat
+veya hukuki görüş olarak kullanılamaz; uygulama her atıfta sabit snapshot
+uyarısını taşır.
 
 ## Kurulum
 
@@ -127,9 +135,11 @@ yapısından aşağıdaki gibi bir parça üretilir:
   sınırlarında alt parçalara ayrılır; tüm alt parçalar aynı kaynak ve hiyerarşi
   metadata'sını taşır.
 
-Bu aşamada üretilen JSON dosyaları embedding değildir; Jina/Qdrant aşamasının
-girdisidir. İnsan incelemesi tamamlanmayan parçalar karantinada tutulur ve
-`approved_for_active_rag=false` olarak kalır.
+Bu paragraftaki JSON'lar karantina ara çıktılarıdır; tek başlarına embedding
+değildir. İnsan incelemesi tamamlanmayan parçalar
+`approved_for_active_rag=false` olarak kalır. Yarışma için birleşik
+`competition_snapshot.json` ayrıca üretilmiş ve ayrı Qdrant koleksiyonuna
+indekslenmiştir; bu işlem verified-public onayı vermez.
 
 **Bilinen yapısal kalite notu:** 2918 sayılı Kanun gibi değişiklik dipnotları
 içeren belgelerde “Birinci Bölüm başlığında...” ifadeleri bazı durumlarda gerçek
@@ -196,12 +206,18 @@ python -m karayol_agent.cli ingest-manifest-quarantine `
   --output-dir data\processed\stage3_quarantine
 ```
 
-24 Ağustos 2026 kapanış çalışmasında 8 kaynağın 6'sı 2.407 yapısal parçaya
-ayrılmış, 2 kaynak OCR kuyruğuna alınmış ve hiçbir parçaya aktif-RAG onayı
-verilmemiştir. `data/processed/` tekrar üretilebilir çalışma çıktısı olduğu için
-Git'e eklenmez; kalıcı inceleme girdileri
-`core_legislation_manifest.json` ve `core_legislation_manifest_review.csv`
-dosyalarıdır.
+24 Ağustos 2026 ilk Aşama 3 geçişinde 8 kaynağın 6'sı 2.407 yapısal parçaya
+ayrılmış, 2 kaynak OCR kuyruğuna alınmış ve hiçbir parçaya public aktif-RAG onayı
+verilmemiştir. Seçili 6 karantina JSON'u ve 3 OCR metin girdisi bilinçli olarak
+Git'te sürümlenmiştir. Bunlardan türetilen birleşik
+`data/processed/competition_snapshot.json` ile kalıcı
+`runtime/qdrant-competition-snapshot/` yeniden üretilebilir çıktılardır ve
+`.gitignore` altında tutulur.
+
+Ardından yarışma snapshot'ı için iki OCR adayı da ayrı ingestion sözleşmesiyle
+işlendi. Bu işlem public aktif-RAG onayı vermedi; yalnızca açık uyarı taşıyan
+`competition_snapshot` modunda 199 OCR parçasını 2.404 metin-katmanı parçasıyla
+birleştirdi.
 
 İki zayıf metin katmanlı PDF için Türkçe/İngilizce OCR aday metni ve sayfa
 bazlı güven raporu üretmek için:
@@ -224,7 +240,7 @@ OCR güvenini ve süreyi raporlar. Çıktıyı her zaman
 yerine geçmez. 24 Ağustos incelemesinin kaynak/güncellik paketi
 `reports/MEVZUAT_KAYNAK_INCELEME_2026-08-24.md` altındadır. Sekiz kaydın dördü
 kesin eski, biri kesik kopya, biri kanonik olmayan OCR adayıdır; bu nedenle
-otomatik aktif corpus hâlâ boş tutulmaktadır.
+otomatik `verified_public` corpus hâlâ boş tutulmaktadır.
 
 İnsan kapsam, yürürlük ve OCR doğrulamasından sonra tekil çıktılarla beraber tek
 aktif corpus dosyası üretmek için:
@@ -241,6 +257,49 @@ teknik kapanışını engellemeyen, fakat gerçek kamu corpusunu aktive etmeden 
 zorunlu olan içerik doğrulama işidir.
 
 ## Jina Embeddings v3 ve Qdrant indeksi
+
+### Sabit yarışma snapshot'ını GPU ile üretme
+
+Depodaki 8 belgeyi güncel mevzuat iddiası olmadan yarışma demosuna hazırlamak ve
+kalıcı Qdrant indeksini NVIDIA GPU'da oluşturmak için:
+
+```powershell
+$env:PYTHONPATH="src"
+python -m karayol_agent.cli build-competition-snapshot `
+  --acknowledge-not-current
+
+python -m karayol_agent.cli index-snapshot-vectors `
+  --acknowledge-not-current `
+  --local-files-only `
+  --device cuda:0 `
+  --batch-size 8
+```
+
+Varsayılan kalıcı dizin `runtime/qdrant-competition-snapshot`, ayrı koleksiyon
+`competition_snapshot_chunks_v1` olur. Dizin yaklaşık 32,8 MB'dir ve yeniden
+üretilebilir çalışma çıktısı olduğu için Git'e eklenmez. İndeks kanıtı
+`reports/competition_snapshot_index_2026-08-24.json`, yeniden açma/readiness
+kanıtı `reports/competition_snapshot_readiness_2026-08-24.json` dosyasındadır.
+
+Uygulamayı aynı snapshot ve hibrit retrieval ile çalıştırmak için:
+
+```powershell
+$env:KARAYOL_RETRIEVAL_MODE="hybrid"
+$env:KARAYOL_CORPUS_MODE="competition_snapshot"
+$env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json"
+$env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
+$env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
+$env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
+$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
+python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
+```
+
+24 Ağustos 2026 gerçek koşusunda NVIDIA GeForce RTX 3050 Laptop GPU kullanıldı;
+2.603 parça 326 batch'te indekslendi. Dense sorgu, BM25 ve RRF'nin aynı snapshot
+üzerinde birlikte çalıştığı uçtan uca doğrulandı. GPU olmayan ortamda yalnız
+`--device cpu` seçimi değiştirilir.
+
+### İnsan onaylı public mevzuat indeksi
 
 Önce `.env.example` içindeki değişkenleri ortamınıza aktarın ve Qdrant'ı
 çalıştırın. İnsan doğrulamasından geçmiş aktif corpusu sürümlü
@@ -290,7 +349,8 @@ cosine skoru `KARAYOL_MIN_RETRIEVAL_SCORE` (varsayılan `0.20`) eşiğini geçme
 doğrulanmış hukuki kanıt sayılmaz. Düşük skor açık abstention üretir.
 Mevcut çekirdek kamu kaynaklarının insan onayı henüz sıfır olduğu için bu depo
 aktif public koleksiyonu kendiliğinden doldurmaz. Varsayılan `bm25` modu sentetik
-demo akışını çevrimdışı tutar.
+demo akışını çevrimdışı tutar; açıkça seçilen `competition_snapshot` + `hybrid`
+modu ise yukarıdaki ayrı kalıcı GPU indeksini kullanır.
 
 **Lisans notu:** Jina Embeddings v3, ayrı remote-code uygulaması ve Jina
 Reranker v2 `CC BY-NC 4.0`; EasyOCR 1.7.2 kodu `Apache-2.0` kapsamındadır.

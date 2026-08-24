@@ -57,19 +57,12 @@ def manual_test_interface() -> FileResponse:
 
 @app.get("/health")
 def health() -> dict[str, object]:
-    source_kinds = {
-        document.chunk.source_kind for document in orchestrator.index.documents
-    }
     return {
         "status": "ok",
         "version": __version__,
         "corpus_size": len(orchestrator.index.documents),
         "latex_compiler": orchestrator.renderer._find_compiler(),
-        "data_mode": (
-            "verified_public_legislation"
-            if source_kinds == {"public_legislation"}
-            else "sentetik_demo"
-        ),
+        **orchestrator.corpus_disclosure(),
         "retrieval_mode": orchestrator.settings.retrieval_mode,
         "retrieval_setup_warning": orchestrator.retrieval_setup_warning,
     }

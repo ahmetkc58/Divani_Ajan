@@ -147,6 +147,14 @@ class RetrievalDiagnostics(BaseModel):
 
 
 class VerifiedReference(BaseModel):
+    """A retrieval/provenance decision and its legal-reliance disclosure.
+
+    ``verified`` means that the reference passed the applicable source contract
+    and retrieval evidence checks.  It does not, by itself, promise that a
+    source is current law; callers must also inspect the explicit disclosure
+    fields below.
+    """
+
     chunk_id: str
     document_id: str | None = None
     title: str
@@ -158,6 +166,10 @@ class VerifiedReference(BaseModel):
     page_end: int | None = None
     source_url: str | None = None
     source_kind: str = "unknown"
+    corpus_mode: str = "unknown"
+    currentness_verified: bool = False
+    legal_reliance_allowed: bool = False
+    usage_notice: str | None = None
     domain: str = "unknown"
     excerpt: str
     score: float

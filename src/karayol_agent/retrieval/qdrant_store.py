@@ -4,17 +4,25 @@ import math
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from importlib import import_module
+from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid5
 
 from pydantic import ValidationError
 
 from karayol_agent.retrieval.corpus import CorpusBinding, chunk_fingerprint
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    COMPETITION_SNAPSHOT_STATUS,
+    CorpusMode,
+    competition_snapshot_chunk_blockers,
+)
 from karayol_agent.retrieval.repository import LegislationRepository
 from karayol_agent.schemas import LegislationChunk, SearchHit
 
 
 DEFAULT_COLLECTION_NAME = "legal_chunks_v1"
+DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME = "competition_snapshot_chunks_v1"
 DEFAULT_EMBEDDING_MODEL = "jinaai/jina-embeddings-v3"
 DEFAULT_EMBEDDING_DIMENSION = 1024
 DEFAULT_PASSAGE_TASK = "retrieval.passage"
@@ -37,6 +45,11 @@ PAYLOAD_INDEXES: dict[str, str] = {
     "chunk_id": "keyword",
     "chunk_fingerprint": "keyword",
     "corpus_fingerprint": "keyword",
+    "corpus_mode": "keyword",
+    "source_kind": "keyword",
+    "status": "keyword",
+    "currentness_verified": "bool",
+    "legal_reliance_allowed": "bool",
 }
 
 
@@ -64,6 +77,13 @@ class QdrantReadinessReport:
     embedding_model: str
     embedding_dimension: int
     index_version: str
+    storage_mode: str
+    payload_indexes_enforced: bool
+    payload_index_detail: str
+    corpus_mode: str
+    currentness_verified: bool
+    legal_reliance_allowed: bool
+    usage_notice: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,10 +133,12 @@ def stable_point_id(chunk_id: str) -> str:
 
 
 class QdrantStore:
-    """Qdrant adapter for verified ``LegislationChunk`` dense retrieval.
+    """Qdrant adapter for one explicitly selected legal-corpus contract.
 
     ``qdrant-client`` is imported only when a real client or its request models
     are needed. Offline tests can inject a duck-typed client with no dependency.
+    Verified-public and non-current competition snapshots use distinct trust
+    filters and collection names; synthetic benchmark storage is separate.
     """
 
     def __init__(
@@ -124,6 +146,7 @@ class QdrantStore:
         client: Any | None = None,
         *,
         url: str = "http://localhost:6333",
+        path: str | Path | None = None,
         api_key: str | None = None,
         timeout: float = 10.0,
         prefer_grpc: bool = False,
@@ -135,6 +158,7 @@ class QdrantStore:
         passage_task: str = DEFAULT_PASSAGE_TASK,
         query_task: str = DEFAULT_QUERY_TASK,
         index_version: str = DEFAULT_INDEX_VERSION,
+        corpus_mode: CorpusMode | str = CorpusMode.VERIFIED_PUBLIC,
     ) -> None:
         if not collection_name.strip():
             raise ValueError("collection_name boş olamaz.")
@@ -152,8 +176,29 @@ class QdrantStore:
             if revision is not None and not revision.strip():
                 raise ValueError(f"{field_name} boş bir değer olamaz.")
 
+        normalized_path: Path | None = None
+        if path is not None:
+            if not str(path).strip():
+                raise ValueError("Qdrant yerel depolama yolu boş olamaz.")
+            normalized_path = Path(path).resolve()
+
+        normalized_corpus_mode = CorpusMode(corpus_mode)
+        if normalized_corpus_mode == CorpusMode.TRUSTED_SYNTHETIC:
+            raise ValueError(
+                "Production QdrantStore trusted_synthetic corpus kabul etmez."
+            )
+        if (
+            normalized_corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+            and collection_name == DEFAULT_COLLECTION_NAME
+        ):
+            raise ValueError(
+                "Yarışma snapshot'ı public koleksiyon adıyla indekslenemez; "
+                f"{DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME!r} kullanın."
+            )
+
         self._client = client
         self.url = url
+        self.path = normalized_path
         self.api_key = api_key
         self.timeout = timeout
         self.prefer_grpc = prefer_grpc
@@ -173,6 +218,7 @@ class QdrantStore:
         self.passage_task = passage_task
         self.query_task = query_task
         self.index_version = index_version
+        self.corpus_mode = normalized_corpus_mode
         self._corpus_binding: CorpusBinding | None = None
         self._models_module: Any | None = None
         self._models_checked = False
@@ -194,6 +240,24 @@ class QdrantStore:
     def allowed_chunk_ids(self) -> frozenset[str]:
         binding = self._require_corpus_binding()
         return binding.allowed_chunk_ids
+
+    @property
+    def storage_mode(self) -> str:
+        """Return the explicit Qdrant persistence mode for diagnostics."""
+
+        return "embedded_local" if self.path is not None else "server"
+
+    @property
+    def payload_indexes_enforced(self) -> bool:
+        """Whether Qdrant can create and report the required payload indexes.
+
+        Embedded qdrant-client storage persists points and evaluates filters,
+        but its payload-index API is intentionally a no-op.  Server mode keeps
+        the strict payload-index contract; embedded mode reports the limitation
+        rather than pretending to provide server parity.
+        """
+
+        return self.path is None
 
     def bind_corpus(self, binding: CorpusBinding) -> None:
         """Bind this store instance to one immutable exact-corpus contract."""
@@ -220,20 +284,34 @@ class QdrantStore:
                 "Qdrant kullanılamıyor: 'qdrant-client' paketi kurulu değil."
             ) from exc
 
-        kwargs: dict[str, Any] = {
-            "url": self.url,
-            "timeout": self.timeout,
-            "prefer_grpc": self.prefer_grpc,
-        }
-        if self.api_key is not None:
-            kwargs["api_key"] = self.api_key
+        if self.path is not None:
+            kwargs: dict[str, Any] = {"path": str(self.path)}
+            target = str(self.path)
+        else:
+            kwargs = {
+                "url": self.url,
+                "timeout": self.timeout,
+                "prefer_grpc": self.prefer_grpc,
+            }
+            if self.api_key is not None:
+                kwargs["api_key"] = self.api_key
+            target = self.url
         try:
             self._client = client_type(**kwargs)
         except Exception as exc:  # pragma: no cover - qdrant-client specific
             raise QdrantUnavailable(
-                f"Qdrant istemcisi oluşturulamadı ({self.url})."
+                f"Qdrant istemcisi oluşturulamadı ({target})."
             ) from exc
         return self._client
+
+    def close(self) -> None:
+        """Close an already-created client without triggering lazy creation."""
+
+        client = self._client
+        self._client = None
+        close = getattr(client, "close", None)
+        if callable(close):
+            close()
 
     def ensure_collection(self) -> bool:
         """Create the collection/indexes or validate the existing schema."""
@@ -258,7 +336,8 @@ class QdrantStore:
         else:
             self._validate_collection_schema(info)
 
-        self._ensure_payload_indexes(client, None if created else info)
+        if self.payload_indexes_enforced:
+            self._ensure_payload_indexes(client, None if created else info)
         return created
 
     def require_collection(self) -> Any:
@@ -271,7 +350,8 @@ class QdrantStore:
                 "önce index-vectors komutunu çalıştırın."
             )
         self._validate_collection_schema(info)
-        self._validate_payload_indexes(info)
+        if self.payload_indexes_enforced:
+            self._validate_payload_indexes(info)
         return info
 
     def validate_readiness(self) -> QdrantReadinessReport:
@@ -307,12 +387,34 @@ class QdrantStore:
             embedding_model=self.embedding_model,
             embedding_dimension=self.embedding_dimension,
             index_version=self.index_version,
+            storage_mode=self.storage_mode,
+            payload_indexes_enforced=self.payload_indexes_enforced,
+            payload_index_detail=(
+                "Qdrant sunucusunda zorunlu payload indeksleri doğrulandı."
+                if self.payload_indexes_enforced
+                else (
+                    "Gömülü yerel Qdrant payload indekslerini desteklemez; "
+                    "filtre metadata'sı readiness sayımıyla doğrulandı."
+                )
+            ),
+            corpus_mode=self.corpus_mode.value,
+            currentness_verified=(
+                self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+            ),
+            legal_reliance_allowed=(
+                self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+            ),
+            usage_notice=(
+                COMPETITION_SNAPSHOT_NOTICE
+                if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                else None
+            ),
         )
 
     def build_payload(
         self, chunk: LegislationChunk | Mapping[str, Any]
     ) -> dict[str, Any]:
-        """Build the versioned project-plan payload for one approved chunk."""
+        """Build a versioned payload under the store's selected trust contract."""
 
         binding = self._require_corpus_binding()
         legal_chunk = self._coerce_chunk(chunk)
@@ -340,6 +442,18 @@ class QdrantStore:
                 "index_version": self.index_version,
                 "corpus_fingerprint": binding.fingerprint,
                 "chunk_fingerprint": actual_chunk_fingerprint,
+                "corpus_mode": self.corpus_mode.value,
+                "currentness_verified": (
+                    self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+                ),
+                "legal_reliance_allowed": (
+                    self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+                ),
+                "usage_notice": (
+                    COMPETITION_SNAPSHOT_NOTICE
+                    if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                    else None
+                ),
             }
         )
         if self.embedding_model_revision is not None:
@@ -433,7 +547,7 @@ class QdrantStore:
         limit: int = 20,
         embedding_task: str = DEFAULT_QUERY_TASK,
     ) -> list[SearchHit]:
-        """Search with mandatory approval, validity, and domain filters."""
+        """Search with mandatory corpus-mode, validity, and domain filters."""
 
         normalized_domain = domain.strip()
         if not normalized_domain or normalized_domain == "unknown":
@@ -704,11 +818,12 @@ class QdrantStore:
         return models.PointStruct(id=point_id, vector=vector, payload=payload)
 
     def _active_filter(self, domain: str, binding: CorpusBinding) -> Any:
-        values = (
-            ("approved_for_active_rag", True),
-            ("validity_status", "verified"),
-            ("domain", domain),
-            ("corpus_fingerprint", binding.fingerprint),
+        values = self._trust_filter_values()
+        values.extend(
+            [
+                ("domain", domain),
+                ("corpus_fingerprint", binding.fingerprint),
+            ]
         )
         models = self._request_models()
         if models is None:
@@ -742,8 +857,7 @@ class QdrantStore:
 
     def _readiness_filter(self, binding: CorpusBinding) -> Any:
         values: list[tuple[str, Any]] = [
-            ("approved_for_active_rag", True),
-            ("validity_status", "verified"),
+            *self._trust_filter_values(),
             ("corpus_fingerprint", binding.fingerprint),
             ("embedding_model", self.embedding_model),
             ("embedding_dimension", self.embedding_dimension),
@@ -821,12 +935,20 @@ class QdrantStore:
         except (ValidationError, TypeError) as exc:
             raise SchemaMismatch(f"LegislationChunk payload'ı geçersiz: {exc}") from exc
 
-    @staticmethod
-    def _validate_chunk_for_active_index(chunk: LegislationChunk) -> None:
-        blockers = LegislationRepository.public_chunk_blockers(chunk)
+    def _validate_chunk_for_active_index(self, chunk: LegislationChunk) -> None:
+        blockers = (
+            competition_snapshot_chunk_blockers(chunk)
+            if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+            else LegislationRepository.public_chunk_blockers(chunk)
+        )
         if blockers:
+            target_label = (
+                "yarışma snapshot Qdrant indeksine"
+                if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                else "aktif Qdrant indeksine"
+            )
             raise SchemaMismatch(
-                f"{chunk.chunk_id} aktif Qdrant indeksine alınamaz: "
+                f"{chunk.chunk_id} {target_label} alınamaz: "
                 + ", ".join(blockers)
                 + "."
             )
@@ -839,6 +961,18 @@ class QdrantStore:
             "embedding_task": self.passage_task,
             "index_version": self.index_version,
             "corpus_fingerprint": binding.fingerprint,
+            "corpus_mode": self.corpus_mode.value,
+            "currentness_verified": (
+                self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+            ),
+            "legal_reliance_allowed": (
+                self.corpus_mode == CorpusMode.VERIFIED_PUBLIC
+            ),
+            "usage_notice": (
+                COMPETITION_SNAPSHOT_NOTICE
+                if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
+                else None
+            ),
         }
         if self.embedding_model_revision is not None:
             expected["embedding_model_revision"] = self.embedding_model_revision
@@ -863,21 +997,41 @@ class QdrantStore:
                 + "."
             )
 
-    @staticmethod
     def _payload_is_active_for_domain(
+        self,
         payload: Mapping[str, Any],
         domain: str,
         binding: CorpusBinding,
     ) -> bool:
+        trust_values = self._trust_filter_values()
         return (
-            payload.get("approved_for_active_rag") is True
-            and payload.get("validity_status") == "verified"
+            all(payload.get(key) == value for key, value in trust_values)
             and payload.get("domain") == domain
             and payload.get("corpus_fingerprint") == binding.fingerprint
             and payload.get("chunk_id") in binding.allowed_chunk_ids
             and payload.get("chunk_fingerprint")
             == binding.expected_chunk_fingerprint(str(payload.get("chunk_id")))
         )
+
+    def _trust_filter_values(self) -> list[tuple[str, Any]]:
+        if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT:
+            return [
+                ("approved_for_active_rag", False),
+                ("validity_status", "needs_verification"),
+                ("source_kind", CorpusMode.COMPETITION_SNAPSHOT.value),
+                ("status", COMPETITION_SNAPSHOT_STATUS),
+                ("corpus_mode", CorpusMode.COMPETITION_SNAPSHOT.value),
+                ("currentness_verified", False),
+                ("legal_reliance_allowed", False),
+            ]
+        return [
+            ("approved_for_active_rag", True),
+            ("validity_status", "verified"),
+            ("source_kind", "public_legislation"),
+            ("corpus_mode", CorpusMode.VERIFIED_PUBLIC.value),
+            ("currentness_verified", True),
+            ("legal_reliance_allowed", True),
+        ]
 
     @staticmethod
     def _validate_chunk_content_binding(
@@ -963,6 +1117,7 @@ LegalChunkQdrantStore = QdrantStore
 
 __all__ = [
     "DEFAULT_COLLECTION_NAME",
+    "DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME",
     "DEFAULT_DISTANCE",
     "DEFAULT_EMBEDDING_DIMENSION",
     "DEFAULT_EMBEDDING_MODEL",

@@ -5,6 +5,11 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+    competition_snapshot_chunk_blockers,
+)
 from karayol_agent.retrieval.repository import LegislationRepository
 from karayol_agent.retrieval.runtime import build_analysis_query
 from karayol_agent.schemas import (
@@ -27,6 +32,16 @@ class RankedRetriever(Protocol):
 class LegislationSearchResult:
     hits: list[SearchHit]
     diagnostics: RetrievalDiagnostics
+
+
+@dataclass(frozen=True, slots=True)
+class _SourceDecision:
+    trusted: bool
+    note: str
+    corpus_mode: str
+    currentness_verified: bool
+    legal_reliance_allowed: bool
+    usage_notice: str | None = None
 
 
 class LegislationResearchAgent:
@@ -161,7 +176,9 @@ class SourceVerificationAgent:
             has_ranked_evidence = (
                 has_lexical_evidence or has_accepted_dense_evidence
             )
-            trusted_source, source_note = self._trusted_source(hit.chunk)
+            source_decision = self._source_decision(hit.chunk)
+            trusted_source = source_decision.trusted
+            source_note = source_decision.note
 
             accepted = (
                 relative_score >= 0.30 and has_ranked_evidence and trusted_source
@@ -189,6 +206,13 @@ class SourceVerificationAgent:
             else:
                 note = "Kaynak parçasında doğrulanabilir retrieval kanıtı bulunamadı."
 
+            if (
+                accepted
+                and source_decision.corpus_mode
+                == CorpusMode.COMPETITION_SNAPSHOT.value
+            ):
+                note = f"{note} {source_note} {COMPETITION_SNAPSHOT_NOTICE}"
+
             verified.append(
                 VerifiedReference(
                     chunk_id=hit.chunk.chunk_id,
@@ -202,6 +226,12 @@ class SourceVerificationAgent:
                     page_end=hit.chunk.page_end,
                     source_url=hit.chunk.source_url,
                     source_kind=hit.chunk.source_kind,
+                    corpus_mode=source_decision.corpus_mode,
+                    currentness_verified=source_decision.currentness_verified,
+                    legal_reliance_allowed=(
+                        accepted and source_decision.legal_reliance_allowed
+                    ),
+                    usage_notice=source_decision.usage_notice,
                     domain=hit.chunk.domain,
                     excerpt=truncate(hit.chunk.text, 360),
                     score=round(relative_score, 4),
@@ -215,23 +245,63 @@ class SourceVerificationAgent:
 
     @staticmethod
     def _trusted_source(chunk: LegislationChunk) -> tuple[bool, str]:
+        decision = SourceVerificationAgent._source_decision(chunk)
+        return decision.trusted, decision.note
+
+    @staticmethod
+    def _source_decision(chunk: LegislationChunk) -> _SourceDecision:
         if chunk.source_kind == "public_legislation":
             blockers = LegislationRepository.public_chunk_blockers(chunk)
-            return (
-                not blockers,
-                "kamu kaynağı doğrulama engelleri: " + ", ".join(blockers)
-                if blockers
-                else "doğrulanmış kamu mevzuatı",
+            trusted = not blockers
+            return _SourceDecision(
+                trusted=trusted,
+                note=(
+                    "kamu kaynağı doğrulama engelleri: " + ", ".join(blockers)
+                    if blockers
+                    else "doğrulanmış kamu mevzuatı"
+                ),
+                corpus_mode=CorpusMode.VERIFIED_PUBLIC.value,
+                currentness_verified=trusted,
+                legal_reliance_allowed=trusted,
+            )
+        if chunk.source_kind == CorpusMode.COMPETITION_SNAPSHOT.value:
+            blockers = competition_snapshot_chunk_blockers(chunk)
+            return _SourceDecision(
+                trusted=not blockers,
+                note=(
+                    "yarışma snapshot doğrulama engelleri: "
+                    + ", ".join(blockers)
+                    if blockers
+                    else (
+                        "Yarışma snapshot sözleşmesi ve kaynak izi doğrulandı; "
+                        "mevzuat güncelliği/yürürlüğü doğrulanmadı."
+                    )
+                ),
+                corpus_mode=CorpusMode.COMPETITION_SNAPSHOT.value,
+                currentness_verified=False,
+                legal_reliance_allowed=False,
+                usage_notice=COMPETITION_SNAPSHOT_NOTICE,
             )
         if (
             chunk.source_kind == "synthetic"
             and chunk.status == "sentetik_demo_kurali"
         ):
-            return True, "açıkça işaretlenmiş sentetik demo kuralı"
-        return (
-            False,
-            "kaynak ne tam doğrulanmış kamu mevzuatı ne de açıkça işaretlenmiş "
-            "sentetik demo kuralı",
+            return _SourceDecision(
+                trusted=True,
+                note="açıkça işaretlenmiş sentetik demo kuralı",
+                corpus_mode=CorpusMode.TRUSTED_SYNTHETIC.value,
+                currentness_verified=False,
+                legal_reliance_allowed=False,
+            )
+        return _SourceDecision(
+            trusted=False,
+            note=(
+                "kaynak ne tam doğrulanmış kamu mevzuatı, ne geçerli yarışma "
+                "snapshot parçası ne de açıkça işaretlenmiş sentetik demo kuralı"
+            ),
+            corpus_mode="unknown",
+            currentness_verified=False,
+            legal_reliance_allowed=False,
         )
 
 

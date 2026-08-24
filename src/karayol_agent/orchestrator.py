@@ -19,6 +19,11 @@ from karayol_agent.config import Settings, settings
 from karayol_agent.documents import DocumentExtractor
 from karayol_agent.latex import LatexRenderer
 from karayol_agent.retrieval import BM25Index, LegislationRepository
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+    competition_snapshot_chunk_blockers,
+)
 from karayol_agent.retrieval.hybrid import HybridRetriever
 from karayol_agent.retrieval.qdrant_store import QdrantUnavailable, SchemaMismatch
 from karayol_agent.retrieval.runtime import build_retrieval_runtime
@@ -59,10 +64,16 @@ class EvrakOrchestrator:
     ) -> None:
         self.settings = app_settings
         app_settings.ensure_runtime_dirs()
-        chunks = LegislationRepository(
-            app_settings.data_dir / "synthetic_legislation.json",
-            trusted_synthetic=True,
-        ).load()
+        if app_settings.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value:
+            chunks = LegislationRepository(
+                app_settings.competition_snapshot_path,
+                corpus_mode=CorpusMode.COMPETITION_SNAPSHOT,
+            ).load()
+        else:
+            chunks = LegislationRepository(
+                app_settings.data_dir / "synthetic_legislation.json",
+                trusted_synthetic=True,
+            ).load()
         self.index = BM25Index(chunks)
         self.retrieval_setup_warning: str | None = None
         self.retriever = (
@@ -95,14 +106,23 @@ class EvrakOrchestrator:
             return self.index
 
         try:
+            corpus_mode = CorpusMode(self.settings.corpus_mode)
+            corpus_path = self.settings.retrieval_corpus_path
             active_chunks, corpus_binding = LegislationRepository(
-                self.settings.active_legislation_path
+                corpus_path,
+                corpus_mode=corpus_mode,
             ).load_with_binding()
             if not active_chunks:
-                raise ValueError("Aktif kamu mevzuatı korpusu boş.")
+                raise ValueError(f"{corpus_mode.value} korpusu boş.")
         except (OSError, ValueError) as exc:
+            corpus_label = (
+                "Yarışma snapshot"
+                if self.settings.corpus_mode
+                == CorpusMode.COMPETITION_SNAPSHOT.value
+                else "Aktif kamu mevzuatı"
+            )
             self.retrieval_setup_warning = (
-                "Aktif kamu mevzuatı korpusu kullanılamadı "
+                f"{corpus_label} korpusu kullanılamadı "
                 f"({type(exc).__name__}); sentetik BM25 fallback etkin."
             )
             return HybridRetriever(
@@ -113,7 +133,8 @@ class EvrakOrchestrator:
             )
 
         # In hybrid mode both lexical and dense channels must represent the
-        # same strict public corpus. Never fuse synthetic BM25 with Qdrant.
+        # same strict corpus contract. Never fuse synthetic BM25 with a public
+        # or competition-snapshot Qdrant collection.
         self.index = BM25Index(active_chunks)
         runtime = build_retrieval_runtime(
             self.settings,
@@ -129,17 +150,23 @@ class EvrakOrchestrator:
         """Report retrieval readiness without creating or repairing resources."""
 
         mode = self.settings.retrieval_mode.casefold()
+        disclosure = self.corpus_disclosure()
         if mode == "bm25":
             return {
                 "ready": True,
                 "retrieval_mode": mode,
-                "detail": f"Sentetik BM25 corpus hazır: {len(self.index.documents)} parça.",
+                "detail": (
+                    f"{disclosure['data_mode']} BM25 corpus hazır: "
+                    f"{len(self.index.documents)} parça."
+                ),
+                **disclosure,
             }
         if self.retrieval_setup_warning:
             return {
                 "ready": False,
                 "retrieval_mode": mode,
                 "detail": self.retrieval_setup_warning,
+                **disclosure,
             }
 
         vector_store = getattr(self.retriever, "vector_store", None)
@@ -148,6 +175,7 @@ class EvrakOrchestrator:
                 "ready": False,
                 "retrieval_mode": mode,
                 "detail": "Hibrit retriever Qdrant readiness sözleşmesi taşımıyor.",
+                **disclosure,
             }
         try:
             report = vector_store.validate_readiness()
@@ -156,6 +184,7 @@ class EvrakOrchestrator:
                 "ready": False,
                 "retrieval_mode": mode,
                 "detail": str(exc),
+                **disclosure,
             }
         return {
             "ready": True,
@@ -169,6 +198,76 @@ class EvrakOrchestrator:
             "embedding_model": report.embedding_model,
             "embedding_dimension": report.embedding_dimension,
             "index_version": report.index_version,
+            "qdrant_storage_mode": report.storage_mode,
+            "payload_indexes_enforced": report.payload_indexes_enforced,
+            "payload_index_detail": report.payload_index_detail,
+            **disclosure,
+        }
+
+    def corpus_disclosure(self) -> dict[str, object]:
+        """Describe what the in-memory lexical corpus may safely claim."""
+
+        chunks = [document.chunk for document in self.index.documents]
+        source_kinds = {chunk.source_kind for chunk in chunks}
+
+        if chunks and source_kinds == {"public_legislation"}:
+            contract_valid = all(
+                not LegislationRepository.public_chunk_blockers(chunk)
+                for chunk in chunks
+            )
+            return {
+                "data_mode": (
+                    "verified_public_legislation"
+                    if contract_valid
+                    else "unverified_public_legislation"
+                ),
+                "corpus_mode": CorpusMode.VERIFIED_PUBLIC.value,
+                "corpus_contract_valid": contract_valid,
+                "currentness_verified": contract_valid,
+                "legal_reliance_allowed": contract_valid,
+                "usage_notice": None,
+            }
+
+        if chunks and source_kinds == {CorpusMode.COMPETITION_SNAPSHOT.value}:
+            contract_valid = all(
+                not competition_snapshot_chunk_blockers(chunk) for chunk in chunks
+            )
+            return {
+                "data_mode": (
+                    "competition_snapshot"
+                    if contract_valid
+                    else "competition_snapshot_invalid"
+                ),
+                "corpus_mode": CorpusMode.COMPETITION_SNAPSHOT.value,
+                "corpus_contract_valid": contract_valid,
+                "currentness_verified": False,
+                "legal_reliance_allowed": False,
+                "usage_notice": COMPETITION_SNAPSHOT_NOTICE,
+            }
+
+        if chunks and source_kinds == {"synthetic"}:
+            contract_valid = all(
+                chunk.status == "sentetik_demo_kurali" for chunk in chunks
+            )
+            return {
+                "data_mode": (
+                    "sentetik_demo" if contract_valid else "sentetik_veri_gecersiz"
+                ),
+                "corpus_mode": CorpusMode.TRUSTED_SYNTHETIC.value,
+                "corpus_contract_valid": contract_valid,
+                "currentness_verified": False,
+                "legal_reliance_allowed": False,
+                "usage_notice": None,
+            }
+
+        has_snapshot = CorpusMode.COMPETITION_SNAPSHOT.value in source_kinds
+        return {
+            "data_mode": "mixed_or_unknown",
+            "corpus_mode": "mixed_or_unknown",
+            "corpus_contract_valid": False,
+            "currentness_verified": False,
+            "legal_reliance_allowed": False,
+            "usage_notice": COMPETITION_SNAPSHOT_NOTICE if has_snapshot else None,
         }
 
     def process_file(self, path: Path, *, compile_pdf: bool = False) -> ProcessState:
@@ -326,6 +425,19 @@ class EvrakOrchestrator:
                 }
             )
         state.retrieval_diagnostics = diagnostics
+        snapshot_candidates_present = any(
+            hit.chunk.source_kind == CorpusMode.COMPETITION_SNAPSHOT.value
+            for hit in state.search_hits
+        )
+        if snapshot_candidates_present:
+            existing_warning = diagnostics.warning
+            warning = (
+                f"{existing_warning} {COMPETITION_SNAPSHOT_NOTICE}"
+                if existing_warning
+                else COMPETITION_SNAPSHOT_NOTICE
+            )
+            diagnostics = diagnostics.model_copy(update={"warning": warning})
+            state.retrieval_diagnostics = diagnostics
         retrieval_message = f"{len(state.search_hits)} kaynak adayı bulundu."
         if diagnostics.warning:
             retrieval_message += f" Retrieval uyarısı: {diagnostics.warning}"
@@ -339,7 +451,19 @@ class EvrakOrchestrator:
         )
         state.verified_references = self.verifier.run(state.search_hits, state.analysis)
         verified_count = sum(reference.verified for reference in state.verified_references)
-        self._complete(state, f"{verified_count} kaynak doğrulandı.")
+        snapshot_count = sum(
+            reference.verified
+            and reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+            for reference in state.verified_references
+        )
+        if snapshot_count:
+            self._complete(
+                state,
+                f"{snapshot_count} yarışma snapshot kaynağı retrieval/kaynak izi "
+                f"açısından kabul edildi. {COMPETITION_SNAPSHOT_NOTICE}",
+            )
+        else:
+            self._complete(state, f"{verified_count} kaynak doğrulandı.")
 
         self._transition(
             state,

@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+)
 from karayol_agent.schemas import ComplianceResult, DraftPayload, TemplateDecision
 
 
@@ -33,6 +37,28 @@ class ComplianceAgent:
             errors.append("Taslak gövdesi anlamlı bir resmî yazı için çok kısa.")
         if not draft.references:
             warnings.append("Taslakta doğrulanmış mevzuat/kural kaynağı bulunmuyor.")
+        snapshot_references = [
+            reference
+            for reference in draft.references
+            if reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+        ]
+        if snapshot_references:
+            if COMPETITION_SNAPSHOT_NOTICE not in draft.paragraphs:
+                errors.append(
+                    "Yarışma veri kümesi kaynakları kullanıldığı halde zorunlu "
+                    "güncellik/yürürlük uyarısı taslakta bulunmuyor."
+                )
+            if any(
+                reference.currentness_verified
+                or reference.legal_reliance_allowed
+                or reference.usage_notice != COMPETITION_SNAPSHOT_NOTICE
+                for reference in snapshot_references
+            ):
+                errors.append(
+                    "Yarışma veri kümesi referansı güncel mevzuat veya hukuki "
+                    "dayanak olarak işaretlenemez."
+                )
+            warnings.append(COMPETITION_SNAPSHOT_NOTICE)
         if draft.missing_fields:
             warnings.append(
                 "Kullanıcı tarafından doldurulması gereken alanlar: "
@@ -47,4 +73,3 @@ class ComplianceAgent:
             errors=errors,
             warnings=warnings,
         )
-

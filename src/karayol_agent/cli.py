@@ -17,9 +17,13 @@ from karayol_agent.evaluation import (
 )
 from karayol_agent.graph import EvidenceGraphBuilder, GraphBuildError
 from karayol_agent.ingestion import (
+    CompetitionSnapshotCorpusBuilder,
     IngestionError,
     LegislationIngestionService,
+    OcrCandidateIngestionError,
+    SnapshotBuildError,
     StructureNotFoundError,
+    build_core_ocr_candidate_payloads,
 )
 from karayol_agent.orchestrator import (
     ProcessNotFoundError,
@@ -31,7 +35,13 @@ from karayol_agent.retrieval.embeddings import (
     EmbeddingValidationError,
     JinaEmbeddingProvider,
 )
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+)
 from karayol_agent.retrieval.qdrant_store import (
+    DEFAULT_COLLECTION_NAME,
+    DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME,
     QdrantUnavailable,
     SchemaMismatch,
 )
@@ -45,12 +55,29 @@ from karayol_agent.retrieval.reranker import (
     RerankerValidationError,
     RerankingRetriever,
 )
-from karayol_agent.retrieval.runtime import build_retrieval_runtime
+from karayol_agent.retrieval.runtime import (
+    RuntimeContractError,
+    build_retrieval_runtime,
+)
 from karayol_agent.retrieval.vector_indexing import VectorIndexingError
 
 
 class RagConfigurationError(RuntimeError):
-    """Jina/Qdrant komutu zorunlu çalışma zamanı ayarlarını bulamadığında."""
+    """Bir RAG komutunun zorunlu güvenlik/çalışma ayarı bulunamadığında."""
+
+
+_COMPETITION_SNAPSHOT_TEXT_LAYER_OUTPUTS = (
+    "law-2918.json",
+    "law-4925.json",
+    "uab-road-expropriation-regulation.json",
+    "uab-road-infrastructure-safety-regulation.json",
+    "uab-road-traffic-regulation.json",
+    "uab-road-transport-regulation.json",
+)
+_COMPETITION_SNAPSHOT_OCR_DOCUMENT_IDS = (
+    "official-writing-guide",
+    "official-writing-regulation",
+)
 
 
 def _positive_int(value: str) -> int:
@@ -185,6 +212,94 @@ def build_parser() -> argparse.ArgumentParser:
     ingest_quarantine.add_argument("--output-dir", type=Path, required=True)
     ingest_quarantine.add_argument("--report-output", type=Path)
 
+    build_snapshot = subcommands.add_parser(
+        "build-competition-snapshot",
+        help=(
+            "Sabitlenmiş sekiz yerel belgeyi, güncellik iddiası taşımayan "
+            "yarışma snapshot korpusunda birleştir"
+        ),
+    )
+    build_snapshot.add_argument(
+        "--acknowledge-not-current",
+        action="store_true",
+        help=(
+            "Korpusun mevzuat güncelliği/yürürlüğü doğrulanmış bir hukuk "
+            "kaynağı olmadığını açıkça kabul et"
+        ),
+    )
+    build_snapshot.add_argument(
+        "--output",
+        type=Path,
+        default=Path("data/processed/competition_snapshot.json"),
+        help="Üretilecek snapshot corpus JSON dosyası",
+    )
+    build_snapshot.add_argument(
+        "--max-chars",
+        type=_positive_int,
+        default=1800,
+        help="OCR adayları için azami chunk karakter sayısı",
+    )
+
+    index_snapshot = subcommands.add_parser(
+        "index-snapshot-vectors",
+        help=(
+            "Güncellik iddiası taşımayan yarışma snapshot'ını Jina v3 ile "
+            "ayrı ve kalıcı Qdrant koleksiyonuna indeksle"
+        ),
+    )
+    index_snapshot.add_argument(
+        "--acknowledge-not-current",
+        action="store_true",
+        help=(
+            "Snapshot'ın güncel/yürürlükte hukuk kaynağı olmadığını açıkça "
+            "kabul et"
+        ),
+    )
+    index_snapshot.add_argument(
+        "--corpus",
+        type=Path,
+        default=Path("data/processed/competition_snapshot.json"),
+        help="İndekslenecek competition_snapshot corpus JSON dosyası",
+    )
+    snapshot_qdrant_target = index_snapshot.add_mutually_exclusive_group()
+    snapshot_qdrant_target.add_argument(
+        "--qdrant-url",
+        type=_non_empty,
+        help="Uzak Qdrant URL'si",
+    )
+    snapshot_qdrant_target.add_argument(
+        "--qdrant-path",
+        type=Path,
+        help=(
+            "Kalıcı gömülü Qdrant dizini (varsayılan: "
+            "runtime/qdrant-competition-snapshot)"
+        ),
+    )
+    index_snapshot.add_argument(
+        "--collection",
+        type=_non_empty,
+        default=DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME,
+        help="Ayrı snapshot koleksiyonu",
+    )
+    index_snapshot.add_argument("--batch-size", type=_positive_int)
+    index_snapshot.add_argument(
+        "--device",
+        type=_non_empty,
+        help="Embedding aygıtı: cpu, cuda veya cuda:N",
+    )
+    index_snapshot.add_argument(
+        "--local-files-only",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Jina modelini yalnız yerel Hugging Face önbelleğinden yükle",
+    )
+    index_snapshot.add_argument(
+        "--report-output",
+        type=Path,
+        default=Path("reports/competition_snapshot_index_2026-08-24.json"),
+        help="İndeksleme kanıt raporu JSON dosyası",
+    )
+
     evaluate = subcommands.add_parser(
         "evaluate",
         help="Sentetik gold veri setinde sınıflandırma, yönlendirme ve RAG ölçümü yap",
@@ -245,10 +360,19 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Onaylı aktif corpus JSON (varsayılan: yapılandırılmış aktif corpus)",
     )
-    index_vectors.add_argument(
+    qdrant_target = index_vectors.add_mutually_exclusive_group()
+    qdrant_target.add_argument(
         "--qdrant-url",
         type=_non_empty,
         help="Qdrant URL; verilmezse QDRANT_URL kullanılır",
+    )
+    qdrant_target.add_argument(
+        "--qdrant-path",
+        type=Path,
+        help=(
+            "Kalıcı gömülü Qdrant dizini; verilmezse "
+            "KARAYOL_QDRANT_PATH kullanılır"
+        ),
     )
     index_vectors.add_argument(
         "--collection",
@@ -256,6 +380,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Sürümlü koleksiyon adı; verilmezse KARAYOL_QDRANT_COLLECTION kullanılır",
     )
     index_vectors.add_argument("--batch-size", type=_positive_int)
+    index_vectors.add_argument(
+        "--device",
+        type=_non_empty,
+        help="Embedding aygıtı: cpu, cuda veya cuda:N",
+    )
     index_vectors.add_argument(
         "--local-files-only",
         action=argparse.BooleanOptionalAction,
@@ -459,6 +588,8 @@ def main(argv: list[str] | None = None) -> int:
         ProcessValidationError,
         StructureNotFoundError,
         IngestionError,
+        OcrCandidateIngestionError,
+        SnapshotBuildError,
         CurationError,
         EvaluationError,
         SyntheticBenchmarkError,
@@ -470,6 +601,7 @@ def main(argv: list[str] | None = None) -> int:
         RepositoryApprovalError,
         RerankerUnavailableError,
         RerankerValidationError,
+        RuntimeContractError,
         VectorIndexingError,
         RagConfigurationError,
         OSError,
@@ -657,6 +789,215 @@ def _run(arguments: argparse.Namespace) -> int:
             )
             result["report_output"] = str(report_path)
         print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    elif arguments.command == "build-competition-snapshot":
+        if arguments.acknowledge_not_current is not True:
+            raise RagConfigurationError(
+                "Snapshot üretimi için --acknowledge-not-current zorunludur; "
+                "bu korpus mevzuatın güncelliğini/yürürlüğünü doğrulamaz."
+            )
+
+        project_root = settings.project_root.resolve()
+        payloads = build_core_ocr_candidate_payloads(
+            project_root,
+            max_chars=arguments.max_chars,
+        )
+        payload_by_document_id: dict[str, dict[str, object]] = {}
+        for payload in payloads:
+            if not isinstance(payload, dict):
+                raise RagConfigurationError(
+                    "OCR hazırlayıcı JSON nesnesi olmayan bir çıktı üretti."
+                )
+            document_id = payload.get("document_id")
+            if not isinstance(document_id, str) or not document_id.strip():
+                raise RagConfigurationError(
+                    "OCR hazırlayıcı document_id içermeyen bir çıktı üretti."
+                )
+            if document_id in payload_by_document_id:
+                raise RagConfigurationError(
+                    f"OCR hazırlayıcı yinelenen belge üretti: {document_id}"
+                )
+            payload_by_document_id[document_id] = payload
+
+        expected_ocr_ids = set(_COMPETITION_SNAPSHOT_OCR_DOCUMENT_IDS)
+        if set(payload_by_document_id) != expected_ocr_ids:
+            raise RagConfigurationError(
+                "Snapshot tam olarak sabitlenmiş iki OCR belgesini bekliyor; "
+                f"beklenen={sorted(expected_ocr_ids)}, "
+                f"gelen={sorted(payload_by_document_id)}."
+            )
+
+        quarantine_dir = project_root / "data" / "processed" / "stage3_quarantine"
+        quarantine_dir.mkdir(parents=True, exist_ok=True)
+        ocr_outputs: list[Path] = []
+        for document_id in _COMPETITION_SNAPSHOT_OCR_DOCUMENT_IDS:
+            output = quarantine_dir / f"{document_id}.json"
+            output.write_text(
+                json.dumps(
+                    payload_by_document_id[document_id],
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            ocr_outputs.append(output)
+
+        document_outputs = [
+            *(quarantine_dir / name for name in _COMPETITION_SNAPSHOT_TEXT_LAYER_OUTPUTS),
+            *ocr_outputs,
+        ]
+        output_argument = arguments.output
+        output_path = (
+            output_argument.resolve()
+            if output_argument.is_absolute()
+            else (project_root / output_argument).resolve()
+        )
+        corpus_path = CompetitionSnapshotCorpusBuilder(
+            project_root=project_root
+        ).build(
+            document_outputs,
+            output_path,
+            acknowledge_not_current=True,
+        )
+        corpus = json.loads(corpus_path.read_text(encoding="utf-8"))
+        print(
+            json.dumps(
+                {
+                    "corpus": str(corpus_path),
+                    "document_count": corpus["document_count"],
+                    "chunk_count": corpus["chunk_count"],
+                    "source_chunk_count": corpus["source_chunk_count"],
+                    "exact_duplicate_rows_consolidated": corpus[
+                        "exact_duplicate_rows_consolidated"
+                    ],
+                    "usage_notice": corpus["usage_notice"],
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 0
+    elif arguments.command == "index-snapshot-vectors":
+        if arguments.acknowledge_not_current is not True:
+            raise RagConfigurationError(
+                "Snapshot vektör indeksleme için --acknowledge-not-current "
+                "zorunludur; bu indeks mevzuatın güncelliğini/yürürlüğünü "
+                "doğrulamaz."
+            )
+        if arguments.collection == DEFAULT_COLLECTION_NAME:
+            raise RagConfigurationError(
+                "Yarışma snapshot'ı public koleksiyon adı "
+                f"{DEFAULT_COLLECTION_NAME!r} ile indekslenemez; "
+                f"{DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME!r} kullanın."
+            )
+
+        project_root = settings.project_root.resolve()
+        corpus_path = (
+            arguments.corpus.resolve()
+            if arguments.corpus.is_absolute()
+            else (project_root / arguments.corpus).resolve()
+        )
+        qdrant_url = (
+            arguments.qdrant_url.strip()
+            if arguments.qdrant_url is not None
+            else None
+        )
+        raw_qdrant_path = arguments.qdrant_path
+        if qdrant_url is None and raw_qdrant_path is None:
+            raw_qdrant_path = Path("runtime/qdrant-competition-snapshot")
+        qdrant_path = (
+            None
+            if raw_qdrant_path is None
+            else (
+                raw_qdrant_path.resolve()
+                if raw_qdrant_path.is_absolute()
+                else (project_root / raw_qdrant_path).resolve()
+            )
+        )
+        report_output = (
+            arguments.report_output.resolve()
+            if arguments.report_output.is_absolute()
+            else (project_root / arguments.report_output).resolve()
+        )
+
+        chunks, corpus_binding = LegislationRepository(
+            corpus_path,
+            corpus_mode=CorpusMode.COMPETITION_SNAPSHOT,
+        ).load_with_binding()
+        if not chunks:
+            raise RagConfigurationError(
+                "Yarışma snapshot korpusu boş; Qdrant indeksi oluşturulmadı."
+            )
+
+        snapshot_settings = replace(
+            settings,
+            corpus_mode=CorpusMode.COMPETITION_SNAPSHOT.value,
+            competition_snapshot_path=corpus_path,
+            qdrant_url=qdrant_url,
+            qdrant_path=qdrant_path,
+            qdrant_collection=arguments.collection,
+            embedding_batch_size=(
+                arguments.batch_size or settings.embedding_batch_size
+            ),
+            embedding_device=arguments.device or settings.embedding_device,
+            embedding_local_files_only=(
+                settings.embedding_local_files_only
+                if arguments.local_files_only is None
+                else arguments.local_files_only
+            ),
+        )
+        runtime = build_retrieval_runtime(
+            snapshot_settings,
+            corpus_binding=corpus_binding,
+        )
+        try:
+            report = runtime.indexing_service(
+                batch_size=snapshot_settings.embedding_batch_size
+            ).index(chunks)
+            if (
+                report.corpus_mode != CorpusMode.COMPETITION_SNAPSHOT.value
+                or report.currentness_verified is not False
+                or report.legal_reliance_allowed is not False
+                or report.usage_notice != COMPETITION_SNAPSHOT_NOTICE
+            ):
+                raise VectorIndexingError(
+                    "Snapshot indeks raporu güncellik/hukuki kullanım güvenlik "
+                    "sözleşmesini taşımıyor; rapor yazılmadı."
+                )
+            report_payload = {
+                **asdict(report),
+                "corpus": _portable_artifact_path(corpus_path, project_root),
+                "storage_mode": runtime.qdrant_store.storage_mode,
+                "qdrant_path": (
+                    _portable_artifact_path(qdrant_path, project_root)
+                    if qdrant_path is not None
+                    else None
+                ),
+                "qdrant_url": qdrant_url,
+                "currentness_verified": False,
+                "legal_reliance_allowed": False,
+                "usage_notice": COMPETITION_SNAPSHOT_NOTICE,
+            }
+            report_output.parent.mkdir(parents=True, exist_ok=True)
+            report_output.write_text(
+                json.dumps(report_payload, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        finally:
+            runtime.qdrant_store.close()
+
+        print(
+            json.dumps(
+                {
+                    "report": str(report_output),
+                    **report_payload,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 0
     elif arguments.command == "evaluate":
         dataset_path = arguments.dataset or settings.data_dir / "synthetic_gold.json"
@@ -896,10 +1237,19 @@ def _run(arguments: argparse.Namespace) -> int:
         print(json.dumps({"summary": str(summary_output), **summary}, ensure_ascii=False, indent=2))
         return 0
     elif arguments.command == "index-vectors":
-        qdrant_url = arguments.qdrant_url or settings.qdrant_url
-        if not qdrant_url:
+        qdrant_url = arguments.qdrant_url
+        qdrant_path = arguments.qdrant_path
+        if qdrant_url is None and qdrant_path is None:
+            qdrant_url = settings.qdrant_url
+            qdrant_path = settings.qdrant_path
+        if qdrant_url is None and qdrant_path is None:
             raise RagConfigurationError(
-                "Qdrant URL zorunludur: --qdrant-url veya QDRANT_URL verin."
+                "Qdrant hedefi zorunludur: --qdrant-url/QDRANT_URL veya "
+                "--qdrant-path/KARAYOL_QDRANT_PATH verin."
+            )
+        if qdrant_url is not None and qdrant_path is not None:
+            raise RagConfigurationError(
+                "Qdrant URL ve gömülü depolama yolu aynı anda kullanılamaz."
             )
         corpus_path = (arguments.corpus or settings.active_legislation_path).resolve()
         chunks, corpus_binding = LegislationRepository(
@@ -911,11 +1261,13 @@ def _run(arguments: argparse.Namespace) -> int:
             )
         rag_settings = replace(
             settings,
-            qdrant_url=qdrant_url.strip(),
+            qdrant_url=qdrant_url.strip() if qdrant_url is not None else None,
+            qdrant_path=qdrant_path.resolve() if qdrant_path is not None else None,
             qdrant_collection=arguments.collection or settings.qdrant_collection,
             embedding_batch_size=(
                 arguments.batch_size or settings.embedding_batch_size
             ),
+            embedding_device=arguments.device or settings.embedding_device,
             embedding_local_files_only=(
                 settings.embedding_local_files_only
                 if arguments.local_files_only is None

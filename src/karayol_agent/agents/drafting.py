@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+)
 from karayol_agent.schemas import (
     DocumentAnalysis,
     DraftPayload,
@@ -78,17 +82,77 @@ class DraftingAgent:
             f"Başvurunun görev ve sorumluluk alanı bakımından {routing.unit_name} tarafından değerlendirilmesi uygun görülmüştür.",
         ]
         if references:
-            source_names = ", ".join(
-                dict.fromkeys(
-                    f"{reference.title} {reference.article or ''}".strip()
-                    for reference in references[:3]
+            public_references = [
+                reference
+                for reference in references
+                if reference.corpus_mode == CorpusMode.VERIFIED_PUBLIC.value
+            ]
+            snapshot_references = [
+                reference
+                for reference in references
+                if reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+            ]
+            synthetic_references = [
+                reference
+                for reference in references
+                if reference.corpus_mode == CorpusMode.TRUSTED_SYNTHETIC.value
+            ]
+
+            if public_references:
+                paragraphs.append(
+                    "Taslak hazırlanırken kaynak sözleşmesini geçen şu kamu "
+                    "mevzuatı parçaları dikkate alınmıştır: "
+                    + DraftingAgent._source_names(public_references)
+                    + "."
                 )
-            )
-            paragraphs.append(
-                f"Taslak hazırlanırken doğrulanan şu kaynaklar dikkate alınmıştır: {source_names}."
-            )
+            if snapshot_references:
+                paragraphs.extend(
+                    [
+                        "Taslak hazırlanırken yarışma veri kümesindeki şu sabit "
+                        "kaynak parçaları yalnız retrieval ve kaynak izi açısından "
+                        "eşleştirilmiştir: "
+                        + DraftingAgent._source_names(snapshot_references)
+                        + ".",
+                        COMPETITION_SNAPSHOT_NOTICE,
+                    ]
+                )
+            if synthetic_references:
+                paragraphs.append(
+                    "Taslak hazırlanırken yalnız demo amacı taşıyan şu sentetik "
+                    "kurallar dikkate alınmıştır: "
+                    + DraftingAgent._source_names(synthetic_references)
+                    + "."
+                )
+            known_reference_ids = {
+                reference.chunk_id
+                for reference in [
+                    *public_references,
+                    *snapshot_references,
+                    *synthetic_references,
+                ]
+            }
+            other_references = [
+                reference
+                for reference in references
+                if reference.chunk_id not in known_reference_ids
+            ]
+            if other_references:
+                paragraphs.append(
+                    "Taslak hazırlanırken kabul edilen diğer kaynak parçaları: "
+                    + DraftingAgent._source_names(other_references)
+                    + "."
+                )
         if decision.document_type == "ust_yazi":
             paragraphs.append("Gereğini rica ederim.")
         else:
             paragraphs.append("Bilgilerinize sunulur.")
         return paragraphs
+
+    @staticmethod
+    def _source_names(references: list[VerifiedReference]) -> str:
+        return ", ".join(
+            dict.fromkeys(
+                f"{reference.title} {reference.article or ''}".strip()
+                for reference in references[:3]
+            )
+        )

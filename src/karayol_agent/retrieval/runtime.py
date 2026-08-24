@@ -545,6 +545,7 @@ def build_retrieval_runtime(
         store = QdrantStore(
             client=qdrant_client,
             url=qdrant_url or "http://localhost:6333",
+            path=getattr(settings, "qdrant_path", None),
             api_key=getattr(settings, "qdrant_api_key", None),
             timeout=getattr(settings, "qdrant_timeout_seconds", 10.0),
             prefer_grpc=bool(getattr(settings, "qdrant_prefer_grpc", False)),
@@ -560,6 +561,7 @@ def build_retrieval_runtime(
             passage_task=_task_name(passage_metadata),
             query_task=_task_name(query_metadata),
             index_version=getattr(settings, "index_version", DEFAULT_INDEX_VERSION),
+            corpus_mode=getattr(settings, "corpus_mode", "verified_public"),
         )
 
     effective_binding = corpus_binding or store.corpus_binding
