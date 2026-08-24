@@ -1,5 +1,5 @@
 {
   "template_id": "bilgilendirme_yazisi_v1",
-  "required": ["institution_name", "date", "number", "subject", "recipient", "paragraphs", "signer", "signer_title", "references"]
+  "required": ["institution_name", "date", "number", "subject", "recipient", "paragraphs", "signer", "signer_title", "closing", "attachments", "distribution", "references"]
 }
 

@@ -147,14 +147,6 @@ class RetrievalDiagnostics(BaseModel):
 
 
 class VerifiedReference(BaseModel):
-    """A retrieval/provenance decision and its legal-reliance disclosure.
-
-    ``verified`` means that the reference passed the applicable source contract
-    and retrieval evidence checks.  It does not, by itself, promise that a
-    source is current law; callers must also inspect the explicit disclosure
-    fields below.
-    """
-
     chunk_id: str
     document_id: str | None = None
     title: str
@@ -166,10 +158,6 @@ class VerifiedReference(BaseModel):
     page_end: int | None = None
     source_url: str | None = None
     source_kind: str = "unknown"
-    corpus_mode: str = "unknown"
-    currentness_verified: bool = False
-    legal_reliance_allowed: bool = False
-    usage_notice: str | None = None
     domain: str = "unknown"
     excerpt: str
     score: float
@@ -218,6 +206,15 @@ class DraftPayload(BaseModel):
     signer: ExtractedField
     signer_title: ExtractedField
     attachments: list[str] = Field(default_factory=list)
+    distribution: list[str] = Field(default_factory=list)
+    references_section: list[str] = Field(default_factory=list)
+    closing: ExtractedField = Field(
+        default_factory=lambda: ExtractedField(
+            value=None, status=FieldStatus.USER_REQUIRED
+        )
+    )
+    recipient_hierarchy: str | None = None
+    sender_hierarchy: str | None = None
     references: list[VerifiedReference] = Field(default_factory=list)
     missing_fields: list[str] = Field(default_factory=list)
 

@@ -37,11 +37,12 @@ def test_complete_multi_agent_flow_and_approval(tmp_path: Path) -> None:
     assert state.template_decision.template_id == "ust_yazi_v1"
     assert state.artifact is not None
     assert Path(state.artifact.tex_path).exists()
-    assert state.missing_information == ["sayi", "imzalayan", "unvan"]
+    assert state.missing_information == ["tarih", "sayi", "imzalayan", "unvan"]
 
     state = orchestrator.provide_information(
         state.document_id,
         {
+            "tarih": "24.08.2026",
             "sayi": "2026/42",
             "imzalayan": "Mehmet Demir",
             "unvan": "Şube Müdürü",

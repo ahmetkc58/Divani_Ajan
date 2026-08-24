@@ -72,13 +72,14 @@ def test_primary_manual_scenario_reaches_approval_and_download(
     assert initial["analysis"]["document_type"] == "yol_bakim_talebi"
     assert initial["routing"]["unit_id"] == "ORKGM-YB-001"
     assert initial["template_decision"]["template_id"] == "ust_yazi_v1"
-    assert initial["missing_information"] == ["sayi", "imzalayan", "unvan"]
+    assert initial["missing_information"] == ["tarih", "sayi", "imzalayan", "unvan"]
 
     document_id = initial["document_id"]
     information_response = client.post(
         f"/v1/process/{document_id}/information",
         json={
             "fields": {
+                "tarih": "24.08.2026",
                 "sayi": "2026/42",
                 "imzalayan": "Mehmet Demir",
                 "unvan": "Şube Müdürü",

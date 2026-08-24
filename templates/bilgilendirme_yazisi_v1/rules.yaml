@@ -1,3 +1,6 @@
 required_sections: [kurum_adi, sayi, tarih, konu, muhatap, govde, imza]
 human_approval_required: true
+required_fields: [institution_name, number, date, subject, recipient, paragraphs, signer, signer_title, closing]
+closing: "Bilgilerinize arz ve rica ederim."
+optional_sections: [references, attachments, distribution]
 

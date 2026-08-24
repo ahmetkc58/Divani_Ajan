@@ -111,6 +111,12 @@ class LatexRenderer:
         )
         if not references:
             references = r"\item [DOĞRULANMIŞ KAYNAK BULUNAMADI]"
+        attachments = "\n".join(
+            rf"\item {escape_latex(attachment)}" for attachment in draft.attachments
+        ) or r"\item Yok"
+        distribution = "\n".join(
+            rf"\item {escape_latex(recipient)}" for recipient in draft.distribution
+        ) or r"\item Yok"
         paragraphs = "\n\n".join(
             escape_latex(paragraph) + r"\par" for paragraph in draft.paragraphs
         )
@@ -123,7 +129,10 @@ class LatexRenderer:
             "paragraphs": paragraphs,
             "signer": escape_latex(draft.signer.value),
             "signer_title": escape_latex(draft.signer_title.value),
+            "closing": escape_latex(draft.closing.value),
             "references": references,
+            "attachments": attachments,
+            "distribution": distribution,
         }
 
     @staticmethod
