@@ -76,6 +76,14 @@ def _groq_config(*, api_key: str | None = "groq-test-key") -> LLMConfig:
     )
 
 
+def _ollama_config() -> LLMConfig:
+    return LLMConfig(
+        provider=LLMProviderName.OLLAMA,
+        model="qwen2.5:0.5b",
+        base_url="http://127.0.0.1:11434",
+    )
+
+
 def _openai_response(text: str, *, finish_reason: str = "stop") -> HTTPResponse:
     return HTTPResponse(
         status_code=200,
@@ -87,6 +95,20 @@ def _openai_response(text: str, *, finish_reason: str = "stop") -> HTTPResponse:
                         "finish_reason": finish_reason,
                     }
                 ]
+            }
+        ).encode(),
+    )
+
+
+def _ollama_response(text: str, *, finish_reason: str = "stop") -> HTTPResponse:
+    return HTTPResponse(
+        status_code=200,
+        body=json.dumps(
+            {
+                "model": "qwen2.5:0.5b",
+                "message": {"role": "assistant", "content": text},
+                "done": True,
+                "done_reason": finish_reason,
             }
         ).encode(),
     )
@@ -371,6 +393,52 @@ def test_openai_compatible_provider_uses_configured_https_endpoint() -> None:
     assert transport.requests[0].url == "https://llm.example.org/v1/chat/completions"
 
 
+def test_ollama_provider_uses_local_native_chat_without_api_key() -> None:
+    transport = RecordingTransport(
+        _ollama_response('{"document_type":"unknown","confidence":0.4}')
+    )
+    result = StructuredLLMGateway(
+        _ollama_config(), transport=transport
+    ).invoke(
+        _request(
+            input_data={"document_text": "Gerçek yerel evrak"},
+            data_classification=DataClassification.RESTRICTED,
+        )
+    )
+
+    assert result.succeeded
+    assert result.provider is LLMProviderName.OLLAMA
+    outgoing = transport.requests[0]
+    assert outgoing.url == "http://127.0.0.1:11434/api/chat"
+    assert "Authorization" not in outgoing.headers
+    payload = json.loads(outgoing.body)
+    assert payload["model"] == "qwen2.5:0.5b"
+    assert payload["stream"] is False
+    assert payload["format"] == OUTPUT_SCHEMA
+    assert payload["options"] == {"temperature": 0.0, "num_predict": 2048}
+    assert "Gerçek yerel evrak" in payload["messages"][1]["content"]
+
+
+@pytest.mark.parametrize(
+    "base_url",
+    [
+        "http://0.0.0.0:11434",
+        "http://192.168.1.20:11434",
+        "https://ollama.example.org",
+        "http://user:password@127.0.0.1:11434",
+        "http://127.0.0.1:11434/api",
+    ],
+)
+def test_ollama_provider_rejects_non_loopback_or_unsafe_urls(base_url: str) -> None:
+    config = LLMConfig(
+        provider=LLMProviderName.OLLAMA,
+        model="qwen2.5:0.5b",
+        base_url=base_url,
+    )
+    with pytest.raises(ValueError):
+        StructuredLLMGateway(config, transport=RecordingTransport())
+
+
 def test_optional_gemini_adapter_uses_header_key_and_json_schema() -> None:
     config = LLMConfig(
         provider=LLMProviderName.GEMINI,
@@ -455,7 +523,7 @@ def test_groq_provider_rejects_non_official_api_path() -> None:
         StructuredLLMGateway(config, transport=RecordingTransport())
 
 
-def test_from_env_selects_gemini_flash_free_tier_without_key(
+def test_from_env_selects_local_ollama_without_key(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     for name in (
@@ -471,10 +539,11 @@ def test_from_env_selects_gemini_flash_free_tier_without_key(
 
     config = LLMConfig.from_env()
 
-    assert config.provider is LLMProviderName.GEMINI
-    assert config.model == "gemini-2.5-flash"
-    assert config.base_url == "https://generativelanguage.googleapis.com/v1beta"
-    assert config.enabled is False
+    assert config.provider is LLMProviderName.OLLAMA
+    assert config.model == "qwen2.5:0.5b"
+    assert config.base_url == "http://127.0.0.1:11434"
+    assert config.enabled is True
+    assert config.api_key is None
 
 
 def test_from_env_reads_gemini_key_without_exposing_it(

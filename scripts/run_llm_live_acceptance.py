@@ -1,4 +1,4 @@
-"""Repeatable live acceptance for the guarded Gemini product path."""
+"""Repeatable live acceptance for the configured structured LLM provider."""
 
 from __future__ import annotations
 
@@ -67,11 +67,13 @@ def retryable_failure(state: dict[str, Any]) -> bool:
 
 def main() -> int:
     ready = request_json("/ready")
+    expected_provider = os.getenv("KARAYOL_LLM_PROVIDER", "ollama")
+    expected_model = os.getenv("KARAYOL_LLM_MODEL", "qwen2.5:0.5b")
     required_ready = {
         "ready": True,
         "llm_enabled": True,
-        "llm_provider": "gemini",
-        "llm_model": "gemini-2.5-flash",
+        "llm_provider": expected_provider,
+        "llm_model": expected_model,
         "evidence_graph_ready": True,
     }
     for field, expected in required_ready.items():
@@ -95,7 +97,7 @@ def main() -> int:
         if live_success(state):
             break
         if attempt == MAX_ATTEMPTS or not retryable_failure(state):
-            raise RuntimeError("Gemini rolleri canlı kabul sözleşmesini geçmedi.")
+            raise RuntimeError("LLM rolleri canlı kabul sözleşmesini geçmedi.")
         time.sleep(attempt * 2)
     assert state is not None
 
@@ -108,12 +110,23 @@ def main() -> int:
         },
     )
     altered_steps = llm_steps(altered)
-    if (
-        not altered_steps
-        or any(step.get("status") != "policy_rejected" for step in altered_steps)
-        or any(step.get("network_attempted") is True for step in altered_steps)
-    ):
-        raise RuntimeError("Değiştirilmiş fixture ağdan önce engellenmedi.")
+    if expected_provider == "ollama":
+        if (
+            not altered_steps
+            or any(step.get("status") != "success" for step in altered_steps)
+            or any(step.get("local_execution") is not True for step in altered_steps)
+            or any(step.get("network_attempted") is not True for step in altered_steps)
+        ):
+            raise RuntimeError("Değiştirilmiş fixture yerel Ollama ile işlenemedi.")
+        altered_handling = "processed_locally"
+    else:
+        if (
+            not altered_steps
+            or any(step.get("status") != "policy_rejected" for step in altered_steps)
+            or any(step.get("network_attempted") is True for step in altered_steps)
+        ):
+            raise RuntimeError("Değiştirilmiş fixture haricî ağdan önce engellenmedi.")
+        altered_handling = "blocked_before_external_network"
 
     summary = {
         "status": "passed",
@@ -129,7 +142,7 @@ def main() -> int:
             }
             for step in llm_steps(state)
         ],
-        "altered_fixture_blocked": True,
+        "altered_fixture_handling": altered_handling,
         "document_id": state["document_id"],
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))

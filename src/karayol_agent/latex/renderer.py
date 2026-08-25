@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import html
 import shutil
 import subprocess
 from pathlib import Path
@@ -77,19 +78,25 @@ class LatexRenderer:
 
         result = ArtifactResult(
             tex_path=str(tex_path.resolve()),
-            tex_download_url=f"/v1/process/{document_id}/artifacts/tex",
+            tex_download_url=f"/api/v1/processes/{document_id}/artifacts/tex",
         )
         if not compile_pdf:
             result.warnings.append("PDF derleme istenmedi; yalnızca LaTeX taslağı üretildi.")
             return result
 
         compiler = self._find_compiler()
-        if compiler is None:
-            result.warnings.append(
-                "LaTeX derleyicisi bulunamadı; .tex üretildi ancak PDF derlenemedi."
+        if compiler is not None:
+            compiled_result = self._compile(tex_path, compiler, result)
+            if compiled_result.compiled:
+                return compiled_result
+            compiled_result.warnings.append(
+                "LaTeX derlemesi kullanılamadı; taşınabilir PDF üretimine geçildi."
             )
-            return result
-        return self._compile(tex_path, compiler, result)
+        else:
+            result.warnings.append(
+                "LaTeX derleyicisi bulunamadı; taşınabilir PDF doğrudan üretildi."
+            )
+        return self._render_portable_pdf(tex_path, draft, result)
 
     @staticmethod
     def _validate_schema(draft: DraftPayload, schema_path: Path) -> None:
@@ -103,14 +110,6 @@ class LatexRenderer:
 
     @staticmethod
     def _context(draft: DraftPayload) -> dict[str, str]:
-        references = "\n".join(
-            rf"\item {escape_latex(reference.title)}"
-            + (rf" - {escape_latex(reference.article)}" if reference.article else "")
-            + rf" ({escape_latex(reference.source)})"
-            for reference in draft.references
-        )
-        if not references:
-            references = r"\item [DOĞRULANMIŞ KAYNAK BULUNAMADI]"
         paragraphs = "\n\n".join(
             escape_latex(paragraph) + r"\par" for paragraph in draft.paragraphs
         )
@@ -123,8 +122,184 @@ class LatexRenderer:
             "paragraphs": paragraphs,
             "signer": escape_latex(draft.signer.value),
             "signer_title": escape_latex(draft.signer_title.value),
-            "references": references,
+            "interest": LatexRenderer._render_lines(draft.interest),
+            "attachments": LatexRenderer._render_items(draft.attachments),
+            "distribution": LatexRenderer._render_items(draft.distribution),
+            "contact_information": LatexRenderer._render_lines(
+                draft.contact_information
+            ),
+            "initials": LatexRenderer._render_lines(draft.initials),
+            "electronic_signature": (
+                escape_latex(draft.electronic_signature.value)
+                if draft.electronic_signature.value
+                else ""
+            ),
         }
+
+    @staticmethod
+    def _render_items(values: list[str]) -> str:
+        return "\n".join(rf"\item {escape_latex(value)}" for value in values)
+
+    @staticmethod
+    def _render_lines(values: list[str]) -> str:
+        return r" \\ ".join(escape_latex(value) for value in values)
+
+    @staticmethod
+    def _render_portable_pdf(
+        tex_path: Path,
+        draft: DraftPayload,
+        result: ArtifactResult,
+    ) -> ArtifactResult:
+        """Create the user-facing PDF without requiring a TeX installation."""
+
+        try:
+            import reportlab
+            from reportlab.lib import colors
+            from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT
+            from reportlab.lib.pagesizes import A4
+            from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+            from reportlab.lib.units import mm
+            from reportlab.pdfbase import pdfmetrics
+            from reportlab.pdfbase.ttfonts import TTFont
+            from reportlab.platypus import (
+                ListFlowable,
+                ListItem,
+                Paragraph,
+                SimpleDocTemplate,
+                Spacer,
+                Table,
+                TableStyle,
+            )
+        except ImportError as exc:  # pragma: no cover - locked runtime dependency
+            raise LatexRenderError(
+                "PDF üretimi için ReportLab bağımlılığı bulunamadı."
+            ) from exc
+
+        regular_font = "KarayolVera"
+        bold_font = "KarayolVeraBold"
+        if regular_font not in pdfmetrics.getRegisteredFontNames():
+            font_dir = Path(reportlab.__file__).resolve().parent / "fonts"
+            pdfmetrics.registerFont(TTFont(regular_font, font_dir / "Vera.ttf"))
+            pdfmetrics.registerFont(TTFont(bold_font, font_dir / "VeraBd.ttf"))
+
+        styles = getSampleStyleSheet()
+        title_style = ParagraphStyle(
+            "OfficialTitle",
+            parent=styles["Heading1"],
+            fontName=bold_font,
+            fontSize=13,
+            leading=17,
+            alignment=TA_CENTER,
+            spaceAfter=5 * mm,
+        )
+        body_style = ParagraphStyle(
+            "OfficialBody",
+            parent=styles["BodyText"],
+            fontName=regular_font,
+            fontSize=10.5,
+            leading=16,
+            alignment=TA_JUSTIFY,
+            spaceAfter=3 * mm,
+        )
+        label_style = ParagraphStyle(
+            "OfficialLabel",
+            parent=body_style,
+            fontName=bold_font,
+            spaceAfter=1.5 * mm,
+        )
+        signature_style = ParagraphStyle(
+            "OfficialSignature",
+            parent=body_style,
+            alignment=TA_RIGHT,
+        )
+
+        def paragraph(value: str | None, style: ParagraphStyle = body_style) -> Paragraph:
+            return Paragraph(html.escape(value or "[DOLDURULACAK]"), style)
+
+        def markup_paragraph(value: str, style: ParagraphStyle) -> Paragraph:
+            return Paragraph(value, style)
+
+        template_titles = {
+            "ust_yazi_v1": "ÜST YAZI TASLAĞI",
+            "cevap_yazisi_v1": "CEVAP YAZISI TASLAĞI",
+            "bilgilendirme_yazisi_v1": "BİLGİLENDİRME YAZISI TASLAĞI",
+            "eksik_bilgi_talebi_v1": "EKSİK BİLGİ TALEBİ TASLAĞI",
+        }
+        story: list[object] = [
+            paragraph(draft.institution_name.value, title_style),
+            paragraph(template_titles[draft.template_id], title_style),
+            Table(
+                [[
+                    paragraph(f"Sayı: {draft.number.value or '[DOLDURULACAK]'}"),
+                    paragraph(f"Tarih: {draft.date.value or '[DOLDURULACAK]'}"),
+                ]],
+                colWidths=[85 * mm, 85 * mm],
+                style=TableStyle([
+                    ("ALIGN", (1, 0), (1, 0), "RIGHT"),
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 2 * mm),
+                ]),
+            ),
+            paragraph(f"Konu: {draft.subject.value or '[DOLDURULACAK]'}"),
+        ]
+        if draft.interest:
+            story.append(paragraph("İlgi: " + "; ".join(draft.interest)))
+        story.extend([
+            Spacer(1, 5 * mm),
+            paragraph(draft.recipient.value, title_style),
+            *[paragraph(value) for value in draft.paragraphs],
+            Spacer(1, 5 * mm),
+            markup_paragraph(
+                "<b>" + html.escape(draft.signer.value or "[DOLDURULACAK]") + "</b><br/>"
+                + html.escape(draft.signer_title.value or "[DOLDURULACAK]"),
+                signature_style,
+            ),
+        ])
+
+        def add_list(title: str, values: list[str]) -> None:
+            if not values:
+                return
+            story.append(paragraph(title, label_style))
+            story.append(
+                ListFlowable(
+                    [ListItem(paragraph(value), leftIndent=4 * mm) for value in values],
+                    bulletType="bullet",
+                    leftIndent=7 * mm,
+                )
+            )
+
+        add_list("Ekler", draft.attachments)
+        add_list("Dağıtım", draft.distribution)
+        if draft.contact_information:
+            story.append(
+                paragraph("İletişim: " + " | ".join(draft.contact_information))
+            )
+        if draft.initials:
+            story.append(paragraph("Paraf/Koordinasyon: " + " | ".join(draft.initials)))
+        if draft.electronic_signature.value:
+            story.append(
+                paragraph("Elektronik imza: " + draft.electronic_signature.value)
+            )
+
+        pdf_path = tex_path.with_suffix(".pdf")
+        document = SimpleDocTemplate(
+            str(pdf_path),
+            pagesize=A4,
+            rightMargin=20 * mm,
+            leftMargin=20 * mm,
+            topMargin=20 * mm,
+            bottomMargin=18 * mm,
+            title=template_titles[draft.template_id],
+            author=draft.institution_name.value or "Karayolu Evrak Ajanı",
+        )
+        document.build(story)
+        result.pdf_path = str(pdf_path.resolve())
+        result.pdf_download_url = (
+            f"/api/v1/processes/{tex_path.parent.name}/artifacts/pdf"
+        )
+        result.compiled = True
+        result.compiler = "reportlab"
+        return result
 
     @staticmethod
     def _find_compiler() -> str | None:
@@ -168,7 +343,7 @@ class LatexRenderer:
             return result
         result.pdf_path = str(pdf_path.resolve())
         result.pdf_download_url = (
-            f"/v1/process/{tex_path.parent.name}/artifacts/pdf"
+            f"/api/v1/processes/{tex_path.parent.name}/artifacts/pdf"
         )
         result.compiled = True
         result.compiler = compiler

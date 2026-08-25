@@ -154,6 +154,19 @@ def test_privacy_guard_rejects_restricted_data_even_if_no_pattern_matches() -> N
         )
 
 
+def test_privacy_guard_allows_restricted_data_only_for_local_llm() -> None:
+    email = "yerel.kullanici@example.gov.tr"
+    result = ExternalDataGuard().prepare(
+        {"document_text": f"Gönderen: {email}"},
+        classification=DataClassification.RESTRICTED,
+        allow_automatic_redaction=False,
+        allow_restricted_local=True,
+    )
+
+    assert result.payload["document_text"] == f"Gönderen: {email}"
+    assert result.redacted is False
+
+
 def test_privacy_guard_rejects_non_json_values() -> None:
     with pytest.raises(DataPolicyError, match="JSON-uyumlu"):
         ExternalDataGuard().prepare(

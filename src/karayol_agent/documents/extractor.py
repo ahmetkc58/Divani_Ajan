@@ -19,7 +19,8 @@ class ExtractionError(RuntimeError):
 
 
 class DocumentExtractor:
-    SUPPORTED_SUFFIXES = {".txt", ".md", ".pdf"}
+    SUPPORTED_SUFFIXES = {".txt", ".md", ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff"}
+    IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff"}
     _SHORT_TEXT_LAYER_PATTERNS = (
         re.compile(r"^ek\s*[-:]?\s*\d+(?:\s*/\s*\d+)?$", re.IGNORECASE),
         re.compile(
@@ -85,6 +86,7 @@ class DocumentExtractor:
                 f"Desteklenmeyen dosya türü: {suffix}. Desteklenenler: "
                 f"{', '.join(sorted(self.SUPPORTED_SUFFIXES))}"
             )
+        self._validate_file_signature(path, suffix)
         if suffix in {".txt", ".md"}:
             try:
                 text = path.read_text(encoding="utf-8-sig")
@@ -94,8 +96,10 @@ class DocumentExtractor:
                 ) from exc
             except OSError as exc:
                 raise ExtractionError("Metin dosyası okunamadı.") from exc
-        else:
+        elif suffix == ".pdf":
             text = self._extract_pdf(path)
+        else:
+            text = self._extract_image(path)
         text = self._clean_document_text(text)
         if not normalize_whitespace(text):
             raise ExtractionError("Belgeden okunabilir metin çıkarılamadı.")
@@ -105,6 +109,90 @@ class DocumentExtractor:
                 "sessiz kesme yapılmadı."
             )
         return text
+
+    @staticmethod
+    def _validate_file_signature(path: Path, suffix: str) -> None:
+        try:
+            with path.open("rb") as source:
+                header = source.read(16)
+        except OSError as exc:
+            raise ExtractionError("Dosya okunamadı.") from exc
+        valid = True
+        if suffix == ".pdf":
+            valid = header.startswith(b"%PDF-")
+        elif suffix == ".png":
+            valid = header.startswith(b"\x89PNG\r\n\x1a\n")
+        elif suffix in {".jpg", ".jpeg"}:
+            valid = header.startswith(b"\xff\xd8\xff")
+        elif suffix in {".tif", ".tiff"}:
+            valid = header.startswith((b"II*\x00", b"MM\x00*"))
+        elif suffix in {".txt", ".md"}:
+            valid = b"\x00" not in header
+        if not valid:
+            raise ExtractionError(
+                "Dosya içeriği uzantısıyla uyuşmuyor; magic-byte doğrulaması başarısız."
+            )
+
+    def _extract_image(self, path: Path) -> str:
+        tesseract = shutil.which("tesseract")
+        if not tesseract:
+            raise ExtractionError("Görsel belge için Tesseract bulunamadı; OCR yapılamadı.")
+        try:
+            import pymupdf
+        except ImportError as exc:
+            raise ExtractionError("Görsel belge için PyMuPDF bulunamadı; OCR yapılamadı.") from exc
+
+        try:
+            document = pymupdf.open(path)
+        except Exception as exc:
+            raise ExtractionError("Görsel dosya açılamadı veya bozuk.") from exc
+        deadline = time.monotonic() + self.ocr_document_timeout_seconds
+        total_pixels = 0
+        extracted: list[str] = []
+        with tempfile.TemporaryDirectory(prefix="karayol-image-ocr-") as temp_dir:
+            try:
+                self._validate_pdf_page_count(len(document))
+                for page_number, page in enumerate(document, start=1):
+                    try:
+                        pixmap = page.get_pixmap(alpha=False)
+                    except Exception as exc:
+                        raise ExtractionError(
+                            f"Görsel sayfa {page_number} çözümlenemedi."
+                        ) from exc
+                    page_pixels = pixmap.width * pixmap.height
+                    if page_pixels <= 0 or page_pixels > self.max_ocr_pixels_per_page:
+                        raise ExtractionError(
+                            f"OCR sayfa {page_number} piksel sınırını aşıyor."
+                        )
+                    total_pixels += page_pixels
+                    if total_pixels > self.max_ocr_total_pixels:
+                        raise ExtractionError("Görsel toplam OCR piksel sınırını aşıyor.")
+                    image_path = Path(temp_dir) / f"page-{page_number}.png"
+                    pixmap.save(image_path)
+                    result = self._run_tesseract(
+                        [tesseract, str(image_path), "stdout", "-l", "tur+eng"],
+                        deadline=deadline,
+                        page_number=page_number,
+                    )
+                    if result.returncode != 0 and "tur" in (result.stderr or "").casefold():
+                        result = self._run_tesseract(
+                            [tesseract, str(image_path), "stdout", "-l", "eng"],
+                            deadline=deadline,
+                            page_number=page_number,
+                        )
+                    if result.returncode != 0:
+                        raise ExtractionError(
+                            f"OCR sayfa {page_number} için başarısız oldu "
+                            f"(çıkış kodu {result.returncode})."
+                        )
+                    if not self._has_usable_ocr_text(result.stdout):
+                        raise ExtractionError(
+                            f"OCR sayfa {page_number} için okunabilir metin üretemedi."
+                        )
+                    extracted.append(result.stdout)
+            finally:
+                document.close()
+        return "\n\n".join(extracted)
 
     @staticmethod
     def _clean_document_text(text: str) -> str:

@@ -4,6 +4,124 @@ Proje tanımı kökteki `project.md`, ajan davranış sözleşmesi kökteki `ope
 dosyasındadır. Bu dosya uygulama değişikliklerini, doğrulamaları ve kalan
 engelleri kaydeder.
 
+## 25 Ağustos 2026 — Konu bazlı teknik dokümantasyon
+
+- Yapılan çalışmalar şartname, Ollama, belge/OCR, LaTeX-PDF, REST mimarisi,
+  Swagger, organizasyon şeması, güvenli yönlendirme ve test/işletim başlıkları
+  altında dokuz ayrı Markdown dosyasına ayrıldı.
+- `docs/README.md` dokümantasyon indeksi olarak eklendi; kronolojik günlük ile
+  güncel özellik belgelerinin görevleri birbirinden ayrıldı.
+- Her konuda amaç, uygulama akışı, yapılandırma, ilgili kaynak/test dosyaları ve
+  bilinen sınırlar açıkça kaydedildi.
+
+## 25 Ağustos 2026 — Organizasyon şeması tabanlı güvenli yönlendirme
+
+- 16.07.2026 tarihli şema, personel adları olmadan sürümlü merkez/taşra hedef
+  kataloğuna dönüştürüldü.
+- Birim seçimi kapalı katalogla sınırlandı; kanıt, hiyerarşi, sürüm, alternatif
+  adaylar ve skor farkı API çıktısına eklendi.
+- Kanıtsız, düşük güvenli, yakın skorlu ve `chart_only` taşra sonuçlarında insan
+  incelemesi zorunlu hale getirildi.
+- Frontend yönlendirme kartına inceleme durumu ve denetlenebilir karar izi
+  eklendi.
+
+## 25 Ağustos 2026 — Frontend/backend ayrımı ve REST köprüsü
+
+- FastAPI uygulamasından HTML/statik dosya sunumu çıkarıldı; backend yalnız JSON,
+  multipart yükleme ve artifact indirme uçları sunuyor.
+- Bağımsız `frontend/` istemcisi eklendi. API origin adresi `config.js` üzerinden
+  yapılandırılıyor ve tüm çağrılar sürümlü `/api/v1` sözleşmesine gidiyor.
+- Sistem, süreç, eksik bilgi, onay ve artifact uçları kaynak odaklı yeni URL
+  düzenine taşındı. Eski yollar geçici şema dışı uyumluluk katmanı olarak kaldı.
+- CORS origin allowlist'i eklendi; varsayılan olarak yalnız yerel `:3000`
+  frontend origin'lerine izin veriliyor ve joker origin reddediliyor.
+
+## 25 Ağustos 2026 — Temiz resmî çıktı ve doğrudan PDF indirme
+
+- Dört LaTeX şablonunda boş `İlgi`, `Ekler`, `Dağıtım`, `İletişim`,
+  `Paraf/Koordinasyon` ve `Elektronik imza` bölümleri artık hiç basılmıyor.
+- Kullanıcı belgesinde yer almaması gereken teknik `Belge üstverisi` ve
+  `Doğrulanan kaynaklar` blokları kaldırıldı. Kanıt ve üstveri süreç JSON'u ile
+  arayüzde korunuyor.
+- Web arayüzü PDF üretimini otomatik istiyor ve kullanıcıya LaTeX kaynak dosyası
+  yerine yalnız doğrudan PDF indirme eylemi gösteriyor.
+- Makinede TeX dağıtımı bulunmadığında ReportLab tabanlı yerel PDF üretimi
+  devreye giriyor; mevcut LaTeX indirme API'si geriye uyumluluk ve teşhis için
+  korunuyor.
+
+## 25 Ağustos 2026 — Şartname açıkları uygulama paketi
+
+- Sınıflandırma ve sentetik birim sözlükleri yüzey/oyuk, tabela/kavşak ışığı,
+  şev/destek duvarı ve faaliyet kaydı/istatistik kavramlarıyla genişletildi.
+  Yakın iki niyet aynı puanı aldığında güven düşürülerek insan onayı zorunlu
+  tutuluyor. Kayıtlı `challenge_paraphrase` dilimi sınıflandırma, yönlendirme,
+  eksik alan, şablon ve retrieval için 8/8'e çıktı; bu sonuç bağımsız kör test
+  olarak sunulmuyor.
+- Taslak şeması ve dört LaTeX şablonu ilgi, ek, dağıtım, iletişim,
+  paraf/koordinasyon, elektronik imza, belge üstverisi, makam ilişkisi ve tekil
+  kapanış alanlarıyla genişletildi. Uygunluk ajanı makam-kapanış çelişkisini,
+  boş/yinelenen listeleri, eksik üstveriyi ve kanıta bağlı olmayan kaynak atfını
+  fail-closed reddediyor.
+- PNG/JPG/TIFF doğrudan OCR alımı, PDF/görsel magic-byte doğrulaması ve mevcut
+  sayfa/toplam piksel ile süre sınırları eklendi.
+- `delivery_policy.json` ve `audit_delivery_inventory.py` ile izlenen veri
+  dosyalarının teslim kararı, sınıfı, lisans durumu, SHA-256 ve boyutu makinece
+  denetleniyor. Gerçek DETSİS/UAB, kamu belgesi ve runtime/Qdrant artifact'ları
+  varsayılan teslimden dışlandı; şartname PDF'i karar bekliyor.
+- `run_acceptance_metrics.py` 48 kayıtlık regresyonu ve üç senaryoda en az 20
+  tekrarlı p50/p95 ölçümünü tek raporda birleştirdi. Yerel koşuda her senaryo
+  20/20 başarılı, p95 11-16 ms aralığında ölçüldü.
+- `uv.lock`, GitHub Actions çekirdek test/paket kapısı ve CycloneDX 1.5 SBOM
+  eklendi. Wheel artık dört şablonu ve yalnız sentetik demo verilerini taşır.
+- Değişiklik kapsamındaki geniş test paketi **143/143** geçti. Tam depo koşusu
+  **428 geçti, 1 atlandı, 7 başarısız, 2 hata** verdi; yedinci başarısızlık yeni
+  belirsizlik testiydi ve ardından düzeltildi. Kalan **6 başarısız + 2 hata**
+  daha önce kayıtlı OCR aday hash'i, Windows mutlak kaynak yolu ve snapshot
+  dosya hash'i provenance uyuşmazlıklarıdır; güven kayıtları otomatik
+  güncellenmedi.
+
+## 25 Ağustos 2026 — Yerel Ollama LLM sağlayıcısı
+
+- Varsayılan LLM sağlayıcısı Gemini yerine yerel `ollama` yapıldı. Anahtarsız
+  varsayılan bağlantı `http://127.0.0.1:11434`, bu makinede kurulu varsayılan
+  completion modeli `qwen2.5:0.5b` olarak ayarlandı.
+- Native Ollama `/api/chat` adaptörü eklendi; kapalı JSON Schema doğrudan
+  `format` alanıyla gönderiliyor ve yanıt mevcut yerel şema doğrulamasından
+  geçmeden sisteme uygulanmıyor.
+- Ollama URL'si yalnız loopback (`localhost`, `127.0.0.1`, `::1`) kabul ediyor;
+  kullanıcı bilgisi, query/fragment ve yol içeren ya da LAN/haricî sunucuya
+  giden adresler reddediliyor.
+- Kısıtlı/gerçek evrak yerel Ollama'da cihaz dışına çıkmadan işlenebilir hâle
+  getirildi. Haricî Gemini/Groq/OpenAI-compatible sağlayıcılar için mevcut
+  fail-closed veri politikası korundu; gizli anahtar desenleri yerel sınırda da
+  filtrelenmeye devam ediyor.
+- Süreç ve adım izlerine `local_execution` eklendi; UI yerel HTTP çağrısını
+  haricî API izninden ayrı gösteriyor.
+- `.env.example`, README ve canlı kabul betiği Ollama varsayılanına geçirildi;
+  `scripts/start_local_ollama.ps1` eklendi.
+- Gerçek Ollama smoke testinde görülmemiş/kısıtlı bir evrak için Document
+  Understanding ve Adjudicator adımları `success`, `local_execution=true`,
+  `network_attempted=true` verdi; veri cihaz dışına gönderilmedi.
+
+## 25 Ağustos 2026 — Şartname açıklarının yeniden denetlenmesi
+
+- `project.md` ve `openai.md` okunarak 2026 TYDA 1. Senaryo şartnamesinin
+  6.3-6.6, 7-9, 13.1 ve 14. bölümleri güncel kod, test, veri manifesti ve kabul
+  raporlarıyla yeniden karşılaştırıldı.
+- Çalışma ağacındaki şartname PDF'inin bozuk olduğu doğrulandı; yerel değişiklik
+  korunarak inceleme Git'teki sağlam `HEAD` kopyası üzerinden yapıldı.
+- `docs/SARTNAME_EKSIKLERI_UYGULAMA_PLANI.md` içinden tamamlanmış sayfa bazlı
+  PDF OCR, hibrit snapshot/Qdrant, LLM güvenlik kapısı, insan onayı ve HTTP/UI
+  kabul işleri çıkarıldı.
+- Kalan işler; paraphrase/genelleme başarımı, resmî yazışma kalite kapısı,
+  yarışma veri sınırı ve dağıtım, insan onaylı güncel mevzuat, görsel dosya
+  alımı/OCR ölçümü, bağımsız değerlendirme, teslim materyalleri, TAKP GitHub
+  yolu, paketleme/lisans ve üretim güvenliği olarak kanıtlarıyla yeniden
+  önceliklendirildi.
+- Varsayılan yerel Python 3.9.6 proje sözleşmesini karşılamadığı için tam test
+  koleksiyonu `StrEnum` ve `dataclass(slots=...)` aşamasında durdu. Yeni kod
+  davranışı eklenmedi; doğrulama için Python 3.11+ temiz ortam gereklidir.
+
 ## 25 Ağustos 2026 — Canlı Gemini ürün kabulü
 
 - UI'daki üç demo metni ayrı `synthetic_ui_fixtures.json` sözleşmesine alındı;

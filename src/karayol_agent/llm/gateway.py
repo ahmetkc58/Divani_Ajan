@@ -73,7 +73,7 @@ class StructuredLLMGateway:
             return self._failure(
                 status=LLMStatus.DISABLED,
                 code="missing_api_key",
-                message="LLM API anahtarı yok; deterministik fallback kullanılmalı.",
+                message="LLM sağlayıcısı etkin değil; deterministik fallback kullanılmalı.",
                 fallback=fallback,
             )
 
@@ -82,11 +82,13 @@ class StructuredLLMGateway:
                 request.input_data,
                 classification=request.data_classification,
                 allow_automatic_redaction=request.allow_automatic_redaction,
+                allow_restricted_local=self.config.is_local,
             )
             guarded_instructions = self.data_guard.prepare(
                 {"value": request.trusted_instructions},
                 classification=request.data_classification,
                 allow_automatic_redaction=request.allow_automatic_redaction,
+                allow_restricted_local=self.config.is_local,
             )
             redaction_count = len(guarded.findings) + len(
                 guarded_instructions.findings

@@ -1,3 +1,4 @@
+/* Standalone frontend styles; served independently from the REST backend. */
 :root {
   color-scheme: light;
   --ink: #10232b;

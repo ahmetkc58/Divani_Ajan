@@ -1,4 +1,4 @@
-"""Gemini and OpenAI-compatible structured-output adapters."""
+"""Ollama, Gemini and OpenAI-compatible structured-output adapters."""
 
 from __future__ import annotations
 
@@ -43,11 +43,27 @@ _MODEL_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,119}$")
 
 def _validated_base_url(value: str, *, provider: LLMProviderName) -> str:
     parsed = urlsplit(value)
-    if parsed.scheme != "https" or not parsed.hostname:
-        raise ValueError("LLM base URL yalnız geçerli HTTPS adresi olabilir.")
+    if not parsed.hostname:
+        raise ValueError("LLM base URL geçerli bir adres olmalıdır.")
     if parsed.username or parsed.password or parsed.query or parsed.fragment:
         raise ValueError("LLM base URL kimlik bilgisi, query veya fragment içeremez.")
     hostname = parsed.hostname.casefold()
+    if provider is LLMProviderName.OLLAMA:
+        if parsed.scheme not in {"http", "https"}:
+            raise ValueError("Ollama base URL HTTP veya HTTPS olmalıdır.")
+        try:
+            address = ipaddress.ip_address(hostname)
+        except ValueError:
+            is_loopback = hostname == "localhost"
+        else:
+            is_loopback = address.is_loopback
+        if not is_loopback:
+            raise ValueError("Ollama base URL yalnız yerel loopback adresi olabilir.")
+        if parsed.path.rstrip("/"):
+            raise ValueError("Ollama base URL yol içermemelidir.")
+        return value.rstrip("/")
+    if parsed.scheme != "https":
+        raise ValueError("Haricî LLM base URL yalnız HTTPS olabilir.")
     if provider is LLMProviderName.GEMINI and hostname != "generativelanguage.googleapis.com":
         raise ValueError("Gemini sağlayıcısı yalnız resmî Google API alan adını kullanabilir.")
     if provider is LLMProviderName.GROQ and hostname != "api.groq.com":
@@ -182,6 +198,72 @@ class GeminiProvider:
         return ProviderCompletion(text="".join(text_parts), finish_reason=finish_reason)
 
 
+class OllamaProvider:
+    """Native Ollama `/api/chat` adapter with JSON Schema output."""
+
+    def __init__(self, config: LLMConfig, transport: HTTPTransport) -> None:
+        if config.provider is not LLMProviderName.OLLAMA:
+            raise ValueError("OllamaProvider için provider='ollama' olmalıdır.")
+        if not _MODEL_PATTERN.fullmatch(config.model):
+            raise ValueError("Ollama model adı güvenli karakter kümesine uymuyor.")
+        self.config = config
+        self.transport = transport
+        self.base_url = _validated_base_url(
+            config.base_url, provider=LLMProviderName.OLLAMA
+        )
+
+    def complete(
+        self,
+        *,
+        system_prompt: str,
+        user_prompt: str,
+        output_schema: Mapping[str, Any],
+    ) -> ProviderCompletion:
+        payload = {
+            "model": self.config.model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            "stream": False,
+            "format": output_schema,
+            "options": {
+                "temperature": self.config.temperature,
+                "num_predict": self.config.max_output_tokens,
+            },
+        }
+        response = self.transport.send(
+            HTTPRequest(
+                url=f"{self.base_url}/api/chat",
+                headers={
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Accept": "application/json",
+                },
+                body=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                timeout_seconds=self.config.timeout_seconds,
+            )
+        )
+        if not 200 <= response.status_code < 300:
+            raise _http_error(response.status_code)
+        result = _decode_provider_json(response.body)
+        message = result.get("message")
+        if not isinstance(message, dict):
+            raise ProviderCallError(
+                "malformed_provider_response", "Ollama mesaj yanıtı çözümlenemedi."
+            )
+        text = message.get("content")
+        if not isinstance(text, str) or not text.strip():
+            raise ProviderCallError("blocked_or_empty", "Ollama metin yanıtı boş döndü.")
+        finish_reason = result.get("done_reason")
+        if result.get("done") is False or finish_reason not in {None, "stop"}:
+            raise ProviderCallError(
+                "incomplete_completion",
+                "Ollama yanıtı tamamlanmadan sonlandırıldı.",
+                retryable=finish_reason == "length",
+            )
+        return ProviderCompletion(text=text, finish_reason=finish_reason)
+
+
 class OpenAICompatibleProvider:
     def __init__(self, config: LLMConfig, transport: HTTPTransport) -> None:
         if config.provider not in {
@@ -271,6 +353,8 @@ class OpenAICompatibleProvider:
 
 
 def create_provider(config: LLMConfig, transport: HTTPTransport) -> StructuredOutputProvider:
+    if config.provider is LLMProviderName.OLLAMA:
+        return OllamaProvider(config, transport)
     if config.provider is LLMProviderName.GEMINI:
         return GeminiProvider(config, transport)
     return OpenAICompatibleProvider(config, transport)

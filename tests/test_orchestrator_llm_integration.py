@@ -35,7 +35,12 @@ class FakeSuccessfulGateway:
         accepted_reference_ids: list[str] | None = None,
         understanding_fields: dict[str, dict[str, str | None]] | None = None,
     ) -> None:
-        self.config = LLMConfig(api_key="unit-test-key")
+        self.config = LLMConfig(
+            provider=LLMProviderName.GROQ,
+            model="openai/gpt-oss-120b",
+            api_key="unit-test-key",
+            base_url="https://api.groq.com/openai/v1",
+        )
         self.requests = []
         self.adjudication_confidence = adjudication_confidence
         self.requires_human_review = requires_human_review
@@ -99,7 +104,7 @@ class FakeSuccessfulGateway:
             }
         return LLMCallResult(
             status=LLMStatus.SUCCESS,
-            provider=LLMProviderName.GROQ,
+            provider=self.config.provider,
             model=self.config.model,
             output=output,
             network_attempted=True,
@@ -182,7 +187,12 @@ def test_real_document_is_rejected_before_external_network_and_falls_back(
     tmp_path: Path,
 ) -> None:
     gateway = StructuredLLMGateway(
-        LLMConfig(api_key="unit-test-key"),
+        LLMConfig(
+            provider=LLMProviderName.GEMINI,
+            model="gemini-2.5-flash",
+            api_key="unit-test-key",
+            base_url="https://generativelanguage.googleapis.com/v1beta",
+        ),
         transport=NoNetworkTransport(),
     )
     orchestrator = EvrakOrchestrator(_settings(tmp_path), llm_gateway=gateway)
@@ -200,6 +210,28 @@ def test_real_document_is_rejected_before_external_network_and_falls_back(
     assert "gönderilmedi" in (state.llm_trace.warning or "")
     assert state.analysis is not None
     assert state.analysis.fields["gonderen"].value == "Gerçek Kişi"
+
+
+def test_real_document_can_use_local_ollama_without_external_data_permission(
+    tmp_path: Path,
+) -> None:
+    gateway = FakeSuccessfulGateway()
+    gateway.config = LLMConfig()
+    orchestrator = EvrakOrchestrator(_settings(tmp_path), llm_gateway=gateway)
+
+    state = orchestrator.process_text(
+        "Gönderen: Yerel Kullanıcı\nKonu: Yol çukuru\nKonum: Ankara\n"
+        "Yol bakım çalışması yapılmasını talep ediyorum."
+    )
+
+    assert state.llm_trace is not None
+    assert state.llm_trace.mode == "guarded_structured_local"
+    assert state.llm_trace.local_execution is True
+    assert state.llm_trace.external_data_allowed is False
+    assert "cihaz dışına gönderilmez" in (state.llm_trace.warning or "")
+    assert state.llm_trace.steps
+    assert all(step.local_execution for step in state.llm_trace.steps)
+    assert all(step.status == "success" for step in state.llm_trace.steps)
 
 
 def test_adjudicator_does_not_mutate_decisions_when_review_is_required(

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import StrEnum
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -195,6 +195,7 @@ class LLMStepTrace(BaseModel):
     detail: str | None = None
     data_classification: str | None = None
     external_data_allowed: bool = False
+    local_execution: bool = False
     network_attempted: bool = False
     redacted: bool = False
     redaction_count: int = Field(default=0, ge=0)
@@ -220,6 +221,7 @@ class LLMRunTrace(BaseModel):
     used: bool = False
     deterministic_fallback_used: bool = True
     external_data_allowed: bool = False
+    local_execution: bool = False
     steps: list[LLMStepTrace] = Field(default_factory=list)
     warning: str | None = None
 
@@ -280,6 +282,13 @@ class RoutingRecommendation(BaseModel):
     rationale: str
     score: float = Field(ge=0, le=1)
     alternatives: list[dict[str, Any]] = Field(default_factory=list)
+    routing_status: Literal["proposed", "needs_review"] = "proposed"
+    requires_human_review: bool = False
+    evidence: list[str] = Field(default_factory=list)
+    decision_basis: list[str] = Field(default_factory=list)
+    organization_version: str | None = None
+    target_level: str | None = None
+    score_margin: float | None = Field(default=None, ge=0, le=1)
 
 
 class UnitRecord(BaseModel):
@@ -288,6 +297,12 @@ class UnitRecord(BaseModel):
     hierarchy: str
     responsibilities: list[str]
     keywords: list[str]
+    parent_id: str | None = None
+    unit_type: str = "unit"
+    active_from: str | None = None
+    accepts_external_documents: bool = True
+    profile_status: str = "synthetic_draft"
+    jurisdictions: list[str] = Field(default_factory=list)
 
 
 class DraftPayload(BaseModel):
@@ -300,7 +315,19 @@ class DraftPayload(BaseModel):
     paragraphs: list[str]
     signer: ExtractedField
     signer_title: ExtractedField
+    interest: list[str] = Field(default_factory=list)
     attachments: list[str] = Field(default_factory=list)
+    distribution: list[str] = Field(default_factory=list)
+    contact_information: list[str] = Field(default_factory=list)
+    initials: list[str] = Field(default_factory=list)
+    electronic_signature: ExtractedField = Field(
+        default_factory=lambda: ExtractedField(
+            value=None, status=FieldStatus.USER_REQUIRED
+        )
+    )
+    document_metadata: dict[str, str] = Field(default_factory=dict)
+    authority_relation: str = "unknown"
+    closing: str = ""
     references: list[VerifiedReference] = Field(default_factory=list)
     missing_fields: list[str] = Field(default_factory=list)
 

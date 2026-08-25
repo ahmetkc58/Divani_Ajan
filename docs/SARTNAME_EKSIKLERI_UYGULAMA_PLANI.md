@@ -1,182 +1,340 @@
-# Şartname Eksikleri Uygulama Planı
+# Şartname Karşılaştırması ve Kalan Eksikler
 
-Bu plan, **2026 TYDA Teknik Şartnamesi - 1. Senaryo** ile mevcut Divani Ajan
-uygulamasının karşılaştırılmasına dayanır. Amaç; rapor ve sunumdan önce kodu,
-veri akışını, Qdrant entegrasyonunu, testleri ve teknik dokümantasyonu
-tamamlamaktır.
+**Güncelleme tarihi:** 25 Ağustos 2026
 
-Durumlar: **Var**, **Kısmi**, **Eksik**, **Dış onay gerekli**.
+**İncelenen sürüm:** `main@93b3e08`
 
-## 1. Şartname uyum özeti
+**Kaynaklar:** `project.md`, `openai.md`, 2026 TYDA Teknik Şartnamesi 1. Senaryo,
+uygulama kodu, testler, veri manifestleri ve kayıtlı kabul raporları.
 
-| Şartname gereksinimi | Durum | Kapatılması gereken iş |
-|---|---|---|
-| OCR veya doğrudan metin okuma | Kısmi | Görsel dosya yükleme, sayfa bazlı OCR kararı, dosya doğrulama ve OCR kalite ölçümü |
-| Evrak türünü belirleme | Var | Kör test setiyle doğruluk ölçümünü dondurma |
-| Önemli bilgi unsurlarını çıkarma | Var | Alan bazlı precision/recall/F1 raporu üretme |
-| Eksik bilgileri tespit etme | Var | Kritik eksiklerde işlemi durduran testleri genişletme |
-| Mevzuat/yazışma kuralı önerme | Kısmi | Güncel ve insan onaylı mevzuatı Qdrant'a indeksleme; gerçek korpus ölçümü |
-| Kısa ve öz özet üretme | Var | Kaynağa sadakat ve halüsinasyon kontrolü ekleme |
-| Uygun resmî yazı türünü seçme ve taslak oluşturma | Kısmi | Resmî biçim ve üslup kurallarını kalite kapısına bağlama |
-| Doğru birime yönlendirme önerisi | Var | Kör sette top-1/top-3 başarımını doğrulama |
-| Süreci kullanıcıya açıkça bildirme | Var | Hata, düşük güven ve yeniden deneme senaryolarını tamamlamak |
-| Gerektiğinde eksik bilgi isteme | Var | Kullanıcı düzeltmesinden sonra akışın güvenli devamını test etmek |
-| İki görevin uçtan uca bütünlüğü | Kısmi | Gerçek Qdrant, OCR, düşük güven ve çevrimdışı senaryolarıyla tekrarlı demo testi |
-| Veri, lisans ve Türkçe dokümantasyon kuralları | Kısmi | Dağıtım denetimi, lisans envanteri, temiz kurulum ve kullanıcı onaylı GitHub hazırlığı |
+Bu belge yalnızca açık kalan işleri içerir. Kod ve testlerle mevcut olduğu
+doğrulanan özellikler iş listesinden çıkarılmıştır. Bir özelliğin kaynak kodda
+bulunması tek başına tamamlanma sayılmaz; kör ölçüm, insan onayı veya teslim
+kanıtı gerekiyorsa ilgili kapı açık tutulur.
 
-## 2. Öncelikli uygulama sırası
+## 1. İnceleme notu
 
-### P0 - Kaynak bütünlüğü ve veri sınırı
+Şartnamenin özellikle şu bölümleri esas alınmıştır:
 
-**Hedef:** Yanlış veya dağıtılamaz kaynakla geliştirme yapılmasını engellemek.
+- **6.3-6.4:** İki zorunlu görevin uçtan uca tamamlanması,
+- **6.4.1:** OCR/metin okuma, anlamlandırma, sınıflandırma, bilgi ve eksik alan
+  çıkarımı, mevzuat önerisi ve özet,
+- **6.4.2:** Resmî yazı türü seçimi, resmî üslup, birim yönlendirme, kullanıcı
+  bilgilendirmesi ve eksik bilgi talebi,
+- **6.5:** Gerçek kamu evrakı/verisi kullanmama; kurgu evrak, yapay taslak,
+  açık kaynak metin ve kamuya açık mevzuatla çalışma,
+- **7:** Türkçe teknik rapor ve dokümantasyon, bilimsel atıf, açık kaynak depo,
+  veri kümesi teslimi ve üçüncü taraf lisans uyumu,
+- **8-9:** Uçtan uca Türkçe demo, veri kaynağı/hak açıklaması, internet
+  kesintisine karşı önerilen yedek plan,
+  sınıflandırma-yönlendirme-özet-taslak-eksik bilgi kalitesi ve gerçek zamana
+  yakın çalışma,
+- **13.1 ve 14:** Adillik, kapsayıcılık, yanıltıcı sonuç üretmeme, kişisel veri
+  ve fikrî mülkiyet sorumluluğu.
 
-- Çalışma ağacındaki şartname PDF'sinin bütünlüğünü kanonik kopyayla karşılaştır.
-  Mevcut dosyada bozuk PDF stream uyarıları bulunduğu için doğrulanmadan
-  değiştirme veya yayımlama yapma.
-- Gerçek kamu evrakını yasakla; yalnız kurgu evrak, yapay taslak ve kamuya açık
-  mevzuat kullan.
-- Her kaynak için URL, sürüm/yürürlük, SHA-256, lisans, OCR durumu, inceleyen kişi
-  ve inceleme tarihi tut.
-- Aktif RAG'e yalnız `approved_for_active_rag=true` ve
-  `validity_status=verified` kayıtları kabul et.
+Çalışma ağacındaki şartname PDF'i bozuk sıkıştırma akışları içeriyor ve 16
+sayfayı boş render ediyor. İnceleme, yerel değişikliğe dokunulmadan Git'teki
+sağlam `HEAD` kopyası üzerinden yapıldı. Sağlam kopyanın SHA-256 değeri
+`c4e0dc804ea07d2783975cea2f45cf9ab833828181d1837ad64a67617ca17fdd`,
+çalışma kopyasının değeri ise
+`6aedc51aae3a0525eb0dccb44ac4b76e95f2038ebca4ea689668ffb06c4549d7`.
 
-**Bitti sayılması için:** Aktif korpus manifestinde kaynağı belirsiz, lisansı
-belirsiz veya insan onaysız kayıt bulunmamalı.
+## 2. P0 - Şartname başarısını doğrudan etkileyen açıklar
 
-### P1 - Aktif mevzuat korpüsü ve Qdrant
+### 2.1. Görülmemiş/paraphrase evrakı anlamlandırma
 
-**Hedef:** Şartnamedeki mevzuat önerisini sentetik fallback yerine gerçek,
-izlenebilir retrieval akışıyla çalıştırmak.
+**Mevcut açık:** Kavram sinyalleri eklendikten sonra kayıtlı sekiz
+`challenge_paraphrase` örneğinde sınıflandırma, yönlendirme ve şablon sonucu
+**8/8** oldu. Ancak bu örnekler geliştirme deposunda görünür olduğundan sonuç
+bağımsız kör genelleme kanıtı değildir. Yerel Ollama görülmemiş/kısıtlı girdiyi
+cihaz dışına çıkarmadan işleyebilir; yine de 20-30 bağımsız örnek ve önceden
+yazılmış kabul eşiği gereklidir.
 
-1. En az 3-4 güncel ve kapsamla ilgili kamuya açık mevzuat/kılavuz belgesini alan
-   uzmanına doğrulat.
-2. OCR gereken sayfaları görsel olarak kontrol et; madde, fıkra, bent ve sayfa
-   izini koruyan chunk'lar üret.
-3. Qdrant'ı çalıştır; versiyonlu koleksiyonu oluştur ve onaylı korpüsü Jina
-   `retrieval.passage` vektörleriyle indeksle.
-4. Koleksiyon geçişini atomik alias ile yap; eski veya yarım indeksin sorguya
-   açılmasını önle.
-5. `/ready` üzerinden şema, payload indeksleri, embedding sözleşmesi, nokta
-   sayısı ve korpus fingerprint'ini doğrula.
-6. Jina + Qdrant + BM25 + RRF akışını gerçek korpusta ölç; BM25 çevrimdışı
-   fallback'ini koru.
+**Yapılacaklar:**
 
-**Bitti sayılması için:** Boş, eski ve yanlış fingerprint'li koleksiyonlar
-fail-closed olmalı; en az 100 uzman etiketli sorguda Recall@5, MRR, atıf doğruluğu,
-abstention ve sıcak p95 değerleri kayıt altına alınmalı.
+1. Mevcut geliştirme fixture'larından bağımsız, en az 20-30 evraklık kör Türkçe
+   paraphrase/near-miss seti hazırlamak ve hash ile dondurmak.
+2. Yerel Ollama/kavram katmanının kör sette genellemesini ölçmek; örneğe özel
+   yeni kelime kuralı eklememek.
+3. Kör set açılmadan hedef eşikleri yazmak; test açıldıktan sonra örneğe özel
+   kural eklememek.
 
-### P2 - Belge alımı ve OCR dayanımı
+**Kapanış ölçütü:** Kör sette sınıflandırma, yönlendirme top-1/top-3 ve şablon
+başarımı pay/payda ile raporlanmalı; near-miss örneklerinde yanlış kesin karar
+sayısı ayrıca gösterilmelidir.
 
-**Hedef:** Evrakı yalnız temiz metin/PDF örneklerinde değil, gerçekçi taramalarda
-da güvenli okuyabilmek.
+**Uygulanan güvenlik düzeltmesi:** 16.07.2026 tarihli organizasyon şeması,
+personel adları çıkarılarak sürümlü ve kapalı bir hedef kataloğuna aktarıldı.
+Katalog dışı hedef üretimi engellendi; kanıtsız, düşük güvenli, yakın skorlu ve
+yalnız merkez şehri bilinen taşra önerileri `needs_review` durumuna bağlandı.
+Bu bölümde açık kalan iş, bağımsız uzman onaylı görev/yetki profili ve kör başarı
+ölçümüdür.
 
-- PNG, JPG ve TIFF yüklemeyi ekle.
-- Uzantı yerine magic-byte/MIME doğrulaması yap; dosya boyutu, sayfa sayısı,
-  piksel ve çözünürlük sınırları koy.
-- PDF'de sayfa bazlı metin kalitesi ölç; yalnız zayıf sayfalara OCR uygula.
-- OCR çıktısında sayfa ve güven skorunu koru; düşük güvenli alanları kullanıcı
-  düzeltmesine gönder.
-- Temiz, bozuk, döndürülmüş ve taranmış Türkçe belgelerden test seti oluştur.
+### 2.2. Resmî yazışma biçim ve üslup kalite kapısı
 
-**Bitti sayılması için:** Desteklenen tüm dosya türlerinde pozitif/negatif yükleme
-testleri geçmeli; insan doğrulamalı sette CER/WER ve kritik alan F1 ölçülmeli.
+**Mevcut açık:** İlgi, ek, dağıtım, iletişim, paraf/koordinasyon, elektronik
+imza, belge üstverisi, makam ilişkisi ve tekil kapanış artık şema, dört LaTeX
+şablonu ve uygunluk motorunda bulunuyor. Çelişkili makam-kapanış kararı ve
+kanıtsız kaynak atfı onaya geçemiyor. Açık kalan bölüm, kuralların yetkili insan
+tarafından doğrulanması ve en az 30 gold PDF'in taşma/yerleşim açısından görsel
+kontrolüdür.
 
-### P3 - Resmî yazı kalite kapısı
+**Yapılacaklar:**
 
-**Hedef:** Üretilen metnin yalnızca okunabilir değil, resmî yazışma biçim ve
-üslubuna da uygun olmasını sağlamak.
+1. Resmî yazışma kılavuzundan insan doğrulamalı kural matrisi üretmek.
+2. UI'da yeni alanlar için ayrı düzenleme kontrolleri ve açıklamalar eklemek.
+3. Kapanış ifadesini gönderen-muhatap makam ilişkisine bağlamak; belirsizlikte
+   insan incelemesini zorunlu tutmak.
+4. Mevzuat atfının kabul edilmiş retrieval parçasında gerçekten bulunduğunu ve
+   taslakta anlamı değiştirilmeden kullanıldığını doğrulamak.
+5. En az 30 gold taslağı PDF'e render edip taşma, kesilme, Türkçe karakter,
+   başlık, imza, ilgi, ek ve dağıtım yerleşimini görsel olarak kontrol etmek.
 
-- Muhatap, sayı/tarih, konu, ilgi, ek, dağıtım, imza/unvan ve iletişim alanlarını
-  şema ve kurallarla doğrula.
-- `arz ederim`, `rica ederim` ve `arz ve rica ederim` seçimini makam ilişkisine
-  bağla; belirsizlikte otomatik onay verme.
-- Mevzuat atfının gerçekten retrieval kanıtında bulunmasını zorunlu tut.
-- Kritik eksik, kaynak uyuşmazlığı veya uygunluk hatasında PDF üretimini/onayını
-  durdur.
-- LaTeX kaçışı, Türkçe karakterler, sayfa taşması, ek/dağıtım ve imza alanlarını
-  render edilmiş PDF üzerinden test et.
+**Kapanış ölçütü:** Kritik alanı eksik, yanlış kapanışlı veya kanıtsız atıflı
+taslak onaya/PDF'e geçmemeli; gold taslaklarda kritik biçim hatası kalmamalıdır.
 
-**Bitti sayılması için:** En az 30 gold taslakta kritik biçim hatası kalmamalı;
-yanlış atıf ve eksik kritik alanlar fail-closed sonuçlanmalı.
+### 2.3. Yarışma veri sınırı ve dağıtılacak depo içeriği
 
-### P4 - İnsan onayı, hata yönetimi ve güvenlik
+**Mevcut açık:** `delivery_policy.json` ve denetim betiği her izlenen veri
+dosyasına include/exclude/review kararı, sınıf, lisans durumu ve hash atıyor;
+gerçek kaynaklar varsayılan teslimden dışlanıyor. Buna rağmen depoda 37 adet izlenen `veri_kaynaklari/` dosyası,
+DETSİS ham/temiz kayıtları, resmî HTML/PDF arşivleri, başka resmî PDF'ler ve
+31 MB gömülü Qdrant `storage.sqlite` dosyası bulunuyor. DETSİS arşivinde 585
+belge, 566 hizmet ve 501 mevzuat kaydı var. Bunlar uygulamanın kurgu birim
+verisi değildir ve şartnamenin veri sınırı ile yeniden dağıtım hakları açısından
+teslim öncesi açık karar gerektirir.
 
-**Hedef:** Düşük güvenli kararların kullanıcıdan habersiz kesin karar gibi
-sunulmasını önlemek.
+**Yapılacaklar:**
 
-- Düşük güven, alakasız evrak, çelişkili kaynak ve retrieval sonucu bulunamaması
-  için açık `inceleme_gerekli` durumu ekle.
-- Kullanıcı düzeltmesi ve onayından sonra süreci kaldığı yerden güvenli devam
-  ettir.
-- Süreç durumu ve artifact'lar için TTL ile kullanıcı tetiklemeli silme ekle.
-- API yanıtlarında mutlak yerel yol, gizli anahtar ve iç hata ayrıntısı sızmasını
-  engelle.
-- Ağ erişimini varsayılan olarak loopback ile sınırla; dış erişimde kimlik
-  doğrulama zorunlu olsun.
+1. Yarışma deposunda kalacak dosyalar için veri-sınıfı ve dağıtım izin matrisi
+   çıkarmak.
+2. Gerçek DETSİS kurum/hizmet/belge kayıtlarını çalışma zamanından ve yarışma
+   veri kümesinden kesin olarak ayırmak; gerekiyorsa teslim dalından çıkarmak.
+3. Kamuya açık mevzuat PDF'lerinin yeniden dağıtım hakkını tek tek doğrulamak;
+   izin belirsizse dosya yerine kaynak URL'si, hash ve üretim talimatı bırakmak.
+4. Qdrant veritabanını yeniden üretilebilir artifact olarak değerlendirmek;
+   kaynak depoda tutulacaksa lisans, boyut ve veri sınırı kararını açıkça
+   belgelemek.
+5. Politika sonucuna göre gerçek teslim dalı/paketi üretmek; exclude kararlarının
+   fiziksel teslim paketinde bulunmadığını CI artifact'ında doğrulamak.
 
-**Bitti sayılması için:** Abstention, insan onayı, yeniden deneme, yetkisiz dosya
-erişimi ve veri silme testleri geçmeli.
+**Kapanış ölçütü:** Teslim manifestindeki her dosyanın veri sınıfı, kaynağı,
+lisansı ve dağıtım kararı bulunmalı; kurgu yönlendirme verisine gerçek kurum
+kaydı karışmamalıdır.
 
-### P5 - Bağımsız değerlendirme ve uçtan uca demo
+### 2.4. Şartname PDF'inin sağlam teslim kopyası
 
-**Hedef:** Şartnamenin uygulama puanını tekrar üretilebilir metriklerle kanıtlamak.
+**Mevcut açık:** Çalışma ağacındaki değiştirilmiş şartname PDF'i bozuk; Poppler
+metin çıkarımı boş, render çıktıları beyaz ve sıkıştırma akışı hatalıdır.
 
-- Geliştirme, regresyon ve kör değerlendirme setlerini ayır; hash ile dondur.
-- Sınıflandırma doğruluğu, alan F1, eksik bilgi başarımı, yönlendirme top-1/top-3,
-  özet sadakati, taslak uygunluğu ve retrieval metriklerini tek koşuda üret.
-- Başarılı, eksik bilgi, düşük güven, alakasız belge, OCR ve çevrimdışı fallback
-  senaryolarını kapsayan uçtan uca test hazırla.
-- Ana akışı en az 20 kez çalıştır; çakışma, kalıcı süreç ve artifact hatalarını
-  kaydet.
-- Demo için internet yokken BM25 fallback ile çalışan yedek akışı doğrula.
+**Yapılacaklar:** Kanonik kaynaktan sağlam kopyayı doğrulamak, kullanıcı kararıyla
+bozuk yerel değişikliği düzeltmek ve push öncesi hash/render kontrolü yapmak.
 
-**Bitti sayılması için:** Sonuçlarda veri sürümü, Git commit'i, kirli çalışma
-ağacı bilgisi, pay/payda, hata sayısı ve p95 süre bulunmalı; kör koşudan sonra
-benchmark'a özel kod ayarı yapılmamalı.
+**Kapanış ölçütü:** PDF 16 sayfayı hatasız açmalı, metin veya görüntü içeriği
+görünür olmalı ve doğrulanan hash teslim kaydına yazılmalıdır.
 
-### P6 - Açık kaynak teslim hazırlığı ve dokümantasyon
+## 3. P1 - Uygulama puanı ve güvenilirlik için açıklar
 
-**Hedef:** Şartnamenin Türkçe dokümantasyon, açık kaynak ve üçüncü taraf hakları
-koşullarını karşılamak.
+### 3.1. Güncel ve insan onaylı aktif mevzuat korpüsü
 
-- Temiz ortam kurulumunu ve paket/wheel çalıştırmasını doğrula; bağımlılık kilit
-  dosyası ve SBOM üret.
-- Kod, veri, model, OCR aracı ve PDF kaynaklarının lisans/atıf envanterini tamamla.
-- Kısıtlı veya açık kaynak tanımına uymayan model ağırlıklarını depoya koyma;
-  yalnız bağlantı, sabit sürüm, lisans ve kullanım talimatı ver.
-- README'de kurulum, Qdrant başlatma, indeksleme, `/ready`, demo, test ve
-  çevrimdışı fallback komutlarını tek akış halinde doğrula.
-- Push öncesinde PDF, kişisel veri, secret, model cache'i, Qdrant storage'ı ve
-  yeniden dağıtım haklarını incele.
-- GitHub'a push etmeden önce kullanıcıdan açık onay al.
+**Mevcut açık:** Yarışma snapshot'ı 8 belge ve 2.603 parça içeriyor; ancak
+`currentness_verified=false` ve `legal_reliance_allowed=false`. UAB manifestinde
+501 kaydın tamamı `needs_human_review`, aktif RAG onaylı kayıt sayısı **0**.
+Sistem güvenli biçimde uyarı/abstention üretiyor fakat güncel mevzuat önerisi
+iddiası henüz yapılamaz.
 
-**Bitti sayılması için:** Temiz klonda kurulum ve demo smoke testi geçmeli;
-dağıtılacak dosya listesi kullanıcı tarafından onaylanmalı.
+**Yapılacaklar:**
 
-## 3. Uygulama takvimi
+1. Kapsamdaki mevzuatı alan/hukuk uzmanına kaynak, yürürlük, kapsam, hash, OCR
+   ve sayfa iziyle onaylatmak.
+2. Yalnız onaylı parçaları `verified_public` korpüsüne almak ve ayrı Qdrant
+   koleksiyonuna indekslemek.
+3. En az 30-50 bağımsız uzman etiketli sorguda Recall@5, MRR, citation
+   precision ve abstention ölçmek; mümkünse 100 sorguya genişletmek.
+4. Eski, hash'i değişmiş ve yanlış fingerprint'li koleksiyonların fail-closed
+   kaldığını gerçek Qdrant sunucusunda doğrulamak.
 
-| Sıra | İş paketi | Tahmini süre | Bağımlılık |
-|---|---|---:|---|
-| 1 | P0 kaynak/veri kapısı | 2-3 saat | İnsan kaynak doğrulaması |
-| 2 | P1 aktif korpus ve Qdrant | 6-10 saat | P0, çalışan Qdrant, uzman onayı |
-| 3 | P2 OCR ve dosya güvenliği | 4-6 saat | Test belgeleri |
-| 4 | P3 resmî yazı kalite kapısı | 5-8 saat | Doğrulanmış yazışma kuralları |
-| 5 | P4 insan onayı ve güvenlik | 3-5 saat | P1-P3 |
-| 6 | P5 kör değerlendirme ve demo | 4-6 saat | P1-P4 |
-| 7 | P6 paketleme ve teslim denetimi | 3-4 saat | P5 ve kod freeze |
+**Kapanış ölçütü:** Aktif korpüsteki her parça insan onayı ve kaynak izi taşımalı;
+ölçüm snapshot fixture'larından bağımsız olmalıdır.
 
-P0-P1-P3-P5 tamamlanmadan proje şartname açısından bitmiş kabul edilmemelidir.
-Rapor, sunum ve video; P6 sonunda kod dondurulup nihai metrikler alındıktan sonra
-hazırlanacaktır.
+### 3.2. Görsel belge alımı ve OCR kalite kanıtı
 
-## 4. Nihai tamamlanma kontrolü
+**Mevcut açık:** PDF yanında PNG/JPG/TIFF doğrudan alımı, magic-byte kontrolü,
+sayfa/piksel/süre sınırları ve boş OCR sonucunda fail-closed davranış var. Açık kalanlar:
 
-- [ ] Şartnamedeki Görev 1 ve Görev 2 tek süreçte uçtan uca çalışıyor.
-- [ ] Aktif mevzuat insan onaylı ve izlenebilir; gerçek Qdrant readiness başarılı.
-- [ ] Düşük güven ve eksik bilgi durumlarında otomasyon güvenli biçimde duruyor.
-- [ ] Resmî yazı taslağı kaynak, biçim ve üslup kapılarından geçiyor.
-- [ ] Kör test ve 20 tekrarlı demo sonuçları kayıtlı.
-- [ ] Çevrimdışı demo fallback'i doğrulandı.
-- [ ] Lisans, atıf, veri ve gizlilik denetimi tamamlandı.
-- [ ] Temiz kurulum ve çalıştırma dokümantasyonu doğrulandı.
-- [ ] GitHub push'u için kullanıcı onayı alındı.
+- OCR sayfa/alan güven skoru süreç kaydında tutulmuyor,
+- döndürülmüş, düşük DPI, fotokopi/faks ve karma düzenler için insan etiketli
+  kalite ölçümü yok,
+- CER, WER ve kritik alan F1 raporu yok.
+
+**Yapılacaklar:** Görsel formatları güvenli decoder ve piksel sınırlarıyla
+eklemek; dosya içeriğini uzantıdan bağımsız doğrulamak; sayfa/alan güven izini
+UI'a taşımak; bozulma dilimleri içeren sentetik test setinde CER/WER/alan F1
+ölçmek.
+
+**Kapanış ölçütü:** Desteklenen tüm biçimlerde pozitif/negatif yükleme testleri
+ve insan doğrulamalı OCR kalite raporu bulunmalıdır.
+
+### 3.3. Bağımsız kalite değerlendirmesi
+
+**Mevcut açık:** 48 kayıtlık sentetik gold set geliştirme ile aynı depoda ve
+mevcut kurallarla birlikte kullanılıyor. Snapshot alaka seti yalnız 4
+cevaplanabilir + 4 no-answer mühendislik regresyonundan oluşuyor. Aşağıdaki
+şartname puan alanları için bağımsız ölçüm yok:
+
+- özet sadakati ve kısalık,
+- bilgi çıkarımı alan precision/recall/F1'i,
+- resmî yazı üslup ve şablon kalitesi için insan puanı,
+- OCR CER/WER/alan F1'i,
+- uçtan uca p50/p95 gecikme ve tekrarlı koşu güvenilirliği,
+- farklı Türkçe ifade biçimleri için adillik/yanlılık dilimleri.
+
+**Yapılacaklar:** Geliştirme, regresyon ve kör test kümelerini ayırmak; kör seti
+bağımsız değerlendiriciye hazırlatmak; tek komutla tüm metrikleri, Git commit'ini,
+veri/model sürümünü, hata sayısını ve süreleri üreten değerlendirme akışı
+oluşturmak.
+
+**Kapanış ölçütü:** Kör değerlendirme raporu pay/payda, güven aralığı veya örnek
+sayısı, hata analizi ve bilinen sınırları açıkça göstermelidir.
+
+### 3.4. Gerçek zamana yakın çalışma ve yedek demo
+
+**Mevcut açık:** Deterministik BM25 akışında standart, paraphrase ve near-miss
+senaryoları 20'şer kez çalıştırıldı; 60/60 başarılı ve p95 11-16 ms aralığında.
+PDF-OCR, hibrit RAG, yerel Ollama ve PDF derleme için soğuk/sıcak p50/p95 ile
+final kayıttan demo/yedek çalışma paketi henüz yok.
+
+**Yapılacaklar:** Metin, PDF-OCR, hibrit RAG, LLM başarı/fallback ve PDF derleme
+senaryolarında uçtan uca süre ölçmek; en az 20 tekrar yapmak; çevrimdışı demo
+komutunu, önceden hazırlanmış model/veri durumunu ve yedek video akışını
+doğrulamak.
+
+**Kapanış ölçütü:** Final makinesinde tekrarlanabilir canlı demo ile internet
+kesintisine dayanıklı yedek demo birlikte bulunmalıdır.
+
+## 4. P1 - Teslim ve açık kaynak zorunlulukları
+
+### 4.1. Teknik rapor, sunum ve veri teslimleri
+
+**Mevcut açık:** Türkçe README ve mühendislik raporları var; ancak şartnamede
+istenen nihai teknik rapor ve PDF+PPTX final sunumu depoda yok. İnternet
+kesintisine karşı şartnamede tavsiye edilen yedek demo kaydı da hazırlanmamış.
+
+**Yapılacaklar:** Kod freeze ve kör metriklerden sonra Türkçe teknik rapor,
+bilimsel kaynakça, veri kartları, mimari/ajan akışı, hata analizi, lisans bölümü,
+10 dakikalık sunumun PDF ve PPTX sürümleri ve yedek demo kaydı hazırlanmalıdır.
+
+### 4.2. Türkiye Açık Kaynak Platformu depo teslimi
+
+**Mevcut açık:** Mevcut `origin`, kişisel
+`https://github.com/ahmetkc58/Divani_Ajan.git` deposudur. Şartnamenin Türkiye
+Açık Kaynak Platformu GitHub hesabında erişim şartının hangi organizasyon,
+transfer veya ayna yöntemiyle karşılanacağı kayıtlı değildir.
+
+**Yapılacaklar:** Düzenleyiciden teslim deposu/organizasyon bilgisini doğrulamak;
+gerekli erişim, transfer veya mirror işlemini son teslimden önce tamamlamak ve
+depo URL'sini teknik rapora eklemek.
+
+### 4.3. Tekrarlanabilir temiz kurulum ve paketleme
+
+**Mevcut açık:** `uv.lock`, CycloneDX SBOM ve GitHub Actions çekirdek test/paket
+kapısı eklendi. Wheel dört şablonu ve sentetik demo verisini içeriyor; kurulu
+paket `sys.prefix/share/karayol-agent` fallback'ini kullanıyor. Açık kalan bölüm
+CI'ın uzak depoda gerçekten çalıştırılması ve RAG/OCR optional profillerinin
+ayrı temiz ortam matrisinde doğrulanmasıdır.
+
+**Yapılacaklar:**
+
+1. Python 3.11/3.12 CI matrisini uzak depoda çalıştırmak.
+2. RAG/OCR optional profilleri için ayrı kurulum ve smoke işi eklemek.
+3. Temiz klon → kurulum → test → indeks/readiness → demo zincirini CI
+   tekrarlanabilir betikle doğrulamak.
+4. Üretilen SBOM'a insan doğrulamalı lisans kararlarını bağlamak.
+
+### 4.4. Lisans ve yeniden dağıtım kapanışı
+
+**Mevcut açık:** Apache-2.0 proje lisansı ve kaynak manifesti var; ancak Jina
+modelleri `CC BY-NC 4.0`, EasyOCR CRAFT/Latin G2 ağırlıklarının lisansı belirsiz
+ve resmî PDF/HTML arşivlerinin yeniden dağıtım kararı kapanmış değil. Bu durum
+hem şartname uyumu hem ticarileşme puanı için risklidir.
+
+**Yapılacaklar:** Kullanılan her kod, model, ağırlık, veri ve belgeyi fiilî
+çalışma yolu ile eşleştiren lisans matrisi hazırlamak; belirsiz veya uyumsuz
+bileşeni dağıtımdan çıkarmak ya da uygun alternatifle değiştirmek; bilimsel ve
+lisans atıflarını teknik rapora taşımak.
+
+## 5. P2 - Güvenlik, işletim ve ticarileşme açıkları
+
+Bu bölümdeki işler iki zorunlu görevin çekirdeği değildir; ancak kişisel veri
+sorumluluğu, gerçek dünya uygulanabilirliği, ölçeklenebilirlik ve
+ticarileşme puanını doğrudan etkiler.
+
+### 5.1. Süreç verisi yaşam döngüsü ve erişim kontrolü
+
+**Mevcut açık:**
+
+- API'de kimlik doğrulama, rol/yetki kontrolü ve oran sınırlama yok,
+- süreç ve artifact'lar için TTL veya kullanıcı tetiklemeli silme ucu yok,
+- süreç JSON'unda ham belge metni kalıcı tutuluyor,
+- API modeli `tex_path`/`pdf_path` mutlak yerel yollarını döndürüyor,
+- açık `reject`, `retry` ve denetlenebilir düzeltme geçmişi uçları yok.
+
+**Yapılacaklar:** Yerel demo profilini üretim profilinden ayırmak; dışa açılan
+profilde kimlik doğrulama/yetkilendirme, oran sınırı, saklama süresi, güvenli
+silme, yol gizleme, redaksiyonlu log ve denetim izi eklemek.
+
+### 5.2. Adillik, kapsayıcılık ve erişilebilirlik
+
+**Mevcut açık:** Etik şartı adil/kapsayıcı Türkçe deneyimi bekliyor; buna karşılık
+ağız, yazım bozukluğu, OCR hatası, kısa/uzun ifade, farklı kişi/kurum adı ve
+engelli kullanıcı erişilebilirliği için tanımlı ölçüm bulunmuyor.
+
+**Yapılacaklar:** Kimlik özelliği taşımayan kontrollü sentetik dil dilimleriyle
+performans farkı ölçmek; hata mesajlarını sade Türkçe ve ekran okuyucu/klavye
+kullanımıyla test etmek; WCAG odaklı temel UI kontrolü yapmak.
+
+### 5.3. Ölçeklenebilirlik ve sürdürülebilir işletim kanıtı
+
+**Mevcut açık:** Dosya tabanlı süreç deposu tek düğümlü MVP'dir; eşzamanlı
+kullanım, iş kuyruğu, yatay ölçekleme, yedekleme/geri yükleme, gözlemlenebilirlik
+ve maliyet modeli ölçülmemiştir.
+
+**Yapılacaklar:** Hedef kullanım senaryosu ve kapasite varsayımı yazmak; hafif
+eşzamanlı yük testi, hata bütçesi, log/metrik/trace planı, yedekleme ve yaklaşık
+işlem maliyeti çıkarmak.
+
+## 6. Uygulama sırası
+
+| Sıra | İş | Bağımlılık | Tamamlanma kanıtı |
+|---:|---|---|---|
+| 1 | Paraphrase/genelleme açığını kapat | Kör set | Kör sınıflandırma-yönlendirme-şablon raporu |
+| 2 | Resmî yazışma kalite kapısını tamamla | İnsan doğrulamalı kural matrisi | 30 gold render ve fail-closed testleri |
+| 3 | Veri/dağıtım kapsamını temizle | Lisans ve kullanıcı kararı | Teslim dosya manifesti |
+| 4 | Aktif mevzuatı uzman onayıyla oluştur | Alan/hukuk uzmanı | Onaylı korpüs ve bağımsız retrieval raporu |
+| 5 | OCR/görsel giriş ve kalite ölçümünü tamamla | Görsel test seti | CER/WER/alan F1 ve yükleme testleri |
+| 6 | Kör uçtan uca değerlendirme ve performans | 1-5 | Tek komutlu nihai metrik raporu |
+| 7 | Temiz kurulum, paketleme ve lisans kapanışı | Kod freeze | CI/temiz klon, SBOM ve lisans matrisi |
+| 8 | Teknik rapor, sunum ve yedek demo | Nihai metrikler | Türkçe rapor, PDF/PPTX ve demo paketi |
+| 9 | TAKP GitHub teslimi | Düzenleyici depo bilgisi | Erişilebilir nihai depo URL'si |
+
+## 7. Nihai açık kontrol listesi
+
+- [ ] Görülmemiş Türkçe/paraphrase evraklarda kör sınıflandırma ve yönlendirme
+  ölçümü kabul eşiğini karşılıyor.
+- [ ] Resmî yazışmanın ilgi, ek, dağıtım, imza/üstveri ve makam kapanışı kuralları
+  kod ve render testleriyle doğrulanıyor.
+- [ ] Teslim deposunda gerçek DETSİS verisi, kamu PDF'leri ve Qdrant artifact'ları
+  için açık veri/lisans/dağıtım kararı var.
+- [ ] Şartname PDF'inin sağlam kanonik kopyası doğrulandı.
+- [ ] Güncel mevzuat korpüsü insan onaylı; bağımsız retrieval ölçümü tamamlandı.
+- [ ] Görsel belge biçimleri ile OCR güven/kalite ölçümü tamamlandı.
+- [ ] Özet, bilgi çıkarımı, taslak, OCR ve uçtan uca gecikme bağımsız olarak
+  ölçüldü.
+- [ ] En az 20 tekrarlı canlı/çevrimdışı demo ve yedek kayıt hazır.
+- [ ] Python 3.11+ temiz klon kurulumu, paketleme, test ve demo zinciri geçti.
+- [ ] SBOM, lisans matrisi, veri kartları ve atıflar tamamlandı.
+- [ ] Türkçe teknik rapor ile final sunumunun PDF ve PPTX sürümleri hazır.
+- [ ] Türkiye Açık Kaynak Platformu GitHub teslim yolu doğrulandı.
+- [ ] Üretim profili için erişim, saklama, silme ve yerel yol gizleme politikası
+  uygulandı veya demo-sınırı olarak açıkça belgelendi.
+- [ ] Adillik/kapsayıcılık ve temel erişilebilirlik kontrolleri raporlandı.

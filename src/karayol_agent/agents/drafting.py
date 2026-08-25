@@ -29,8 +29,16 @@ class DraftingAgent:
         references: list[VerifiedReference],
     ) -> DraftPayload:
         verified_references = [reference for reference in references if reference.verified]
-        paragraphs = self._paragraphs(analysis, decision, routing, verified_references)
+        authority_relation, closing = self._official_closing(decision)
+        paragraphs = self._paragraphs(
+            analysis, decision, routing, verified_references, closing
+        )
         missing = list(dict.fromkeys([*analysis.missing_fields, "sayi", "imzalayan", "unvan"]))
+        contact_information = [
+            field.value
+            for name in ("eposta", "telefon")
+            if (field := analysis.fields.get(name)) is not None and field.value
+        ]
         return DraftPayload(
             template_id=decision.template_id,
             institution_name=ExtractedField(
@@ -49,6 +57,14 @@ class DraftingAgent:
             paragraphs=paragraphs,
             signer=ExtractedField(value=None, status=FieldStatus.USER_REQUIRED),
             signer_title=ExtractedField(value=None, status=FieldStatus.USER_REQUIRED),
+            contact_information=contact_information,
+            document_metadata={
+                "template_version": "1.0.0",
+                "data_class": "sentetik_demo",
+                "routing_unit_id": routing.unit_id,
+            },
+            authority_relation=authority_relation,
+            closing=closing,
             references=verified_references,
             missing_fields=missing,
         )
@@ -66,6 +82,7 @@ class DraftingAgent:
         decision: TemplateDecision,
         routing: RoutingRecommendation,
         references: list[VerifiedReference],
+        closing: str,
     ) -> list[str]:
         request = analysis.fields.get("talep")
         request_text = request.value if request and request.value else analysis.summary
@@ -81,84 +98,32 @@ class DraftingAgent:
                 for reference in references
             ):
                 paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
+            paragraphs.append(closing)
             return paragraphs
 
         paragraphs = [
             f"İlgili başvuruda belirtilen husus incelenmiştir: {request_text}",
             f"Başvurunun görev ve sorumluluk alanı bakımından {routing.unit_name} tarafından değerlendirilmesi uygun görülmüştür.",
         ]
-        if references:
-            public_references = [
-                reference
-                for reference in references
-                if reference.corpus_mode == CorpusMode.VERIFIED_PUBLIC.value
-            ]
-            snapshot_references = [
-                reference
-                for reference in references
-                if reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
-            ]
-            synthetic_references = [
-                reference
-                for reference in references
-                if reference.corpus_mode == CorpusMode.TRUSTED_SYNTHETIC.value
-            ]
-
-            if public_references:
-                paragraphs.append(
-                    "Taslak hazırlanırken kaynak sözleşmesini geçen şu kamu "
-                    "mevzuatı parçaları dikkate alınmıştır: "
-                    + DraftingAgent._source_names(public_references)
-                    + "."
-                )
-            if snapshot_references:
-                paragraphs.extend(
-                    [
-                        "Taslak hazırlanırken yarışma veri kümesindeki şu sabit "
-                        "kaynak parçaları yalnız retrieval ve kaynak izi açısından "
-                        "eşleştirilmiştir: "
-                        + DraftingAgent._source_names(snapshot_references)
-                        + ".",
-                        COMPETITION_SNAPSHOT_NOTICE,
-                    ]
-                )
-            if synthetic_references:
-                paragraphs.append(
-                    "Taslak hazırlanırken yalnız demo amacı taşıyan şu sentetik "
-                    "kurallar dikkate alınmıştır: "
-                    + DraftingAgent._source_names(synthetic_references)
-                    + "."
-                )
-            known_reference_ids = {
-                reference.chunk_id
-                for reference in [
-                    *public_references,
-                    *snapshot_references,
-                    *synthetic_references,
-                ]
-            }
-            other_references = [
-                reference
-                for reference in references
-                if reference.chunk_id not in known_reference_ids
-            ]
-            if other_references:
-                paragraphs.append(
-                    "Taslak hazırlanırken kabul edilen diğer kaynak parçaları: "
-                    + DraftingAgent._source_names(other_references)
-                    + "."
-                )
-        if decision.document_type == "ust_yazi":
-            paragraphs.append("Gereğini rica ederim.")
-        else:
-            paragraphs.append("Bilgilerinize sunulur.")
+        if any(
+            reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+            for reference in references
+        ):
+            paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
+        paragraphs.append(closing)
         return paragraphs
 
     @staticmethod
-    def _source_names(references: list[VerifiedReference]) -> str:
-        return ", ".join(
-            dict.fromkeys(
-                f"{reference.title} {reference.article or ''}".strip()
-                for reference in references[:3]
-            )
-        )
+    def _official_closing(decision: TemplateDecision) -> tuple[str, str]:
+        """Select one auditable closing from the demonstrated authority relation.
+
+        The prototype routes an internally generated upper letter from the
+        institution to its subordinate synthetic unit. Other templates address
+        the applicant/external recipient. Unknown or mixed relations can still
+        be supplied by the user and are rejected by ComplianceAgent unless the
+        closing is updated consistently.
+        """
+
+        if decision.document_type == "ust_yazi":
+            return "subordinate_internal", "Gereğini rica ederim."
+        return "citizen_or_external", "Bilgilerinize sunulur."

@@ -14,6 +14,7 @@ from typing import Any, Mapping
 
 
 class LLMProviderName(StrEnum):
+    OLLAMA = "ollama"
     GROQ = "groq"
     GEMINI = "gemini"
     OPENAI_COMPATIBLE = "openai_compatible"
@@ -77,16 +78,14 @@ def default_fallback_for(task: LLMTask) -> FallbackAction:
 class LLMConfig:
     """Runtime configuration without a dependency on a provider SDK.
 
-    Gemini 2.5 Flash is the selected free-tier provider; Groq remains an
-    optional adapter.
-    The key is optional by design: an absent key disables calls instead of
-    causing an accidental unauthenticated network request.
+    Local Ollama is the default provider. External Gemini, Groq and
+    OpenAI-compatible adapters remain optional and require an API key.
     """
 
-    provider: LLMProviderName = LLMProviderName.GEMINI
-    model: str = "gemini-2.5-flash"
+    provider: LLMProviderName = LLMProviderName.OLLAMA
+    model: str = "qwen2.5:0.5b"
     api_key: str | None = field(default=None, repr=False)
-    base_url: str = "https://generativelanguage.googleapis.com/v1beta"
+    base_url: str = "http://127.0.0.1:11434"
     timeout_seconds: float = 20.0
     max_output_tokens: int = 2048
     temperature: float = 0.0
@@ -126,18 +125,26 @@ class LLMConfig:
 
     @property
     def enabled(self) -> bool:
-        return self.api_key is not None
+        return self.is_local or self.api_key is not None
+
+    @property
+    def is_local(self) -> bool:
+        return self.provider is LLMProviderName.OLLAMA
 
     @classmethod
     def from_env(cls) -> "LLMConfig":
-        provider_text = os.getenv("KARAYOL_LLM_PROVIDER", "gemini").strip().casefold()
+        provider_text = os.getenv("KARAYOL_LLM_PROVIDER", "ollama").strip().casefold()
         try:
             provider = LLMProviderName(provider_text)
         except ValueError as exc:
             raise ValueError("KARAYOL_LLM_PROVIDER desteklenmiyor.") from exc
 
         explicit_key = os.getenv("KARAYOL_LLM_API_KEY")
-        if provider is LLMProviderName.GROQ:
+        if provider is LLMProviderName.OLLAMA:
+            api_key = None
+            default_model = "qwen2.5:0.5b"
+            default_base_url = "http://127.0.0.1:11434"
+        elif provider is LLMProviderName.GROQ:
             api_key = explicit_key or os.getenv("GROQ_API_KEY")
             default_model = "openai/gpt-oss-120b"
             default_base_url = "https://api.groq.com/openai/v1"

@@ -15,6 +15,12 @@ class ClassificationAgent:
             "bozuk yol",
             "kaplama",
             "yol onarım",
+            "sürüş yüzeyi",
+            "yol yüzeyi",
+            "yüzey yenileme",
+            "derin oyuk",
+            "tekerlek izi",
+            "yüzey dalgalanma",
         ),
         "trafik_guvenligi_bildirimi": (
             "trafik güvenliği",
@@ -23,6 +29,11 @@ class ClassificationAgent:
             "sinyalizasyon",
             "kaza riski",
             "yaya geçidi",
+            "yönlendirme tabelası",
+            "yön gösteren tabela",
+            "kavşak ışıkları",
+            "kırmızı ve yeşil ışık",
+            "ışık düzeni",
         ),
         "hasar_bildirimi": (
             "hasar",
@@ -31,12 +42,21 @@ class ClassificationAgent:
             "çökme",
             "sel",
             "istinat",
+            "şev",
+            "kaya parçası",
+            "yamaçtan kopan",
+            "destek duvarı",
+            "duvarın dışa eğilmesi",
         ),
         "bilgi_talebi": (
             "bilgi edinme",
             "bilgi talep",
             "bilgi verilmesi",
             "hakkında bilgi",
+            "faaliyet kayıtları",
+            "yıllık istatistik",
+            "kayıtların tarafıma gönderilmesi",
+            "kayıtları gönder",
         ),
         "sikayet": ("şikayet", "mağdur", "rahatsızlık", "gereğinin yapılması"),
         "ust_yazi": ("arz ederim", "rica ederim", "dağıtım", "ilgi:"),
@@ -90,13 +110,20 @@ class ClassificationAgent:
         if not scored:
             return ClassificationResult(
                 document_type="genel_basvuru",
-                confidence=0.45,
+                confidence=0.35,
                 matched_keywords=[],
             )
 
         scored.sort(key=lambda item: (-item[0], item[1]))
         best_score, label, matches = scored[0]
+        second_score = scored[1][0] if len(scored) > 1 else 0.0
+        margin = best_score - second_score
+        # Birden fazla niyetin neredeyse aynı puanı alması halinde güveni
+        # bilinçli olarak düşük tutar; TemplateSelectionAgent böyle bir kararı
+        # insan onayına taşır.
         confidence = min(0.55 + best_score * 0.09, 0.97)
+        if second_score and (margin < 0.75 or second_score >= best_score * 0.5):
+            confidence = min(confidence, 0.58)
         return ClassificationResult(
             document_type=label,
             confidence=round(confidence, 2),

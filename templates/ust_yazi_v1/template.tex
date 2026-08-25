@@ -15,6 +15,9 @@
 \end{center}
 \noindent Sayı: <<number>> \hfill Tarih: <<date>>\\
 \noindent Konu: <<subject>>
+<% if interest %>
+\par\noindent İlgi: <<interest>>
+<% endif %>
 \vspace{8mm}
 \begin{center}\bfseries <<recipient>>\end{center}
 <<paragraphs>>
@@ -23,10 +26,25 @@
 <<signer>>\\
 <<signer_title>>
 \end{flushright}
-\vfill
-\noindent\textbf{Doğrulanan kaynaklar}
+<% if attachments %>
+\noindent\textbf{Ekler}
+\begin{enumerate}[leftmargin=*]
+<<attachments>>
+\end{enumerate}
+<% endif %>
+<% if distribution %>
+\noindent\textbf{Dağıtım}
 \begin{itemize}[leftmargin=*]
-<<references>>
+<<distribution>>
 \end{itemize}
+<% endif %>
+<% if contact_information %>
+\noindent\textbf{İletişim:} <<contact_information>>\par
+<% endif %>
+<% if initials %>
+\noindent\textbf{Paraf/Koordinasyon:} <<initials>>\par
+<% endif %>
+<% if electronic_signature %>
+\noindent\textbf{Elektronik imza:} <<electronic_signature>>\par
+<% endif %>
 \end{document}
-

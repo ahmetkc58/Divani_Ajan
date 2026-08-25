@@ -1,5 +1,21 @@
 "use strict";
 
+function normalizeApiOrigin(value) {
+  try {
+    const url = new URL(value || "http://127.0.0.1:8010");
+    if (!['http:', 'https:'].includes(url.protocol)) throw new Error("unsupported protocol");
+    return url.origin;
+  } catch {
+    return "http://127.0.0.1:8010";
+  }
+}
+
+const API_ORIGIN = normalizeApiOrigin(window.KARAYOL_CONFIG?.apiBaseUrl);
+
+function apiUrl(path) {
+  return new URL(path, `${API_ORIGIN}/`).toString();
+}
+
 const scenarios = {
   maintenance: {
     hint: "Beklenen: yol bakım talebi → Yol Yapım ve Bakım Birimi",
@@ -152,7 +168,6 @@ const toast = document.querySelector("#toast");
 const fileInput = document.querySelector("#document-file");
 const fileDrop = document.querySelector("#file-drop");
 const selectedFileLabel = document.querySelector("#selected-file");
-const compilePdf = document.querySelector("#compile-pdf");
 
 let activeScenario = "maintenance";
 let inputMode = "text";
@@ -176,8 +191,8 @@ function safePercent(value) {
 
 function safeArtifactUrl(url) {
   const value = String(url || "");
-  return /^\/v1\/process\/EVR-\d{8}-[A-F0-9]{8}\/artifacts\/(?:tex|pdf)$/.test(value)
-    ? value
+  return /^\/api\/v1\/processes\/EVR-\d{8}-[A-F0-9]{8}\/artifacts\/(?:tex|pdf)$/.test(value)
+    ? apiUrl(value)
     : null;
 }
 
@@ -265,7 +280,7 @@ function setSelectedFile(file) {
 }
 
 async function requestJson(url, options = {}) {
-  const response = await fetch(url, options);
+  const response = await fetch(apiUrl(url), options);
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(payload.detail || "İşlem tamamlanamadı.");
@@ -325,18 +340,23 @@ function renderOverview(state) {
   const graphLabel = graph.applied
     ? "Seçici çok-adımlı graf izi"
     : "Graf abstention / devre dışı";
+  const routingReview = routing.requires_human_review
+    ? "İnsan incelemesi gerekli"
+    : "Otomatik öneri hazır";
+  const routingEvidence = (routing.evidence || []).map((item) => escapeHtml(item)).join(" · ");
 
   return `
     ${scenarioExpectation(state)}
     <div class="overview-grid">
       <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.document_type))}</strong><small>Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
-      <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")}</small></div>
+      <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")} · ${escapeHtml(routingReview)}</small></div>
       <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong><small>${escapeHtml(template.template_id || "")}</small></div>
       <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
       <div class="info-card"><span>LLM orkestrasyonu</span><strong>${escapeHtml(llmLabel)}</strong><small>${escapeHtml(llmStatus)}</small></div>
       <div class="info-card"><span>Kanıt grafı</span><strong>${escapeHtml(graphLabel)}</strong><small>${escapeHtml(graph.graph_id || graph.strategy || "Graf yok")}</small></div>
       <div class="info-card wide"><span>Özet</span><strong>${escapeHtml(analysis.summary || "Özet oluşturulamadı.")}</strong>${warnings ? `<small>${warnings}</small>` : ""}</div>
       <div class="info-card wide"><span>Yönlendirme gerekçesi</span><strong>${escapeHtml(routing.rationale || "—")}</strong></div>
+      <div class="info-card wide"><span>Yönlendirme izi</span><strong>${escapeHtml(routing.hierarchy || "—")}</strong><small>Katalog: ${escapeHtml(routing.organization_version || "belirtilmedi")} · Skor farkı: ${safePercent(routing.score_margin)}%${routingEvidence ? ` · ${routingEvidence}` : ""}</small></div>
     </div>
     ${renderNextAction(state)}
   `;
@@ -443,11 +463,10 @@ function draftValue(field) {
 function renderDraft(state) {
   const draft = state.draft;
   if (!draft) return `<div class="empty-state"><h3>Taslak bulunmuyor</h3><p>Henüz bir resmî yazı taslağı oluşturulmadı.</p></div>`;
-  const texUrl = safeArtifactUrl(state.artifact?.tex_download_url);
   const pdfUrl = safeArtifactUrl(state.artifact?.pdf_download_url);
   const paragraphs = (draft.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
   return `
-    <div class="artifact-actions">${texUrl ? `<a class="download-link" href="${texUrl}">↓ LaTeX taslağını indir</a>` : ""}${pdfUrl ? `<a class="download-link" href="${pdfUrl}">↓ PDF çıktısını indir</a>` : `<span class="download-link is-disabled">PDF derleyicisi / çıktısı yok</span>`}</div>
+    <div class="artifact-actions">${pdfUrl ? `<a class="download-link" href="${pdfUrl}" download>↓ PDF taslağını indir</a>` : `<span class="download-link is-disabled">PDF hazırlanamadı</span>`}</div>
     <article class="draft-sheet"><div class="draft-letterhead"><strong>${escapeHtml(draftValue(draft.institution_name))}</strong></div><div class="draft-meta"><span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span><span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span><span><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</span><span><b>Şablon:</b> ${escapeHtml(draft.template_id)}</span></div><div class="draft-recipient">${escapeHtml(draftValue(draft.recipient))}</div>${paragraphs}<div class="draft-signature"><strong>${escapeHtml(draftValue(draft.signer))}</strong><br />${escapeHtml(draftValue(draft.signer_title))}</div></article>`;
 }
 
@@ -486,8 +505,10 @@ function renderLlmTimeline(llmTrace) {
     const metadata = [
       provider ? `Sağlayıcı: ${provider}${model ? ` / ${model}` : ""}` : "",
       classification ? `Veri sınıfı: ${classification}` : "",
-      `Harici API izni: ${step.external_data_allowed ? "verildi" : "verilmedi"}`,
-      `Ağ çağrısı: ${step.network_attempted ? "yapıldı" : "yapılmadı"}`,
+      step.local_execution
+        ? "Çalıştırma: yerel Ollama (cihaz dışına veri çıkışı yok)"
+        : `Harici API izni: ${step.external_data_allowed ? "verildi" : "verilmedi"}`,
+      `${step.local_execution ? "Yerel HTTP" : "Ağ"} çağrısı: ${step.network_attempted ? "yapıldı" : "yapılmadı"}`,
       step.failure_code ? `Hata kodu: ${step.failure_code}${step.retryable ? " (yeniden denenebilir)" : ""}` : "",
       step.redacted ? `Maskeleme: ${step.redaction_count || 0} alan` : ""
     ].filter(Boolean).join(" · ");
@@ -567,10 +588,10 @@ async function handleInformationSubmit(event) {
   submit.disabled = true;
   submit.textContent = "Taslak yenileniyor…";
   try {
-    const state = await requestJson(`/v1/process/${encodeURIComponent(currentState.document_id)}/information`, {
+    const state = await requestJson(`/api/v1/processes/${encodeURIComponent(currentState.document_id)}/information`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fields, compile_pdf: compilePdf.checked })
+      body: JSON.stringify({ fields, compile_pdf: true })
     });
     renderState(state);
     showToast("Bilgiler kaydedildi ve taslak yenilendi.", "success");
@@ -588,7 +609,7 @@ async function handleApprovalSubmit(event) {
   submit.disabled = true;
   submit.textContent = "Onaylanıyor…";
   try {
-    const state = await requestJson(`/v1/process/${encodeURIComponent(currentState.document_id)}/approve`, {
+    const state = await requestJson(`/api/v1/processes/${encodeURIComponent(currentState.document_id)}/approval`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ approved_by: approvedBy })
@@ -608,7 +629,7 @@ async function checkReadiness() {
   const environmentBadge = document.querySelector("#environment-badge");
   pill.classList.remove("is-online", "is-offline");
   try {
-    const response = await fetch("/ready", { headers: { "Accept": "application/json" } });
+    const response = await fetch(apiUrl("/api/v1/system/readiness"), { headers: { "Accept": "application/json" } });
     const readiness = await response.json().catch(() => ({}));
     if (!response.ok || readiness.ready !== true) {
       throw new Error(readiness.detail || "Retrieval altyapısı hazır değil.");
@@ -688,12 +709,12 @@ processForm.addEventListener("submit", async (event) => {
     if (inputMode === "file") {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      state = await requestJson(`/v1/process/file?compile_pdf=${compilePdf.checked}`, { method: "POST", body: formData });
+      state = await requestJson("/api/v1/processes/file?compile_pdf=true", { method: "POST", body: formData });
     } else {
-      state = await requestJson("/v1/process/text", {
+      state = await requestJson("/api/v1/processes/text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: textArea.value.trim(), source_name: `${activeScenario}-arayuz-senaryosu.txt`, compile_pdf: compilePdf.checked })
+        body: JSON.stringify({ text: textArea.value.trim(), source_name: `${activeScenario}-arayuz-senaryosu.txt`, compile_pdf: true })
       });
     }
     renderState(state);
@@ -707,4 +728,5 @@ processForm.addEventListener("submit", async (event) => {
 });
 
 setScenario("maintenance", false);
+document.querySelector("#api-docs-link").href = apiUrl("/docs");
 checkReadiness();

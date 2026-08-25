@@ -3,14 +3,14 @@
 Bu depo, `PROJE_PLANI.md` içindeki TEKNOFEST 2026 projesinin çalışan MVP
 uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 
-1. metin/PDF alımı ve OCR fallback,
+1. metin/PDF/PNG/JPG/TIFF alımı ve OCR fallback,
 2. evrak sınıflandırma ve önemli alan çıkarımı,
 3. eksik bilgi tespiti,
 4. bağlamsal BM25 veya Jina Embeddings v3 + Qdrant + RRF hibrit arama,
 5. kullanıcı-niyeti + görünür metin alaka kapısı ve kaynak doğrulama,
 6. resmî yazı türü ve LaTeX şablonu seçimi,
 7. sentetik birime yönlendirme,
-8. güvenli LaTeX taslağı oluşturma,
+8. güvenli LaTeX taslağı ve doğrudan indirilebilir PDF oluşturma,
 9. uygunluk kontrolü ve süreç bilgilendirmesi.
 
 Çevrimdışı demo akışı varsayılan olarak kural tabanlı BM25 ile çalışır. İsteğe
@@ -36,20 +36,21 @@ Yerel OCR/alan çıkarımı
   → deterministik uygunluk denetimi → insan onayı
 ```
 
-- Ücretsiz LLM seçimi Google AI Studio Free Tier üzerindeki
-  `gemini-2.5-flash` modelidir.
-  Sağlayıcı çağrıları SDK bağımlılığı olmadan, strict JSON Schema ile yapılır.
-- `GEMINI_API_KEY` yoksa ağ çağrısı yapılmaz; mevcut deterministik akış devam
-  eder. Timeout, kota, bozuk JSON veya şema ihlalinde de sonuç serbest metin
-  olarak kabul edilmez.
-- Harici ücretsiz LLM'e yalnız sabit SHA-256 ile tanınan sentetik gold/UI demo
+- Varsayılan LLM sağlayıcısı yerel Ollama'dır. Uygulama
+  `http://127.0.0.1:11434/api/chat` adresine native Ollama JSON Schema isteği
+  gönderir; API anahtarı gerekmez. Varsayılan model bu geliştirme makinesinde
+  kurulu `qwen2.5:0.5b` modelidir ve `KARAYOL_LLM_MODEL` ile değiştirilebilir.
+- Ollama URL'si güvenlik nedeniyle yalnız `localhost`, `127.0.0.1` veya `::1`
+  loopback adresi olabilir. Yerel Ollama kısıtlı evrakı cihaz dışına çıkarmadan
+  işleyebilir; gizli anahtar desenleri yine LLM sınırında engellenir.
+- Gemini/Groq/OpenAI-compatible sağlayıcılar isteğe bağlı olarak korunur.
+  Haricî sağlayıcılara yalnız sabit SHA-256 ile tanınan sentetik gold/UI demo
   evrakları çıkabilir. Snapshot Adjudicator çağrısında özgün mevzuat paragrafı
   dışarı verilmez; yalnız Auditor'ın kapalı aday kimlikleri, başlık/madde/sayfa
   metadata'sı ve `currentness_verified=false` / `legal_reliance_allowed=false`
   bayrakları aktarılır. Gerçek/kısıtlı evrak, API anahtarı bulunsa bile ağdan
   önce engellenir. Bu sınır gönderen, iletişim ve hukuk belgesi verilerini
-  korumak için bilinçlidir; Gemini Free Tier içerikleri sağlayıcının ürün
-  geliştirme politikasına tabi olabilir.
+  korumak için bilinçlidir.
 - Graf girdilerinin SHA-256'ları çalışma anında doğrulanır ve graf aynı
   girdilerden yeniden üretilip semantik olarak karşılaştırılır. Mevcut graf
   yalnız sentetik benchmark içindir; `legal_reliance_allowed=false` kalır ve
@@ -63,36 +64,65 @@ Yerel OCR/alan çıkarımı
   belgeyi durdurur; PDF sayfa/piksel/süre sınırları ve API threadpool izolasyonu
   kaynak tüketimini sınırlar. Raster görüntülü sayfadaki kısa tarayıcı watermark'i
   text-layer sayılmaz; kısa imza OCR'ı yalnız yapısal ad/soyad kapısından geçer.
+- PNG/JPG/TIFF belgeler doğrudan OCR akışına alınır. PDF ve görseller uzantıdan
+  bağımsız magic-byte kontrolünden geçer; yanlış uzantılı içerik işlenmez.
+- Resmî taslak şeması ilgi, ek, dağıtım, iletişim, paraf/koordinasyon,
+  elektronik imza, iç belge üstverisi ve makam ilişkisi alanlarını taşır.
+  Boş isteğe bağlı bölümler ile teknik üstveri/kaynak izleri kullanıcıya sunulan
+  belgede gösterilmez; bunlar süreç kaydı ve arayüzde izlenebilir kalır. Makam
+  ilişkisiyle çelişen veya birden fazla kapanış içeren taslak uygunluk kapısını
+  geçemez.
 
-LLM'i sentetik demo/evaluasyon için etkinleştirmek üzere anahtarı yalnız çalışma
-ortamında tanımlayın:
+Yerel Ollama'yı kullanmak için servisi başlatın ve completion modelinin kurulu
+olduğunu doğrulayın:
 
-```powershell
-$env:KARAYOL_LLM_PROVIDER="gemini"
-$env:KARAYOL_LLM_MODEL="gemini-2.5-flash"
-$env:GEMINI_API_KEY="<yerel-secret>"
+```bash
+ollama serve
+ollama list
+export KARAYOL_LLM_PROVIDER=ollama
+export KARAYOL_LLM_MODEL=qwen2.5:0.5b
+export KARAYOL_LLM_BASE_URL=http://127.0.0.1:11434
 ```
 
-Yerel `.env` dosyasını kullanarak güvenli demo yapılandırmasını tek komutla
-başlatmak için `powershell -ExecutionPolicy Bypass -File
-scripts/start_local_gemini.ps1` kullanılabilir. `.env` Git tarafından yok
-sayılır ve depoya eklenmemelidir.
+PowerShell'de Ollama kontrolü ve uygulama başlangıcını tek komutla yapmak için
+`powershell -ExecutionPolicy Bypass -File scripts/start_local_ollama.ps1`
+kullanılabilir. Yerel `.env` varsa yüklenir; script LLM sağlayıcısını Ollama
+olarak ayarlar. `.env` Git tarafından yok sayılır.
 
-Çalışan serviste hem iki gerçek Gemini rolünü hem de değiştirilmiş fixture'ın
-ağdan önce engellendiğini tekrar doğrulamak için:
+Çalışan serviste iki yapılandırılmış LLM rolünü doğrulamak için:
 
 ```powershell
 $env:PYTHONPATH="src"
 python scripts/run_llm_live_acceptance.py
 ```
 
-`/health`, `/ready` ve her `ProcessState`; LLM sağlayıcısı/modeli, fallback,
+`/api/v1/system/health`, `/api/v1/system/readiness` ve her `ProcessState`; LLM sağlayıcısı/modeli, fallback,
 graf readiness'i, graf karar yolları ve rol bazlı LLM adımlarını anahtar
 sızdırmadan açıklar. Ayrıntılı yapılandırma örneği `.env.example` içindedir.
 
-Bu tur P4 OCR işinin tamamını kapatmaz: PNG/JPG/TIFF ana akışı ile bu formatların
-magic-byte/piksel sınırları, sayfa bazlı OCR güven izi ve insan doğrulamalı
-CER/WER-alan F1 ölçümü hâlâ ayrı kabul işleri olarak açıktır.
+Bu tur P4 OCR işinin tamamını kapatmaz: sayfa bazlı OCR güven izi ve insan
+doğrulamalı CER/WER-alan F1 ölçümü hâlâ ayrı kabul işleridir.
+
+## Kabul, teslim envanteri ve tekrarlanabilir paket
+
+Bağımlılıklar `uv.lock` ile kilitlidir. CI; kilitli Python 3.11+ kurulumunu,
+çekirdek kabul testlerini, wheel/sdist üretimini, wheel içindeki sentetik demo
+verisi ve şablonları ve teslim envanterini denetler. Tüm isteğe bağlı bağımlılık
+ağacı için CycloneDX 1.5 SBOM `reports/sbom.cdx.json` dosyasındadır.
+
+```bash
+uv sync --locked --extra dev
+PYTHONPATH=src uv run python scripts/run_acceptance_metrics.py --repetitions 20
+PYTHONPATH=src uv run python scripts/audit_delivery_inventory.py
+uv build
+```
+
+Kabul betiği 48 kayıtlık mühendislik regresyonunu ve standart/paraphrase/
+near-miss senaryolarında p50/p95 sürelerini üretir; bağımsız kör değerlendirme
+iddiasında bulunmaz. Teslim denetimi gerçek DETSİS/UAB arşivlerini, kamu
+belgelerini, Qdrant/runtime artifact'larını varsayılan olarak `exclude` eder;
+sentetik veri `include`, sağlamlığı ve teslim kararı bekleyen şartname PDF'i
+`review_required` olarak işaretlenir. Betik dosya silmez.
 
 ## Tamamlanan uygulama — 8 belgeli yarışma snapshot'ı
 
@@ -157,8 +187,9 @@ python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
 ```
 
 Çıktılar varsayılan olarak `output/<evrak-id>/` altında saklanır. Sistemde
-`xelatex`, `pdflatex` veya `tectonic` varsa PDF de derlenir; yoksa güvenli
-`.tex` taslağı ve yapılandırılmış JSON çıktı üretilir.
+`xelatex`, `pdflatex` veya `tectonic` varsa PDF bunlarla derlenir; yoksa
+ReportLab tabanlı taşınabilir üretici devreye girer. Böylece web arayüzü LaTeX
+kodu yerine her ortamda doğrudan PDF indirme bağlantısı sunar.
 
 Mevzuat PDF'sinin metin katmanını denetlemek ve Bölüm/Madde/Fıkra/Bent
 yapısında karantina çıktısına parçalamak:
@@ -519,20 +550,25 @@ Graf ayrıca üç giriş dosyasının proje-göreli yolunu ve SHA-256 değerini 
 
 ```powershell
 $env:PYTHONPATH="src"
-uvicorn karayol_agent.api:app --reload
+python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010 --reload
 ```
 
-- `GET /health`
-- `GET /ready`
-- `POST /v1/process/text`
-- `POST /v1/process/file`
-- `GET /v1/process/{evrak_id}`
-- `POST /v1/process/{evrak_id}/information`
-- `POST /v1/process/{evrak_id}/approve`
-- `GET /v1/process/{evrak_id}/artifacts/tex`
-- `GET /v1/process/{evrak_id}/artifacts/pdf`
+- `GET /api/v1/system/health`
+- `GET /api/v1/system/readiness`
+- `POST /api/v1/processes/text`
+- `POST /api/v1/processes/file`
+- `GET /api/v1/processes/{evrak_id}`
+- `POST /api/v1/processes/{evrak_id}/information`
+- `POST /api/v1/processes/{evrak_id}/approval`
+- `GET /api/v1/processes/{evrak_id}/artifacts/tex`
+- `GET /api/v1/processes/{evrak_id}/artifacts/pdf`
 
-Swagger arayüzü: `http://127.0.0.1:8000/docs`
+Swagger arayüzü: `http://127.0.0.1:8010/docs`. Backend artık statik arayüz
+sunmaz; kök yolu yalnız servis bilgisini JSON olarak döndürür. Ayrıntılı ayrım ve
+REST sözleşmesi [`docs/MIMARI.md`](docs/MIMARI.md), frontend teslimine hazır
+OpenAPI 3.1 dosyası ise [`docs/swagger.json`](docs/swagger.json) içindedir.
+Yapılan çalışmaların konu bazlı ayrıntılı açıklamalarına
+[`docs/README.md`](docs/README.md) indeksinden ulaşılabilir.
 
 ## Manuel test arayüzü
 
@@ -551,11 +587,17 @@ Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
 python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
 ```
 
-Tarayıcıdan `http://127.0.0.1:8010` adresini açın. Arayüz; hazır evrak
+Ayrı bir terminalde frontend'i başlatın:
+
+```powershell
+python -m http.server 3000 --directory frontend
+```
+
+Tarayıcıdan `http://127.0.0.1:3000` adresini açın. Arayüz; hazır evrak
 senaryolarını, TXT/MD/PDF yüklemeyi, sınıflandırma ve yönlendirme sonucunu,
 kaynak sözleşmesi ve güncellik/hukuki-dayanak açıklamalarını, eksik bilgi
-tamamlama adımını, insan onayını ve LaTeX çıktı indirmeyi tek ekranda sunar.
-Önce `/ready` yanıtında 2.603/2.603 vektörün uyumlu olduğunu doğrulayın. Adım
+tamamlama adımını, insan onayını ve doğrudan PDF indirmeyi tek ekranda sunar.
+Önce `/api/v1/system/readiness` yanıtında 2.603/2.603 vektörün uyumlu olduğunu doğrulayın. Adım
 adım kabul testi için [`MANUEL_TEST_SENARYOSU.md`](MANUEL_TEST_SENARYOSU.md),
 otomatik canlı tur için şu komutu kullanın:
 

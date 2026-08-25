@@ -167,7 +167,7 @@ def _walk(
 
 
 class ExternalDataGuard:
-    """Fail-closed policy for data sent to a free external model API."""
+    """Fail-closed policy for external APIs and secret filtering for local LLMs."""
 
     def prepare(
         self,
@@ -175,8 +175,9 @@ class ExternalDataGuard:
         *,
         classification: DataClassification,
         allow_automatic_redaction: bool,
+        allow_restricted_local: bool = False,
     ) -> GuardedPayload:
-        if classification is DataClassification.RESTRICTED:
+        if classification is DataClassification.RESTRICTED and not allow_restricted_local:
             raise DataPolicyError(
                 "Kısıtlı/gerçek evrak verisi harici LLM sağlayıcısına gönderilemez."
             )
@@ -191,7 +192,10 @@ class ExternalDataGuard:
             # fixtures retain fake phone/e-mail fields needed by extraction
             # tests; secrets are still always removed.
             redact_personal_identifiers=(
-                classification is not DataClassification.SYNTHETIC
+                classification not in {
+                    DataClassification.SYNTHETIC,
+                    DataClassification.RESTRICTED,
+                }
             ),
         )
         if findings and not allow_automatic_redaction:

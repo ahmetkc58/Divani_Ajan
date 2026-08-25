@@ -164,6 +164,14 @@ def test_generic_request_phrase_does_not_override_specific_road_type() -> None:
     assert result.document_type == "yol_bakim_talebi"
 
 
+def test_ambiguous_cross_domain_signals_force_low_confidence() -> None:
+    result = ClassificationAgent().run(
+        "Yol yüzeyinde derin oyuk vardır ve yönlendirme tabelası yere düşmüştür."
+    )
+
+    assert result.confidence < 0.60
+
+
 def test_routing_without_evidence_uses_general_application_unit() -> None:
     classification = ClassificationAgent().run("Konu: Tanımsız işlem\nİçerik açıklaması.")
     analysis = ContentAnalysisAgent().run("Konu: Tanımsız işlem\nİçerik açıklaması.", classification)

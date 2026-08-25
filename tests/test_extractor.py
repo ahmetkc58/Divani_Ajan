@@ -1,4 +1,3 @@
-import io
 import shutil
 import subprocess
 import time
@@ -304,34 +303,28 @@ def test_real_tesseract_scanned_pdf_extracts_sender_end_to_end(
     tmp_path: Path,
 ) -> None:
     import pymupdf
-    from PIL import Image, ImageDraw, ImageFont
 
     from karayol_agent.agents import ClassificationAgent, ContentAnalysisAgent
 
-    try:
-        font = ImageFont.truetype("DejaVuSans.ttf", 48)
-    except OSError:
-        try:
-            font = ImageFont.truetype("arial.ttf", 48)
-        except OSError:
-            pytest.skip("OCR fixture için ölçeklenebilir test fontu bulunamadı.")
-    image = Image.new("RGB", (1800, 1100), "white")
-    draw = ImageDraw.Draw(image)
     lines = [
         "GONDEREN: Ayse Yilmaz",
         "KONU: Asfalt bozulmasi",
         "KONUM: D-100 12. kilometre",
         "Yol bakim ve onarimi yapilmasini talep ediyorum.",
     ]
+    source = pymupdf.open()
+    source_page = source.new_page(width=900, height=550)
     for index, line in enumerate(lines):
-        draw.text((100, 100 + index * 150), line, font=font, fill="black")
-    buffer = io.BytesIO()
-    image.save(buffer, format="PNG")
+        source_page.insert_text((50, 90 + index * 90), line, fontsize=30)
+    image_bytes = source_page.get_pixmap(
+        matrix=pymupdf.Matrix(2, 2)
+    ).tobytes("png")
+    source.close()
 
     pdf_path = tmp_path / "taranmis-gonderen.pdf"
     document = pymupdf.open()
     page = document.new_page(width=900, height=550)
-    page.insert_image(page.rect, stream=buffer.getvalue())
+    page.insert_image(page.rect, stream=image_bytes)
     document.save(pdf_path)
     document.close()
 
@@ -351,3 +344,46 @@ def test_text_extractor_does_not_join_uppercase_layout_lines(tmp_path: Path) -> 
     text = DocumentExtractor().extract(source)
 
     assert text.startswith("T.C.-\nKGM")
+
+
+@pytest.mark.parametrize("suffix", [".pdf", ".png", ".jpg", ".tiff"])
+def test_binary_extension_with_wrong_magic_bytes_is_rejected(
+    tmp_path: Path, suffix: str
+) -> None:
+    source = tmp_path / f"sahte{suffix}"
+    source.write_bytes(b"not-the-declared-format")
+
+    with pytest.raises(ExtractionError, match="magic-byte"):
+        DocumentExtractor().extract(source)
+
+
+def test_direct_png_is_ocrd_with_pixel_limits(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    import pymupdf
+
+    document = pymupdf.open()
+    page = document.new_page(width=500, height=300)
+    page.insert_text((40, 80), "GONDEREN: Ayse Yilmaz", fontsize=18)
+    pixmap = page.get_pixmap(alpha=False)
+    image_path = tmp_path / "basvuru.png"
+    pixmap.save(image_path)
+    document.close()
+    monkeypatch.setattr("shutil.which", lambda _name: "tesseract")
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=[],
+            returncode=0,
+            stdout=(
+                "GONDEREN: Ayse Yilmaz\nKONU: Asfalt bozulmasi\n"
+                "Yol bakim yapilmasini talep ediyorum."
+            ),
+            stderr="",
+        ),
+    )
+
+    text = DocumentExtractor(max_ocr_pixels_per_page=1_000_000).extract(image_path)
+
+    assert "Ayse Yilmaz" in text

@@ -39,3 +39,32 @@ def test_generated_tex_can_be_downloaded_but_missing_pdf_is_404(
     assert pdf_response.status_code == 404
     assert "PDF çıktısı bulunmuyor" in pdf_response.json()["detail"]
 
+
+def test_pdf_is_generated_without_a_latex_installation(
+    monkeypatch, tmp_path: Path
+) -> None:
+    app_settings = Settings(
+        project_root=ROOT,
+        data_dir=ROOT / "data",
+        templates_dir=ROOT / "templates",
+        output_dir=tmp_path / "output",
+        runtime_dir=tmp_path / "runtime",
+    )
+    monkeypatch.setattr(api_module, "orchestrator", EvrakOrchestrator(app_settings))
+    monkeypatch.setattr(
+        "karayol_agent.latex.renderer.LatexRenderer._find_compiler",
+        staticmethod(lambda: None),
+    )
+    client = TestClient(api_module.app)
+    text = (ROOT / "examples" / "yol_bakim_talebi.txt").read_text(encoding="utf-8")
+
+    payload = client.post(
+        "/v1/process/text", json={"text": text, "compile_pdf": True}
+    ).json()
+    response = client.get(payload["artifact"]["pdf_download_url"])
+
+    assert payload["artifact"]["compiled"] is True
+    assert payload["artifact"]["compiler"] == "reportlab"
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("application/pdf")
+    assert response.content.startswith(b"%PDF")

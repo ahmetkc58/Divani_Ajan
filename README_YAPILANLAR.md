@@ -37,9 +37,9 @@ Teknik olarak tamamlanan adımlar:
 10. Snapshot kaynaklarını güncel/yürürlükte hukuk kaynağı gibi göstermeyen API,
     atıf, taslak ve uygunluk uyarıları; public fail-closed yoluyla koleksiyon
     ayrımı.
-11. Gemini Free Tier + `gemini-2.5-flash` için strict JSON Schema kullanan,
-    anahtarsız/kota/timeout/bozuk yanıt durumunda yerel kurallara dönen güvenli
-    LLM sağlayıcı katmanı.
+11. Varsayılan olarak anahtarsız yerel Ollama + `qwen2.5:0.5b` kullanan, strict
+    JSON Schema doğrulamalı ve hata/timeout/bozuk yanıtta deterministik kurallara
+    dönen LLM sağlayıcı katmanı. Gemini/Groq adaptörleri isteğe bağlı korunur.
 12. Researcher → Auditor → sentetik multi-hop graph → Adjudicator zinciri;
     şablon, birim ve kaynak kararlarında allowlist, SHA-256 provenance ve insan
     onayı kapıları.
@@ -55,14 +55,13 @@ Sekiz kaydın tamamında
 komutu sınandığında “manifestte onaylı belge bulunmuyor” hatası vermiş ve hiçbir
 aktif corpus yazmamıştır. Bu beklenen güvenlik davranışıdır.
 
-Harici LLM yolu da aynı biçimde fail-closed'dur: yalnız pinli hash ile tanınan
-sentetik gold/UI demo evraklar Gemini'ye gönderilebilir. Snapshot Adjudicator
-özgün mevzuat metni yerine yalnız Auditor'ın kapalı aday kimliklerini ve kamuya
-açık metadata'yı görür. Gerçek/kısıtlı evraklar için LLM anahtarı bulunsa dahi
-ağ çağrısı yapılmaz. Gerçek Gemini kabul turunda Document Understanding ve
-Adjudicator çağrılarının ikisi de strict JSON şemasıyla başarıyla tamamlanmış;
-güncelliği doğrulanmamış snapshot nedeniyle deterministik karar ve insan onayı
-kapısı korunmuştur.
+Yerel Ollama yolu gerçek/kısıtlı evrakı cihaz dışına çıkarmadan işleyebilir ve
+API anahtarı gerektirmez. Haricî LLM yolu fail-closed kalır: yalnız pinli hash
+ile tanınan sentetik gold/UI demo evraklar dış sağlayıcıya gönderilebilir.
+Snapshot Adjudicator özgün mevzuat metni yerine yalnız Auditor'ın kapalı aday
+kimliklerini ve kamuya açık metadata'yı görür. Önceki gerçek Gemini kabul turu
+da tarihsel kanıt olarak korunmuştur; her sağlayıcıda deterministik karar,
+strict JSON şeması ve insan onayı kapıları devam eder.
 
 ## 2. Depo ve commit incelemesi
 

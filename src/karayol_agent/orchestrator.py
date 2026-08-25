@@ -83,6 +83,14 @@ class EvrakOrchestrator:
         "muhatap": "recipient",
         "imzalayan": "signer",
         "unvan": "signer_title",
+        "elektronik_imza": "electronic_signature",
+    }
+    DRAFT_LIST_FIELD_MAP = {
+        "ilgi": "interest",
+        "ekler": "attachments",
+        "dagitim": "distribution",
+        "iletisim": "contact_information",
+        "paraf": "initials",
     }
 
     def __init__(
@@ -142,7 +150,13 @@ class EvrakOrchestrator:
         self.template_selector = TemplateSelectionAgent(
             app_settings.low_confidence_threshold
         )
-        self.router = RoutingAgent(app_settings.data_dir / "synthetic_units.json")
+        organization_units_path = (
+            app_settings.organization_units_path
+            or app_settings.data_dir
+            / "organization"
+            / "kgm_units_2026-07-16.json"
+        )
+        self.router = RoutingAgent(organization_units_path)
         self.drafter = DraftingAgent()
         self.compliance = ComplianceAgent()
         self.renderer = LatexRenderer(
@@ -451,6 +465,8 @@ class EvrakOrchestrator:
             set(state.analysis.fields)
             | set(state.analysis.missing_fields)
             | set(self.DRAFT_FIELD_MAP)
+            | set(self.DRAFT_LIST_FIELD_MAP)
+            | {"makam_iliskisi", "kapanis"}
         )
         unknown_fields = sorted(set(clean_fields) - allowed_fields)
         if unknown_fields:
@@ -606,7 +622,7 @@ class EvrakOrchestrator:
         self._transition(
             state,
             ProcessStatus.ROUTING,
-            "Evrak için sorumlu sentetik birim belirleniyor.",
+            "Evrak için organizasyon kataloğundaki sorumlu birim belirleniyor.",
             self.router.name,
         )
         state.routing = self.router.run(state.analysis)
@@ -768,14 +784,25 @@ class EvrakOrchestrator:
 
     def _new_llm_trace(self, classification: DataClassification) -> LLMRunTrace:
         config = self.llm_gateway.config
+        local_execution = bool(getattr(config, "is_local", False))
         return LLMRunTrace(
-            mode="guarded_structured_external",
+            mode=(
+                "guarded_structured_local"
+                if local_execution
+                else "guarded_structured_external"
+            ),
             enabled=bool(config.enabled),
             provider=str(config.provider.value),
             model=config.model,
-            external_data_allowed=classification is not DataClassification.RESTRICTED,
+            external_data_allowed=(
+                not local_execution
+                and classification is not DataClassification.RESTRICTED
+            ),
+            local_execution=local_execution,
             warning=(
-                None
+                "Yerel Ollama kullanılıyor; evrak verisi cihaz dışına gönderilmez."
+                if local_execution
+                else None
                 if classification is DataClassification.SYNTHETIC
                 else (
                     "Gerçek/kısıtlı evrak harici ücretsiz LLM API'sine gönderilmedi; "
@@ -784,8 +811,8 @@ class EvrakOrchestrator:
             ),
         )
 
-    @staticmethod
     def _record_llm_step(
+        self,
         state: ProcessState,
         *,
         role: str,
@@ -801,6 +828,9 @@ class EvrakOrchestrator:
         decision_applied: bool | None = None,
     ) -> None:
         assert state.llm_trace is not None
+        local_execution = bool(
+            getattr(self.llm_gateway.config, "is_local", False)
+        )
         failure = getattr(outcome, "failure", None)
         status = getattr(getattr(outcome, "status", None), "value", "unknown")
         state.llm_trace.steps.append(
@@ -814,8 +844,10 @@ class EvrakOrchestrator:
                     data_classification.value if data_classification else None
                 ),
                 external_data_allowed=(
-                    data_classification is not DataClassification.RESTRICTED
+                    not local_execution
+                    and data_classification is not DataClassification.RESTRICTED
                 ),
+                local_execution=local_execution,
                 network_attempted=bool(getattr(outcome, "network_attempted", False)),
                 redacted=bool(getattr(outcome, "redacted", False)),
                 redaction_count=int(getattr(outcome, "redaction_count", 0)),
@@ -843,6 +875,7 @@ class EvrakOrchestrator:
         )
         if (
             data_classification is DataClassification.RESTRICTED
+            and not local_execution
             and state.llm_trace.warning is None
         ):
             state.llm_trace.warning = (
@@ -1021,17 +1054,28 @@ class EvrakOrchestrator:
                 if outcome.confidence is not None
                 else previous_routing.score
             )
-            state.routing = RoutingRecommendation(
-                unit_id=unit.unit_id,
-                unit_name=unit.unit_name,
-                hierarchy=unit.hierarchy,
-                rationale=(
-                    previous_routing.rationale
-                    + " Yapılandırılmış Adjudicator değerlendirmesi: "
-                    + (outcome.rationale or "gerekçe sağlanmadı")
-                ),
-                score=round(routing_confidence, 2),
-                alternatives=previous_routing.alternatives,
+            state.routing = previous_routing.model_copy(
+                update={
+                    "unit_id": unit.unit_id,
+                    "unit_name": unit.unit_name,
+                    "hierarchy": unit.hierarchy,
+                    "rationale": (
+                        previous_routing.rationale
+                        + " Yapılandırılmış Adjudicator değerlendirmesi: "
+                        + (outcome.rationale or "gerekçe sağlanmadı")
+                    ),
+                    "score": round(routing_confidence, 2),
+                    "requires_human_review": (
+                        previous_routing.requires_human_review
+                        or outcome.requires_human_review
+                    ),
+                    "routing_status": (
+                        "needs_review"
+                        if previous_routing.requires_human_review
+                        or outcome.requires_human_review
+                        else "proposed"
+                    ),
+                }
             )
         if outcome.accepted_reference_ids:
             accepted = set(outcome.accepted_reference_ids)
@@ -1113,6 +1157,21 @@ class EvrakOrchestrator:
                     source="kullanici_girdisi",
                 ),
             )
+        for external_name, attribute_name in self.DRAFT_LIST_FIELD_MAP.items():
+            value = fields.get(external_name)
+            if value:
+                setattr(
+                    state.draft,
+                    attribute_name,
+                    [item.strip() for item in value.split(";") if item.strip()],
+                )
+        if fields.get("makam_iliskisi"):
+            state.draft.authority_relation = fields["makam_iliskisi"]
+        if fields.get("kapanis"):
+            previous = state.draft.closing
+            state.draft.closing = fields["kapanis"]
+            if state.draft.paragraphs and state.draft.paragraphs[-1] == previous:
+                state.draft.paragraphs[-1] = state.draft.closing
         state.draft.missing_fields = [
             name for name in state.draft.missing_fields if name not in fields
         ]

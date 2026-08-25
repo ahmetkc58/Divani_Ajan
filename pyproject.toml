@@ -17,6 +17,7 @@ dependencies = [
   "jinja2>=3.1,<4",
   "pypdf>=5,<7",
   "pymupdf>=1.24,<2",
+  "reportlab>=4,<6",
   "python-multipart>=0.0.9,<1",
 ]
 
@@ -50,8 +51,40 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.setuptools.package-data]
-karayol_agent = ["web/*.html", "web/static/*.css", "web/static/*.js"]
+[tool.setuptools.data-files]
+"share/karayol-agent/data" = [
+  "data/synthetic_gold.json",
+  "data/synthetic_legislation.json",
+  "data/synthetic_ui_fixtures.json",
+  "data/synthetic_units.json",
+]
+"share/karayol-agent/data/organization" = [
+  "data/organization/kgm_units_2026-07-16.json",
+]
+"share/karayol-agent/templates/ust_yazi_v1" = [
+  "templates/ust_yazi_v1/metadata.json",
+  "templates/ust_yazi_v1/rules.yaml",
+  "templates/ust_yazi_v1/schema.json",
+  "templates/ust_yazi_v1/template.tex",
+]
+"share/karayol-agent/templates/cevap_yazisi_v1" = [
+  "templates/cevap_yazisi_v1/metadata.json",
+  "templates/cevap_yazisi_v1/rules.yaml",
+  "templates/cevap_yazisi_v1/schema.json",
+  "templates/cevap_yazisi_v1/template.tex",
+]
+"share/karayol-agent/templates/bilgilendirme_yazisi_v1" = [
+  "templates/bilgilendirme_yazisi_v1/metadata.json",
+  "templates/bilgilendirme_yazisi_v1/rules.yaml",
+  "templates/bilgilendirme_yazisi_v1/schema.json",
+  "templates/bilgilendirme_yazisi_v1/template.tex",
+]
+"share/karayol-agent/templates/eksik_bilgi_talebi_v1" = [
+  "templates/eksik_bilgi_talebi_v1/metadata.json",
+  "templates/eksik_bilgi_talebi_v1/rules.yaml",
+  "templates/eksik_bilgi_talebi_v1/schema.json",
+  "templates/eksik_bilgi_talebi_v1/template.tex",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

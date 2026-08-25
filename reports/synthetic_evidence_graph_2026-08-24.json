@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
   "graph_id": "benchmark_synthetic_evidence_graph_v1",
-  "generated_at": "2026-08-24T03:07:10.246194Z",
+  "generated_at": "2026-08-25T07:42:48.059709Z",
   "usage": "Yalnız dondurulmuş sentetik test verisi; kamu mevzuatı veya üretim hukuk kanıtı değildir.",
   "benchmark_only": true,
   "production_legal_evidence": false,
@@ -23,7 +23,7 @@
     {
       "role": "units",
       "path": "data/synthetic_units.json",
-      "sha256": "f3edf6eb6e940881a4af8cc95ff4d0caa84483eebb0dd59e6b28af91ec967fa0",
+      "sha256": "e729ee2a86a7c8a4168b063d2ef3ce01d50ebed5ff94c7cb345b4da8c6ff4e2a",
       "dataset_name": "DETSİS esinli sentetik karayolu birimleri",
       "version": null
     }

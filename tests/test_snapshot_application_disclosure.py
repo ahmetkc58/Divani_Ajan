@@ -229,7 +229,7 @@ def test_snapshot_notice_is_in_draft_and_enforced_by_compliance() -> None:
 
     assert draft.references == [reference]
     assert COMPETITION_SNAPSHOT_NOTICE in draft.paragraphs
-    assert any("yalnız retrieval ve kaynak izi" in item for item in draft.paragraphs)
+    assert all(reference.title not in item for item in draft.paragraphs)
     assert all("doğrulanan şu kaynaklar" not in item for item in draft.paragraphs)
 
     compliant = ComplianceAgent().run(draft, _decision())
