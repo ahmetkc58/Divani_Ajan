@@ -37,6 +37,22 @@ app.mount(
 )
 
 
+def _has_valid_signature(filename: str, content: bytes) -> bool:
+    suffix = Path(filename).suffix.lower()
+    signatures = {
+        ".pdf": (b"%PDF-",),
+        ".png": (b"\x89PNG\r\n\x1a\n",),
+        ".jpg": (b"\xff\xd8\xff",),
+        ".jpeg": (b"\xff\xd8\xff",),
+        ".tif": (b"II*\x00", b"MM\x00*"),
+        ".tiff": (b"II*\x00", b"MM\x00*"),
+    }
+    expected = signatures.get(suffix)
+    return suffix in {".txt", ".md"} or bool(
+        expected and any(content.startswith(signature) for signature in expected)
+    )
+
+
 @app.get("/", response_class=FileResponse, include_in_schema=False)
 def manual_test_interface() -> FileResponse:
     return FileResponse(
@@ -57,12 +73,19 @@ def manual_test_interface() -> FileResponse:
 
 @app.get("/health")
 def health() -> dict[str, object]:
+    source_kinds = {
+        document.chunk.source_kind for document in orchestrator.index.documents
+    }
     return {
         "status": "ok",
         "version": __version__,
         "corpus_size": len(orchestrator.index.documents),
         "latex_compiler": orchestrator.renderer._find_compiler(),
-        **orchestrator.corpus_disclosure(),
+        "data_mode": (
+            "verified_public_legislation"
+            if source_kinds == {"public_legislation"}
+            else "sentetik_demo"
+        ),
         "retrieval_mode": orchestrator.settings.retrieval_mode,
         "retrieval_setup_warning": orchestrator.retrieval_setup_warning,
     }
@@ -94,13 +117,18 @@ async def process_file(
     if suffix not in orchestrator.extractor.SUPPORTED_SUFFIXES:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail="Yalnızca TXT, MD ve PDF dosyaları kabul edilir.",
+            detail="Yalnızca TXT, MD, PDF, PNG, JPG ve TIFF dosyaları kabul edilir.",
         )
     content = await file.read(settings.max_upload_bytes + 1)
     if len(content) > settings.max_upload_bytes:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail="Dosya izin verilen boyut sınırını aşıyor.",
+        )
+    if not _has_valid_signature(filename, content):
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail="Dosya uzantısı ile gerçek dosya içeriği uyuşmuyor.",
         )
 
     temporary_path: Path | None = None

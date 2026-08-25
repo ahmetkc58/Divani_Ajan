@@ -9,13 +9,6 @@ from .corpus import (
     canonical_corpus_json,
     chunk_fingerprint,
 )
-from .contracts import (
-    COMPETITION_SNAPSHOT_DATASET_NAME,
-    COMPETITION_SNAPSHOT_NOTICE,
-    COMPETITION_SNAPSHOT_STATUS,
-    CorpusMode,
-    competition_snapshot_chunk_blockers,
-)
 from .embeddings import (
     EmbeddingProvider,
     EmbeddingUnavailableError,
@@ -61,7 +54,6 @@ __all__ = [
     "BM25Index",
     "CorpusBinding",
     "CorpusBindingError",
-    "CorpusMode",
     "DenseRetrievalWarning",
     "DomainResolutionError",
     "EmbeddingProvider",
@@ -87,9 +79,6 @@ __all__ = [
     "VectorIndexingError",
     "VectorIndexingReport",
     "VectorIndexingService",
-    "COMPETITION_SNAPSHOT_DATASET_NAME",
-    "COMPETITION_SNAPSHOT_NOTICE",
-    "COMPETITION_SNAPSHOT_STATUS",
     "build_analysis_query",
     "build_corpus_binding",
     "build_passage_text",
@@ -97,6 +86,5 @@ __all__ = [
     "canonical_chunk_json",
     "canonical_corpus_json",
     "chunk_fingerprint",
-    "competition_snapshot_chunk_blockers",
     "reciprocal_rank_fusion",
 ]

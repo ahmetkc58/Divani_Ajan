@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4,<9", "httpx>=0.27,<1"]
+dev = ["pytest>=7.4,<9", "httpx>=0.27,<1", "reportlab>=4.0,<5"]
 rag = [
   "einops>=0.7,<1",
   "numpy>=1.26,<2",

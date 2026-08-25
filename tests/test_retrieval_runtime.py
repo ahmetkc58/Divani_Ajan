@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
@@ -10,7 +9,6 @@ import pytest
 from karayol_agent.retrieval import embeddings as embeddings_module
 from karayol_agent.retrieval import qdrant_store as qdrant_store_module
 from karayol_agent.retrieval.corpus import build_corpus_binding
-from karayol_agent.retrieval.contracts import CorpusMode
 from karayol_agent.retrieval.embeddings import EmbeddingMetadata, EmbeddingTask
 from karayol_agent.retrieval.hybrid import DenseRetrievalWarning
 from karayol_agent.retrieval.runtime import (
@@ -338,58 +336,6 @@ def test_runtime_factory_keeps_optional_dependencies_lazy(
     assert runtime.qdrant_store.embedding_dimension == 1024
     assert runtime.qdrant_store._client is None
     assert runtime.qdrant_store.corpus_binding == binding
-
-
-def test_runtime_factory_wires_embedded_qdrant_path_lazily(
-    tmp_path: Path,
-) -> None:
-    local_path = tmp_path / "persistent-qdrant"
-    settings = SimpleNamespace(
-        embedding_model="jinaai/jina-embeddings-v3",
-        embedding_dimension=1024,
-        embedding_revision="1" * 40,
-        embedding_code_revision="2" * 40,
-        embedding_batch_size=8,
-        qdrant_url=None,
-        qdrant_path=local_path,
-        qdrant_api_key=None,
-        qdrant_timeout_seconds=3.0,
-        qdrant_collection="legal-test-v1",
-        index_version="test-v1",
-    )
-
-    binding = build_corpus_binding([_chunk("BOUND-LOCAL")])
-    runtime = build_retrieval_runtime(settings, corpus_binding=binding)
-
-    assert runtime.qdrant_store.path == local_path.resolve()
-    assert runtime.qdrant_store.storage_mode == "embedded_local"
-    assert runtime.qdrant_store.payload_indexes_enforced is False
-    assert runtime.qdrant_store._client is None
-
-
-def test_runtime_factory_propagates_competition_snapshot_mode(
-    tmp_path: Path,
-) -> None:
-    settings = SimpleNamespace(
-        embedding_model="jinaai/jina-embeddings-v3",
-        embedding_dimension=1024,
-        embedding_revision="1" * 40,
-        embedding_code_revision="2" * 40,
-        embedding_batch_size=8,
-        qdrant_url=None,
-        qdrant_path=tmp_path / "snapshot-qdrant",
-        qdrant_api_key=None,
-        qdrant_timeout_seconds=3.0,
-        qdrant_collection="competition_snapshot_chunks_v1",
-        corpus_mode=CorpusMode.COMPETITION_SNAPSHOT.value,
-        index_version="snapshot-v1",
-    )
-
-    binding = build_corpus_binding([_chunk("BOUND-SNAPSHOT")])
-    runtime = build_retrieval_runtime(settings, corpus_binding=binding)
-
-    assert runtime.qdrant_store.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
-    assert runtime.qdrant_store.collection_name == "competition_snapshot_chunks_v1"
 
 
 def test_runtime_factory_fails_closed_without_corpus_binding() -> None:

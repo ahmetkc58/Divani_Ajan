@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 from uuid import UUID
@@ -9,13 +8,7 @@ import pytest
 
 import karayol_agent.retrieval.qdrant_store as qdrant_store_module
 from karayol_agent.retrieval.corpus import build_corpus_binding
-from karayol_agent.retrieval.contracts import (
-    COMPETITION_SNAPSHOT_NOTICE,
-    COMPETITION_SNAPSHOT_STATUS,
-    CorpusMode,
-)
 from karayol_agent.retrieval.qdrant_store import (
-    DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME,
     PAYLOAD_INDEXES,
     QdrantStore,
     QdrantUnavailable,
@@ -178,36 +171,6 @@ def _approved_chunk(
     )
 
 
-def _snapshot_chunk(
-    *,
-    chunk_id: str = "MEV-SNAPSHOT-001",
-    domain: str = "official_writing",
-) -> LegislationChunk:
-    return LegislationChunk(
-        chunk_id=chunk_id,
-        document_id="official-writing-regulation",
-        title="Resmî Yazışma Yönetmeliği",
-        section="Birinci Bölüm",
-        article="Madde 1",
-        text="Bu sabit yarışma snapshot metnidir.",
-        source="mevzuat-1.pdf",
-        source_sha256="b" * 64,
-        source_kind=CorpusMode.COMPETITION_SNAPSHOT.value,
-        page=1,
-        page_end=1,
-        source_url=None,
-        document_type="yonetmelik",
-        domain=domain,
-        subdomain="formal_correspondence",
-        validity_status="needs_verification",
-        approved_for_active_rag=False,
-        ocr_status="ocr_candidate_unverified",
-        context_text="Resmî Yazışma Yönetmeliği > Madde 1 > Sayfa 1",
-        status=COMPETITION_SNAPSHOT_STATUS,
-        tags=["yarışma snapshot"],
-    )
-
-
 def _bind(store: QdrantStore, *chunks: LegislationChunk) -> QdrantStore:
     store.bind_corpus(build_corpus_binding(chunks))
     return store
@@ -292,73 +255,11 @@ def test_readiness_requires_exact_bound_corpus_and_model_metadata() -> None:
     assert report.total_point_count == 1
     assert report.compatible_point_count == 1
     assert report.corpus_fingerprint == store.corpus_fingerprint
-    assert report.storage_mode == "server"
-    assert report.payload_indexes_enforced is True
-    assert "doğrulandı" in report.payload_index_detail
 
     point = next(iter(client.points[store.collection_name].values()))
     _value(point, "payload")["embedding_model"] = "stale-model"
     with pytest.raises(SchemaMismatch, match="uyumlu nokta sayısı yetersiz"):
         store.validate_readiness()
-
-
-def test_embedded_mode_skips_unsupported_indexes_but_keeps_readiness_checks(
-    tmp_path: Path,
-) -> None:
-    client = FakeQdrantClient()
-    chunk = _approved_chunk()
-    store = _bind(_store(client, path=tmp_path / "qdrant-local"), chunk)
-
-    store.upsert([chunk], [[0.125] * 1024])
-    report = store.validate_readiness()
-
-    assert client.index_calls == []
-    assert report.storage_mode == "embedded_local"
-    assert report.payload_indexes_enforced is False
-    assert "desteklemez" in report.payload_index_detail
-    assert report.total_point_count == 1
-    assert report.compatible_point_count == 1
-
-    point = next(iter(client.points[store.collection_name].values()))
-    _value(point, "payload")["index_version"] = "stale-index"
-    with pytest.raises(SchemaMismatch, match="uyumlu nokta sayısı yetersiz"):
-        store.validate_readiness()
-
-
-def test_embedded_local_qdrant_persists_across_client_reopen(
-    tmp_path: Path,
-) -> None:
-    pytest.importorskip("qdrant_client")
-    qdrant_path = tmp_path / "persistent-qdrant"
-    chunk = _approved_chunk()
-
-    first = _bind(
-        QdrantStore(path=qdrant_path, embedding_dimension=4),
-        chunk,
-    )
-    try:
-        assert first.upsert([chunk], [[0.25] * 4]) == 1
-        assert first.validate_readiness().compatible_point_count == 1
-    finally:
-        first.close()
-
-    reopened = _bind(
-        QdrantStore(path=qdrant_path, embedding_dimension=4),
-        chunk,
-    )
-    try:
-        report = reopened.validate_readiness()
-        hits = reopened.dense_search(
-            [0.25] * 4,
-            domain=chunk.domain,
-            limit=1,
-        )
-    finally:
-        reopened.close()
-
-    assert report.storage_mode == "embedded_local"
-    assert report.payload_indexes_enforced is False
-    assert [hit.chunk.chunk_id for hit in hits] == [chunk.chunk_id]
 
 
 def test_stable_point_id_preserves_uuid_and_hashes_project_chunk_id() -> None:
@@ -495,10 +396,6 @@ def test_dense_search_always_sends_fail_closed_filters_and_returns_search_hits()
     assert conditions == {
         "approved_for_active_rag": True,
         "validity_status": "verified",
-        "source_kind": "public_legislation",
-        "corpus_mode": CorpusMode.VERIFIED_PUBLIC.value,
-        "currentness_verified": True,
-        "legal_reliance_allowed": True,
         "domain": "kgm_infrastructure",
         "corpus_fingerprint": store.corpus_fingerprint,
     }
@@ -516,59 +413,6 @@ def test_dense_search_always_sends_fail_closed_filters_and_returns_search_hits()
     assert [hit.chunk.chunk_id for hit in hits] == ["MEV-TEST-001"]
     assert hits[0].score == 0.91
     assert hits[0].matched_terms == []
-
-
-def test_snapshot_store_requires_separate_collection_name() -> None:
-    with pytest.raises(ValueError, match="public koleksiyon"):
-        _store(
-            FakeQdrantClient(),
-            corpus_mode=CorpusMode.COMPETITION_SNAPSHOT,
-        )
-
-
-def test_snapshot_payload_search_and_readiness_preserve_safety_contract() -> None:
-    client = FakeQdrantClient()
-    chunk = _snapshot_chunk()
-    store = _bind(
-        _store(
-            client,
-            corpus_mode=CorpusMode.COMPETITION_SNAPSHOT,
-            collection_name=DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME,
-        ),
-        chunk,
-    )
-
-    assert store.upsert([chunk], [[0.125] * 1024]) == 1
-    payload = store.build_payload(chunk)
-    client.query_results = [SimpleNamespace(score=0.87, payload=payload)]
-    hits = store.dense_search(
-        [0.125] * 1024,
-        domain="official_writing",
-        limit=1,
-    )
-    report = store.validate_readiness()
-
-    assert [hit.chunk.chunk_id for hit in hits] == [chunk.chunk_id]
-    assert payload["corpus_mode"] == CorpusMode.COMPETITION_SNAPSHOT.value
-    assert payload["currentness_verified"] is False
-    assert payload["legal_reliance_allowed"] is False
-    assert payload["usage_notice"] == COMPETITION_SNAPSHOT_NOTICE
-    assert report.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
-    assert report.currentness_verified is False
-    assert report.legal_reliance_allowed is False
-    assert report.usage_notice == COMPETITION_SNAPSHOT_NOTICE
-
-    conditions = {
-        _value(condition, "key"): _value(_value(condition, "match"), "value")
-        for condition in _value(client.query_calls[0]["query_filter"], "must")
-        if _value(condition, "key") != "chunk_id"
-    }
-    assert conditions["approved_for_active_rag"] is False
-    assert conditions["validity_status"] == "needs_verification"
-    assert conditions["source_kind"] == CorpusMode.COMPETITION_SNAPSHOT.value
-    assert conditions["status"] == COMPETITION_SNAPSHOT_STATUS
-    assert conditions["currentness_verified"] is False
-    assert conditions["legal_reliance_allowed"] is False
 
 
 def test_dense_search_requires_domain_query_task_and_matching_payload_metadata() -> None:

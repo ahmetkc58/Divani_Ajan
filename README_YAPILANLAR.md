@@ -4,10 +4,9 @@
 
 **Geçerli Git deposu:** bu dosyanın bulunduğu proje kökü
 
-**Son snapshot/GPU turu başlangıç commit'i:** `3b82e13`
-
-**Commit durumu:** Son snapshot/GPU değişiklikleri henüz commit edilmedi; kullanıcı
-incelemesi için çalışma ağacındadır.
+**Başlangıç commit'i:** `8065108` (`main` ve `origin/main` aynıydı)
+**Commit durumu:** Bu çalışma commit oluşturmadı; tüm değişiklikler kullanıcı
+incelemesi için çalışma ağacında bırakıldı.
 
 Bu belge, ilk depo/commit incelemesinden sonra önerilen adımların uygulanmış son
 özetidir. Ürün kullanımı için [`README.md`](README.md), mimari plan için
@@ -21,26 +20,16 @@ Teknik olarak tamamlanan adımlar:
 
 1. Metin katmanı yetersiz iki PDF için Türkçe OCR adayları ve kalite raporları.
 2. Sekiz çekirdek kaynağın resmî kopya, kimlik, güncellik ve kapsam incelemesi.
-3. Pinli Jina Embeddings v3 tarihsel CPU smoke testi ve sentetik yerel Qdrant
-   indeksi.
+3. Pinli Jina Embeddings v3 gerçek CPU smoke testi ve yerel Qdrant indeksi.
 4. Aynı dondurulmuş gold sette BM25 ile gerçek Jina/Qdrant hibrit ölçümü.
 5. Ölçüm sonrası çok dilli reranker ablation'ı ve ölçüme dayalı kapatma kararı.
 6. Yalnız sentetik veriden, gold kayıt kanıt izli küçük mevzuat-birim-şablon
    grafı.
 7. CLI, yapılandırma, fail-closed kontroller, raporlar, dokümantasyon ve tam test
    paketi.
-8. Altı metin-katmanı çıktısı ile iki OCR adayını birleştiren, public corpus'tan
-   tamamen ayrı `competition_snapshot` sözleşmesi ve 8 belgeli/2.603 parçalı
-   corpus.
-9. RTX 3050 üzerinde Jina Embeddings v3 ile üretilmiş 2.603 adet 1024D vektör ve
-   kalıcı gömülü Qdrant `competition_snapshot_chunks_v1` koleksiyonu.
-10. Snapshot kaynaklarını güncel/yürürlükte hukuk kaynağı gibi göstermeyen API,
-    atıf, taslak ve uygunluk uyarıları; public fail-closed yoluyla koleksiyon
-    ayrımı.
 
-İnsan kararı gerektiren `verified_public` mevzuat aktivasyonu ayrı bir iş olarak
-tamamlanmamıştır; buna karşılık uyarılı `competition_snapshot` yolu hazırdır.
-Sekiz kaydın tamamında
+İnsan kararı gerektirdiği için otomatik tamamlanmayan tek adım gerçek kamu
+mevzuatının aktif edilmesidir. Sekiz kaydın tamamında
 `approved_for_active_rag=false` kalmıştır. Mevcut manifestle aktif corpus üretme
 komutu sınandığında “manifestte onaylı belge bulunmuyor” hatası vermiş ve hiçbir
 aktif corpus yazmamıştır. Bu beklenen güvenlik davranışıdır.
@@ -101,19 +90,14 @@ aktif corpus yazmamıştır. Bu beklenen güvenlik davranışıdır.
 - `retrieval/vector_indexing.py`: contextual batch embedding ve model/Qdrant
   çağrısından önce tüm corpus için fail-closed doğrulama; kanonik corpus
   SHA-256 kimliğini indeks ve rapora bağlama.
-- `retrieval/contracts.py`: `verified_public`, sentetik benchmark ve
-  `competition_snapshot` güven sınırlarını birbirinden ayıran sabit sözleşmeler.
-- `ingestion/ocr_candidate.py` ve `ingestion/snapshot.py`: OCR adaylarını sayfa
-  izli yapısal parçalara dönüştürme, kaynak/artifact hash kontrolü, güvenli yol
-  doğrulaması ve 8 belgeli snapshot zarfı.
 - `evaluation/hybrid_benchmark.py`: yalnız `benchmark_` koleksiyonu ve açıkça
   sentetik status/source kabul eden gerçek yerel Jina/Qdrant benchmark adapter'ı.
 - `retrieval/reranker.py`: pinli çok dilli Jina reranker sağlayıcısı ve RRF aday
   yeniden sıralama katmanı. Ölçüm olumsuz olduğu için varsayılan değildir.
 - `graph/evidence_graph.py`: küçük sentetik kanıt grafı, içerik-hash'li giriş
   provenance'ı, yeniden hesaplanan sayaç bütünlüğü ve iki-hop kural izi.
-- CLI komutları: `index-vectors`, `build-competition-snapshot`,
-  `index-snapshot-vectors`, `benchmark-retrieval`, `build-synthetic-graph`.
+- CLI komutları: `index-vectors`, `benchmark-retrieval`,
+  `build-synthetic-graph`.
 
 Kamu mevzuatı; insan onayı, yürürlük, OCR/metin, SHA-256, sayfa, domain,
 madde/bağlam ve geçerli kaynak URL kapılarının yanı sıra aktif-corpus zarfı,
@@ -125,15 +109,9 @@ eder. Dense kanal kullanılamazsa hata gizlenmez;
 teşhise yazılıp BM25 fallback uygulanır. Public Qdrant sonucu sentetik BM25
 korpusuyla karıştırılmaz.
 
-Snapshot yolu ayrıca `approved_for_active_rag=false`,
-`currentness_verified=false`, `legal_reliance_allowed=false` ve sabit kullanım
-uyarısını zorunlu tutar. Public ve snapshot koleksiyon adları birbirinin yerine
-kullanılamaz. Qdrant hem URL hem kalıcı gömülü dizin hedefini destekler; bu iki
-hedef aynı anda yapılandırılamaz.
-
 ## 5. Jina/Qdrant ve retrieval ölçümü
 
-Tarihsel sentetik CPU smoke sonucu:
+Gerçek CPU smoke sonucu:
 
 - Jina passage/query çıktıları 1024D ve L2 normları `1,0`.
 - Aynı metnin passage/query vektörleri görev gereği farklı.
@@ -143,17 +121,6 @@ Tarihsel sentetik CPU smoke sonucu:
   `0,799754 sn`.
 - Yedi sentetik chunk yerel bellek içi Qdrant'a yazıldı; beklenen
   `SENT-KRY-001` RRF sonucunda birinci geldi.
-
-Güncel 8-belgeli GPU snapshot sonucu:
-
-- 2.606 kaynak satırından 3 tam tekrar konsolide edilerek 2.603 benzersiz parça
-  üretildi; OCR katkısı 29 kılavuz + 170 yönetmelik parçasıdır.
-- RTX 3050 `cuda:0`, batch 8 ile 326 batch'te 2.603 adet 1024D Jina passage
-  vektörü kalıcı gömülü Qdrant'a yazıldı.
-- Disk koleksiyonu kapatılıp yeniden açıldı; expected/total/compatible sayaçları
-  2.603/2.603/2.603 ve exact corpus fingerprint eşleşmesi verdi.
-- Üç ayrı domain dense sorgusu geçti; hibrit kontrolde dense kanal kullanıldı,
-  fallback olmadı ve 5 snapshot referansı zorunlu uyarıyla kabul edildi.
 
 48 sentetik kayıt, retrieval gold'u bulunan 36 örnek:
 
@@ -217,12 +184,10 @@ karşılaştırmada eksik olduğu görüldü. Örneğin yönetmelik sayfa 11, ye
 370 karakterken tam OCR'da 2.718 karakter verdi. Bu nedenle yönetmeliğin 49
 sayfası tamamen yeniden OCR edildi.
 
-OCR adayları public aktif corpus değildir. Birleşik kelime, Türkçe karakter,
-satır sırası ve URL hataları gözlendiği için insan sayfa doğrulaması hâlâ
-zorunludur. Bununla birlikte yarışma demosu için ayrı ve açıkça güncel-olmayan
-`competition_snapshot` yoluna 199 yapısal OCR parçası olarak alınmıştır. Ayrıca
-yerel kılavuz resmî 102 sayfalık aynanın yalnız 26 sayfalık kesik kopyasıdır;
-ileride public corpus hazırlanırsa tam resmî baskıyla OCR tekrarlanmalıdır.
+OCR adayları aktif corpus değildir. Birleşik kelime, Türkçe karakter, satır
+sırası ve URL hataları gözlendiği için insan sayfa doğrulaması hâlâ zorunludur.
+Ayrıca yerel kılavuz resmî 102 sayfalık aynanın yalnız 26 sayfalık kesik
+kopyasıdır; tam resmî baskı alınarak OCR yeniden yapılmalıdır.
 
 ## 8. Resmî kaynak/güncellik incelemesi
 
@@ -252,19 +217,11 @@ aksiyonlarını taşır.
 - [`RETRIEVAL_ABLATION_2026-08-24.md`](reports/RETRIEVAL_ABLATION_2026-08-24.md)
 - [`evaluation_retrieval_comparison_2026-08-24.json`](reports/evaluation_retrieval_comparison_2026-08-24.json)
 - [`jina_qdrant_smoke_2026-08-24.json`](reports/jina_qdrant_smoke_2026-08-24.json)
-- [`competition_snapshot_index_2026-08-24.json`](reports/competition_snapshot_index_2026-08-24.json)
-- [`competition_snapshot_readiness_2026-08-24.json`](reports/competition_snapshot_readiness_2026-08-24.json)
-- [`competition_snapshot_artifact_manifest_2026-08-24.json`](reports/competition_snapshot_artifact_manifest_2026-08-24.json)
 - [`synthetic_evidence_graph_2026-08-24.json`](reports/synthetic_evidence_graph_2026-08-24.json)
 
-OCR aday metinleri `data/processed/ocr_review/`, yapısal OCR parçaları
-`data/processed/stage3_quarantine/` ve birleşik corpus
-`data/processed/competition_snapshot.json` altındadır. Seçili 6 karantina JSON'u
-ile 3 OCR metin girdisine ek olarak, kullanıcı talebiyle türetilmiş birleşik
-snapshot, iki yapısal OCR JSON'u, kalıcı Qdrant SQLite deposu, süreç kaydı ve
-örnek LaTeX çıktısı da artifact commit'ine alınmıştır. Dosyaların boyut ve
-SHA-256 değerleri artifact manifestinde kayıtlıdır. Yalnız `.lock`, Python cache
-ve test cache gibi taşınabilir olmayan geçici çalışma artıkları dışarıda kalır.
+OCR aday metinleri `data/processed/ocr_review/` altındadır. `data/processed/`
+tekrar üretilebilir/karantina çalışma alanı olduğu için Git tarafından yok
+sayılır; kalıcı denetim izi `reports/` altındaki hash'li JSON raporlarıdır.
 
 ## 10. Kurulum ve komutlar
 
@@ -304,60 +261,36 @@ python -m karayol_agent.cli index-vectors `
   --collection legal_chunks_v1
 ```
 
-Mevcut 8 belgeli yarışma snapshot'ını üretmek ve GPU'da kalıcı indekslemek:
-
-```powershell
-$env:PYTHONPATH="src"
-python -m karayol_agent.cli build-competition-snapshot `
-  --acknowledge-not-current
-
-python -m karayol_agent.cli index-snapshot-vectors `
-  --acknowledge-not-current `
-  --local-files-only `
-  --qdrant-path runtime\qdrant-competition-snapshot `
-  --collection competition_snapshot_chunks_v1 `
-  --device cuda:0 `
-  --batch-size 8
-```
-
-`QDRANT_URL` ile `KARAYOL_QDRANT_PATH` aynı anda verilmez.
-
 ## 11. Doğrulama
 
-- Test koleksiyonu: **285 test**. Snapshot/GPU değişikliklerini kapsayan
-  çalıştırılabilir küme: **284/284 geçti**.
-- Proje Python `>=3.11` ister; kullanılan Python 3.10 makinede ham alt süreçte
-  3.11 `StrEnum` davranışını sınayan `test_cli_error_regression_1.py` ortam
-  uyumsuzluğu nedeniyle bu koşudan çıkarıldı.
+- Tam test paketi: **212/212 geçti**.
+- Graf/CLI odaklı son test koleksiyonu: **14/14 geçti**.
 - Python `compileall`: başarılı.
 - `pyproject.toml` ayrıştırma: başarılı.
 - `pip check`: bağımlılık hatası yok.
 - `git diff --check`: temiz.
 - `git fsck --full`: temiz.
-- `reports/` altındaki JSON raporları yeniden ayrıştırıldı.
+- `reports/` altındaki 11 JSON raporunun tamamı yeniden ayrıştırıldı.
 - Manifestte `approved_for_active_rag=true`: **0**.
 - Mevcut onaysız manifestten aktif corpus yazımı: beklenen şekilde reddedildi.
-- Snapshot corpus: **8 belge, 2.606 kaynak satırı, 3 tam tekrar konsolidasyonu,
-  2.603 benzersiz parça**.
-- Kalıcı Qdrant yeniden açma kontrolü: **2.603/2.603 uyumlu vektör**, tam corpus
-  parmak izi eşleşmesi.
 
 Tam testte Windows/Starlette `.js` statik dosyasını geçerli modern MIME türü
 `text/javascript` ile döndürdü; test yalnız `application/javascript` kabul
 ediyordu. Test iki standart JavaScript MIME türünü platformdan bağımsız kabul
 edecek şekilde düzeltildi ve tüm paket yeniden geçirildi.
 
-## 12. Sıradaki teknik adım ve ertelenen hukuk işleri
+## 12. Yetkili insan için sıradaki kararlar
 
-Kullanıcı kararıyla güncel mevzuat edinme ve insan hukuk onayı bu turda
-ertelendi. Sıradaki teknik iş, hazır `competition_snapshot` + GPU/Qdrant hibrit
-akışını `MANUEL_TEST_SENARYOSU.md` üzerinden uçtan uca çalıştırmak; atıf,
-uyarı, taslak, yönlendirme ve düşük-güven/abstention davranışlarını kaydedip
-production-demo kabul raporu oluşturmaktır. Ardından yalnız multi-hop/global
-sorgular için küçük GraphRAG yolunun etkinleştirilmesi değerlendirilecektir.
+1. Kesin eski dört dosyayı güncel kanonik MBS/Resmî Gazete konsolide kopyalarıyla
+   değiştirip hash ve erişim zamanını kaydetmek.
+2. Kılavuzun tam 102 sayfalık resmî sürümünü almak ve OCR/bütünlük QA'sını
+   tekrarlamak.
+3. Resmî Yazışma Yönetmeliğini kanonik MBS/TCCB kaynağına ve eksiksiz ek setine
+   bağlamak.
+4. Her kayıt için yetkili kişi, tarih, yürürlük, kapsam ve OCR onayıyla
+   `approve`, `reject` veya `needs_replacement` kararı vermek.
+5. Yalnız bu imzalı CSV uygulandıktan sonra aktif public corpus ve
+   `legal_chunks_v1` indeksi üretmek.
 
-İleride gerçek public corpus hedeflendiğinde eski dört dosyanın güncel kanonik
-kopyaları, tam 102 sayfalık kılavuz, kanonik yönetmelik kaynağı ve yetkili kişinin
-`approve`/`reject`/`needs_replacement` kararı yine zorunludur. Bu yapılana kadar
-`legal_chunks_v1` boş ve fail-closed kalır; yarışma snapshot'ı ayrı uyarıyla
-çalışır.
+Bu kararlar verilene kadar sistemin sentetik demo/benchmark akışı tam çalışır;
+gerçek kamu mevzuatı ise güvenlik gereği karantinada kalır.

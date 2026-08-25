@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 from karayol_agent.schemas import ClassificationResult
+from karayol_agent.llm import LLMUnavailableError, OllamaClient
 from karayol_agent.text_utils import normalize_for_search, tokenize
 
 
 class ClassificationAgent:
     name = "Sınıflandırma Ajanı"
+
+    def __init__(self, *, llm_client: OllamaClient | None = None) -> None:
+        self.llm_client = llm_client
 
     LABEL_KEYWORDS: dict[str, tuple[str, ...]] = {
         "yol_bakim_talebi": (
@@ -42,6 +46,7 @@ class ClassificationAgent:
         "ust_yazi": ("arz ederim", "rica ederim", "dağıtım", "ilgi:"),
         "dilekce": ("dilekçe", "talep ediyorum", "arz ederim", "başvuru"),
     }
+    LABELS = frozenset(LABEL_KEYWORDS) | {"genel_basvuru"}
 
     KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
         "bilgi_talebi": {
@@ -71,6 +76,21 @@ class ClassificationAgent:
     }
 
     def run(self, text: str) -> ClassificationResult:
+        if self.llm_client is not None:
+            try:
+                result = self.llm_client.chat_json(
+                    "Evrakı yalnız şu etiketlerden biriyle sınıflandır: "
+                    "yol_bakim_talebi, trafik_guvenligi_bildirimi, hasar_bildirimi, "
+                    "bilgi_talebi, sikayet, ust_yazi, dilekce, genel_basvuru. "
+                    "Yalnız JSON döndür: document_type, confidence, matched_keywords.",
+                    text,
+                )
+                classification = ClassificationResult.model_validate(result)
+                if classification.document_type not in self.LABELS:
+                    raise ValueError("Ollama kapalı etiket kümesi dışında bir tür döndürdü.")
+                return classification
+            except (LLMUnavailableError, ValueError, TypeError):
+                pass
         normalized = normalize_for_search(text)
         scored: list[tuple[float, str, list[str]]] = []
         for label, keywords in self.LABEL_KEYWORDS.items():

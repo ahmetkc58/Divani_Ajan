@@ -15,7 +15,7 @@ class ExtractionError(RuntimeError):
 
 
 class DocumentExtractor:
-    SUPPORTED_SUFFIXES = {".txt", ".md", ".pdf"}
+    SUPPORTED_SUFFIXES = {".txt", ".md", ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff"}
 
     def __init__(self, *, max_chars: int = 200_000) -> None:
         self.max_chars = max_chars
@@ -36,8 +36,10 @@ class DocumentExtractor:
                 ) from exc
             except OSError as exc:
                 raise ExtractionError("Metin dosyası okunamadı.") from exc
-        else:
+        elif suffix == ".pdf":
             text = self._extract_pdf(path)
+        else:
+            text = self._ocr_image(path)
         text = self._clean_document_text(text)
         if not normalize_whitespace(text):
             raise ExtractionError("Belgeden okunabilir metin çıkarılamadı.")
@@ -155,3 +157,39 @@ class DocumentExtractor:
             finally:
                 document.close()
         return "\n\n".join(extracted)
+
+    def _ocr_image(self, path: Path) -> str:
+        tesseract = shutil.which("tesseract")
+        if not tesseract:
+            raise ExtractionError(
+                "Görsel belge için Tesseract bulunamadı; OCR yapılamadı."
+            )
+        command = [tesseract, str(path), "stdout", "-l", "tur+eng"]
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=60,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise ExtractionError("Görsel OCR işlemi başarısız oldu.") from exc
+        if result.returncode != 0 and "tur" in result.stderr:
+            command = [tesseract, str(path), "stdout", "-l", "eng"]
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=60,
+                check=False,
+            )
+        if result.returncode != 0:
+            raise ExtractionError(
+                f"Görsel OCR işlemi başarısız: {result.stderr.strip()}"
+            )
+        return result.stdout

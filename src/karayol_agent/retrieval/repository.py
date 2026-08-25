@@ -12,15 +12,6 @@ from pydantic import ValidationError
 from karayol_agent.schemas import LegislationChunk
 
 from .corpus import CorpusBinding, build_corpus_binding
-from .contracts import (
-    COMPETITION_SNAPSHOT_DATASET_NAME,
-    COMPETITION_SNAPSHOT_NOTICE,
-    CorpusMode,
-    competition_snapshot_chunk_blockers,
-    is_http_url,
-    is_safe_project_relative_path,
-    is_sha256,
-)
 
 
 class RepositoryApprovalError(ValueError):
@@ -36,30 +27,9 @@ class LegislationRepository:
         "road_transport",
     }
 
-    def __init__(
-        self,
-        data_path: Path,
-        *,
-        trusted_synthetic: bool = False,
-        corpus_mode: CorpusMode | str | None = None,
-    ) -> None:
+    def __init__(self, data_path: Path, *, trusted_synthetic: bool = False) -> None:
         self.data_path = data_path
-        if trusted_synthetic and corpus_mode not in {
-            None,
-            CorpusMode.TRUSTED_SYNTHETIC,
-            CorpusMode.TRUSTED_SYNTHETIC.value,
-        }:
-            raise ValueError(
-                "trusted_synthetic ile farklı corpus_mode birlikte kullanılamaz."
-            )
-        selected_mode = (
-            CorpusMode.TRUSTED_SYNTHETIC
-            if trusted_synthetic
-            else CorpusMode(corpus_mode or CorpusMode.VERIFIED_PUBLIC)
-        )
-        self.corpus_mode = selected_mode
-        # Backward-compatible public attribute used by older callers/tests.
-        self.trusted_synthetic = selected_mode == CorpusMode.TRUSTED_SYNTHETIC
+        self.trusted_synthetic = trusted_synthetic
 
     def load(self) -> list[LegislationChunk]:
         chunks, _ = self.load_with_binding()
@@ -69,10 +39,8 @@ class LegislationRepository:
         """Load records and return their deterministic, exact corpus identity."""
 
         payload = json.loads(self.data_path.read_text(encoding="utf-8"))
-        if self.corpus_mode == CorpusMode.TRUSTED_SYNTHETIC:
+        if self.trusted_synthetic:
             records = payload.get("data") if isinstance(payload, Mapping) else payload
-        elif self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT:
-            records = self.validate_competition_snapshot_envelope(payload)
         else:
             records = self.validate_active_corpus_envelope(payload)
         if not isinstance(records, list):
@@ -83,17 +51,13 @@ class LegislationRepository:
             raise RepositoryApprovalError(
                 f"Mevzuat chunk şeması doğrulanamadı: {exc}"
             ) from exc
-        if self.corpus_mode == CorpusMode.TRUSTED_SYNTHETIC:
+        if self.trusted_synthetic:
             synthetic_chunks = self._load_trusted_synthetic(chunks)
             return synthetic_chunks, build_corpus_binding(synthetic_chunks)
 
         violations: list[str] = []
         for chunk in chunks:
-            blockers = (
-                competition_snapshot_chunk_blockers(chunk)
-                if self.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT
-                else self.public_chunk_blockers(chunk)
-            )
+            blockers = self.public_chunk_blockers(chunk)
             if blockers:
                 violations.append(f"{chunk.chunk_id}: {', '.join(blockers)}")
         if violations:
@@ -104,229 +68,6 @@ class LegislationRepository:
                 "Aktif kamu mevzuatı korpusu doğrulanamadı: " + preview + suffix
             )
         return chunks, build_corpus_binding(chunks)
-
-    @classmethod
-    def validate_competition_snapshot_envelope(
-        cls, payload: object
-    ) -> list[object]:
-        """Validate a competition-only snapshot without granting legal validity."""
-
-        if not isinstance(payload, Mapping):
-            raise RepositoryApprovalError(
-                "Yarışma snapshot korpusu çıplak bir kayıt listesi olamaz."
-            )
-        if payload.get("schema_version") != "2.0":
-            raise RepositoryApprovalError(
-                "Yarışma snapshot korpusu schema_version=2.0 olmalıdır."
-            )
-        if payload.get("dataset_name") != COMPETITION_SNAPSHOT_DATASET_NAME:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot dataset_name değeri geçersiz."
-            )
-        if payload.get("corpus_mode") != CorpusMode.COMPETITION_SNAPSHOT.value:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot corpus_mode=competition_snapshot olmalıdır."
-            )
-        cls._require_aware_iso_timestamp(
-            payload.get("generated_at"), field_name="generated_at"
-        )
-        if payload.get("currentness_verified") is not False:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot currentness_verified=false taşımalıdır."
-            )
-        if payload.get("legal_reliance_allowed") is not False:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot legal_reliance_allowed=false taşımalıdır."
-            )
-        if payload.get("approved_for_competition_use") is not True:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot approved_for_competition_use=true taşımalıdır."
-            )
-        if payload.get("usage_notice") != COMPETITION_SNAPSHOT_NOTICE:
-            raise RepositoryApprovalError(
-                "Yarışma snapshot sabit ve eksiksiz kullanım uyarısını taşımıyor."
-            )
-
-        records = payload.get("data")
-        documents = payload.get("documents")
-        if not isinstance(records, list) or not isinstance(documents, list):
-            raise RepositoryApprovalError(
-                "Yarışma snapshot data ve documents listelerini içermelidir."
-            )
-        document_count = payload.get("document_count")
-        source_chunk_count = payload.get("source_chunk_count")
-        chunk_count = payload.get("chunk_count")
-        consolidated_count = payload.get("exact_duplicate_rows_consolidated")
-        if type(document_count) is not int or document_count != len(documents):
-            raise RepositoryApprovalError(
-                "Snapshot document_count değeri documents listesiyle eşleşmiyor."
-            )
-        if type(chunk_count) is not int or chunk_count != len(records):
-            raise RepositoryApprovalError(
-                "Snapshot chunk_count değeri data listesiyle eşleşmiyor."
-            )
-        if type(source_chunk_count) is not int or source_chunk_count < chunk_count:
-            raise RepositoryApprovalError(
-                "Snapshot source_chunk_count değeri geçersiz."
-            )
-        if (
-            type(consolidated_count) is not int
-            or consolidated_count < 0
-            or consolidated_count != source_chunk_count - chunk_count
-        ):
-            raise RepositoryApprovalError(
-                "Snapshot exact_duplicate_rows_consolidated sayacı geçersiz."
-            )
-        if not documents or not records:
-            raise RepositoryApprovalError("Yarışma snapshot korpusu boş olamaz.")
-
-        document_by_id: dict[str, Mapping[str, object]] = {}
-        for position, document in enumerate(documents):
-            if not isinstance(document, Mapping):
-                raise RepositoryApprovalError(
-                    f"documents[{position}] bir nesne olmalıdır."
-                )
-            document_id = document.get("document_id")
-            if not isinstance(document_id, str) or not document_id.strip():
-                raise RepositoryApprovalError(
-                    f"documents[{position}] document_id taşımıyor."
-                )
-            if document_id in document_by_id:
-                raise RepositoryApprovalError(
-                    f"Snapshot yinelenen document_id içeriyor: {document_id}."
-                )
-            if not isinstance(document.get("title"), str) or not str(
-                document.get("title")
-            ).strip():
-                raise RepositoryApprovalError(f"{document_id}: belge başlığı eksik.")
-            source_path = document.get("source_path")
-            if not is_safe_project_relative_path(source_path):
-                raise RepositoryApprovalError(
-                    f"{document_id}: source_path güvenli proje-göreli yol değil."
-                )
-            source_url = document.get("source_url")
-            if source_url is not None and not is_http_url(source_url):
-                raise RepositoryApprovalError(
-                    f"{document_id}: source_url geçersiz."
-                )
-            if not is_sha256(document.get("source_sha256")):
-                raise RepositoryApprovalError(
-                    f"{document_id}: kaynak SHA-256 değeri geçersiz."
-                )
-            text_origin = document.get("text_origin")
-            derived_text_sha256 = document.get("derived_text_sha256")
-            if text_origin == "machine_ocr_candidate":
-                if not is_sha256(derived_text_sha256):
-                    raise RepositoryApprovalError(
-                        f"{document_id}: OCR türetilmiş metin SHA-256 değeri eksik."
-                    )
-            elif text_origin == "pdf_text_layer":
-                if derived_text_sha256 is not None:
-                    raise RepositoryApprovalError(
-                        f"{document_id}: PDF metin katmanı türetilmiş OCR hash'i "
-                        "taşıyamaz."
-                    )
-            else:
-                raise RepositoryApprovalError(
-                    f"{document_id}: text_origin değeri geçersiz."
-                )
-            declared_chunk_count = document.get("chunk_count")
-            if type(declared_chunk_count) is not int or declared_chunk_count < 1:
-                raise RepositoryApprovalError(
-                    f"{document_id}: belge chunk_count değeri geçersiz."
-                )
-            declared_source_count = document.get("source_chunk_count")
-            declared_consolidated = document.get(
-                "exact_duplicate_rows_consolidated"
-            )
-            if (
-                type(declared_source_count) is not int
-                or declared_source_count < declared_chunk_count
-            ):
-                raise RepositoryApprovalError(
-                    f"{document_id}: belge source_chunk_count değeri geçersiz."
-                )
-            if (
-                type(declared_consolidated) is not int
-                or declared_consolidated < 0
-                or declared_consolidated
-                != declared_source_count - declared_chunk_count
-            ):
-                raise RepositoryApprovalError(
-                    f"{document_id}: belge exact duplicate sayacı geçersiz."
-                )
-            document_by_id[document_id] = document
-
-        declared_source_total = sum(
-            int(document["source_chunk_count"])
-            for document in document_by_id.values()
-        )
-        declared_consolidated_total = sum(
-            int(document["exact_duplicate_rows_consolidated"])
-            for document in document_by_id.values()
-        )
-        if declared_source_total != source_chunk_count:
-            raise RepositoryApprovalError(
-                "Snapshot source_chunk_count üst toplamı belgelerle eşleşmiyor."
-            )
-        if declared_consolidated_total != consolidated_count:
-            raise RepositoryApprovalError(
-                "Snapshot exact duplicate üst toplamı belgelerle eşleşmiyor."
-            )
-
-        observed_document_counts: Counter[str] = Counter()
-        seen_chunk_ids: set[str] = set()
-        for position, record in enumerate(records):
-            if not isinstance(record, Mapping):
-                raise RepositoryApprovalError(f"data[{position}] bir nesne olmalıdır.")
-            try:
-                chunk = LegislationChunk.model_validate(record)
-            except ValidationError as exc:
-                raise RepositoryApprovalError(
-                    f"data[{position}] snapshot chunk şeması geçersiz: {exc}"
-                ) from exc
-            if chunk.chunk_id in seen_chunk_ids:
-                raise RepositoryApprovalError(
-                    f"Snapshot yinelenen chunk_id içeriyor: {chunk.chunk_id}."
-                )
-            seen_chunk_ids.add(chunk.chunk_id)
-            blockers = competition_snapshot_chunk_blockers(chunk)
-            if blockers:
-                raise RepositoryApprovalError(
-                    f"{chunk.chunk_id}: snapshot güvenlik sözleşmesini "
-                    "karşılamıyor: " + ", ".join(blockers) + "."
-                )
-            document = document_by_id.get(str(chunk.document_id))
-            if document is None:
-                raise RepositoryApprovalError(
-                    f"{chunk.chunk_id}: document_id belge zarfında bulunmuyor."
-                )
-            if (
-                chunk.source != document.get("source_path")
-                or chunk.source_sha256 != document.get("source_sha256")
-                or chunk.source_url != document.get("source_url")
-            ):
-                raise RepositoryApprovalError(
-                    f"{chunk.chunk_id}: chunk kaynak izi belge zarfıyla eşleşmiyor."
-                )
-            expected_ocr_status = (
-                "ocr_candidate_unverified"
-                if document.get("text_origin") == "machine_ocr_candidate"
-                else "text_layer_available"
-            )
-            if chunk.ocr_status != expected_ocr_status:
-                raise RepositoryApprovalError(
-                    f"{chunk.chunk_id}: ocr_status belge text_origin ile eşleşmiyor."
-                )
-            observed_document_counts[str(chunk.document_id)] += 1
-
-        for document_id, document in document_by_id.items():
-            if observed_document_counts[document_id] != document["chunk_count"]:
-                raise RepositoryApprovalError(
-                    f"{document_id}: belge chunk_count değeri gerçek parçalarla "
-                    "eşleşmiyor."
-                )
-        return records
 
     @classmethod
     def validate_active_corpus_envelope(cls, payload: object) -> list[object]:

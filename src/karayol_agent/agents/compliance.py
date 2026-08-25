@@ -54,6 +54,11 @@ class ComplianceAgent:
             warnings.append("Taslakta doğrulanmış mevzuat/kural kaynağı bulunmuyor.")
         if draft.references_section and not draft.references:
             errors.append("İlgi bölümü doğrulanmış kaynak içermiyor.")
+        if draft.missing_fields:
+            errors.append(
+                "Zorunlu alanlar tamamlanmadan taslak onaylanamaz: "
+                + ", ".join(draft.missing_fields)
+            )
         if any(not item.strip() for item in draft.attachments):
             errors.append("Ek listesinde boş veya geçersiz öğe bulunuyor.")
         if any(not item.strip() for item in draft.distribution):
@@ -64,11 +69,6 @@ class ComplianceAgent:
             errors.append("İmzalayan bilgisi zorunludur.")
         if not draft.signer_title.value:
             errors.append("İmzalayan unvanı zorunludur.")
-        if draft.missing_fields:
-            warnings.append(
-                "Kullanıcı tarafından doldurulması gereken alanlar: "
-                + ", ".join(draft.missing_fields)
-            )
 
         total_checks = 15
         score = max(0.0, 1.0 - len(errors) / total_checks - len(warnings) * 0.04)

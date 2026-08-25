@@ -101,7 +101,7 @@
 
           <div class="input-mode-tabs" role="tablist" aria-label="Evrak giriş yöntemi">
             <button class="input-mode-tab is-active" id="text-mode-tab" type="button" role="tab" aria-selected="true" data-input-mode="text">Metin girişi</button>
-            <button class="input-mode-tab" id="file-mode-tab" type="button" role="tab" aria-selected="false" data-input-mode="file">TXT / MD / PDF yükle</button>
+            <button class="input-mode-tab" id="file-mode-tab" type="button" role="tab" aria-selected="false" data-input-mode="file">Belge veya görsel yükle</button>
           </div>
 
           <form id="process-form">
@@ -112,11 +112,11 @@
 
             <div class="input-mode-panel" id="file-mode-panel" role="tabpanel" aria-labelledby="file-mode-tab" hidden>
               <label class="file-drop" id="file-drop" for="document-file">
-                <input id="document-file" name="document-file" type="file" accept=".txt,.md,.pdf,text/plain,text/markdown,application/pdf" />
+                <input id="document-file" name="document-file" type="file" accept=".txt,.md,.pdf,.png,.jpg,.jpeg,.tif,.tiff,text/plain,text/markdown,application/pdf,image/png,image/jpeg,image/tiff" />
                 <span class="file-symbol" aria-hidden="true">⇧</span>
                 <strong>Dosyayı buraya bırakın</strong>
                 <span>veya bilgisayarınızdan seçin</span>
-                <small>TXT, MD veya PDF · en fazla 20 MB</small>
+                <small>TXT, MD, PDF, PNG, JPG veya TIFF · en fazla 20 MB</small>
               </label>
               <div class="selected-file" id="selected-file" hidden></div>
             </div>

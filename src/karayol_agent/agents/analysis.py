@@ -8,11 +8,15 @@ from karayol_agent.schemas import (
     ExtractedField,
     FieldStatus,
 )
+from karayol_agent.llm import LLMUnavailableError, OllamaClient
 from karayol_agent.text_utils import normalize_whitespace, truncate
 
 
 class ContentAnalysisAgent:
     name = "İçerik Analizi Ajanı"
+
+    def __init__(self, *, llm_client: OllamaClient | None = None) -> None:
+        self.llm_client = llm_client
 
     REQUIRED_FIELDS: dict[str, tuple[str, ...]] = {
         "yol_bakim_talebi": ("gonderen", "konu", "konum", "talep"),
@@ -44,6 +48,32 @@ class ContentAnalysisAgent:
     def run(
         self, text: str, classification: ClassificationResult
     ) -> DocumentAnalysis:
+        if self.llm_client is not None:
+            try:
+                result = self.llm_client.chat_json(
+                    "Türü verilen evraktan yalnız metinde açıkça bulunan bilgileri çıkar. "
+                    "Bilgi yoksa null kullan, uydurma. Yalnız JSON döndür: "
+                    "document_type, confidence, summary, fields (alan -> "
+                    "{value,status,source}), missing_fields, keywords. "
+                    "status yalnız kaynaktan_alindi veya kullanici_girdisi_gerekli olsun.",
+                    f"Evrak türü: {classification.document_type}\n{text}",
+                )
+                analysis = DocumentAnalysis.model_validate(result)
+                required = self.REQUIRED_FIELDS.get(
+                    classification.document_type, self.REQUIRED_FIELDS["genel_basvuru"]
+                )
+                missing = [
+                    name
+                    for name in required
+                    if not analysis.fields.get(name)
+                    or not analysis.fields[name].value
+                ]
+                analysis.missing_fields = list(dict.fromkeys(missing))
+                analysis.document_type = classification.document_type
+                analysis.confidence = classification.confidence
+                return analysis
+            except (LLMUnavailableError, ValueError, TypeError):
+                pass
         fields: dict[str, ExtractedField] = {}
         for field_name, pattern in self._LABELED_PATTERNS.items():
             match = pattern.search(text)

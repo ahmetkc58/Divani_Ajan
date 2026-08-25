@@ -24,6 +24,18 @@ arşivde korunacak, fakat tamamı aktif RAG indeksine eklenmeyecektir.
 
 501 PDF ile DETSİS mevzuat listesindeki 501 kimliğin tamamı eşleşmektedir.
 
+### Sentetik kullanıcı evrakı
+
+Mevzuat arşivinden ayrı olarak, görev 1 ve görev 2'nin uçtan uca testleri için
+120 sentetik PDF oluşturulmuştur. Set; dilekçe, şikâyet, itiraz, talep, izin ve
+belge başvurusu türlerinin her biri için 10 olumlu ve 10 eksik/olumsuz örnek
+içerir. Dosyalar `data/synthetic_documents/pdf/`, beklenen sonuç manifesti
+`data/synthetic_documents/manifest.csv` altındadır.
+
+Bu dosyalardaki kişi, kurum ve konumlar kurgusaldır. Sentetik PDF'ler mevzuat
+kanıtı değildir; `approved_for_active_rag` kapsamına alınamaz ve yalnızca OCR,
+sınıflandırma, eksik alan, yönlendirme ve demo testlerinde kullanılır.
+
 ### 23 Ağustos 2026 uygulama durumu
 
 Planın ilk teknik aşaması kodlanmış ve çalıştırılmıştır:

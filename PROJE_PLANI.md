@@ -37,7 +37,7 @@ Bu plan, "ideal/kapsamlı mimari" değil, **7 gün içinde uçtan uca çalışan
 | `mevzuat-1.pdf` | **Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik** (49 sayfa) | Görev 2'nin "resmi üsluba uygunluk" ve format kurallarının **birincil kaynağı** |
 | `mevzuat-kılavuz.pdf` | Aynı yönetmeliğin **Kılavuzu** (26 sayfa, örnek/şablon içerikli) | Taslak üretimi için örnek doküman kaynağı |
 
-**Teknik not:** Bu iki mevzuat PDF'i, gömülü font kodlamasından dolayı `pdftotext`/`pypdf` ile metne çevrilince Türkçe'ye özgü harfler (ı, ş, ğ, ü, ö, ç) düşüyor. Sayfalar görsel olarak okunabilir; ancak makine OCR adaylarında karakter ve satır sırası hataları vardır ve **standart metin çıkarımı bu dosyalarda güvenilir değildir**. Bu, projenin kendi evrak-okuma modülü için de gerçek bir tasarım girdisi: OCR/görsel tabanlı çıkarım (veya en azından font/encoding doğrulama adımı), yalnızca "nice to have" değil, **gerçek bir ihtiyaç** olarak Tier 0'a alınmalı.
+**Teknik not:** Bu iki mevzuat PDF'i, gömülü font kodlamasından dolayı `pdftotext`/`pypdf` ile metne çevrilince Türkçe'ye özgü harfler (ı, ş, ğ, ü, ö, ç) düşüyor. Sayfaları görsel olarak render edip (PyMuPDF ile) doğruladık — içerik doğru ama **standart metin çıkarımı bu dosyalarda güvenilir değil**. Bu, projenin kendi evrak-okuma modülü için de gerçek bir tasarım girdisi: OCR/görsel tabanlı çıkarım (veya en azından font/encoding doğrulama adımı), yalnızca "nice to have" değil, **gerçek bir ihtiyaç** olarak Tier 0'a alınmalı.
 
 Yönetmelikten şimdiye kadar görsel olarak doğrulanan içerik: Amaç/Kapsam/Dayanak (Md 1-2), Tanımlar (Md 3 — aidiyet zinciri, arşiv imza, belge, **DETSİS**, EBYS, elektronik onay/ortam, e-Yazışma Teknik Rehberi, form/format, güvenli elektronik imza, standart dosya planı, üstveri, üst yazı, yetkili makam, zaman damgası, zorunlu hâl). Kalan maddeler (format kuralları, imza blokları, gizlilik dereceleri, ekler/dağıtım, arşivleme) ekip tarafından dosyadan görsel olarak çıkarılıp **doğrulanmalı** — bu plandaki format kuralı detayları varsayım değil, kaynağa referansla teyit edilmelidir.
 
@@ -48,7 +48,7 @@ Yönetmelikten şimdiye kadar görsel olarak doğrulanan içerik: Amaç/Kapsam/D
 Şartname madde 6.5 gerçek kamu verisini yasaklıyor. Buna göre:
 
 1. **Sentetik evrak korpüsü:** En az 6-8 evrak türü (dilekçe, üst yazı, cevap yazısı, bilgi talebi, ihbar/şikayet, bilgilendirme yazısı, iç yazışma) × her türden 5-10 örnek → toplam ~40-60 kurgu evrak. LLM ile üretilip, biçimsel çeşitlilik (eksik alanlı, bozuk formatlı, taranmış görüntü kalitesinde) kasıtlı olarak eklenmeli ki sistemin "eksik bilgi tespiti" yeteneği gerçekten test edilsin.
-2. **Mevzuat corpus:** `verified_public` hedefinde yalnız insan tarafından güncellik/yürürlük onayı verilen metinler; mevcut yarışma uygulamasında ise `mevzuat-1.pdf`, `mevzuat-kılavuz.pdf` ve altı çekirdek karayolu belgesinin sabitlenmiş kopyaları Bölüm → Madde → Fıkra → Bent yapısında kullanılır. Bu ikinci yol güncellik veya hukuki görüş iddiası taşımayan ayrı `competition_snapshot` corpusudur.
+2. **Mevzuat corpus:** `mevzuat-1.pdf`, `mevzuat-kılavuz.pdf` ve doğrulanmış çekirdek karayolu mevzuatı Bölüm → Madde → Fıkra → Bent yapısında parçalanarak RAG kaynağı yapılacak (kamuya açık mevzuat metni; yarışmacıya ait gerçek kamu evrakı değil).
 3. **Kurum/birim listesi (DETSİS esinli, sentetik):** Gerçek DETSİS kayıtları çekilmeyecek (hem erişim kısıtlı hem de "gerçek kamu verisi" riski var — bkz. önceki tartışma). Bunun yerine DETSİS'in **numaralandırma formatı ve hiyerarşi mantığı** referans alınarak kurgu bir kurum/birim ağacı (örn. "Örnek Bakanlık > Örnek Genel Müdürlük > Örnek Daire Başkanlığı") oluşturulacak. Bu liste, birim yönlendirme agent'ının hedef havuzu olacak.
 
 **Veri denetimi — 24 Ağustos 2026:** Kamuya açık DETSİS/UAB kayıtları yalnızca
@@ -76,26 +76,8 @@ Bu kapanış **teknik veri hazırlama aşamasının** tamamlandığını ifade e
 metinlerin en güncel sürümle değiştirilmesi, yürürlük/hukuk uzmanı kontrolü, iki
 belgenin OCR + görsel doğrulaması ve insanın `approved_for_active_rag=true`
 kararı ayrı bir **Aşama 3 sonrası içerik doğrulama işi** olarak ertelenmiştir.
-Bu işler tamamlanmadan gerçek kamu mevzuatı aktif indekse alınmayacaktır.
-Varsayılan sentetik BM25 fallback korunurken, aşağıdaki ayrı ve uyarılı yarışma
-snapshot'ı hibrit demo yolunu sağlar.
-
-**Aşama 3 yarışma-snapshot uygulaması — 24 Ağustos 2026:** Kullanıcı kararıyla
-güncel mevzuat edinme ve public aktivasyonun ilk iki işi bu turda atlanmış;
-eldeki 8 belge, güncellik/yürürlük iddiası taşımayan ayrı
-`competition_snapshot` sözleşmesiyle işlenmiştir. Altı metin-katmanı çıktısı ile
-iki OCR adayından gelen 2.606 satırdaki 3 tam tekrar konsolide edilmiş ve 2.603
-benzersiz parça (2.404 metin-katmanı + 199 OCR) üretilmiştir. Tüm parçalar RTX
-3050 üzerinde Jina Embeddings v3 `retrieval.passage`, 1024D ve `cuda:0` ile
-vektörleştirilerek kalıcı gömülü Qdrant
-`competition_snapshot_chunks_v1` koleksiyonuna yazılmıştır. Yeniden açma
-kontrolünde 2.603/2.603 uyumlu nokta ve corpus parmak izi doğrulanmıştır.
-
-Bu uygulama `legal_chunks_v1` public kapısını değiştirmez: snapshot atıfları
-zorunlu güncellik/hukuki kullanım uyarısı taşır, `currentness_verified=false` ve
-`legal_reliance_allowed=false` kalır. Sıradaki teknik iş, bu hazır hibrit yolu
-manuel uçtan uca kabul senaryolarında atıf, taslak, yönlendirme, uyarı ve
-abstention davranışlarıyla doğrulamaktır.
+Bu işler tamamlanmadan gerçek kamu mevzuatı aktif indekse alınmayacak; geliştirme
+ve demo sentetik BM25 fallback ile çalışmayı sürdürecektir.
 
 ---
 
@@ -182,7 +164,6 @@ kaldırmayacak; çevrimdışı ve açıklanabilir fallback olarak koruyacaktır.
 | Kullanıcı sorgusu görevi | `retrieval.query` |
 | Başlangıç vektör boyutu | `1024` |
 | Benzerlik metriği | Cosine |
-| Yarışma snapshot yürütme aygıtı | NVIDIA GPU, `cuda:0` (gerçek koşu: RTX 3050) |
 | Azami model bağlamı | 8192 token; ancak retrieval chunk'ları hukuk yapısına göre daha küçük tutulur |
 | Sürümleme | Model adı, boyut, görev adaptörü ve indeks sürümü her kaydın metadata'sında tutulur |
 
@@ -226,15 +207,13 @@ madde/fıkra ve mümkünse sayfaya döner.
 
 #### Qdrant koleksiyonları ve payload
 
-Üretim mimarisinde üç fiziksel koleksiyon korunacaktır. Güncelliği doğrulanmamış
-yarışma snapshot'ı bunlara karışmayan dördüncü, açıkça ayrı bir demo koleksiyonu
-kullanır:
+İlk uygulamada gereksiz koleksiyon parçalanmasını önlemek için üç fiziksel
+koleksiyon kullanılacaktır:
 
 ```text
 legal_chunks_v1        # Mevzuat ve resmî yazışma kuralları
 organization_units_v1  # Sentetik kurum/birim görevleri
 graph_nodes_v1         # Graf düğümü açıklamaları ve topluluk özetleri
-competition_snapshot_chunks_v1  # Güncellik iddiası taşımayan sabit yarışma snapshot'ı
 ```
 
 `legal_chunks_v1` içindeki her nokta en az şu payload alanlarını taşır:
@@ -276,23 +255,11 @@ commit'i bu ayrı kod deposunda bulunmadığından iki revision bilinçli olarak
 farklı ve ayrı ayrı sabitlenir.
 
 `domain`, `subdomain`, `validity_status`, `approved_for_active_rag`,
-`document_type`, `document_id`, `corpus_mode`, `source_kind`, `status`,
-`currentness_verified` ve `legal_reliance_allowed` alanları Qdrant payload
-indeksi alacaktır.
+`document_type` ve `document_id` alanları Qdrant payload indeksi alacaktır.
 Üretim aramasında `approved_for_active_rag=true` ve
 `validity_status=verified` zorunlu filtredir. Alan sınıflandırma ajanı ayrıca
 `domain` filtresini belirler; karayolu sorgusuna denizcilik/havacılık kaynağı
 karışması bu katmanda engellenir.
-
-`competition_snapshot_chunks_v1` aynı embedding ve parmak izi bütünlüğünü
-uygular; fakat `corpus_mode=competition_snapshot`,
-`currentness_verified=false`, `legal_reliance_allowed=false` ve sabit kullanım
-uyarısı zorunludur. Snapshot koleksiyonu `legal_chunks_v1` adıyla oluşturulamaz,
-public sonuç filtresinden geçirilemez ve kullanıcı arayüzünde doğrulanmış güncel
-mevzuat olarak etiketlenemez. Uzak Qdrant sunucusunda payload indeksleri zorunlu
-olarak doğrulanır. Gömülü yerel Qdrant payload indeks API'sini desteklemediği için
-kalıcı snapshot modunda aynı filtre metadata'sı readiness sayımı ve tam corpus
-parmak iziyle doğrulanır; bu sınırlama raporda açıkça gösterilir.
 
 #### Hibrit retrieval akışı
 
@@ -311,13 +278,9 @@ Sorgu zenginleştirme (evrak türü + konu + talep + anahtar kavramlar)
                            ↓
                     Reranker top-K
                            ↓
-                 Güven sözleşmesi doğrulaması
+             Kaynak/yürürlük/OCR doğrulaması
                            ↓
-       ┌───────────────────┴────────────────────┐
-       │ verified_public: doğrulanmış kanıt     │
-       │ competition_snapshot: provenance +     │
-       │ zorunlu güncellik/hukuki görüş uyarısı │
-       └────────────────────────────────────────┘
+             Doğrulanmış kanıt paketi + atıflar
 ```
 
 İlk sürümde her kanal `top-N=20` aday üretecek, RRF sonrası reranker'a en fazla
@@ -392,26 +355,17 @@ zorunludur.
    getirdiği için varsayılan olarak kapalı bırakıldı.
 7. **Researcher/Auditor sözleşmesi tamamlandı (24 Ağustos):** Dense-only kanıtı
    yalnız tam public kaynak kapılarıyla kabul et; sentetik demo kuralını public
-   mevzuat gibi göstermeden ayrı doğrula; snapshot atfını ise yalnız
-   `currentness_verified=false`, `legal_reliance_allowed=false` ve sabit uyarıyla
-   kabul et.
+   mevzuat gibi göstermeden ayrı doğrula.
 8. **Tamamlandı (24 Ağustos):** Küçük, elle doğrulanabilir sentetik
    mevzuat-birim-şablon grafı; üç girdinin SHA-256 kimliği, veri seti/sürümü ve
    yeniden hesaplanan düğüm/kenar sayaçlarıyla üretildi.
-9. **Tamamlandı (24 Ağustos):** Sekiz belgeli `competition_snapshot` corpusunu
-   2.603 benzersiz parçayla üret; GPU'da Jina v3 ile kalıcı ve ayrı Qdrant
-   koleksiyonuna indeksle; yeniden açma/readiness, hibrit BM25+dense+RRF ve
-   kullanıcı uyarısı sözleşmesini doğrula.
-10. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
-11. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
+9. Yalnızca multi-hop/global sorgularda graf yolunu etkinleştir.
+10. CDTA/topluluk özetlerini Tier 2 deneyi olarak değerlendir.
 
 Kabul ölçütleri:
 
 - Karayolu retrieval gold setinde `Recall@5 >= %90` hedefi.
-- Trust modu açıklanmayan mevzuat iddiası sayısı `0`: public kanıt
-  `approved_for_active_rag=true`/`verified` olmalı; snapshot atfı ise
-  `currentness_verified=false`, `legal_reliance_allowed=false` ve sabit kullanım
-  uyarısını taşımalıdır.
+- Kaynaksız veya `approved_for_active_rag=false` mevzuat iddiası sayısı `0`.
 - Paraphrase challenge retrieval sonucunun BM25 baseline `%12,5` değerinin
   üzerine çıkması; iyileşmenin aynı sabit veri setinde raporlanması.
 - Her sonuçta chunk kimliği, belge, madde/fıkra, sayfa, skor kanalları ve
@@ -658,14 +612,6 @@ değildir. İki zayıf metin katmanlı PDF'nin Türkçe OCR aday metinleri üret
 olsa da `approved_for_active_rag=false` korunmuştur. İnsan hukuk uzmanının
 `approve`, `reject` veya `needs_replacement` kararı, gerçek aktif corpus ve kamu
 Qdrant indeksi için hâlâ zorunlu dış kapıdır.
-
-Yarışma demosu için bu public aktivasyon işi ertelenerek ayrı snapshot yolu
-tamamlandı: 8 belge/2.603 parça, RTX 3050 `cuda:0`, Jina v3 1024D ve kalıcı
-`competition_snapshot_chunks_v1`. İndeks yeniden açıldığında 2.603/2.603 kayıt
-ve exact corpus fingerprint eşleşti; üç örnek dense sorgu ile tam hibrit ajan
-akışı BM25+dense+RRF kanallarını fallback olmadan kullandı. Bu sonuç teknik
-production-demo hazırlığıdır, güncel mevzuat veya hukuki doğruluk iddiası
-değildir.
 
 ---
 

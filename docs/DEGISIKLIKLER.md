@@ -4,6 +4,28 @@ Proje tanımı kökteki `project.md`, ajan davranış sözleşmesi kökteki `ope
 dosyasındadır. Bu dosya uygulama değişikliklerini, doğrulamaları ve kalan
 engelleri kaydeder.
 
+## 25 Ağustos 2026 — Yerel Ollama, görsel OCR ve uygunluk kapısı
+
+### Uygulama
+
+- API anahtarı gerektirmeyen yerel Ollama `/api/chat` bağlantısı eklendi.
+- Ollama yanıtları kapalı belge türü ve zorunlu alan sözleşmeleriyle doğrulanıyor;
+  bağlantı/model hatasında deterministik analiz fallback'i korunuyor.
+- API ve HTML yükleme akışına PNG, JPG/JPEG ve TIF/TIFF eklendi; PDF/görsellerde
+  magic-byte kontrolü ve Tesseract OCR kullanılıyor.
+- Eksik zorunlu taslak alanları artık uygunluk kontrolünü fail-closed bırakıyor.
+- Dilekçe, şikâyet, itiraz, talep, izin ve belge başvurusu türlerinde 120
+  sentetik PDF ile beklenen sonuç manifesti oluşturuldu; mevzuat corpus'undan
+  ayrı tutuluyor.
+
+### Doğrulama
+
+- Ollama istemci smoke testi başarılı.
+- Extractor/API odak testleri başarılı.
+- Compliance testleri başarılı.
+- Tam test paketi mevcut tarih beklentisi ve kapanış yerleşimi regresyonları
+  nedeniyle temiz değil; bu iki test Ollama değişikliğinden bağımsızdır.
+
 ## 24 Ağustos 2026 — Yanlış çalışma klasöründen seçici aktarım
 
 ### İnceleme
