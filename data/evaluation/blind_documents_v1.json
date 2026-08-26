@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "divani_agent_blind_evaluation_v1",
+  "created_for": "TEKNOFEST 2026 TYDA sartnamesi P0-1 bagimsiz kor degerlendirme acigi",
+  "usage": "independent_blind_generalization_measurement",
+  "data_classification": "synthetic_blind",
+  "note": "Bu belgeler gelistirme fixture'larindan (examples/, data/synthetic_gold.json, data/synthetic_ui_fixtures.json, tests/) tamamen bagimsiz olarak yazilmistir. Siniflandirma ve yonlendirme kural motorunun (ClassificationAgent.LABEL_KEYWORDS, RoutingAgent birim anahtar kelimeleri) tam eslesen ifadeleri BILINCLI olarak KULLANILMAMISTIR; amac kurali ezberleyen degil gercekten genelleyen bir olcum elde etmektir. 'gold' alanlari bu dosyayi yazan kisinin bagimsiz uzman-benzeri yargisidir; sistemin gercek ciktisina bakilarak GERIYE DONUK duzenlenmemistir. Bu set kucuk olcekli bir muhendislik regresyonudur; bagimsiz kor test, hukuk dogrulugu veya genel saha basarimi iddiasi tasimaz.",
+  "categories": {
+    "paraphrase_positive": "Tek bir acik niyeti, siniflandirici/yonlendirici anahtar kelime listesindeki tam ifadeleri kullanmadan farkli sozcuklerle anlatir. Birincil olcut: document_type ve unit_id dogrulugu.",
+    "near_miss_ambiguous": "Iki gecerli niyeti/aday birimi ayni belgede yakin agirlikta harmanlar. Birincil olcut: sistemin bunu insan incelemesine birakmasi (requires_human_review=true); tek bir 'doğru' tur/birim beklenmez.",
+    "no_answer_offtopic": "Karayolu kurumunun gorev alaniyla hicbir ilgisi olmayan meşru bir yazi. Birincil olcut: sistemin ozel/emin bir birim uydurmamasi ve mevzuat kaynagi fabrike etmemesi (abstention).",
+    "ocr_noise_variant": "Ayni turdeki temiz bir belgenin gercekci OCR/tarama gurultusu (0/O, 1/I/l karismasi, etiket bosluk kaybi) eklenmis hali. Birincil olcut: gurultuye ragmen document_type dogrulugunun korunmasi (saglamlik)."
+  },
+  "records": [
+    {
+      "id": "BLIND-A1",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Zeynep Kaya\nTarih: 15.04.2026\nKonu: Anayolda araç sarsıntısına yol açan zemin çöküntüleri\nKonum: Örnek İl, Örnek İlçe\n\nŞehirlerarası anayolun kaplamasında araçları sarsan büyük zemin çöküntüleri oluştu. Yolun onarılmasını istiyorum.",
+      "gold": {
+        "document_type": "yol_bakim_talebi",
+        "acceptable_unit_ids": ["ORKGM-YB-001"],
+        "expects_human_review": null
+      },
+      "notes": "Klasik 'yol bakım/asfalt/çukur' ifadeleri yerine 'zemin çöküntüsü', 'araç sarsıntısı' kullanılmıştır."
+    },
+    {
+      "id": "BLIND-A2",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Tolga Er\nTarih: 20.05.2026\nKonu: Kavşak girişindeki yön gösterme direğinin eğilmesi\nKonum: Örnek İl, Örnek İlçe, Merkez Kavşağı\n\nKavşak girişindeki yön gösterme direği rüzgârda eğilmiş, sürücüleri yanlış şeride yönlendiriyor. Bu durum tehlikelidir; gereğinin yapılmasını rica ederim.",
+      "gold": {
+        "document_type": "trafik_guvenligi_bildirimi",
+        "acceptable_unit_ids": ["ORKGM-TG-001"],
+        "expects_human_review": null
+      },
+      "notes": "'işaret levhası'/'bariyer'/'yönlendirme tabelası' yerine 'yön gösterme direği' kullanılmıştır."
+    },
+    {
+      "id": "BLIND-A3",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Onur Bal\nTarih: 02.06.2026\nKonu: Irmak geçişindeki yapının taşıyıcı kolonunda çatlak\nKonum: Örnek İl, Örnek İlçe, Kızılırmak geçişi\n\nIrmak geçişindeki yapının taşıyıcı kolonunda derin çatlaklar oluşmuş, taşıma gücü zayıflamış görünüyor. Durumun acilen incelenmesini arz ederim.",
+      "gold": {
+        "document_type": "hasar_bildirimi",
+        "acceptable_unit_ids": ["ORKGM-AF-001"],
+        "expects_human_review": null
+      },
+      "notes": "'köprü hasarı/çatlağı' yerine 'ırmak geçişindeki yapı', 'taşıyıcı kolon' dolaylı ifadesi kullanılmıştır; köprü kelimesi hiç geçmez."
+    },
+    {
+      "id": "BLIND-A4",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Sevgi Tan\nTarih: 03.07.2026\nKonu: Geçen yıla ait yol çalışması kayıtlarının istenmesi\nKonum: Örnek İl\n\nGeçtiğimiz yıla ait yol çalışmalarına dair kayıtların tarafıma iletilmesini istirham ederim.",
+      "gold": {
+        "document_type": "bilgi_talebi",
+        "acceptable_unit_ids": ["ORKGM-BE-001"],
+        "expects_human_review": null
+      },
+      "notes": "'bilgi edinme/bilgi talebi' yerine 'kayıtların iletilmesi', 'istirham ederim' (rica ederim değil) kullanılmıştır."
+    },
+    {
+      "id": "BLIND-A5",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Derya Solmaz\nTarih: 09.08.2026\nKonu: Şantiye gürültüsünden kaynaklanan rahatsızlık\nKonum: Örnek İl, Örnek Mahalle\n\nSürekli tekrar eden inşaat gürültüsünden dolayı ciddi rahatsızlık yaşıyoruz; bu durumdan yakınıyoruz ve önlem alınmasını istiyoruz.",
+      "gold": {
+        "document_type": "sikayet",
+        "acceptable_unit_ids": ["KGM-ETUT-CEVRE"],
+        "expects_human_review": null
+      },
+      "notes": "'şikayet'/'mağdur' kelimeleri yerine 'yakınıyoruz', 'rahatsızlık' kullanılmıştır."
+    },
+    {
+      "id": "BLIND-A6",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Murat Kılıç\nTarih: 14.09.2026\nKonu: Mahalleye yaya köprüsü yapılması talebi\nKonum: Örnek İl, Örnek Mahalle\n\nMahallemize bir yaya köprüsü yapılması hususunda başvuruda bulunuyorum. Gereğinin yapılmasını arz ederim.",
+      "gold": {
+        "document_type": "dilekce",
+        "acceptable_unit_ids": ["KGM-SANAT-YAPIM"],
+        "expects_human_review": null
+      },
+      "notes": "'dilekçe' kelimesi hiç geçmez; 'köprü yapımı' yerine 'yaya köprüsü yapılması' farklı sözcük sırasıyla yazılmıştır."
+    },
+    {
+      "id": "BLIND-A7",
+      "category": "paraphrase_positive",
+      "text": "Adı Soyadı: Pınar Aydemir\nTarih: 21.10.2026\nKonu: Sözleşme maddesi hakkında görüş talebi\n\nBahsi geçen sözleşme maddesi hakkındaki hukuki görüşünüzün ivedilikle bildirilmesini rica ederiz.",
+      "gold": {
+        "document_type": "ust_yazi",
+        "acceptable_unit_ids": ["KGM-HUKUK"],
+        "expects_human_review": null
+      },
+      "notes": "'İlgi:'/'Dağıtım:' başlıkları ve 'arz ederim'/'rica ederim' (tekil) yoktur; 'rica ederiz' (çoğul) kullanılmıştır. Kasıtlı olarak zor bir parafraz örneğidir."
+    },
+    {
+      "id": "BLIND-B1",
+      "category": "near_miss_ambiguous",
+      "text": "Adı Soyadı: Hakan Ergin\nTarih: 15.03.2026\nKonu: Yol yüzeyi ve uyarı levhası birlikte hasarlı\nKonum: Örnek İl, Örnek İlçe\n\nYolun sürüş şeridinde oturma, aynı noktadaki uyarı levhasında da devrilme tespit edilmiştir. Gereğinin yapılmasını rica ederim.",
+      "gold": {
+        "acceptable_document_types": ["yol_bakim_talebi", "trafik_guvenligi_bildirimi"],
+        "acceptable_unit_ids": ["ORKGM-YB-001", "ORKGM-TG-001"],
+        "expects_human_review": true
+      },
+      "notes": "İki bağımsız niyet (yol yüzeyi + levha) neredeyse eşit ağırlıkta; tek doğru cevap beklenmez, insan incelemesi beklenir."
+    },
+    {
+      "id": "BLIND-B2",
+      "category": "near_miss_ambiguous",
+      "text": "Adı Soyadı: Emre Özdemir\nTarih: 22.03.2026\nKonu: Kaza sonrası bariyer parçalanması ve yol çökmesi\nKonum: Örnek İl, Örnek İlçe\n\nMeydana gelen kazada hem yol bariyeri parçalandı hem de yol yüzeyinde çökme oluştu. Gereğinin yapılmasını rica ederim.",
+      "gold": {
+        "acceptable_document_types": ["hasar_bildirimi", "trafik_guvenligi_bildirimi", "yol_bakim_talebi"],
+        "acceptable_unit_ids": ["ORKGM-AF-001", "ORKGM-TG-001", "ORKGM-YB-001"],
+        "expects_human_review": true
+      },
+      "notes": "Bariyer hasarı (trafik güvenliği) ve yol çökmesi (yol bakım/hasar) aynı olayda birlikte anlatılmıştır."
+    },
+    {
+      "id": "BLIND-B3",
+      "category": "near_miss_ambiguous",
+      "text": "Adı Soyadı: Selin Aksu\nTarih: 05.04.2026\nKonu: Yol bakım ihalesinin gecikmesi hakkında\nKonum: Örnek İl\n\nBölgemizdeki yol bakım ihalesinin neden gecikmiş olduğunu öğrenmek istiyorum; bu durumdan memnun değiliz.",
+      "gold": {
+        "acceptable_document_types": ["bilgi_talebi", "sikayet"],
+        "acceptable_unit_ids": ["ORKGM-YB-001", "ORKGM-BE-001", "ORKGM-EB-001"],
+        "expects_human_review": true
+      },
+      "notes": "Bilgi edinme kisvesi altında memnuniyetsizlik/şikayet tonu taşır."
+    },
+    {
+      "id": "BLIND-B4",
+      "category": "near_miss_ambiguous",
+      "text": "Adı Soyadı: Köy Muhtarlığı\nTarih: 18.04.2026\nKonu: Köy yoluna kaplama yapılması\n\nKöyümüz muhtarlığı olarak, köy yoluna kaplama yapılmasını arz ve rica ederiz.",
+      "gold": {
+        "acceptable_document_types": ["dilekce", "ust_yazi", "yol_bakim_talebi"],
+        "acceptable_unit_ids": ["ORKGM-YB-001", "KGM-YOLYAP-USTYAPI", "ORKGM-EB-001"],
+        "expects_human_review": true
+      },
+      "notes": "Resmî bir kurumdan (muhtarlık) gelen ama vatandaş dilekçesi gibi de okunabilen sınır durum."
+    },
+    {
+      "id": "BLIND-B5",
+      "category": "near_miss_ambiguous",
+      "text": "Adı Soyadı: Ferhat Yılmaz\nTarih: 30.04.2026\nKonu: İstinat duvarının eğilmesi hakkında endişe\nKonum: Örnek İl, Örnek İlçe\n\nKarşı yakadaki istinat duvarının belirgin şekilde eğildiğini fark ettik, bundan çok endişeliyiz ve yetkililerin ilgilenmesini istiyoruz.",
+      "gold": {
+        "acceptable_document_types": ["hasar_bildirimi", "sikayet"],
+        "acceptable_unit_ids": ["ORKGM-AF-001", "KGM-ARGE-JEO"],
+        "expects_human_review": true
+      },
+      "notes": "Yapısal hasar ihbarı endişe/şikayet üslubuyla anlatılmıştır."
+    },
+    {
+      "id": "BLIND-C1",
+      "category": "no_answer_offtopic",
+      "text": "Adı Soyadı: Aylin Demirtaş\nTarih: 12.05.2026\nKonu: Ofis mobilyaları tanıtım görüşmesi talebi\n\nŞirketimizin ürettiği ofis mobilyalarını tanıtmak amacıyla bir görüşme talep ediyoruz.",
+      "gold": {
+        "expects_abstention": true,
+        "acceptable_unit_ids": ["ORKGM-EB-001"]
+      },
+      "notes": "Karayolu kurumunun görev alanıyla hiçbir ilgisi yoktur; satış/tanıtım talebi."
+    },
+    {
+      "id": "BLIND-C2",
+      "category": "no_answer_offtopic",
+      "text": "Adı Soyadı: Rıza Kurt\nTarih: 19.05.2026\nKonu: Emekli maaşı bağlanma sürecindeki gecikme\n\nEmekli maaşımın bağlanma sürecinde yaşadığım gecikme hakkında ilgili kuruma yönlendirilmek istiyorum.",
+      "gold": {
+        "expects_abstention": true,
+        "acceptable_unit_ids": ["ORKGM-EB-001"]
+      },
+      "notes": "SGK/emeklilik konusu; karayolu kurumunun görev alanı dışındadır."
+    },
+    {
+      "id": "BLIND-C3",
+      "category": "no_answer_offtopic",
+      "text": "Adı Soyadı: Nur Bayram\nTarih: 02.06.2026\nKonu: Restoran açılışına davet\n\nYeni açılan restoranımızın açılışına yönetim kurulu üyelerinizi davet ediyoruz.",
+      "gold": {
+        "expects_abstention": true,
+        "acceptable_unit_ids": ["ORKGM-EB-001"]
+      },
+      "notes": "Ticari davet; kurumun görev tanımıyla ilgisizdir."
+    },
+    {
+      "id": "BLIND-C4",
+      "category": "no_answer_offtopic",
+      "text": "Adı Soyadı: Prof. Dr. Işık Ay\nTarih: 09.06.2026\nKonu: Yapay zeka konferansına akademik sunum başvurusu\n\nÜniversitemizde düzenlenecek yapay zeka konferansına akademik bir sunum göndermek istiyoruz; katkılarınızı bekleriz.",
+      "gold": {
+        "expects_abstention": true,
+        "acceptable_unit_ids": ["ORKGM-EB-001"]
+      },
+      "notes": "Akademik etkinlik daveti; karayolu görev alanı dışındadır."
+    },
+    {
+      "id": "BLIND-D1",
+      "category": "ocr_noise_variant",
+      "text": "Adı S0yadı: Zeynep Kaya\nTarih: I5.04.2026\nK0NU: An4yolun asfalt kaplamasında derin çukur oluştu, bakım yapılmasını rica ederim.\nK0NUM: Örnek İl, Örnek İlçe\n",
+      "gold": {
+        "document_type": "yol_bakim_talebi",
+        "acceptable_unit_ids": ["ORKGM-YB-001"],
+        "expects_human_review": null
+      },
+      "notes": "BLIND-A1'in temiz muadili yerine klasik anahtar kelimelerle yazılmış, 0/O ve 1/I OCR karışıklığı ile bozulmuş sürümü (BLIND-A1'den bağımsız bir OCR gürültü testi)."
+    },
+    {
+      "id": "BLIND-D2",
+      "category": "ocr_noise_variant",
+      "text": "G0NDEREN: Tolga Er\nTARlH: 20.05.2026\nKonu: Kavşaktaki iş4ret levhası devrilmiş, tehlike oluşturuyor, gereğinin yapılmasını rica ederim.\n",
+      "gold": {
+        "document_type": "trafik_guvenligi_bildirimi",
+        "acceptable_unit_ids": ["ORKGM-TG-001"],
+        "expects_human_review": null
+      },
+      "notes": "Etiket OCR karışıklığı (G0NDEREN, TARlH) ve gövde içi rakam/harf karışıklığı (iş4ret) içerir."
+    },
+    {
+      "id": "BLIND-D3",
+      "category": "ocr_noise_variant",
+      "text": "Adı Soyadı: Onur Bal\nTarih: 11.O6.2O26\nKonu: K0prü ayağında büyük bir çatlak oluşmuştur, hasarın onarılmasını arz ederim.\n",
+      "gold": {
+        "document_type": "hasar_bildirimi",
+        "acceptable_unit_ids": ["ORKGM-AF-001"],
+        "expects_human_review": null
+      },
+      "notes": "Tarihte O/0 karışıklığı ve 'Köprü' kelimesinde 0/ö karışıklığı (K0prü) içerir."
+    },
+    {
+      "id": "BLIND-D4",
+      "category": "ocr_noise_variant",
+      "text": "AdıSoyadı: Sevgi Tan\nTarih: 3.O7.2O26\nKonu: Yıllık yol bakım faaliyet kayıtları hakkında bilgi talep ediyorum, kayıtların tarafıma gönderilmesini rica ederim.\n",
+      "gold": {
+        "document_type": "bilgi_talebi",
+        "acceptable_unit_ids": ["ORKGM-BE-001"],
+        "expects_human_review": null
+      },
+      "notes": "Etiket ile değer arasındaki boşluk taranan belgelerde sık görüldüğü gibi kaybolmuştur (AdıSoyadı)."
+    }
+  ]
+}

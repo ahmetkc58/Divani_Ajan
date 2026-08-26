@@ -32,10 +32,16 @@ COMPETITION_SNAPSHOT_TEXT_STATUSES = {
     "ocr_candidate_unverified",
 }
 ACTIVE_PROJECT_DOMAINS = {
+    "aviation",
+    "communications",
     "official_writing",
     "general_application",
+    "internal_administration",
     "kgm_infrastructure",
+    "maritime",
+    "railway",
     "road_transport",
+    "unknown",
 }
 
 
