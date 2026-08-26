@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from karayol_agent.document_types import general_document_type_for
 from karayol_agent.schemas import ClassificationResult
 from karayol_agent.text_utils import normalize_for_search, tokenize
 
@@ -110,6 +111,9 @@ class ClassificationAgent:
         if not scored:
             return ClassificationResult(
                 document_type="genel_basvuru",
+                general_document_type=general_document_type_for(
+                    "genel_basvuru", text
+                ),
                 confidence=0.35,
                 matched_keywords=[],
             )
@@ -126,6 +130,7 @@ class ClassificationAgent:
             confidence = min(confidence, 0.58)
         return ClassificationResult(
             document_type=label,
+            general_document_type=general_document_type_for(label, text),
             confidence=round(confidence, 2),
             matched_keywords=matches,
         )

@@ -41,13 +41,17 @@ class ExtractedField(BaseModel):
 
 
 class ClassificationResult(BaseModel):
+    # ``document_type`` geriye uyumlu çalışma zamanı konu/niyet profilidir.
+    # Kullanıcıya gösterilecek geniş evrak sınıfı ``general_document_type``tır.
     document_type: str
+    general_document_type: str = "genel_basvuru"
     confidence: float = Field(ge=0, le=1)
     matched_keywords: list[str] = Field(default_factory=list)
 
 
 class DocumentAnalysis(BaseModel):
     document_type: str
+    general_document_type: str = "genel_basvuru"
     confidence: float = Field(ge=0, le=1)
     summary: str
     # Retrieval safety checks need evidence from the submitted document, not

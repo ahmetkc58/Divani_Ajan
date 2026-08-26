@@ -13,6 +13,24 @@ uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 8. güvenli LaTeX taslağı ve doğrudan indirilebilir PDF oluşturma,
 9. uygunluk kontrolü ve süreç bilgilendirmesi.
 
+Evrak sınıflandırması iki seviyeyi bilinçli olarak ayırır. Kullanıcıya gösterilen
+genel `general_document_type`; `dilekce`, `sikayet`, `itiraz`, `talep`, `izin`,
+`belge`, `bildirim`, `ust_yazi` veya `genel_basvuru` değerlerinden biridir. Yol
+bakımı, trafik güvenliği, hasar ve bilgi edinme gibi ayrımlar evrak türü olarak
+çoğaltılmaz; mevcut yönlendirme ve RAG doğruluğunu koruyan ayrı konu/işlem
+profili `document_type` alanında geriye uyumlu olarak tutulur.
+
+Altı genel başvuru türünü kapsayan 120 dengeli sentetik PDF; tür adını gövdeye
+açıkça yazmadan ve 30 gerçek raster/taranmış örnek içerecek şekilde üretilebilir:
+
+```powershell
+python scripts/generate_synthetic_pdfs.py
+```
+
+Beklenen genel tür, eksik alan ve taranmış-belge bayrağı
+`data/synthetic_documents/manifest.csv` içinde saklanır. Bu dosyalar yalnız test
+verisidir; mevzuat RAG korpusuna alınmaz.
+
 Çevrimdışı demo akışı varsayılan olarak kural tabanlı BM25 ile çalışır. İsteğe
 bağlı RAG katmanı aynı sorguyu Jina Embeddings v3 (`retrieval.query`) ve
 contextual BM25 kanallarına gönderir, Qdrant dense sonuçlarını klasik RRF ile

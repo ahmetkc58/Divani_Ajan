@@ -358,6 +358,7 @@ class ContentAnalysisAgent:
         )
         return DocumentAnalysis(
             document_type=classification.document_type,
+            general_document_type=classification.general_document_type,
             # OCR normalization must never inflate the classifier's confidence.
             confidence=classification.confidence,
             summary=self._summarize(normalized_text),

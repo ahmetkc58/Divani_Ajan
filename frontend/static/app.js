@@ -95,6 +95,11 @@ const llmDataClassificationLabels = {
 };
 
 const documentTypeLabels = {
+  talep: "Talep",
+  bildirim: "Bildirim",
+  itiraz: "İtiraz",
+  izin: "İzin başvurusu",
+  belge: "Belge / bilgi başvurusu",
   yol_bakim_talebi: "Yol bakım talebi",
   trafik_guvenligi_bildirimi: "Trafik güvenliği bildirimi",
   hasar_bildirimi: "Hasar bildirimi",
@@ -348,7 +353,7 @@ function renderOverview(state) {
   return `
     ${scenarioExpectation(state)}
     <div class="overview-grid">
-      <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.document_type))}</strong><small>Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
+      <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.general_document_type || analysis.document_type))}</strong><small>Konu/işlem profili: ${escapeHtml(typeLabel(analysis.document_type))} · Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
       <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")} · ${escapeHtml(routingReview)}</small></div>
       <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong><small>${escapeHtml(template.template_id || "")}</small></div>
       <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
@@ -535,7 +540,7 @@ function renderState(state) {
   emptyState.hidden = true;
   resultContent.hidden = false;
   resultContent.innerHTML = `
-    <div class="result-headline"><div><span class="result-label">${escapeHtml(statusLabels[state.status] || state.status)}</span><h3>${escapeHtml(typeLabel(state.analysis?.document_type))}</h3><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div><button class="document-id" id="copy-document-id" type="button" title="Evrak kimliğini kopyala">${escapeHtml(state.document_id)} ⧉</button></div>
+    <div class="result-headline"><div><span class="result-label">${escapeHtml(statusLabels[state.status] || state.status)}</span><h3>${escapeHtml(typeLabel(state.analysis?.general_document_type || state.analysis?.document_type))}</h3><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div><button class="document-id" id="copy-document-id" type="button" title="Evrak kimliğini kopyala">${escapeHtml(state.document_id)} ⧉</button></div>
     <nav class="result-tabs" role="tablist" aria-label="Sonuç bölümleri"><button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-result-tab="overview">Genel</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="fields">Alanlar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="sources">Kaynaklar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="draft">Taslak</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="timeline">Akış</button></nav>
     <section class="tab-panel" data-tab-panel="overview">${renderOverview(state)}</section><section class="tab-panel" data-tab-panel="fields" hidden>${renderFields(state)}</section><section class="tab-panel" data-tab-panel="sources" hidden>${renderReferences(state)}</section><section class="tab-panel" data-tab-panel="draft" hidden>${renderDraft(state)}</section><section class="tab-panel" data-tab-panel="timeline" hidden>${renderTimeline(state)}</section>`;
 
