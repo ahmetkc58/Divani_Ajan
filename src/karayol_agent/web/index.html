@@ -14,6 +14,36 @@
   <body>
     <a class="skip-link" href="#test-workspace">Test alanına geç</a>
 
+    <aside class="app-sidebar" aria-label="Ana menü">
+      <a class="sidebar-brand" href="/" aria-label="YolYaz ana sayfa">
+        <span class="sidebar-mark">YY</span>
+        <span><strong>YolYaz</strong><small>Akıllı Evrak Yönetimi</small></span>
+      </a>
+      <p class="sidebar-caption">KARAYOLU İDARELERİ İÇİN</p>
+      <h2 class="sidebar-title">Akıllı<br />Asistan</h2>
+      <p class="sidebar-description">Evrakları anlayan, mevzuata bağlayan, doğru birime yönlendiren yapay zeka destekli sistem.</p>
+      <div class="sidebar-highlights" aria-label="Sistem özellikleri">
+        <span><b>ϟ</b>Hızlı<br />İşlem</span><span><b>◎</b>Doğru<br />Yönlendirme</span><span><b>▤</b>Mevzuata<br />Uyum</span>
+      </div>
+      <div class="sidebar-metrics"><strong>⌁ <b>%80</b>'e varan zaman tasarrufu</strong><strong>♢ <b>%90</b>'a kadar hata azalması</strong><strong>⚖ <b>%100</b> mevzuata uygun süreçler</strong></div>
+      <div class="sidebar-status"><span class="health-dot" aria-hidden="true"></span><span>Sentetik demo<br /><small>Sistem çevrimiçi</small></span></div>
+    </aside>
+
+    <aside class="nav-rail" aria-label="Uygulama bölümleri">
+      <a class="rail-brand" href="/" aria-label="YolYaz"><span>W</span><b>YolYaz</b></a>
+      <nav class="sidebar-nav">
+        <a class="is-active" href="#test-workspace" data-menu="workspace"><span aria-hidden="true">⌂</span>Çalışma Alanı</a>
+        <a href="#dashboard-view" data-menu="documents"><span aria-hidden="true">▣</span>Evraklar</a>
+        <a href="#dashboard-view" data-menu="tasks"><span aria-hidden="true">✓</span>Görevler</a>
+        <a href="#dashboard-view" data-menu="legislation"><span aria-hidden="true">▤</span>Mevzuat Kütüphanesi</a>
+        <a href="#dashboard-view" data-menu="units"><span aria-hidden="true">♙</span>Birim Rehberi</a>
+        <a href="#dashboard-view" data-menu="templates"><span aria-hidden="true">▧</span>Şablonlar</a>
+        <a href="/docs" target="_blank" rel="noreferrer"><span aria-hidden="true">◫</span>Raporlar &amp; Analizler</a>
+        <a href="#dashboard-view" data-menu="settings"><span aria-hidden="true">⚙</span>Ayarlar</a>
+      </nav>
+      <div class="rail-user"><span>AY</span><b>Ahmet Yılmaz</b><small>Uzman · Çevrimiçi</small></div>
+    </aside>
+
     <header class="topbar">
       <a class="brand" href="/" aria-label="YolYaz ana sayfa">
         <span class="brand-mark" aria-hidden="true">YY</span>
@@ -35,13 +65,21 @@
     <main id="test-workspace">
       <section class="intro" aria-labelledby="page-title">
         <div>
-          <p class="eyebrow">KARAYOLU EVRAK AJANI · YEREL MVP</p>
-          <h1 id="page-title">Bir evrak verin.<br /><span>Süreci adım adım izleyin.</span></h1>
+          <p class="eyebrow">YOLYAZ · AKILLI EVRAK YÖNETİMİ</p>
+          <h1 id="page-title">Merhaba, Ahmet <span aria-hidden="true">👋</span></h1>
+          <p class="intro-subtitle">Bugün nasıl yardımcı olabilirim?</p>
         </div>
-        <p class="intro-copy">
-          Hazır senaryoyu çalıştırın veya kendi metninizi girin. Sistem evrakı
-          sınıflandırır, mevzuat önerir, ilgili birimi bulur ve resmî yazı taslağı hazırlar.
-        </p>
+        <div class="top-actions"><a href="/docs" target="_blank" rel="noreferrer">⌕ Ara</a><span>♧</span><button id="new-document-button" type="button">＋ Yeni Evrak</button></div>
+      </section>
+
+      <section class="process-strip" aria-label="Evrak işlem adımları">
+        <div class="process-step is-done"><span>✓</span><strong>Evrakı Al</strong><small>Metin, PDF veya görsel</small></div>
+        <i aria-hidden="true"></i>
+        <div class="process-step is-done"><span>✓</span><strong>Anla &amp; Sınıflandır</strong><small>Tür, konu, aciliyet</small></div>
+        <i aria-hidden="true"></i>
+        <div class="process-step is-done"><span>✓</span><strong>Mevzuata Bağla</strong><small>İlgili kanun ve yönetmelik</small></div>
+        <i aria-hidden="true"></i>
+        <div class="process-step is-current"><span>4</span><strong>Yazı Taslağı Üret</strong><small>Resmî yazı taslağı</small></div>
       </section>
 
       <section class="workspace-grid" aria-label="Manuel test çalışma alanı">
@@ -108,6 +146,7 @@
             <div class="input-mode-panel" id="text-mode-panel" role="tabpanel" aria-labelledby="text-mode-tab">
               <label class="sr-only" for="document-text">İşlenecek evrak metni</label>
               <textarea id="document-text" name="document-text" spellcheck="true"></textarea>
+              <div class="template-suggestion" id="template-suggestion" hidden aria-live="polite"></div>
             </div>
 
             <div class="input-mode-panel" id="file-mode-panel" role="tabpanel" aria-labelledby="file-mode-tab" hidden>
@@ -158,6 +197,19 @@
         </section>
       </section>
     </main>
+
+    <section class="dashboard-view" id="dashboard-view" hidden aria-live="polite">
+      <div class="dashboard-view-head"><div><span class="eyebrow">YOLYAZ · GERÇEK VERİ</span><h2 id="dashboard-view-title">Evraklar</h2></div><button id="dashboard-back" type="button">← Çalışma alanına dön</button></div>
+      <div class="dashboard-view-content" id="dashboard-view-content"></div>
+    </section>
+
+    <section class="capability-band" aria-label="YolYaz yetenekleri">
+      <article class="capability-card"><span class="capability-icon">ϟ</span><div><h2>OCR ve Evrak Okuma</h2><p>TXT, MD, PDF, PNG, JPG ve TIFF belgelerden metin alın; OCR fallback ile görsel evrakları işleyin.</p></div></article>
+      <article class="capability-card"><span class="capability-icon">♧</span><div><h2>Türkçe İçerik Analizi</h2><p>Evrak türünü, konu, konum, talep, telefon ve diğer alanları çıkarıp eksikleri belirleyin.</p></div></article>
+      <article class="capability-card"><span class="capability-icon">⌖</span><div><h2>Mevzuat Eşleştirme</h2><p>BM25 ve hibrit retrieval sonuçlarını kaynak, skor ve doğrulama bilgileriyle inceleyin.</p></div></article>
+      <article class="capability-card"><span class="capability-icon">▧</span><div><h2>Birim ve Yazı Üretimi</h2><p>Karayolu sorumluluklarına göre birim önerin; üst yazı ve cevap yazısı taslağını oluşturun.</p></div></article>
+      <article class="capability-card"><span class="capability-icon">◴</span><div><h2>İzlenebilir Süreç</h2><p>Eksik bilgi, uygunluk kontrolü, kullanıcı onayı ve LaTeX/PDF çıktılarını tek akışta takip edin.</p></div></article>
+    </section>
 
     <footer>
       <span>YolYaz v0.1 · Yerel test ortamı</span>
