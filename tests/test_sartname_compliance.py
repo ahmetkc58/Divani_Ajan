@@ -163,7 +163,11 @@ def _complete_and_approve(
 ) -> ProcessState:
     state = orchestrator.provide_information(
         state.document_id,
-        {"sayi": "2026/1", "imzalayan": "Test Onaylayıcı", "unvan": "Şube Müdürü"},
+        {
+            "sayi": "E-67915368-903.07.02-1",
+            "imzalayan": "Test Onaylayıcı",
+            "unvan": "Şube Müdürü",
+        },
     )
     return orchestrator.approve(state.document_id, "Yetkili Test Kullanıcısı")
 
@@ -412,7 +416,11 @@ def test_process_never_completes_without_an_explicit_approval_call(
     state = orchestrator.process_text(DILEKCE_TEXT)
     state = orchestrator.provide_information(
         state.document_id,
-        {"sayi": "2026/2", "imzalayan": "Test Onaylayıcı", "unvan": "Şube Müdürü"},
+        {
+            "sayi": "E-67915368-903.07.02-2",
+            "imzalayan": "Test Onaylayıcı",
+            "unvan": "Şube Müdürü",
+        },
     )
     assert state.status == ProcessStatus.WAITING_FOR_APPROVAL
     assert "onayla" in state.possible_actions

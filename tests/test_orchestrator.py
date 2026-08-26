@@ -44,7 +44,7 @@ def test_complete_multi_agent_flow_and_approval(tmp_path: Path) -> None:
     state = orchestrator.provide_information(
         state.document_id,
         {
-            "sayi": "2026/42",
+            "sayi": "E-67915368-903.07.02-42",
             "imzalayan": "Mehmet Demir",
             "unvan": "Şube Müdürü",
         },
@@ -77,6 +77,7 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
         "sayi",
         "imzalayan",
         "unvan",
+        "tarih",
     ]
 
     state = orchestrator.provide_information(
@@ -84,9 +85,10 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
         {
             "gonderen": "Deniz Örnek",
             "konum": "Örnek İlçe, çevre yolu kavşağı",
-            "sayi": "2026/77",
+            "sayi": "E-67915368-903.07.02-77",
             "imzalayan": "Mert Demir",
             "unvan": "Şube Müdürü",
+            "tarih": "24.08.2026",
         },
     )
 
@@ -140,7 +142,7 @@ def test_failed_compliance_is_not_presented_for_approval(
     state = orchestrator.provide_information(
         state.document_id,
         {
-            "sayi": "2026/42",
+            "sayi": "E-67915368-903.07.02-42",
             "imzalayan": "Mehmet Demir",
             "unvan": "Şube Müdürü",
         },

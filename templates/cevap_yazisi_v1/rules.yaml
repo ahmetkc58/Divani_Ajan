@@ -1,3 +1,22 @@
 required_sections: [kurum_adi, sayi, tarih, konu, muhatap, govde, imza]
 human_approval_required: true
-
+rule_source:
+  id: 2646-RG-2020-31151
+  title: Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik
+  official_gazette: 10.06.2020/31151
+  decision_number: 2646
+  url: https://www.resmigazete.gov.tr/eskiler/2020/06/20200610.pdf
+enforced_articles:
+  baslik: RY-10
+  sayi: RY-11
+  tarih: RY-12
+  konu: RY-13
+  muhatap: RY-14
+  ilgi: RY-15
+  kapanis: RY-16
+  imza: RY-17
+  ek: RY-18
+  dagitim: RY-19
+  ustveri: RY-28
+closing_is_selected_by_authority_relation: true
+interest_is_not_legislation_reference: true

@@ -159,7 +159,7 @@ def test_primary_manual_scenario_reaches_approval_and_download(
         f"/api/v1/processes/{document_id}/information",
         json={
             "fields": {
-                "sayi": "2026/42",
+                "sayi": "E-67915368-903.07.02-42",
                 "imzalayan": "Mehmet Demir",
                 "unvan": "Şube Müdürü",
             },

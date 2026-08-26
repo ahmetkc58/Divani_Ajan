@@ -16,6 +16,13 @@
       "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
     },
     {
+      "pattern": "data/synthetic_documents/**",
+      "data_class": "synthetic_documents",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Proje tarafından üretilen kurgu evraklar ve makinece okunabilir manifest; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
       "pattern": "data/evaluation/**",
       "data_class": "synthetic_evaluation",
       "decision": "include",

@@ -33,7 +33,11 @@ class DraftingAgent:
         paragraphs = self._paragraphs(
             analysis, decision, routing, verified_references, closing
         )
-        missing = list(dict.fromkeys([*analysis.missing_fields, "sayi", "imzalayan", "unvan"]))
+        missing = list(
+            dict.fromkeys([*analysis.missing_fields, "sayi", "imzalayan", "unvan"])
+        )
+        if not analysis.fields.get("tarih") or not analysis.fields["tarih"].value:
+            missing.append("tarih")
         contact_information = [
             field.value
             for name in ("eposta", "telefon")
@@ -62,6 +66,7 @@ class DraftingAgent:
                 "template_version": "1.0.0",
                 "data_class": "sentetik_demo",
                 "routing_unit_id": routing.unit_id,
+                "official_writing_rules": "2646-RG-2020-31151",
             },
             authority_relation=authority_relation,
             closing=closing,

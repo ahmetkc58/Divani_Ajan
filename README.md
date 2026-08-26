@@ -90,6 +90,13 @@ Yerel OCR/alan çıkarımı
   belgede gösterilmez; bunlar süreç kaydı ve arayüzde izlenebilir kalır. Makam
   ilişkisiyle çelişen veya birden fazla kapanış içeren taslak uygunluk kapısını
   geçemez.
+- Uygunluk motoru `2646-RG-2020-31151` kaynak sürümüne bağlıdır; sayı, tarih,
+  konu, muhatap, ilgi, makam ilişkisine göre kapanış, imza, ek, dağıtım ve
+  üstveri kontrolleri sonuçta `RY-10`–`RY-28` kimlikleriyle izlenir. İlgi ile
+  RAG mevzuat referansları ayrı tutulur. Dayanaklar, otomatik kontrol kapsamı ve
+  insan doğrulaması sınırları
+  [`docs/RESMI_YAZISMA_UYGUNLUK_KURALLARI.md`](docs/RESMI_YAZISMA_UYGUNLUK_KURALLARI.md)
+  dosyasındadır.
 
 Yerel Ollama'yı kullanmak için servisi başlatın ve completion modelinin kurulu
 olduğunu doğrulayın:

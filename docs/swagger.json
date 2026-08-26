@@ -494,6 +494,24 @@
             },
             "type": "array",
             "title": "Warnings"
+          },
+          "applied_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Applied Rule Ids"
+          },
+          "rule_source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Source Id"
           }
         },
         "type": "object",
@@ -508,6 +526,11 @@
           "document_type": {
             "type": "string",
             "title": "Document Type"
+          },
+          "general_document_type": {
+            "type": "string",
+            "title": "General Document Type",
+            "default": "genel_basvuru"
           },
           "confidence": {
             "type": "number",

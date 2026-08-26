@@ -33,7 +33,7 @@ def test_completed_process_cannot_be_changed_or_approved_twice(
         f"/v1/process/{document_id}/information",
         json={
             "fields": {
-                "sayi": "QA-3",
+                    "sayi": "E-67915368-903.07.02-3",
                 "imzalayan": "Yetkili Kullanıcı",
                 "unvan": "Şube Müdürü",
             }
@@ -60,4 +60,3 @@ def test_completed_process_cannot_be_changed_or_approved_twice(
     assert repeated_approval.status_code == 422
     assert persisted["status"] == "tamamlandi"
     assert persisted["draft"]["subject"]["value"] == original_subject
-

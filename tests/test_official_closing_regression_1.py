@@ -46,7 +46,7 @@ def test_official_sections_are_rendered_and_conflicting_closing_is_rejected(
     state = orchestrator.provide_information(
         state.document_id,
         {
-            "sayi": "2026/42",
+            "sayi": "E-67915368-903.07.02-42",
             "imzalayan": "Mehmet Demir",
             "unvan": "Şube Müdürü",
             "ilgi": "12.08.2026 tarihli başvuru",

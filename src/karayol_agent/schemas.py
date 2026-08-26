@@ -351,6 +351,8 @@ class ComplianceResult(BaseModel):
     score: float = Field(ge=0, le=1)
     errors: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
+    applied_rule_ids: list[str] = Field(default_factory=list)
+    rule_source_id: str | None = None
 
 
 class ProcessEvent(BaseModel):
