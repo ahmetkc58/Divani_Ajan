@@ -1,0 +1,938 @@
+--- SAYFA 1 ---
+1 
+ 
+TERSANE, TEKNE İMAL VE ÇEKEK YERİ HAKKINDA YÖNETMELİK 
+  
+BİRİNCİ BÖLÜM 
+Amaç, Kapsam, Dayanak, Tanımlar ve Kısaltmalar 
+Amaç 
+MADDE 1 – (1) Bu Yönetmeliğin amacı, 4/4/1990 tarihli ve 3621 sayılı Kıyı Kanunu 
+ve ilgili mevzuatı gereği iç sularda, kıyı ve sahil şeridi ile dolgu ve kurutma yoluyla kazanılan 
+alanlar üzerinde imar planı kararıyla belirlenen mevcut ve yeni kurulacak olan tesislerin yer, 
+kapasite ve benzeri niteliklerinin planlanması, kurulmalarına ilişkin usul ve esaslar, tevsi 
+yatırımlar, kapasitelerinin artırılması, modern üretim ve yönetim çerçevesinde projelerin 
+incelenerek onaylanması, asgari güvenlik şartları çerçevesinde denetim ve belgelendirme ile 
+yüzer havuzların çalışma usul ve esaslarını belirlemektir. 
+Kapsam 
+MADDE 2 – (1) Bu Yönetmelik hükümleri, 4/4/1990 tarihli ve 3621 sayılı Kıyı 
+Kanunu ve ilgili mevzuatında belirtilmiş olan iç sular, kıyı ve sahil şeridi ile dolgu ve kurutma 
+yoluyla kazanılan alanlar üzerinde, imar planı kararı ile belirlenen mevcut ve yeni kurulacak 
+olan tesislere uygulanır. 
+(2) (Değişik:RG-29/12/2017-30285)  Bu Yönetmelik hükümleri aksi belirtilmedikçe; 
+kıyı ve sahil şeridi ile dolgu ve kurutma yoluyla kazanılan alanlar dışındaki tesisler, tüm 
+sanayi bölgelerindeki tesisler, serbest bölgelerdeki tesisler, balıkçı barınakları içerisindeki 
+çekek yerleri, yat limanı içerisindeki çekek yerleri, askerî tesisler, Sahil Güvenlik 
+Komutanlığına ait tesisler ve polis tesisleri hakkında uygulanmaz. 
+Dayanak 
+MADDE 3 – (Değişik:RG-31/12/2018-30642 4.Mükerrer) 
+(1)Bu Yönetmelik, 10/7/2018 tarihli ve 30474 sayılı Resmî Gazete’de yayımlanan 1 
+sayılı Cumhurbaşkanlığı Teşkilatı Hakkında Cumhurbaşkanlığı Kararnamesinin 482 nci 
+maddesi, 4/4/1990 tarihli ve 3621 sayılı Kıyı Kanunu, 14/4/1341 tarihli ve 618 sayılı 
+Limanlar Kanunu  ile 26/9/2011 tarihli ve  655 sayılı Ulaştırma ve Altyapı Alanına İlişkin 
+Bazı Düzenlemeler Hakkında Kanun Hükmünde Kararnameye dayanılarak hazırlanmıştır. 
+Tanımlar ve kısaltmalar 
+MADDE 4 – (1) Bu Yönetmeliğin uygulanmasında; 
+a) Çekek yeri: Tam boyu altmış metreye kadar her türlü gemi ve su araçlarına bakım-
+onarım, tadilat ve kışlatma ile yirmi dört metreye kadar inşa hizmeti veren tesisi, 
+b) Gemi: Adı, tonilatosu ve kullanma amacı ne olursa olsun suda kürekten başka sevk 
+sistemiyle hareket edebilen her türlü tekneyi, 
+c) Gemi mühendisi: Gemi mühendisleri odasına kayıtlı mühendisi, 
+ç) Gemi sanayi veritabanı programı (GSVP): Tesis ve tüm gemi ve su araçlarının inşa, 
+bakım-onarım, tadilat gibi mevcut ve güncel bilgilerinin girildiği istatistikî veritabanı 
+programını, 
+d) İdare: (Değişik ibare:RG-31/12/2018-30642 4.Mükerrer) Ulaştırma ve Altyapı 
+Bakanlığı, Tersaneler ve Kıyı Yapıları Genel Müdürlüğünü, 
+e) İTDK (İnceleme, Tespit ve Denetim Komisyonu): İnceleme, tespit ve denetim 
+amacıyla İdare tarafından en az üç kişinin katılımıyla oluşturulan komisyonu, 
+f) İşletme izni belgesi: Bu Yönetmelik gereği işletme izni kriterlerini yerine getiren 
+tesislere verilen ek-8’deki belgeyi, 
+g) Kısmi işletme izni belgesi: Bu Yönetmelik gereği kısmi işletme izni kriterlerini 
+yerine getiren yeni tesislere verilen ek-7’deki belgeyi, 
+ğ) Liman başkanlığı: Tesisleri, idari sınırları içerisinde bulunduran (Değişik ibare:RG-
+31/12/2018-30642 4.Mükerrer) Ulaştırma ve Altyapı Bakanlığı bağlısı liman başkanlığını,
+
+--- SAYFA 2 ---
+2 
+ 
+h) Mevcut tesis: 13/2/2009 tarihinden önce inşa, tadilat, bakım-onarım ve çekek 
+faaliyeti yapıldığı belgelenen veya İdareden kısmi işletme izni belgesi veya işletme izni 
+belgesi almış tesisi, 
+ı) Su aracı: Gemi dışında, suda yüzebilen ve tahsis edildiği gayeye uygun olarak 
+kullanılan, her türlü araç ve yapıyı, 
+i) Tadilat: Gemi ve su araçlarının üç ana boyutundan biri veya birkaçı ile gros ve net 
+tonilatosunun en az birinin değişimine veya geminin cinsinin yolcu taşımacılığı veya tehlikeli 
+madde taşımacılığı yapmak üzere değiştirilmesine neden olacak yapısal değişikliği, 
+j) Tesis: Tersane, tekne imal yeri ve çekek yerini, 
+k) Tesis işleticisi: Tesisi ya da yüzer havuzu işleten veya tesisi temsile yetkilendirilmiş 
+gerçek veya tüzel kişileri, 
+l) Tesis organizasyonu ve yerleşim planı: Tesis alanında bulunan kızak, iskele, ambar, 
+depo, bina gibi üst yapıların yerlerinin gösterildiği, ek-1’de belirtilen formata uygun olarak 
+hazırlanan koordinatlı ve ölçekli planı, 
+m) Tersane: Her cins ve boyutlarda gemi ve su araçlarının inşası, bakım-onarım ve 
+tadilatlarından biri veya bir kaçının yapılmasına imkân sağlayan teknik ve sosyal altyapı ve en 
+az elli metre deniz cephesine sahip gemi inşa kapasitesi belirlenmiş tesisi, 
+n) Tekne imal yeri: Ahşap yat imalatında boy sınırlaması olmaksızın tam boyu yetmiş 
+beş metreye kadar ve İTDK tarafından inceleme sonucuna göre kara ve denizdeki fiziksel 
+şartların uygun bulunması halinde yüz yirmi beş metreye kadar her türlü gemi ve su 
+araçlarının inşa, tadilat ve bakım-onarım hizmetlerinden biri veya bir kaçının yapılmasına 
+imkân sağlayan teknik ve sosyal altyapılara sahip tesisi, 
+o) TÜRKAK: Türk Akreditasyon Kurumunu, 
+ö) Yüzer havuz: İçerisinde gemi inşa, tadilat, bakım-onarımın ve taşımacılıkta da 
+kullanılabilen su aracını, 
+p) Yüzer havuz bağlama planı: Tesiste konuşlandırılacak yüzer havuzun bağlama 
+elemanları, kapasitesi, bağlama konumu ve şekli gibi hususların gösterildiği, ek-2’de 
+belirtilen formata uygun olarak hazırlanan koordinatlı ve ölçekli planı, 
+r) Yüzer havuz işletme izni belgesi: İdarece uygun görülen şekilde tesislerde 
+konuşlandırılıp çalıştırılabileceği tespit edilen yüzer havuz için verilen ek-9’daki belgeyi, 
+s) (Değişik:RG-29/12/2017-30285) Yetkilendirilmiş 
+kuruluş: 18/1/2017 tarihli 
+ve 
+29952 sayılı Resmî Gazete’de yayımlanan Gemiler İçin Yetkilendirilmiş Kuruluşlar 
+Yönetmeliği çerçevesinde yetkilendirilmiş kuruluşu, 
+ş) Yeni tesis: Mevcut tesis kapsamında olmayan tesisi, 
+ifade eder. 
+İKİNCİ BÖLÜM 
+Tesis Yeri Belirleme, Kurma, Tevsi Yatırım, Tesis Organizasyonu ve Yerleşim 
+Planı 
+Başvuruları Onay ve Değerlendirme Esasları ile Kriterler ve İzinler 
+Tesis yeri belirleme kriterleri 
+MADDE 5 – (1) Tesislerin planlanması, kurulması için gerek kamu gerekse özel veya 
+tüzel kişilerce yapılan müracaatlarla ilgili olarak; ek-3’ deki kriterlere göre İTDK tarafından 
+mahallinde yapılan inceleme sonucu bir rapor hazırlanır. 
+(2) İTDK tarafından hazırlanan rapor İdareye sunulur. Rapor üzerinden İdarece 
+değerlendirme yapılarak tesis yerinin olumlu veya olumsuz bulunması durumunda ilgililerine 
+bu doğrultuda görüş bildirilir. 
+(3) Yeni tesis yapılması amacıyla birden fazla tesisin bulunacağı kooperatif veya ortak 
+şirket yapısında olan yatırımcılar lehine irtifak hakkı tesis edilecek ve/veya adına kullanma 
+izni verilecek alanlarda, Ar-Ge merkezi, eğitim merkezi, acil müdahale merkezi, tesis 
+faaliyetleri için ortak kullanım alanı, sosyal alan veya benzeri kullanım amaçları için İdarece
+
+--- SAYFA 3 ---
+3 
+ 
+onaylanan tesis organizasyonu ve yerleşim planında gösterilen alanın kullanım şekli İdarece 
+belirlenir. 
+Yeni tesis kurma ve modernizasyona yönelik tevsi yatırım başvurusu 
+MADDE 6 – (1) Yeni tesis kurma ve modernizasyona yönelik tevsi yatırımlarda 
+yatırımcı, ilgili mevzuatına göre imar planı ve ön izin verilmesi, irtifak hakkı tesis edilmesi 
+ve/veya kullanma izni verilmesi işlemlerini sonuçlandırır. 
+(2) Yeni tesis kurma aşamasında İdarenin görüşü 5 inci madde kapsamında oluşturulur. 
+(3) Mevcut tesis için, onaylı imar planı bulunan ve tahsisi yapılmış alanlar üzerinde 
+tevsi veya modernizasyon talebi bulunan yatırımcılar, ek-1’deki formata uygun hazırlattığı 
+revize tesis organizasyonu ve yerleşim planını idareye onaylatır. 
+(4) Yeni tesis için, imar plan onayı ve ön izin verilmesi, irtifak hakkı tesis edilmesi 
+ve/veya kullanma izni verilmesi işlemlerini tamamlayan yatırımcı, ek-1’deki formata uygun 
+olarak hazırlattığı tesis organizasyonu ve yerleşim planı onayı ve yatırım iş ve işlemleri ile 
+bunlara ait prosedürü tamamladıktan sonra kısmi işletme izni belgesi veya işletme izni belgesi 
+almak üzere İdareye başvurur. 
+Tesis organizasyonu ve yerleşim planı onayı başvurusu 
+MADDE 7 – (1) Mevcut veya yeni kurulacak tesis ile revizeye ihtiyaç duyulması 
+halinde hazırlanan tesis organizasyonu ve yerleşim planı onayı için aşağıdaki bilgi ve 
+belgelerle İdareye başvurulur. 
+a) Başvuru dilekçesi, 
+b) Yatırımın veya revize yatırımın gerekçesini içeren açıklayıcı rapor ve termin planı, 
+c) Tapu, kira sözleşmesi, Maliye Bakanlığından alınmış ön izni ve/veya tahsis 
+sözleşmesinin aslı veya idarece onaylı örneği, varsa ilave saha/dolgu için alınmış ön izni, 
+ç) Tesisin tamamını içeren onaylı uygulama imar planı paftasının ilgili idaresince onaylı 
+örneği, plan notları ve lejantı içeren paftalar ve bunların sayısal dokümantasyon CD’si, 
+d) Ek-1’deki format dikkate alınarak hazırlanmış 6 nüsha 1/1000 ölçekli, gerekli 
+görülmesi durumunda 2 adet 1/500 veya 1/2000 ölçekli tesis organizasyonu ve yerleşim planı, 
+e) Yeni tesisin tersane olması durumunda, ek-1’deki formata uygun olarak hazırlanmış 
+ve yetkilendirilmiş kuruluş tarafından vize edilmiş tesis organizasyonu ve yerleşim planı. 
+(2) Tesis organizasyonu ve yerleşim planında ek-1’de belirtilen yapılar ve yüzer havuza 
+yönelik değişikliği gerektirecek her bir düzenleme için tesis organizasyonu ve yerleşim planı 
+İdarece onaylanır. 
+(3) Tesis organizasyonu ve yerleşim planı ek-1’de yer alan örnekte olduğu gibi 
+hazırlattırılır. 
+Tesis organizasyonu ve yerleşim planı değerlendirme esasları 
+MADDE 8 – (1) Başvurular, onaylı imar planı ve plan hükümleri ile İdarece belirlenen 
+ek-1 ve ek-4’teki kriterler dikkate alınarak değerlendirilir. 
+(2) İdarece gerekli görülmesi halinde İTDK marifeti ile mahallinde inceleme yapılır. 
+(3) Tesis organizasyonu ve yerleşim planı, tesiste yer alan yapılar ve onaylı imar plan 
+hükümlerine uygun olmak zorundadır. 
+(4) Değerlendirme sonucu, yatırımcı ile ilgili kurum ve kuruluşlara bildirilir. 
+Tesis kriterleri 
+MADDE 9 – (1) Tesislerde bulunması gerekli kriterler ek-4’te belirtilmiştir. 
+(2)Tesis kriterlerinden bazılarının bir başka yerde olduğunun beyan edilmesi veya 
+hizmet olarak üçüncü şahıslardan alınması durumunda bu durum değerlendirmede dikkate 
+alınır. 
+Kısmi işletme izni belgesi başvurusu 
+MADDE 10 – (1) Yeni tesisler, kısmi işletme izni belgesi için aşağıdaki bilgi ve 
+belgelerle birlikte yazılı olarak İdareye başvururlar. 
+a) Başvuru dilekçesi,
+
+--- SAYFA 4 ---
+4 
+ 
+b) Tüzel kişiliğe ait bu Yönetmelik kapsamında faaliyet konusuna uygun Ticaret Sicil 
+Gazetesinin aslı veya idarece onaylı örneği, gerçek kişiler için sicil belgesi aslı veya idarece 
+onaylı örneği ve T.C. kimlik numarası beyanı, 
+c) (Değişik ibare:RG-17/4/2022-31812) Sicil tasdiknamesinin aslı veya idarece onaylı 
+örneği ve yetki belgesi, 
+ç) Taşınmaza ilişkin kira sözleşmesi, kullanma izni veya irtifak hakkı gibi mülkiyet 
+veya ön izin sözleşmesi, irtifak hakkı tesis edilmesine ilişkin resmi senet ve kullanma izni 
+sözleşmesi belgelerinin aslı veya idarece onaylı örneği, 
+d) Tesisteki 12/10/2004 tarihinden sonra yapılan binaların yapı kullanma izni belgesinin 
+aslı veya idarece onaylı örneği, 
+e) Onaylı tesis organizasyonu ve yerleşim planı ile kapasite raporunun aslı veya idarece 
+onaylı örneği, 
+f) Tesis alanına ait onaylı imar planı paftası. 
+İşletme izni belgesi başvurusu 
+MADDE 11 – (1) İşletme izni belgesi için aşağıdaki bilgi ve belgelerle birlikte yazılı 
+olarak İdareye başvurulur. 
+a) Başvuru dilekçesi, 
+b) Tüzel kişiliğe ait bu Yönetmelik kapsamında faaliyet konusuna uygun Ticaret Sicil 
+Gazetesinin aslı veya idarece onaylı örneği, gerçek kişiye ait sicil belgesinin aslı veya idarece 
+onaylı örneği ve T.C. kimlik numarası beyanı, 
+c) (Değişik ibare:RG-17/4/2022-31812) Sicil tasdiknamesinin aslı veya idarece onaylı 
+örneği ve yetki belgesi, 
+ç) Taşınmaza ilişkin kira sözleşmesi, kullanma izni veya irtifak hakkı gibi mülkiyet 
+veya ön izin sözleşmesi, irtifak hakkı tesis edilmesine ilişkin resmi senet ve kullanma izni 
+sözleşmesi belgelerinin aslı veya idarece onaylı örneği, 
+d) Tesisteki 12/10/2004 tarihinden sonra yapılan binaların yapı kullanma izni belgesinin 
+aslı veya idarece onaylı örneği, 
+e) (Değişik:RG-4/1/2020-30998) Dolgu ve kıyı yapılarının uygulama projelerine uygun 
+olarak tamamlandığına veya mevcut yapılar için vaziyet planlarının onaylandığına dair 
+Altyapı Yatırımları Genel Müdürlüğünün yazısı, 
+f) İşyeri açma ve çalışma ruhsatının aslı veya idarece onaylı örneği, 
+g) İlgili kurumundan alınmış tesisin yangınla mücadelede yeterli olduğuna dair belge, 
+ğ) Onaylı tesis organizasyonu ve yerleşim planı ile kapasite raporunun aslı veya idarece 
+onaylı örneği, 
+h) Tesisler için TS EN ISO 9001 Kalite Yönetim Sistemi Belgesi, TS EN ISO 14001 
+Çevre Yönetim Sistemi Belgesi ve OHSAS 18001 İş Sağlığı ve Güvenliği Yönetim Sistemi 
+Belgesinin aslı veya idarece onaylı örneği, 
+ı) Tesis alanına ait onaylı imar planı paftası. 
+Kısmi işletme izni belgesi veya işletme izni belgesi başvurusu değerlendirme 
+esasları 
+MADDE 12 – (1) Kısmi işletme izni belgesi veya işletme izni belgesi başvuruları; 
+başvuru evrakları, onaylanmış tesis organizasyonu ve yerleşim planı ve ek-4’te belirtilen 
+kriterlerden inşa-bakım-onarım-tadilat-çekek yapabilecek kadar donanıma sahip olduğunun 
+İTDK tarafından raporlanması durumunda İdarece değerlendirilerek sonuçlandırılır. 
+(2) Yeni tesisler için kısmi işletme izni belgesi süresi İdarece uygun görülen termin 
+planı süresi sonuna kadar verilir ve ilgili kurum ve kuruluşlara bildirilir. 
+(3) (Değişik:RG-25/12/2020-31345) İşletme izni belgesi en fazla beş yıla kadar verilir. 
+Bu süre içerisinde İdarece kurulacak İTDK marifetiyle tesis en az bir kere denetlenerek 
+belgesi liman başkanlığınca vize edilir. Denetleme sonucunda gerekli görülmesi halinde ilgili 
+kurum ve kuruluşlar bilgilendirilir.
+
+--- SAYFA 5 ---
+5 
+ 
+(4) İşletme izni belgesi her beş yıl sonunda tesislerin bu Yönetmelik hükümlerine 
+uygunluğu İTDK tarafından kontrol edilerek yenilenir. 
+(5) Tesis işleticisi beş yılın tamamlanmasına en az altmış gün kala işletme izni belgesini 
+yenilemek için İdareye müracaat eder. 
+(6) Kısmi işletme izni belgesi veya işletme izni belgesi, tesis işletmecisi dışında 
+başkaları tarafından kullanılamaz ve devredilemez. 
+(7) Yeni tesisler kısmi işletme izni veya işletme izni olmadan faaliyette bulunamazlar. 
+Bu tesisler için işletme izni, İdarenin uygun gördüğü termin planı süresi sonunda alınmak 
+zorundadır. 
+(8) (Değişik:RG-4/1/2020-30998) Deniz cephesi elli metreden az olan ancak İTDK 
+tarafından yapılacak inceleme sonucuna göre kara alanı ve denizdeki fiziksel şartları uygun 
+bulunan tekne imal yerlerinde yüz elli metreye kadar her türlü gemi ve su araçlarının inşa, 
+tadilat ve bakım-onarım işlemleri, kısmi işletme izni belgesi veya işletme izni belgesinde 
+belirtilmek şartıyla yapılabilir. 
+ÜÇÜNCÜ BÖLÜM 
+Yüzer Havuz İşletme Ön İzni, İzin, Devir ve Unvan Değişikliği Başvuruları ile 
+Değerlendirme Esasları 
+Yüzer havuz işletme ön izni belgesi başvurusu ve değerlendirme esasları 
+MADDE 13 – (1) Tesis işleticisi, yüzer havuzun satın alma veya inşa ve/veya kiralama 
+işlemleri öncesinde, yüzer havuzun tesiste konuşlandırılabileceğine dair İdareden yüzer havuz 
+işletme ön izni alır. Tesis işleticisi ön izni almak için ek-5’ teki bilgi ve belgelerle İdareye 
+başvurur. 
+(2) (Değişik:RG-4/1/2020-30998) İdarece, ek-5’teki bilgi ve belgeler ile birlikte İTDK 
+tarafından mahallinde yapılan inceleme sonucu hazırlanan rapor üzerinden değerlendirme 
+yapılır. Konuşlandırılması uygun görülen yüzer havuza ilişkin yüzer havuz bağlama planı 
+İdarece onaylanarak yüzer havuz konuşlandırılması için yüzer havuz işletme ön izni verilir. 
+Verilen izin, veriliş tarihinden itibaren altı ay geçerlidir. Başvurulması halinde, verilen yüzer 
+havuz işletme ön izni süresi, yüzer havuzun tesiste inşa edilmesi durumunda 2 yıla kadar, 
+yüzer havuzun satın alınması durumunda da 1 yıla kadar ilave bilgi belge olmaksızın İdarece 
+uzatılabilir. Bu süreler sonunda yüzer havuz işletme izni belgesi alınmayan yüzer havuzlar 
+için verilen yüzer havuz işletme ön izni iptal edilmiş sayılır. 
+(3) Yüzer havuz işletme ön izni verilen yüzer havuz dışında İdareden izin alınmadan 
+başka bir yüzer havuz getirilemez. Ancak yüzer havuz işletme ön izni verilen yüzer havuzun 
+boyutlarından daha küçük başka bir yüzer havuzun söz konusu olması durumunda ek-5’deki 
+bilgi ve belgelerin İdareye sunulması ve yüzer havuzun daha önce uygun görülmüş konum 
+dışına taşmaması kaydıyla verilmiş olan yüzer havuz işletme ön izni geçerli sayılır. 
+(4) Yüzer havuz İdarenin vermiş olduğu yüzer havuz işletme ön izni doğrultusunda 
+onaylı yüzer havuz bağlama planına göre konuşlandırılır. 
+(5) Yüzer havuz bağlama planı ek-2’deki yer alan örnekte olduğu gibi hazırlattırılır. 
+Yüzer havuz işletme izni belgesi başvurusu ve değerlendirme esasları 
+MADDE 14 – (1) İdarece ek-6’daki bilgi ve belgeler ile birlikte yüzer havuz işletme 
+izni alınabilmesi için tesis organizasyonu ve yerleşim planı, yüzer havuzda gösterilecek 
+şekilde revize edilerek altı nüsha olarak İdareye onaylatılır. İTDK tarafından mahallinde 
+yapılan inceleme sonucu hazırlanan rapor üzerinden değerlendirme yapılır. İdarece uygun 
+görülmesi halinde yüzer havuza ilk seferinde verilecek izin tesisin kısmi işletme izni veya 
+işletme izni süresi kadar daha sonra ise geçerlilik süresi beş yılı geçmeyecek şekilde yüzer 
+havuz işletme izni belgesi verilir. 
+(2) Her beş yıl sonunda tesis işleticisinin, bu Yönetmelik hükümlerine uygunluğu 
+kontrol edilerek yüzer havuz işletme izni belgesi İdarece yenilenir.
+
+--- SAYFA 6 ---
+6 
+ 
+(3) Tesis işleticisi, beş yılın tamamlanmasına en az altmış gün kala yüzer havuz işletme 
+izni belgesi yenilenmesi için İdareye müracaat eder. 
+(4) Yüzer havuzun başka bir yerde üç aya kadar konuşlandırılması, geçici yer 
+değişikliği veya yüzer havuzun havuzlanmasına yönelik başvurular ilgili liman başkanlığınca 
+değerlendirilerek sonuçlandırılır ve idare bilgilendirilir. 
+(5) Her yüzer havuz için ayrı yüzer havuz işletme izni belgesi alınır. 
+(6) Yüzer havuza ilişkin tüm yetki ve sorumluluk tesis işleticisine aittir. 
+(7) Çelik yapılı yüzer havuzların planlarına göre konstrüksiyon elemanlarının, beton 
+yapılı yüzer havuzların ise betonarme dışındaki konstrüksiyon elemanlarının kalınlık 
+ölçümünü içeren yetkilendirilmiş kuruluşlardan alınacak klas sörvey uygunluk raporunun beş 
+yılda bir İdareye ibrazı zorunludur. 
+(8) Yüzer havuzun boy ve kapasitesini aşmayacak şekilde havuzlama işlemi yapılır. 
+(9) Yüzer havuzun tesis dışında su aracı olarak kullanılmak istenmesi durumunda su 
+aracı uygunluk belgesi aranır. 
+Tesis kira ve devir başvuruları ve değerlendirme esasları 
+MADDE 15 – (1) Maliye Bakanlığı tarafından lehlerine irtifak hakkı tesis edilen 
+ve/veya adlarına kullanma izni verilen ve yatırımı tamamlanmış tesislere ilişkin 
+sahiplik/hisselerin kısmen veya tamamen üçüncü kişilere devrine yönelik başvurular Maliye 
+Bakanlığına yapılır. İdarenin uygun görüşü alınmak suretiyle Maliye Bakanlığınca ilgili 
+mevzuatı çerçevesinde izni verilebilir. 
+(2) Tesis işleticisi, yer tahsisini yapan ilgili kurumca alınmış taahhütname ya da 
+sözleşmede bağlayıcı bir hüküm bulunmaması halinde, idarenin uygun görüşünü ve ilgili 
+kurum veya kuruluşların iznini almak kaydı ile tesisin tamamını kiraya verebilir. Bu durumda 
+yeni sahip tesis işleticisi sayılır. 
+(3) Devir alacak veya kiralayacak tüzel veya gerçek kişilik aşağıdaki bilgi veya belgeler 
+ile İdareye başvurur; 
+a) Başvuru dilekçesi, 
+b) Devir sözleşmesi aslı veya idarece onaylı örneği, 
+c) Tüzel kişiliğe ait bu Yönetmelik kapsamında faaliyet konusuna uygun Ticaret Sicil 
+Gazetesi veya gerçek kişiye ait sicil belgesinin aslı veya idarece onaylı örneği ve T.C. kimlik 
+numarası beyanı, 
+ç) (Değişik ibare:RG-17/4/2022-31812) Sicil tasdiknamesinin aslı veya idarece onaylı 
+örneği ve yetki belgesi. 
+(4) İdare, yukarıdaki bilgi veya belgelerin değerlendirilmesi sonucunda, devir 
+işlemlerine ilişkin görüşünü 15 gün içerisinde ilgili kurum veya kuruluşlara bildirir. 
+(5) İlgili kurumun veya kuruluşun olumlu görüşü doğrultusunda devir işleminin 
+gerçekleşmesi halinde devir alan, kısmi işletme izni belgesi veya işletme izni belgesini 
+yenilemek için aşağıdaki bilgi veya belgeler ile İdareye başvurur; 
+a) Başvuru dilekçesi, 
+b) Devir alana ait kira, tahsis veya sahiplik belgelerinin aslı veya idarece onaylı örneği, 
+c) Devralana ait işyeri açma ve çalışma ruhsatının veya faaliyetine yönelik izninin aslı 
+veya idarece onaylı örneği, 
+ç) Devredilen tesise ait yüzer havuz varsa, yüzer havuzun yeni sahiplik belgesi veya 
+kira kontratı aslı veya idarece onaylı örneği. 
+d) (Ek:RG-25/12/2020-31345) Devredilen tesiste mevcut izin süresinin sonuna kadar 
+deniz güvenliği, çevre, can, mal emniyeti, iş sağlığı ve güvenliği tedbirlerinin alınması 
+hususunda sorumlu olduğunu kabul eder taahhütname. 
+(6) Devir alacak veya kiralayacak tüzel veya gerçek kişilikçe, tesiste yeni yapılacak bir 
+yatırımın öngörülmesi veya mevcut yatırımın devam ettirilmesi durumunda bu isteğini belirtir 
+taahhütname ile beraber gerekli görülür ise ek termin planı İdareye verilir.
+
+--- SAYFA 7 ---
+7 
+ 
+(7) (Değişik:RG-25/12/2020-31345) Kısmi işletme izni belgesi veya işletme izni 
+belgesi mevcut izin tarihinin sonuna kadar olacak şekilde İdarece yeniden düzenlenir. Bu 
+şekilde izni yenilenen tesislere izin tarihinden itibaren bir yıl içerisinde veya mevcut izin 
+süresi daha kısa ise izin süresi sonunda bu Yönetmelik gerekliliklerine uygunluk açısından 
+İTDK marifetiyle denetim gerçekleştirilir. 
+(8) Kısmi işletme izni belgesi veya işletme izni belgesi geçerliliği, tahsis veya kira 
+süresi bitiminde bildirime gerek kalmaksızın sona erer. 
+Tesis unvan değişikliği başvuruları ve değerlendirme esasları 
+MADDE 16 – (1) Unvan değişikliğinde aşağıdaki belgelerle birlikte idareye başvurulur. 
+a) Başvuru dilekçesi, 
+b) Tüzel kişiliğe ait bu Yönetmelik kapsamında faaliyet konusuna uygun ticaret sicil 
+gazetesi veya gerçek kişiye ait sicil belgesi aslı veya idarece onaylı örneği ve T.C. kimlik 
+numarası beyanı, 
+c) (Değişik ibare:RG-17/4/2022-31812) Sicil tasdiknamesinin aslı veya İdarece onaylı 
+örneği ve yetki belgesi, 
+(2) İdare, yukarıdaki bilgi ve belgelerin değerlendirilmesi sonucunda, unvan 
+değişikliğine ilişkin durumu ilgili kurum/kuruluşa bildirir. 
+(3) İlgili kurum/kuruluşun olumlu görüşü doğrultusunda kısmi işletme izni belgesi veya 
+işletme izni belgesi, varsa yüzer havuz işletme izni belgesi de yeniden düzenlenir. 
+DÖRDÜNCÜ BÖLÜM 
+Tesislerin Çalışma Usul ve Esasları, Güvenlik Şartları ile Gemi Sanayi Veritabanı 
+Programı Uygulamaları, Komisyon ve Denetim 
+Tesislerin çalışma usul ve esasları, güvenlik ve çevre şartları 
+MADDE 17 – (1) Tesis yetkilisince, tesiste bulunan gemilerin inşa, tadilat, bakım-
+onarım ve çekek işlemlerine yönelik olarak, bu Yönetmelik, ulusal ve uluslararası mevzuat 
+hükümleri ile seyir, can, mal, çevre güvenliği ve emniyetine yönelik olarak liman 
+başkanlığınca verilen talimatlara uyulur. 
+(2) Tesislerde yangın söndürücüleri ile ilk yardım üniteleri ve teçhizatları her an 
+kullanıma hazır halde bulundurulur. Güvenlik ve emniyete yönelik tedbirler alınır. 
+(3) Yüzer havuz kullanılırken can, mal, çevre güvenliği ve emniyeti açısından 
+perdeleme sisteminin kullanılması ile yüzer havuz, kuru havuz ve yarı ıslak kızağa gemi 
+alınmadan veya gemiler denize bırakılmadan önce her türlü yüzey temizliğinin sağlanması ve 
+diğer emniyet tedbirlerinin alınması tesis işleticisinin sorumluluğundadır. 
+(4) (Mülga:RG-4/1/2020-30998) 
+(5) Liman başkanlığınca, tesislerdeki dolgu veya inşaat faaliyet izinlerinin olup 
+olmadığı denetlenir. İzinsiz yapılan dolgu veya inşaat faaliyetleri idareye ve ilgili kurum veya 
+kuruluşlara bildirilir. 
+(6) Tesis işleticisi, deniz güvenliği, çevre, can, mal emniyeti, iş sağlığı ve güvenliği 
+bakımından ilgili mevzuatlara göre gerekli tedbirleri almakla yükümlüdür. 
+(7) Tesislerde çalıştırılacak vasıflı personel durumu ile ilgili olarak; 
+a) Tersanelerde en az iki gemi mühendisi olmak kaydıyla daimi ve altyüklenici olarak 
+tüm çalışanların %2’si mühendis, bunun da yarısı gemi mühendisi olmak zorundadır. 
+b) Tekne imal yeri ve imalat yapan çekek yerlerinde en az bir gemi mühendisi daimi 
+olarak bulundurulur veya bir tescilli serbest gemi mühendisliği bürosu ile anlaşma yapıldığına 
+dair sözleşme aranır. İnşa/tadilat yapmayan çekek yerlerinde gemi mühendisi çalıştırılması 
+veya sözleşme şartı aranmaz. 
+c) Tesislerde her türlü sabit ve hareketli kaldırma vinçlerini kullanan operatörler ile 
+çalıştırılan diğer operatör ve kalifiye elemanlar sertifikalı olmak zorundadır. 
+(8) Tesis işleticisi, TÜRKAK A tipi muayene kuruluşu olarak yetki alan kuruluşlara 
+aşağıda belirtilen iş veya işlemleri yaptırmakla sorumludur:
+
+--- SAYFA 8 ---
+8 
+ 
+a) Irgat, kaldırma ve iletme makinalarının kontrollerini yaptırmak, 
+b) Taşınabilir veya taşınamaz basınçlı ekipmanların, boru hatlarının kontrollerini 
+yaptırmak, 
+c) Topraklama ölçümleri, elektrik kabloları ve panoların kontrollerini yaptırmak, 
+ç) (Mülga:RG-4/1/2020-30998) 
+(9) (Ek:RG-4/1/2020-30998)(1) TÜRKAK A TİPİ Muayene kuruluşunca yapılacak iş ve 
+işlemler sonucu hazırlanacak olumlu raporlar ile tüm ırgat, kaldırma ve iletme makineleri, 
+taşınabilir veya taşınamaz basınçlı ekipmanlar ve boru hatlarının düzenli olarak tesis işleticisi 
+tarafından yapılan bakım-tutumlarına ilişkin kayıtlar İdareye sunulmak üzere tesiste hazır 
+bulundurulacaktır. 
+(10) Yabancı bayraklı deniz vasıtaları ile harici seferdeki Türk bandıralı deniz 
+vasıtalarına yapılacak her türlü işlem gümrük kontrolü altında yapılacak olup tesislere giren 
+çıkan eşya ve maddeler Gümrük Kanunu hükümlerine tabidir. 
+(11) Tersaneler, sınırlar ve çalışma alanlarının görüntülenebildiği kapalı devre kamera 
+sistemi ile kontrol edilir. Görüntü kayıtları en az bir (Değişik ibare:RG-29/12/2017-
+30285) ay tesis yetkilisince saklanır. 
+Gemi sanayi veritabanı programı uygulamaları yükümlülüğü 
+MADDE 18 – (1) (Değişik:RG-29/12/2017-30285) Askeri tesisler, Sahil Güvenlik 
+Komutanlığına ait tesisler ve polis tesisleri hariç olmak üzere, kapsam içi ve kapsam dışı tüm 
+tesisler GSVP'ye kaydolmak 
+ve GSVP'de istenilen 
+bütün 
+bilgilerini 
+güncellemekle 
+yükümlüdür. 
+(2) İlgili kurumunca faaliyeti askıya alınan, faaliyetine son verilen tesisler ile kısmi 
+işletme izni veya işletme izni sona eren tesislerin GSVP’de kayıtları askıya alınır. 
+(3) (Değişik:RG-29/12/2017-30285) Askeri tesisler, Sahil Güvenlik Komutanlığına ait 
+tesisler 
+ve 
+polis 
+tesislerinde 
+kiralama 
+suretiyle 
+faaliyet 
+gösteren 
+firmalar, GSVP'ye kaydolmakla ve yapılacak sözleşmeye göre taraf olan askeri, polis ve Sahil 
+Güvenlik Komutanlığına ait işletmelerin uygun göreceği bilgileri GSVP'ye girmekle 
+yükümlüdür. 
+(4) Kısmi işletme veya işletme izni almamış yatırım aşamasında olan kapsam içi tesisler 
+İdarece istatistiki amaçla geçici olarak GSVP’de kaydedilir. 
+(5) GSVP’de kaydolmak için aşağıdaki bilgi veya belgelerle ilgili liman başkanlığına 
+başvurulur. 
+a) Başvuru dilekçesi, 
+b) Tüzel kişiliğe ait bu Yönetmelik kapsamında faaliyet konusuna uygun Ticaret Sicil 
+Gazetesi veya gerçek kişiye ait sicil belgesinin aslı veya idarece onaylı örneği ve T.C. kimlik 
+numarası beyanı, 
+c) (Değişik ibare:RG-17/4/2022-31812) Sicil tasdiknamesinin aslı veya idarece onaylı 
+örneği ve yetki belgesi, 
+ç) Kira, tahsis veya sahiplik belgelerinin aslı veya idarece onaylı örneği, 
+d) İş yeri açma ve çalışma ruhsatı veya ilgili idareden alınan izni ve/veya kısmi işletme 
+izni ya da işletme izni belgesinin aslı veya idarece onaylı örneği. 
+(6) Yukarıdaki bilgi veya belgelerle birlikte ilgili liman başkanlığınca kapsam dışı veya 
+kapsam içi tesisin yangınla mücadele durumu, enerji birimleri, revir veya ilk yardım üniteleri 
+ve teçhizatları durumu, su şebekesi ve/veya su deposu, atık sahası/deposu durumu ile inşa, 
+bakım-onarım, çekek veya tadilat yapabilecek donanıma sahip olup olmadığına da bakılarak 
+mahallinde yapılan değerlendirme İdareye bildirilir. İdarece uygun görülenlerin GSVP’ye 
+kaydı yapılır. 
+(7) (Mülga:RG-29/12/2017-30285)
+
+--- SAYFA 9 ---
+9 
+ 
+(8) GSVP’den kaynaklanan aksaklıklar nedeniyle bilgi girişinin yapılamaması halinde, 
+bu durum İdareye bildirilmedikçe tesis yetkilisince veri girişi yükümlülüğü yerine 
+getirilmemiş sayılır. 
+(9) GSVP’ye ilişkin bilgilerin girilmemesi durumunda ilgilisi Liman Başkanlığınca 
+uyarılır. Uyarıya rağmen gereğinin yerine getirilmemesi halinde Liman Başkanlığınca tesisin 
+işlemleri gerçekleştirilmez. 
+(10) Herhangi bir işlem için liman başkanlığına tesis yetkilisince yapılan müracaatlarda, 
+liman başkanlığınca işlem yapılmadan önce tesisin GSVP’deki bilgileri kontrol edilir, güncel 
+olmayan bilgileri yenilenmeden işlemleri yapılmaz. 
+İnceleme, tespit ve denetim komisyonunun kurulması ve denetim 
+MADDE 19 – (1) İTDK, en az üç kişiden oluşacak şekilde İdarece belirlenir. Üyelerin 
+en az ikisi üniversitelerin en az 4 yıllık fakültelerinden mezun olan mühendis olmak 
+zorundadır. 
+(2) İTDK tarafından mahallinde yapılacak olan tesis organizasyonu ve yerleşim planı 
+inceleme ve onayı, yüzer havuz bağlama planı onayı, kısmi işletme izni belgesi, işletme izni 
+belgesi, yüzer havuz işletme izni belgesi talepleri ve bu sayılanların haricinde taleplere 
+yönelik her türlü incelemeler için, İdare tarafından belirlenmiş ücret, Döner Sermaye İşletme 
+Dairesi Başkanlığı hesabına yatırılır. Makbuz başvuru dosyasına eklenir. 
+(3) Program dışı yapılan denetim ve tesis yetkilisinin talebi haricinde mahallinde 
+inceleme veya denetim yapmak için ücret alınmadan İTDK kurulabilir. 
+(4) İTDK tarafından mahallinde yapılan inceleme sonucunda hazırlanan rapor İdareye 
+sunulur. 
+(5) Tesis ve yüzer havuz işletme izni belgesi verilen tesisler İTDK tarafından beş yılda 
+en az bir kez denetlenir. 
+(6) İdare veya liman başkanlığı, tesislerin bu Yönetmeliğe uygun hareket edip 
+etmediklerini her zaman denetleme yetkisine sahiptir. 
+BEŞİNCİ BÖLÜM 
+Genel Esaslar ile Yaptırımlar 
+Genel esaslar 
+MADDE 20 – (1) Tesisler, İdare tarafından verilecek kısmi işletme izni belgesi veya 
+işletme izni belgesi ile faaliyet gösterirler. 
+(2) Tesisler, faaliyet konuları ve İdarece uygun görülen işleri yaparlar. 
+(3) Tesislerde yüzer havuz konuşlandırabilmek için İdareden yüzer havuz işletme ön 
+izni ve yüzer havuz işletme izni belgesi alınması gerekir. Yüzer havuz, tesisin bir mütemmim 
+cüzü olarak değerlendirilir ve tesiste konuşlandırılır. 
+(4) Yüzer havuzun başka bir tesiste üç aydan fazla konuşlandırılması halinde yeni tesis 
+işletmecisi tarafından yüzer havuz işletme ön izni ve yüzer havuz işletme izni belgesi alınır. 
+(5) Kısmi işletme izni belgesi veya işletme izni belgesinin İdarece askıya alınması 
+durumunda tesiste varsa yüzer havuz işletme izni belgesi de askıya alınmış sayılır. Ancak 
+yüzer havuza verilmiş iznin askıya alınması tesisin kısmi işletme izninin veya işletme izninin 
+askıya alınmasını gerektirmez. 
+(6) Faaliyeti sonlanan, tahsis veya kira süresi biten tesislerin kısmi işletme izni belgesi, 
+işletme izni belgesi veya yüzer havuz işletme izni belgesi geçerliliğini yitirir. 
+(7) Enerji, ulaşım ve altyapı projeleri ile sanayi tesislerine yönelik çelik 
+konstrüksiyonlar İdareden izin alınmak kaydıyla tersane ve tekne imal yerlerinde yapılabilir. 
+(8) (Mülga:RG-31/12/2018-30642 4.Mükerrer)(…) 
+(9) Bu Yönetmelikte belirtilmeyen konularla ilgili iş ve işlemler meri mevzuat 
+hükümleri dikkate alınarak İdarece sonuçlandırılır. 
+(10) Kısmi işletme izni/işletme izni askıya alınan bir tesiste 22 nci maddenin birinci 
+fıkrasında belirtilen istisnalar haricinde faaliyette bulunulamaz.
+
+--- SAYFA 10 ---
+10 
+ 
+(11) (Ek:RG-14/3/2025-32841) Onaylı uygulama projesi bulunmayan mevcut kıyı 
+yapılarının vaziyet planları, özel çevre koruma bölgeleri ve doğal sit alanlarında Çevre, 
+Şehircilik 
+ve 
+İklim 
+Değişikliği 
+Bakanlığı 
+(Tabiat 
+Varlıklarını 
+Koruma 
+Genel 
+Müdürlüğü)’ndan alınan izinleri müteakip AYGM tarafından yayımlanan yönergede belirtilen 
+iş ve işlemlerin eksiksiz tamamlanması şartıyla, aynı Genel Müdürlük tarafından onaylanır. 
+Yaptırımlar 
+MADDE 21 – (1) Tesis işleticileri bu Yönetmeliğin gereklerini yerine getirirler. Bu 
+Yönetmelik kapsamında yapılan denetim sonucunda uymakla yükümlü oldukları kuralları 
+ihlal edenlere, 655 sayılı Kanun Hükmünde Kararnamenin 28 inci maddesinin ikinci 
+fıkrasının (b) bendine göre liman başkanlığınca aşağıdaki idari para cezaları uygulanır. 
+a) 20 nci maddenin birinci fıkrasında belirlenen tesislerin kısmi işletme izni belgesi 
+veya işletme izni belgesi ile faaliyet gösterilmesi hükmüne uygun davranmayan tesis 
+işleticisine; tersane için 50.000 TL, tekne imal yeri için 40.000 TL, çekek yeri için 30.000 TL, 
+b) 20 nci maddenin ikinci fıkrasında belirtilen tesislerin faaliyet konularına uygun iş 
+yapmaları hükmüne uygun davranmayan tesis işleticisine; tersane için 20.000 TL, tekne imal 
+yeri için 10.000 TL, çekek yeri için 3.000 TL, 
+c) 20 nci maddenin üçüncü fıkrasında belirtilen yüzer havuz işletme ön izni ve yüzer 
+havuz işletme izni belgesi alınması hükmüne uygun davranmayan tesis işleticisine; tersane 
+için 15.000 TL, tekne imal yeri için 10.000 TL, çekek yeri için 5.000 TL, 
+ç) 20 nci maddenin onuncu fıkrasında belirtilen kısmi işletme izni veya işletme izni 
+askıya alınan bir tesiste faaliyette bulunulamaz hükmüne uygun davranmayan tesis 
+işleticisine; tersane için 15.000 TL, tekne imal yeri için 10.000 TL, çekek yeri için 5.000 TL, 
+d) 14 üncü maddenin dördüncü fıkrasında belirtilen yüzer havuzun başka bir yerde üç 
+aya kadar konuşlandırılması, geçici yer değişikliği veya yüzer havuzun havuzlanması için 
+liman başkanlığından izin alınması ile 20 nci maddenin dördüncü fıkrasında belirtilen yüzer 
+havuzun başka bir tesiste üç aydan fazla konuşlandırılması halinde yeni tesis işletmecisi 
+tarafından yüzer havuz işletme ön izni ve yüzer havuz işletme izni belgesi alınması hükmüne 
+uygun davranmayan tesis işleticisine; tersane için 5.000 TL, tekne imal yeri için 4.000 TL, 
+çekek yeri için 3.000 TL, 
+e) 17 nci maddenin üçüncü fıkrasında belirtilen yüzer havuzun perdeleme sisteminin 
+kullanılmasına, yüzey temizliğinin yapılması ile emniyet tedbirlerinin alınması hükmüne 
+uygun davranmayan tesis işleticisine; tersane için 15.000 TL, tekne imal yeri için 10.000 TL, 
+çekek yeri için 5.000 TL, 
+f) 17 nci maddenin yedinci fıkrasının (a), (b) ve (c) bentlerinde belirtilen vasıflı 
+personel durumu hükmüne uygun davranmayan tesis işleticisine; tersane için 5.000 TL, tekne 
+imal yeri için 4.000 TL, çekek yeri için 3.000 TL, 
+g) 17 nci maddenin beşinci fıkrasında belirtilen tesislerdeki dolgu veya inşaat faaliyet 
+izinleri hükmüne uygun davranmayan tesis işleticisine, 618 sayılı Limanlar Kanunundaki 
+cezaların üst limiti uygulanır. Üç ay içerisinde uygunsuzluk giderilmez ise ceza tekrarlanır. 
+Üçer aylık periyotlarda kontrolü yapılır. Cezaya konu durum düzeltilmediği takdirde her 
+seferinde ceza yenilenir. 
+ğ) Yukarıda belirtilen cezaların bir takvim yılı içinde iki kez tekrarlanması halinde 
+katlanarak ceza kesilir. 
+(2) Cezalara yönelik liman başkanlığınca idari para cezası karar tutanağı düzenlenir. 
+Tutanak düzenleyen liman başkanlığı aşağıdaki hususları yerine getirmekle yükümlüdür; 
+a) Tutanaklara liman başkanlığının adını açıkça yazmak ve damgasını basmak, 
+b) Tutanakları imzalayan personelin adının, soyadının, görev unvanının ve sicil 
+numarasının yazılı olduğunu kontrol etmek,
+
+--- SAYFA 11 ---
+11 
+ 
+c) Tebliğ mahiyetinde olmak üzere, hakkında tutanak düzenlenen özel veya tüzel 
+kişiliğin imzasını almak ve bir nüshasını vermek, imza etmekten kaçınanlar için imzadan 
+imtina etti şerhi koymak, 
+ç) İdari para cezası karar tutanaklarını, kararın kesinleşmesini takip eden yedi iş günü 
+içinde 6183 sayılı Kanun hükümlerine göre takip ve tahsil edilmek üzere borçlu gerçek kişi 
+ise ikametgahının, tüzel kişi ise kanuni veya iş merkezinin bulunduğu yerdeki vergi dairesine, 
+birden fazla vergi dairesi bulunması halinde süreksiz vergileri tahsil ile görevli vergi 
+dairelerine göndermek. 
+(3) Bu maddede belirtilen idari para cezaları, her takvim yılı başından geçerli olmak 
+üzere o yıl için 4/11/1961 tarihli ve 213 sayılı Vergi Usul Kanunu uyarınca tespit ve ilan 
+edilen yeniden değerleme oranında artırılarak uygulanır. 
+(4) Verilen idari para cezaları bir ay içerisinde ödenir. 
+(5) 655 sayılı KHK İdari Para Cezası Karar Tutanağı ve tebligat usulleri ve İdari 
+yaptırımların uygulanmasına ilişkin diğer hususlarda 5326 sayılı Kabahatler Kanunu 
+hükümleri uygulanır. 
+(6) İdari para cezası öngörülen eylemin aynı zamanda bir suç oluşturması durumunda 
+kişi ya da kuruluş hakkında sadece suçtan dolayı cezai takibat yapılır. 
+(7) (Değişik:RG-25/12/2020-31345) İTDK’ca yapılan denetimlerde birinci fıkradakiler 
+hariç olmak üzere, uygunsuzluk veya eksiklik tespit edilmesi halinde, uygunsuzluk veya 
+eksikliğin giderilmesi için altı aya kadar süre verilerek tesis uyarılır. Verilen süre sonunda, 
+belirlenen uygunsuzluk veya eksikliğin giderilmemesi durumunda tesisin faaliyeti İdarece 
+askıya alınır. Askıya alınma sebebinin ortadan kalkması sonrası yapılacak müracaat İdarece 
+değerlendirilerek tesisin faaliyetine izin verilebilir. 
+(8) Tesisin faaliyet izninin askıya alınmasının diğer resmi kurumlarca talep edilmesi 
+halinde, talep İdarece değerlendirilerek işlem yapılır. 
+(9) Bu Yönetmelik kurallarının ihlali durumunda idarî ve cezaî müeyyide uygulanması, 
+diğer mevzuatta öngörülen alıkoyma tedbirlerine ve diğer ceza ve tedbirlerin uygulanmasına 
+halel getirmez. 
+İstisnalar 
+MADDE 22 – (1) Kısmi işletme izni belgesi, işletme izni belgesi veya yüzer havuz 
+işletme izni belgesinin askıya alınması durumunda, tesiste veya yüzer havuzda inşa, tadilat, 
+bakım-onarım veya çekek işlemi askı sürecinden evvel başlamış olan veya askıya alındığına 
+dair yazı tarihinden itibaren otuz gün içerisinde askı sürecinden evvel kontrata bağlanmış 
+işlerin belgelenmesi durumunda, kontrata bağlanmış işler ile mevcut gemi ve su aracı varsa 
+bunların işlemi tamamlanana kadar İdarece izin verilir. Bu süre içinde başka bir gemi veya su 
+aracının inşa, tadilat, bakım-onarım veya çekek faaliyetine müsaade edilmez. 
+(2) Bu Yönetmeliğin yürürlüğe girdiği tarihten bir yıl sonra kapsam dışı tesislerde 
+çalışan yüzer havuzlar için ek-6’da yer alan bilgi ve belgeler istenir. Ek-6’nın 6 ncı 
+maddesindeki klas sörvey raporu beş yılda bir yenilenir. 
+(3) (Değişik:RG-4/1/2020-30998) Kısmi işletme izni belgesi veya işletme izni belgesi 
+almamış olan mevcut tesislerde deniz güvenliği, çevre, can, mal emniyeti, iş sağlığı ve 
+güvenliği tedbirlerinin alınması tesis işleticisinin sorumluluğundadır. Bu tür tesislerdeki gemi 
+ve su araçlarının inşa, tadilat, bakım-onarım faaliyetlerine yönelik olarak liman başkanlığı 
+nezdinde yürütülecek sörvey/inşa izni/ordino işlemleri için tesis işleticisi tarafından hizmet 
+bedellerinin ödenmesi zorunludur. İdare tarafından belirlenmiş ücret tesis işleticisi tarafından 
+Döner Sermaye İşletme Dairesi Başkanlığı hesabına yatırılacaktır. Her bir hizmet için liman 
+başkanlığınca ayrı ayrı ücret alınacaktır.
+
+--- SAYFA 12 ---
+12 
+ 
+ALTINCI BÖLÜM 
+Çeşitli ve Son Hükümler 
+Yürürlükten kaldırılan Yönetmelik 
+MADDE 23 – (1)10/8/2008 tarihli ve 26963 sayılı Resmî Gazete’de yayımlanan 
+Tersane, Tekne İmal ve Çekek Yerleri Yönetmeliği yürürlükten kaldırılmıştır. 
+Mevcut tesisler 
+GEÇİCİ MADDE 1 – (1) (Değişik:RG-4/1/2020-30998) Kısmi işletme izni belgesi 
+almış olan mevcut tesislerin kısmi işletme izni belgesi geçerlilik süresi (Değişik ibare:RG-
+25/12/2020-31345) 31/12/2021 tarihine kadardır. Bu tarihten sonra işletme izni belgesi 
+almaksızın faaliyetlerine devam edecek olan tesislere Yönetmeliğin 22 nci maddesinin üçüncü 
+fıkrası kapsamında işlem tesis edilir. 
+(2) Mevcut tesislerden işletme izni belgesi alıp da, belgelerinde tarih bulunmayanların 
+belgeleri bu Yönetmeliğin yürürlüğe girdiği tarihten itibaren (Değişik ibare:RG-25/12/2020-
+31345) altı yıl geçerlidir. 
+Mevcut yüzer havuzlar 
+GEÇİCİ MADDE 2 – (1) (Değişik:RG-4/1/2020-30998) Yüzer havuz işletme izni 
+belgesi geçerlilik tarihi sona ermiş, mevcut tesislerdeki yüzer havuzlara yönelik iş ve 
+işlemlerde de Geçici 1 inci maddenin birinci fıkrası uygulanır. 
+(2) Mevcut yüzer havuzlar için yüzer havuz işletme izni belgesi alıp da, belgelerinde 
+tarih bulunmayanların belgeleri bu Yönetmeliğin yürürlüğe girdiği tarihten itibaren (Değişik 
+ibare:RG-25/12/2020-31345) altı yıl geçerlidir. 
+Kapsam dışı tesisler 
+GEÇİCİ MADDE 3 – (1) (Değişik:RG-29/12/2017-30285) Askeri tesisler, Sahil 
+Güvenlik Komutanlığı tesisleri ve polis tesisleri hariç, 13/2/2009 tarihinden önce faaliyette 
+bulunan kapsam dışı tesisler, ilgili kurumlarından alınmış veya alınacak faaliyet konusuna 
+uygun iş yeri açma ve çalışma ruhsatı ve/veya faaliyet izni gibi belgelerini (Değişik 
+ibare:RG-25/12/2020-31345) 31/12/2021 tarihine kadar İdareye ibraz etmek zorundadır. 
+Bakanlık projeleri 
+GEÇİCİ MADDE 4 – (1) Bakanlık projeleri için uygun görülen kooperatiflere üye 
+olan mevcut tesisler iş sağlığı ve güvenliğine yönelik tedbirleri almak kaydıyla 31/12/2020 
+tarihine kadar işletme izni almak zorundadır. İdare uygun gördüğü sıklıkta bu tesisleri 
+denetler. 
+İstisnalara yönelik uygulama 
+GEÇİCİ MADDE 5 – (Ek:RG-25/12/2020-31345) 
+(1) 
+22 nci maddenin 
+üçüncü 
+fıkrası 
+kapsamında 
+ödenmesi 
+gereken 
+hizmet 
+bedelleri, 1/7/2021 tarihine kadar alınmaz. 
+Yürürlük 
+MADDE 24 – (1) Bu Yönetmelik yayımı tarihinde yürürlüğe girer. 
+Yürütme 
+MADDE 25 – (Değişik:RG-31/12/2018-30642 4.Mükerrer) 
+ (1) Bu Yönetmelik hükümlerini Ulaştırma ve Altyapı Bakanı yürütür. 
+_________________ 
+(1) 4/1/2020 tarihli ve 30998 sayılı Resmî Gazete’de yayımlanan değişiklik ile Yönetmeliğin 17 nci 
+maddesine dokuzuncu fıkra eklenmiş ve diğer fıkra numaraları buna göre değiştirilmiştir.
+
+--- SAYFA 13 ---
+13 
+ 
+  
+Yönetmeliğin Yayımlandığı Resmî Gazete’nin 
+Tarihi 
+Sayısı 
+28/6/2015 
+29400 
+Yönetmelikte Değişiklik Yapan Yönetmeliklerin Yayımlandığı Resmî Gazetelerin 
+Tarihi 
+Sayısı 
+1. 
+31/12/2016 
+29935 3.Mükerrer 
+2. 
+29/12/2017 
+30285 
+3. 
+31/12/2018 
+30642 4.Mükerrer 
+4. 
+4/1/2020 
+30998 
+5. 
+25/12/2020 
+31345 
+6. 
+17/4/2022 
+31812 
+7. 
+14/3/2025 
+32841
+
+--- SAYFA 14 ---
+14 
+ 
+(Değişik:RG-4/1/2020-30998) EK-1 
+ 
+TESİS ORGANİZASYONU VE YERLEŞİM PLANI HAZIRLAMA KRİTERLERİ 
+ 1)  Plan; Tesis Organizasyonu ve Yerleşim Planı Kriterleri, mevcut yatırım veya yapılacak Yatırımlar ve Donatıları, Koordinat Listeleri ve Baş 
+Pafta Bölümlerinden oluşmaktadır. (Baş Pafta kısmı;  290 mm eninde ve ihtiyaç duyulan boyda olacaktır.) 
+2) Tesis Organizasyonu ve Yerleşim Planı Bölümü: Yatırımın yapıldığı yerin İli, İlçesi, Köy/Mah., Pafta numaraları planın sol üst köşesine 
+işlenir. İmar ve kadastro mülkiyet sınırları, kıyı kenar çizgisi ve komşu parsel numara ve sınırları plan üzerine işlenip, plandaki her türlü yapı 
+numaralandırılarak işlevleri, boyutları lejant kısmına işlenerek 1/1000 ölçeğinde onaylı imar planı koordinat sisteminde (ITRF veya ED50)  
+hazırlanır. 
+3) Yapılacak Yatırım Bölümü: Mevcut ve yeni yapılacak yatırımın donatılarında her türlü yapının (kapalı atölye, idari ve sosyal tesisler, kızak, 
+deniz içi kızaklar, iskele, sabit kreyn ve sabit vinçler vb.)  işlevleri, boyutları, yükseklikleri sol alt köşeye lejant bölümüne işlenir. Yatırımı 
+yapılacak alanın mülkiyet bilgileri lejant kısmının en altına eklenir. Bu yapılardan herhangi birisinin konumu değiştiği durumda tesis 
+organizasyonu ve yerleşim planı İdareye onaylatılır. 
+4) Koordinat Listeleri Bölümü: Üzerinde yatırım yapılacak veya mevcut yatırımların yer aldığı taşınmazın parsel köşe koordinatları ile mevcut ve 
+yeni yapılacak yapıların köşe koordinatlarının onaylı imar planı koordinat sisteminde (ITRF veya ED50) listesi, ayrıca mevcut veya yeni yatırım 
+yapılacak alanın sınırlarının onaylı imar planı koordinat sistemine (ITRF veya ED50) ek olarak; alanın, Coğrafi koordinatları (enlem/boylam 
+şeklinde)  listesi de olmalıdır. 
+5) Baş Pafta Bölümü: Tesis talebinde bulunulan yerin yerleşim bölgelerine olan durumunu gösteren uygun ölçekte kılavuz plan, yatırımın genel 
+adı, iletişim bilgileri, planı çizenin ve tasarımcının adı, soyadı, görevi, mesleği, imzası, işletme yetkilisinin imza ve kaşesi bulunur. Tasarım; 
+Gemi mühendisi, çizim; Harita Mühendisi, İnşaat Mühendisi, Gemi Mühendisi veya Şehir plancısı tarafından hazırlanır. Kontrol eden kişilerin 
+adı, soyadı, görevi, mesleği, imzası ve onay kısmından oluşur. 
+6) Tesis Organizasyonu ve Yerleşim planı altı adet 1/1000 ölçekli ve gerekli görülmesi halinde bir adet 1/500 veya 1/2000 ölçekli hazırlanır. 
+7) Tesis   Organizasyonu ve Yerleşim planı sayısal olarak, (*.ncz), (*.dwg, *.dxf) formatında, CD ortamında hazırlanarak İdareye sunulur.
+
+--- SAYFA 15 ---
+15 
+ 
+8) Tesis organizasyonu ve yerleşim planı ile birlikte söz konusu alana ait en son onaylı imar planı ve CD ile birlikte (*.ncz), (*.dwg, *.dxf) 
+formatında sunulacaktır.
+
+--- SAYFA 16 ---
+;..=i.§,§l._. I ' §E:e§ §§E San. ve ‘|'u:. A.$. TESIS ORGANIZASYONU VE VERLESIM PLANI
+
+--- SAYFA 17 ---
+..'. W 1'.c. IILA TIRMA vs ALTVAPISIAKANLIGI Ham T M B[LG|LERl FIRMA I VON VE VERLES M PLANI IIAAAFIRMASNNANT TESIS UNVANI T ""m'.;.'r' o....u.m. ADI SOYADI cIzIM YASARIM F LISI ADI sow): ‘ 510 Fnm TJTIHUEZ’ m I
+
+--- SAYFA 18 ---
+KOORDINAT LISTELERI <ITRF 96 0.0M. 3 nerece> EINAKOSEKOORDINATLARI TES\S no .2 TESIS No .7 V (SAGA) X IVUKARI) V (SAGA) x AYUKARI) . . 2 2 3 3 A . TESIS no .3 I , (SAGA, TESS ND:8 5 X °'”K‘R" v (SAGA) x Avumkh 6 . y 2 .. 3 . TESIS No 4 G 9 v (v A) x «uxm; YESISMN 10 V (SAGA) IYIIKARII .. . .2 2 3 . TESIS NO 1V 1ESIS N0 :16 ‘ v (SAGA) x AYUKARV) v (mm) x (vumau; . 5 § ‘ A YESIS No .19 TESIS NO 20 x v (swan x wuxm) 1 v man 1 x (vumzu . . 2 2 3 3 . . [MAR SINIRLARI (ITRF 95 D.O.M. 3 Darene) Y (SAGA) x (YUKARI) ENLEM BOYLAM P1 P2 P3 P4 P5 P6 210 mm
+
+--- SAYFA 19 ---
+MEVCUT YATIRIMIN DONATILAR EaAT|_AR(... x... 1 VUKSEKLIK (Metre) 1- 1 NOLU GUVENLIK (9.74 x 9.15) 2. IDARI BINA(Rev1r‘ Oﬂslerj (50.00 x 19.00) 5-5" (2 KAT) 3- ATOLYE 130 46 x 76 301 9 so (3 KAT) 4- SOSYAL TESIS (30.45 X 76 30; 6.50 (2 KAT) 5- ATIK ALIM SAHASI 6- 2 NOLU GUVENLIK 19 74 x 9 15) 7- AMBAR-DEPO (Acil Dumm Mudahele Merkezi) (57.13 x 15,15; 8- ATOLVE (5713 x 15.15) 9- KIZAK (117.0u x 20.00) 10- DENIzIc1 KIZAK (41.73><1a2s) 11- ON IMALATATOLYESI 12- YANGVN POMPASI 13- TUP IsT1FsAHAsI 14- Is MAKINASI OTOPARKI 15- TRAFO 16- OTOPARK 17- VANGWN POMPASI-2 18- KAPALI ATOLYE-1 (30 10 x A7 52 ) 19- KAI‘-‘ALI ATOLYE-2 (30.10 x 47.52 ) 21- AQIK DEPD YAILBLMLN_ DONATILAR EBATLAR(... x... ) VUKSEKLIK (Mare) 20- EOVAATOLVESI (42 26 X 26.79 ) 6 50 (2 KAT) MEVCUT VINC DONATILARI TONA-"-AR| v1 KOPRU KREN 2x35 T+10 T v2 PORTAL KREN 15V vs PORTAL KREN 2X50 T V4 PORTAL KREN 2X35 T v5 KOPRU KREN “*5 T YAFILACAK VINC DONATILARI TONA-"-AR| V6 KOPRU KREN 2X25 T V7 JIB KREN 30 T YATIRIM ORTAKLARI VE H|SSE ORANLARI ADI SOVADI HVSSE ORANLARV A5 ‘ ‘/.25 A5 3450 MULKIYET BILGILERI FAFTAVADA PARSEL VASFT ALAN(M2) MALIKI AQIKLAMA 540 _ 540 ARSA m2 _ ...A.$. |rIilakHakk|naKonuAlan Do|_eu _m2 HAZINE ‘ Kullsnma Izmns Konu Alan 210 mm
+
+--- SAYFA 20 ---
+...................... .. San. ve Tic. A.$. TESiS ORGANiZASYONU VE YERLE$iM PLANI {LI I . f vmoc L ES . Kgvﬂ/MAH; sf PAFTA .5 w KOMSIJ FARSEL SINIRI W , m 639 a E (FARSEL NO) 10 W 21 W .. c., ‘. 9 “'44 $44,“, 7 .. » a VA " 15”‘ ,3 . ‘,3 ‘ s W 1, ,3 ,. ~..,% 5 J v7 V2 17 4% ‘, 3 15 2’ V3 .5 W“ .2 "P4, 1. '9 as 4 " “°«z«%64’b ,.»:° ,. an 2' VI 12 11 .5": snows: 3 W 5 13 ’“ . . LEJANY ' /.»,,;%% "’ 2 2 \ u 16 ayci +6‘ 1 ‘ K KOM$U FARSEL SINIRI § 4 (PARSEL NO) "Z '2 3 (..., v....,~.W. M, W... 20
+
+--- SAYFA 21 ---
+21
+
+--- SAYFA 22 ---
+22 
+ 
+EK-2 
+ 
+YÜZER HAVUZ BAĞLAMA PLANI HAZIRLAMA KRİTERLERİ 
+ 
+1)  Yüzer Havuz Bağlama Planı: Getirilecek Havuzun yanaşacağı tesisin ili, ilçesi, köy/mah. pafta numaraları planın sol üst köşesine işlenir. 
+Tesise ait imar ve kadastro mülkiyet sınırları, kıyı kenar çizgisi, tesisin deniz cephesi ve havuzun bağlanacağı alana ait deniz derinlikleri ve varsa 
+komşu tesise ait iskele, parsel numarası ve sınırları plan üzerine işlenip, havuzun bağlanacağı bağlantı elemanları ve havuz boyutları lejant 
+kısmına işlenerek 1/1000 ölçeğinde onaylı imar planı koordinat sisteminde (ITRF veya ED50)  hazırlanır. 
+2) Yüzer Havuz Bağlama Elemanları Zemin Durumu: Yüzer havuzun bağlanacağı bağlantı elemanlarının zemin durumu, mevcut zemin kotları, 
+tarama yapılacak ise tarama kotları belirtilir. Yüzer havuzun bağlantı elemanlarının özellikleri tonoz ise yüzer havuzun tonozlara olan mesafeleri, 
+dolfen ise yüzer havuzun dolfenlere bağlama şekli gösterilecektir. Yüzer havuzda yer alan atölye ve kaldırma donanımları ile yüzer havuzun yer 
+aldığı tesise ait mülkiyet bilgileri yer almaktadır. 
+3) Yüzer Havuz Genel Özellikleri ve Koordinat Bölümü: Bağlanması planlanan yüzer havuzun genel özellikleri, ebatları (boyu, eni, yükseklik, 
+dalma draftı vb.), parsele ait köşe koordinatları (onaylı imar planı koordinatları ve coğrafi koordinatlar), deniz yapıları koordinatları ve kotları 
+(dolfen veya tonozların) ile yüzer havuza ait köşe koordinatları gösterilecektir. 
+4) Baş Pafta Bölümü: Yüzer havuz bağlanacak tesisin yerleşim bölgelerine olan durumunu gösteren uygun ölçekte kılavuz plan,  yüzer havuzun 
+bağlanacağı tesisin adı, iletişim bilgileri, planı çizenin ve tasarımcının adı, soyadı, görevi, mesleği, imzası, işletme yetkilisinin imza ve kaşesi 
+bulunur. Tasarım; Gemi mühendisi, çizim; Harita Mühendisi, İnşaat Mühendisi, Gemi Mühendisi veya Şehir plancısı tarafından hazırlanır. 
+Kontrol eden kişilerin adı, soyadı, görevi, mesleği, imzası ve onay kısmından oluşur. 
+5) Yüzer Havuz Bağlama planı dört adet 1/1000 ölçekli ve gerekli görülmesi halinde bir adet 1/500 veya 1/2000 ölçekli hazırlanır. 
+6) Yüzer Havuz bağlama planı sayısal olarak, (*.ncz), (*.dwg, *.dxf) formatında, CD ortamında  hazırlanarak İdareye sunulur.
+
+--- SAYFA 23 ---
+TESISINE AIT HAVUZ BAGLAMA PLANI xuusuwuuﬂsamzf ' . . wzssma» «wsu mam smi I r-mm NO! ML vu mu A %:‘s"?J nvumau mu. mwzw -<n»uww>m PMSELENV mania inmm mm. 23
+
+--- SAYFA 24 ---
+24
+
+--- SAYFA 25 ---
+KILAVUZ PLAN Tesis Alan: FiRMA iLET}é;M Bilkiuzﬁi FiRMAS|NA AiT p SYON VE YERLE§iM PLANI ADI SOYADI UNVANI TKRIH ..... I1 clzxm Hmgmcygvn TASWM eemnnsMu;/ FIRMA VETKHJSI \I§H\/ PARAF AD! SOVADI UNVANV U-‘U1 062 210mm
+
+--- SAYFA 26 ---
+YUZER HAVUZ GENEL OZELLIKLERI PARSEL VE WAR KOSE KOORDWATLARI kc am nu Em kc um” 09 M was-(,1 wmm :v\.m>-w" NekvaNe v x mm v Baylam x P1 P2 P3 P4 P5 vs DENiZ YAPILARI KOSE KOORDWATLARI x EnImnV usvcw mmax ggvmx zmwmm mmm AQIKLAMA (YUZER HAVUZ) UST KOT ALT KOT {M1 210mm 26
+
+--- SAYFA 27 ---
+HAVUZ BAGLAMA ELEMANLARI ZEMiN DURUMU ...§.,. _ + _ ,-. s :. - -;|'-ll-vl‘-Inn.‘ Hnlwlcu no.5: ARAMA KE HAVUZUN DOLFENENE BAGLAMA §EKL1 HAVUZDA YER ALAN DONATILAR HAVUZUN KONUSLANDIGI PARSELE AIT BILGILER FAFTA ADA FARSEL VABFI ALAN(M2) MALIKI 640 ARSA m2 . ..A$ DDLGU m2 A$ 210 mm 27
+
+--- SAYFA 28 ---
+V KMIU Puma Imlu mAnsL um 28
+
+--- SAYFA 29 ---
+29 
+ 
+EK-3 
+ 
+ 
+TESİS YERİ BELİRLEME KRİTERLERİ 
+ 
+1- Kara, deniz ve hava ulaşım ve taşıma durumu, 
+2- Su ve enerji  imkanları durumu, 
+3- Sanayi merkezlerine  yakınlık durumu, 
+4- Mülkiyet durumu, 
+5- Deniz dolgusu durumu, 
+6- Korunaklılık durumu  
+7- İmar planı, kıyı kenar çizgisi durumu, 
+8- Saha önündeki deniz derinliği durumu, 
+9-Bitişik parseller veya tesislerin deniz trafiği veya demirleme sahasına göre çapariz durumu, 
+10-Alanın, arkeolojik sit alanı, milli parklar, tabiat alanları, tabiat koruma alanları ve orman alanına girip girmediği, 
+11-Diğer hususlar.
+
+--- SAYFA 30 ---
+30 
+ 
+EK-4 
+TESİS KRİTERLERİ 
+ 
+a) Tersane İçin; 
+1) Tesis güvenliği durumu. Tel örgü, duvar, kamera gibi, 
+2) Otopark, 
+ 
+3) Tesis içi yollar, 
+4) İdari ve sosyal tesisler. Dinlenme yeri, yemekhane, lavabo, wc, duş gibi, 
+5) Revir veya ilk yardım üniteleri ve teçhizatları durumu, 
+6) Enerji birimi. Trafo, şebeke, jeneratör gibi, 
+7) Yangınla mücadele ekipmanları durumu, 
+8) Atık kabul tesisi/ sahası/ deposu veya toplu kullanımlarda ortak kullanılan tesis veya hizmetin üçüncü şahıslardan alınması, 
+9) (Mülga:RG-29/12/2017-30285)  
+10) Su şebekesi ve/veya su deposu,  
+11) Gemi alma ve indirme sistemleri, 
+12) Çeşitli ambar/depolar, 
+13) İnşa ve donatım atölyeleri, 
+14) Kaldırma donanımları, 
+15) Sac, profil, blok istif sahaları, 
+16) İlgili mevzuata göre gerekmesi halinde çalışanları arasından iş sağlığı ve güvenliği hizmetlerini yürütenler ile işyeri arasında 
+yapılan  sözleşme  veya  Ortak  Sağlık ve Güvenlik Biriminden hizmet alınması halinde, işyeri ile Ortak Sağlık ve Güvenlik Birimi   
+arasında   yapılan hizmet alımına      ilişkin      sözleşme. 
+b) Tekne İmal Yeri İçin; 
+ 
+1) Tesis güvenliği durumu. Tel örgü, duvar gibi, 
+ 
+2) Otopark, 
+ 
+3) Tesis içi yollar, 
+ 
+4) İdari ve sosyal tesisler. Dinlenme yeri, yemekhane, lavabo, wc, duş gibi, 
+5) Revir veya ilk yardım üniteleri ve teçhizatları durumu, 
+6) Enerji birimi. Trafo, şebeke, jeneratör gibi, 
+7) Yangınla mücadele ekipmanları durumu, 
+8) Atık kabul tesisi/ sahası/ deposu veya toplu kullanımlarda ortak kullanılan tesis veya hizmetin üçüncü şahıslardan alınması,
+
+--- SAYFA 31 ---
+31 
+ 
+9) (Mülga:RG-29/12/2017-30285)  
+10) Su şebekesi ve/veya su deposu, 
+11) Tekne alma, indirme sistemleri,  
+12) Çeşitli ambar/depolar, 
+13) İnşa ve donatım atölyeleri, 
+14) Bakım, onarım alanı, 
+15) İlgili mevzuata  göre  gerekmesi halinde çalışanları arasından iş sağlığı ve güvenliği hizmetlerini  yürütenler  ile  işyeri 
+arasında yapılan   sözleşme  veya  Ortak  Sağlık ve Güvenlik Biriminden  hizmet alınması halinde, işyeri ile Ortak Sağlık ve 
+Güvenlik Birimi   arasında   yapılan hizmet alımına      ilişkin      sözleşme. 
+ 
+c) Çekek Yeri İçin; 
+1) Tesis güvenliği durumu. Tel örgü, duvar gibi, 
+2) Otopark, 
+3) Tesis içi yollar, 
+4) İdari ve sosyal tesisler. Dinlenme yeri, yemekhane, lavabo, wc, duş gibi, 
+5) Revir veya ilk yardım üniteleri ve teçhizatları durumu, 
+6) Enerji birimi. Trafo, şebeke, jeneratör gibi, 
+7) Yangınla mücadele ekipmanları durumu, 
+8) Atık kabul tesisi/ sahası/ deposu veya toplu kullanımlarda ortak kullanılan tesis veya hizmetin üçüncü şahıslardan alınması, 
+9) Su şebekesi ve/veya su deposu, 
+10) Çekme, indirme sistemleri, 
+11) Çeşitli ambar/depolar, 
+12) Çekek/kışlatma alanı, 
+13) İlgili   mevzuata  göre  gerekmesi halinde çalışanları arasından iş sağlığı ve güvenliği hizmetlerini  yürütenler  ile  işyeri 
+arasında yapılan   sözleşme  veya  Ortak  Sağlık ve Güvenlik Biriminden  hizmet alınması halinde, işyeri ile Ortak Sağlık ve 
+Güvenlik Birimi  arasında   yapılan hizmet alımına      ilişkin      sözleşme. 
+ 
+ 
+ 
+d) Kapsam Dışı Tesisler İçin; 
+ 
+1) 18 inci maddenin altıncı fıkrasına göre değerlendirme yapılır.
+
+--- SAYFA 32 ---
+32
+
+--- SAYFA 33 ---
+33 
+ 
+EK-5 
+ 
+ 
+YÜZER HAVUZ ÖN İZNİ İÇİN İSTENEN EVRAKLAR 
+ 
+1-Başvuru dilekçesi, 
+2-Yüzer havuzun çıkmaları da dahil boyutlarını gösteren inşa izni/tonilato/klas belgelerinden birinin aslı veya idarece onaylı örneği,  
+3-En büyük dalma draftı,  
+4-Yüzer havuzun bağlama elemanları ve batimetrik verilerini de gösterecek ve 4 nüsha olacak şekilde 1/1000 veya idarece istenmesi 
+durumunda 1/500 ve/veya 1/2000 ölçekli hazırlanmış yüzer havuz bağlama planının aslı veya idarece onaylı örneği,  
+5-Tesise ait kısmı işletme izni belgesi veya işletme izni belgesi örneği.
+
+--- SAYFA 34 ---
+34 
+ 
+EK-6 
+ 
+YÜZER HAVUZ İŞLETME BELGESİ İÇİN İSTENEN EVRAKLAR  
+ 
+  
+1-Başvuru dilekçesi, 
+2-Yüzer havuzun sahiplik belgesi, kira kontratının aslı veya idarece onaylı örneği,  
+3-Yüzer havuzun sicile kayıt edildiğine dair tasdiknamesi veya bağlama kütüğü ruhsatnamesinin aslı veya idarece onaylı örneği,   
+4-Yüzer havuzun, kaldırma kapasitesi, dalma süresi, boş ve dolu draftı, kreyn adet ve kapasiteleri, jeneratör adet ve kapasiteleri, seperatör 
+adet ve kapasiteleri, kompresör adet ve kapasiteleri, pompa adet ve kapasitelerini içeren bilgiler, 
+5-Tonoz, dolfen gibi bağlantı elemanlarının, yüzer havuzun bağlama planına uygun olarak emniyetli bir şekilde tutabileceğine dair 
+yetkilendirilmiş kuruluşlardan alınmış rapor,  
+6- (Değişik:RG-4/1/2020-30998) Yüzer havuzların tekne ve makine olarak yetkilendirilmiş kuruluşlar tarafından klaslandığını gösterir 
+belgenin aslı ve İdarece onaylı örneği
+
+--- SAYFA 35 ---
+35 
+ 
+(Değişik:RG-4/1/2020-30998) Ek-7
+
+--- SAYFA 36 ---
+36
+
+--- SAYFA 37 ---
+37 
+ 
+(Değişik:RG-4/1/2020-30998) Ek-8
+
+--- SAYFA 38 ---
+38 
+ 
+(Değişik:RG-4/1/2020-30998) EK-9

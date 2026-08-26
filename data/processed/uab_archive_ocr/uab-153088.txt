@@ -1,0 +1,546 @@
+--- SAYFA 1 ---
+27 Temmuz 2019 CUMARTESİ 
+Resmî Gazete 
+Sayı : 30844 
+YÖNETMELİK 
+Ulaştırma ve Altyapı Bakanlığından: 
+GEMİ BOYA YÖNETMELİĞİ 
+BİRİNCİ BÖLÜM 
+Amaç, Kapsam, Dayanak ve Tanımlar 
+Amaç 
+MADDE 1 – (1) Bu Yönetmeliğin amacı, gemilerin karinalarında kullanılan organik kirlenmeyi önleyici 
+sistemlerinde biyosit olarak kullanılan organotin bileşiklerinin insan sağlığı ve deniz çevresi üzerindeki olumsuz etkisini 
+azaltmaya veya ortadan kaldırmaya ve gemilerin deniz suyu balast tankları, çift cidar alanları ile kargo tanklarının 
+koruyucu kaplamalarının temel gereklerine yönelik usul ve esasları düzenlemektir. 
+Kapsam 
+MADDE 2 – (1) Bu Yönetmeliğin; 
+a) Organik tutunma önleyici sistemine dair hükümleri; 
+1) Boyu 24 metre ve üzeri veya 400 groston ve üzeri Türk Bayraklı gemilere, 
+2) Türk limanlarına, tesislere veya açık deniz terminallerine giriş yapan boyu 24 metre ve üzeri veya 400 groston 
+ve üzeri yabancı bayraklı gemilere, 
+uygulanır. 
+b) Koruyucu kaplamalara dair hükümleri; uluslararası sefer yapan ve bu Yönetmeliğin 8 inci maddesinin birinci 
+fıkrasında belirtilen tarihlere göre; 
+1) 500 groston ve üzeri tüm gemilerin ayrılmış denizsuyu balast tanklarına, 
+2) 150 metre ve üzeri dökme yük gemilerinin çift cidar mahallerine, 
+3) 5000 dedveyt ton ve daha büyük ham petrol tankerlerinin kargo tanklarına, 
+uygulanır. 
+(2) Bu Yönetmelik, askeri amaçlı gemiler ile kamu kurumlarına ait veya kamu kurumları tarafından işletilen 
+ticari amaçlar dışında sadece kamu hizmetinde kullanılan gemilere uygulanmaz. 
+Dayanak 
+MADDE 3 – (1) Bu Yönetmelik; 10/7/2018 tarihli ve 30474 sayılı Resmî Gazete’de yayımlanan 1 sayılı 
+Cumhurbaşkanlığı Teşkilatı Hakkında Cumhurbaşkanlığı Kararnamesinin 482 nci maddesine, 26/9/2011 tarihli ve 655 
+sayılı Ulaştırma ve Altyapı Alanına İlişkin Bazı Düzenlemeler Hakkında Kanun Hükmünde Kararnamenin 28 inci 
+maddesine, 26/10/2017 tarihli ve 7059 sayılı Kanun ile uygun bulunan 2001, Gemilerdeki Zararlı Organik Tutunma 
+Önleyici Sistemlerin Kontrolüne İlişkin Uluslararası Sözleşmeye dayanılarak hazırlanmıştır. 
+Tanımlar 
+MADDE 4 – (1) Bu Yönetmeliğin uygulanmasında; 
+a) AFS beyannamesi: Organik Tutunma Önleyici Sistem Beyannamesini, 
+b) IAFS sertifikası: Sözleşme hükümlerine göre düzenlenen Uluslararası Organik Tutunma Önleyici Sistem 
+Sertifikasını, 
+c) Bakanlık: Ulaştırma ve Altyapı Bakanlığını, 
+ç) Biyosit: Organik tutunma önleyici bir sistemde zehirleyici olarak kullanılan maddeyi, 
+d) Boya teknik dosyası: Bu Yönetmeliğin 11 inci maddesinde yer alan bilgileri içeren teknik dosyayı, 
+e) Çiğlenme noktası: Havanın maksimum nem taşıdığı ve doyma noktasına ulaştığı sıcaklığı, 
+f) Dedveyt ton: Geminin yükleme sınırına kadar alabileceği yolcu, yük, yakıt, su, kumanya gibi ağırlıklarının 
+toplamını, 
+g) Denetim görevlisi: Gemilere liman devleti ve bayrak devleti kontrol denetimi yapmak üzere görevlendirilmiş 
+Bakanlık personelini veya yetkilendirilmiş kuruluşun gemi boya denetimi konusunda görevlendirdiği personeli, 
+ğ) Epoksi: Suya, asitlere ve alkaliye karşı direnç gösteren, zamanla bu gösterdiği direnci yitirmeyen, yapıştırıcı 
+özlü kimyasal reçineyi, 
+h) Gemi: Tahsis edildiği gayeye uygun olarak kullanılan; adı, tonilatosu ve kullanma amacı ne olursa olsun; 
+hidrofoil tekneler, hava yastıklı araçlar, denizaltılar, yüzen araçlar veya yüzen platformlar, yüzen depolama üniteleri 
+(FSU) ve yüzen üretim depolama ve boşaltım üniteleri (FPSO) de dâhil denizde yüzen her aracı, 
+ı) Gemi boya denetmeni: Boya teknik dosyasının hazırlanması safhasında bu Yönetmelikte geçen denetimleri 
+gerçekleştiren ve İdarece bu konuda yetki belgesi verilen kişileri, 
+i) Gemi boyu: 28/6/1968 tarihli ve 12936 sayılı Resmî Gazete’de yayımlanan 1966 Uluslararası Yükleme Sınırı 
+Sözleşmesi ve değişikliklerinde tanımlanan gemi uzunluğunu, 
+j) Hedeflenen kullanım ömrü: Tasarlanan boya sisteminin aylar/yıllar ile ifade edilen belli bir zaman diliminde 
+kondisyonunu iyi durumda tutmasını,
+
+--- SAYFA 2 ---
+k) İdare: Ulaştırma ve Altyapı Bakanlığı Tersaneler ve Kıyı Yapıları Genel Müdürlüğünü, 
+l) IMO: Uluslararası Denizcilik Örgütünü, 
+m) İyi kondisyon: IMO’nun A.744 (18) Kararında tanımlanan azami küçük lekeler şeklinde pas ihtiva eden 
+kondisyonu, 
+n) Kenarların yuvarlatılması: İkinci yüzey hazırlığı öncesinde keskin kenar ve köşelerin taş motoruyla taşlanarak 
+rötuşlanması, işlemden geçmesini, 
+o) Kestirme kat: Ulaşımı zor bölgeler, kenarlar ve kaynaklar gibi kritik kısımlarda katlar arası iyi yapışmanın ve 
+yeterli boya filmi kalınlığının sağlanması için yapılan boya uygulamasını, 
+ö) KFK: Kuru film kalınlığını, 
+p) Liman başkanlığı: Ulaştırma ve Altyapı Bakanlığı liman başkanlıklarını, 
+r) MEPC: IMO’nun Deniz Çevresini Koruma Komitesini, 
+s) Mevcut gemi: Yeni olmayan gemiyi, 
+ş) MSC: IMO’nun Deniz Emniyeti Komitesini, 
+t) Ordino: 31/10/2012 tarihli ve 28453 sayılı Resmî Gazete’de yayımlanan Limanlar Yönetmeliğinde tanımlanan 
+ordino belgesini, 
+u) Organik Tutunma Önleyici Sistem (AFS): İstenmeyen organizmaların tutunmasını önlemek veya kontrol 
+etmek için gemide kullanılan cihaz veya yüzey, yüzey işlemi, boya veya herhangi bir kaplamayı, 
+ü) Organotin: Kalayın hidrokarbonlarla oluşturduğu kimyasal bileşiği, 
+v) Ön imalat astarı: Genellikle bir boya sisteminin ilk katından önce ve otomatik olarak çelik yüzeye uygulanan 
+ve shop primer olarak adlandırılan astar boyayı, 
+y) Sözleşme: 18/11/2017 tarihli ve 30244 sayılı Resmî Gazete’de yayımlanan 2001, Gemilerdeki Zararlı Organik 
+Tutunma Önleyici Sistemlerin Kontrolüne İlişkin Uluslararası Sözleşmeyi, 
+z) Teknik veri föyü: Boya üreticisi tarafından yayınlanan; ürün bilgileri, uygulama ve kaplama için ayrıntılı 
+teknik talimatları içeren ürün bilgi formunu, 
+aa) Tesis: 28/6/2015 tarihli ve 29400 sayılı Resmî Gazete’de yayımlanan Tersane, Tekne İmal ve Çekek Yeri 
+Hakkında Yönetmelikte tanımlanmış tesisler ile İdare tarafından bakım onarım için izin verilmiş yerleri, 
+bb) Uygunluk değerlendirme kuruluşu: Ürünün, ilgili teknik düzenlemeye uygunluğunun test edilmesi, muayene 
+edilmesi ve/veya belgelendirilmesine ilişkin faaliyette bulunan özel veya kamu kuruluşunu, 
+cc) Yeni gemi: Bu Yönetmeliğin yürürlüğe girdiği tarihte veya daha sonra omurgası konulmuş olan veya benzer 
+bir inşa aşamasında bulunan gemiyi, 
+çç) Yetkilendirilmiş kuruluş: 18/1/2017 tarihli ve 29952 sayılı Resmî Gazete’de yayımlanan Gemiler İçin 
+Yetkilendirilmiş Kuruluşlar Yönetmeliği çerçevesinde yetkilendirilmiş klas kuruluşunu, 
+ifade eder. 
+İKİNCİ BÖLÜM 
+Organik Tutunma Önleyici Sistemler 
+Organik tutunma önleyici sistemlerin genel esasları 
+MADDE 5 – (1) AFS’lerde biyosit olarak kullanılan organotin bileşikler gemilere uygulanamaz. 
+(2) AFS’lerde biyosit olarak kullanılan organotin bileşikler, sızmasını önleyecek bir kaplama ile kaplanmamış 
+olması halinde, gemilerin karinasında veya dış yüzey ve parçalarında bulunamaz. 
+(3) Türk Bayraklı gemilerde Sözleşme ve bu Yönetmelik hükümlerine göre uygulanmış olan AFS’ler 
+kullanılabilir. 
+(4) Tesislerde inşa, tadilat veya bakım-onarımı yapılan gemilere bayrağı, boyu ve tonajına bakılmaksızın bu 
+Yönetmelik hükümlerine uygun olan AFS uygulanır. 
+(5) Sadece bu Yönetmelik hükümlerine uygun olmayan organik tutunma önleyici sistemini değiştirmek veya 
+sistemini yenilemek için tesise gelen gemilere İdare tarafından izin verilir. 
+Organik tutunma önleyici sistemler için denetim ve belgelendirme şartları 
+MADDE 6 – (1) İdare tarafından, MEPC’nin Res.MEPC.208(62) numaralı  “Gemilerdeki AFS’nin 
+Denetlenmesi Hakkındaki Kılavuz” ve MEPC’nin Res.MEPC.195(61) numaralı “Gemilerde AFS’nin Sörvey ve 
+Belgelendirilmesine İlişkin Kılavuz”  esas alınarak uygulama genelgesi yayımlanır. Gemilerin denetim ve 
+belgelendirilmeleri genelgeye ve aşağıdaki hükümlere göre yapılır: 
+a) 400 GT üzerindeki uluslararası sefer yapan gemilere bu genelgeye uygun olarak gemi klaslı ise 
+yetkilendirilmiş kuruluşun, klassız ise İdarenin bünyesindeki denetim görevlisi tarafından yapılan denetimler sonrasında 
+rapor hazırlanır. Raporda AFS’nin uygun bulunması halinde liman başkanlığı veya yetkilendirilmiş kuruluş tarafından 
+Ek-1’de yer alan “Uluslararası Organik Tutunma Önleyici Sistem Sertifikası” düzenlenir. “Organik Tutunma Önleyici 
+Sistem Kayıtları” Ek-2’deki formlara göre düzenlenerek IAFS sertifikasına kalıcı olarak eklenir. 
+b) 24 metre ve üzerindeki fakat 400 GT altındaki uluslararası sefer yapan gemiler ile 24 metre ve üzeri ulusal 
+sefer yapan gemilerin inşa, tadilat veya bakım-onarımını yapan tesis tarafından ve/veya donatan veya yetkili temsilcisi 
+tarafından uygulanan boyanın biyosit olarak kullanılan organotin bileşikler içermediğine dair Ek-3’te yer alan “Organik
+
+--- SAYFA 3 ---
+Tutunma Önleyici Sistem Beyannamesi” düzenlenerek imzalanır. Bu beyanname istendiğinde İdareye, liman 
+başkanlığına veya yetkilendirilmiş kuruluşa ibraz edilir. Bu beyanname boya faturası veya sözleşmesi ile desteklenir. 
+c) Beyanname veya İdare ya da yetkilendirilmiş kuruluş tarafından düzenlenen sertifika gemide bulundurulur. 
+(2) Ülkemiz limanlarına gelecek yabancı bayraklı gemilerden; 
+a) Sözleşmeye taraf ülkelerin bayrağını taşıyan 400 GT ve üzerindeki gemilerde IAFS sertifikası, 
+b) Sözleşmeye taraf ülkelerin bayrağını taşıyan 24 metre ve üzerindeki fakat 400 GT altındaki gemilerde AFS 
+Beyannamesi, 
+c) Sözleşmeye taraf olmayan ülkelerin bayrağını taşıyan 24 metre ve üzeri veya 400 GT ve üzeri gemilerde 
+uygunluk beyanı, 
+aranır. 
+(3) Bu maddenin ikinci fıkrasında belirtilen belge ve beyanların kontrolü liman devleti denetimi esnasında liman 
+devleti kontrolü için İdare tarafından liman devleti denetimi yapmak üzere yetkilendirilen personel, liman çıkış belgesi 
+talepleri esnasında ise liman başkanı tarafından yetkilendirilen personel tarafından yapılır. İhtiyaç duyulması halinde 
+örnek alımı Bakanlığın denetim görevlileri veya Bakanlığın yazılı talebi ile yetkilendirilmiş kuruluşların denetim 
+görevlileri tarafından gerçekleştirilir. Söz konusu belge ve beyanları bulunmayanlara liman başkanlığı tarafından ordino 
+düzenlenmez. 
+(4) Türk Bayraklı gemilerde IAFS sertifikası ve beyannamesi, sualtı sörveyleri sırasında belge bazında kontrol 
+edilir. Bu kontrolde gerekli görülmesi halinde bu maddenin beşinci fıkrasında belirtilen örnek alma işlemi uygulanır.  
+(5) İdare tarafından MEPC’nin Res.MEPC.104(49) numaralı “Gemilerde Organik Tutunma Önleyici Sistemlerin 
+Örnek Alma Kılavuzu” esas alınarak uygulama genelgesi yayımlanır. Liman başkanlığı veya yetkilendirilmiş 
+kuruluşlarca yapılan denetimlerde gerekli görüldüğü takdirde bayrağına bakılmaksızın organik tutunma önleyici 
+sisteminden; sistemin yapısını, işlevini, bütünlüğünü bozmayacak şekilde bu genelgeye göre örnek alınabilir. Bu örnek 
+alma işlemi denetim görevlileri veya İdarenin tespit edeceği yetkilendirilmiş kuruluş tarafından yapılarak rapor halinde 
+İdareye sunulur. Rapor sonuçlarında uygunsuzluk bulunması durumunda, yabancı bayraklı gemiler için Sözleşme 
+hükümleri, Türk Bayraklı gemiler için ise bu Yönetmelik hükümlerine göre yaptırım uygulanır. 
+Uluslararası organik tutunma önleyici sistem belgesinin geçerliliği 
+MADDE 7 – (1) 6 ncı maddenin birinci fıkrasının (a) ve (b) bentlerine göre süresiz olarak düzenlenen IAFS 
+sertifikası veya beyannamesi; 
+a) Organik tutunma önleyici sistemi değiştirilmiş, yenilenmiş olup bu Yönetmeliğe göre sertifikası veya 
+beyannamesi yenilenmemişse, 
+b) Bu Yönetmeliğe uygun olarak düzenlenmemişse, 
+c) Geminin başka bir bayrağa geçiş yapması üzerine, 
+ç) 13/1/2011 tarihli ve 6102 sayılı Türk Ticaret Kanununun ilgili maddeleri gereğince geminin Türk Bayrağı 
+çekme hakkını kaybetmesi durumunda, 
+d) Geminin batması veya belgenin kayıp ve zayi olması gibi durumlarının tespiti halinde, 
+ geçerliliğini kaybeder. 
+(2) Bu maddenin birinci fıkrasının (c), (ç) veya (d) bentlerinde belirtilen durumlar nedeniyle geçerliliğini yitiren 
+IAFS sertifikasına ait boya teknik dosyası ve denetim raporları iptal işleminden itibaren 5 yıl süreyle muhafaza edilir. 
+ÜÇÜNCÜ BÖLÜM 
+Koruyucu Kaplamaların Temel Gerekleri 
+Koruyucu kaplama uygulanacak gemiler 
+MADDE 8 – (1) Bu bölümde geçen koruyucu kaplamalara ilişkin hükümler; 
+a) 500 groston ve üzeri tüm gemilerin ayrılmış denizsuyu balast tanklarına ve 150 metre ve üzeri dökme yük 
+gemilerinin çift cidar mahallerine aşağıda belirtilen tarihlere göre uygulanır: 
+1) İnşa sözleşmesi 1 Temmuz 2008 tarihinden sonra imzalanan gemiler. 
+2) Sözleşmesi mevcut değilse, 1 Ocak 2009 tarihinden sonra omurgası kızağa konan veya 1 Temmuz 2012 
+tarihinden sonra teslim edilen gemiler. 
+b) 1 Temmuz 1998 ve sonrasında inşa edilmiş ve (a) bendinin kapsamına girmeyen petrol tankerleri ve dökme 
+yük gemilerinin ayrılmış denizsuyu balast tanklarına uygulanır. 
+c) 5000 dedveyt ton ve daha büyük ham petrol tankerlerinin kargo petrol tanklarına aşağıda belirtilen tarihlere 
+göre uygulanır: 
+1) 1 Ocak 2013 tarihinden sonra inşa sözleşmesi imzalanan ham petrol tankerleri. 
+2) Sözleşmesi mevcut değilse, 1 Temmuz 2013 tarihinden sonra omurgası kızağa konan veya 1 Ocak 2016 
+tarihinden sonra teslim edilen ham petrol tankerleri. 
+Koruyucu kaplamaların temel gerekleri 
+MADDE 9 – (1) Koruyucu kaplama temel gereklerinin sağlanması için ilk uygulamadan itibaren 15 yıl boyunca 
+iyi kondisyonda koruyucu kaplama özelliğini koruması ve ikinci fıkrada belirtilen uygulama genelgesinde yer alan 
+kriterleri karşılaması gerekmektedir.
+
+--- SAYFA 4 ---
+(2) 8 inci maddenin birinci fıkrasının (a) ve (b) bentlerinde belirtilen gemiler için MSC’nin Res.MSC.215(82) 
+numaralı “Tüm Gemilerin Ayrılmış Denizsuyu Balast Tankları ile Dökme Yük Gemilerinin Çift Cidarlarının Koruyucu 
+Kaplamaları İçin Performans Standartları Kılavuzu” ve (c) bendinde belirtilen gemiler için MSC’nin Res.MSC.288(87) 
+numaralı “Ham Petrol Tankerlerinin Kargo Petrol Tankları Koruyucu Kaplamaları İçin Performans Standartları 
+Kılavuzu” esas alınarak İdare tarafından uygulama genelgesi yayımlanır. 
+Boya temel gereklilikleri 
+MADDE 10 – (1) Uygulanacak boya sistemi, MSC’nin Res.MSC.215(82) ve Res.MSC.288(87)  numaralı 
+dokümanları ile 9 uncu maddede belirtilen uygulama genelgesinde yer alan koruyucu kaplama sistemi teknik 
+gerekliliklerini sağlar. 
+(2) Boya üreticisi; boyanın ön yeterlilik testleri sonucunu, MSC’nin Res.MSC.215(82) ve Res.MSC.288(87) 
+numaralı dokümanlarının Ek-1’inde yer alan kriterlere göre belgelendirir, sonuçların tatmin edici bulunması halinde 
+bağımsız üçüncü bir taraftan tip onay belgesi veya uygunluk belgesini alır. 
+Boya teknik dosyasının hazırlanması 
+MADDE 11 – (1) Yeni gemilerin inşasında tesis tarafından hazırlanacak boya teknik dosyasında, asgari olarak 
+aşağıda verilen başlıkları içerecek bilgiler bulunur:  
+a) Boyanın tip onay sertifikasının ve/veya uygunluk beyanının boya üreticisi veya üreticinin ülkemizdeki yetkili 
+temsilcisinden onaylı sureti, 
+b) Teknik veri föyü; ürün adı, tanımlayıcı markası ve numarası, kaplama sisteminin kompozisyonu, renkleri, 
+bileşenleri, materyalleri, minimum ve maksimum kuru film kalınlıkları, uygulama araçları, metotları ve makineleri, 
+uygulanacak yüzeyin paslanma derecesi, yüzey profili, temizlik gibi durumu, nem ve sıcaklık gibi çevresel sınırlamalar, 
+c) Kaplama uygulamasında tesis çalışma kayıtları; yüzey hazırlama metodu, uygulama esnasındaki çevre 
+şartları, uygulanan sistem, her bölüm için metrekare olarak uygulanan gerçek alan, uygulama süresi, kalınlığı ve kat 
+sayısı gibi diğer teknik bilgiler, 
+ç) Gemi montajı sırasında kaplama sisteminin onarım ve denetimi için prosedürler, 
+d) Gemi boya denetmeninin günlük kayıtları, boya sözleşmesinden özel sapmaların kayıtları, uygulamanın boya 
+tedarikçisi veya temsilcisinin talimatlarına göre yapıldığının beyan edildiği Ek-4’te yer alan günlük kayıtlar ve Ek-5’te 
+yer alan uygunsuzluk raporları, 
+e) Tersanenin denetim raporu doğrulaması; denetimin bitiş tarihi, denetim sonuçları, yorumlar ve denetmen 
+imzası, 
+f) Servise giriş sonrası boya sisteminin bakım ve onarım prosedürleri, 
+g) Gemi boya denetmeninin yetki belgesinin fotokopisi, 
+ğ) Boya teknik dosyanın içerisinde yer alacak yüzey hazırlama ve boya uygulama süreci hakkındaki denetimler 
+konusunda tersane, gemi sahibi ve boya üretici veya temsilcisi arasında imzalanan anlaşma. 
+(2) Koruyucu kaplamaların bakım ve onarımları, kısmi boya uygulama faaliyetleri boya teknik dosyasına 
+kaydedilir. 
+(3) Boya sistemi tamamen yeniden uygulanacaksa, bu maddenin birinci fıkrasında belirtilen bilgiler, boya teknik 
+dosyasına kaydedilir. 
+Boya teknik dosyasının onayı 
+MADDE 12 – (1) Boya teknik dosyası, İdare veya İdarenin yetkilendireceği kuruluşlar tarafından 11 inci 
+maddedeki hususlar doğrultusunda belge üzerinden kontrol edilerek onaylanır. Söz konusu kontroller denetim görevlisi 
+tarafından yapılır. 
+Gemi boya denetmeni tarafından yapılan denetimler 
+MADDE 13 – (1) Gemi boya denetmenleri, uygulama sürecinde, boya uygulama ve yüzey hazırlama sırasındaki 
+denetim görevlerini yerine getirirler. Denetim sonuçlarına göre gemi boya denetmeni tarafından Ek-4’te yer alan günlük 
+kayıtlar ve Ek-5’te yer alan uygunsuzluk raporları hazırlanır. 
+(2) Gemi boya denetmenlerinin inşa safhalarına yapacakları denetimler aşağıda belirtilen şekilde yapılır: 
+a) Birinci yüzey hazırlığı safhasında; 
+1) Çeliğin yüzey sıcaklığı, bağıl nem ve çiğlenme sıcaklığı, hava sıcaklığındaki ani değişikliklerin zamanları, 
+raspa uygulaması öncesinde ölçülür ve kayıt edilir. 
+2) Çelik yüzey; çözülebilir tuzlar, yağ, gres ve diğer kirleticiler yönünden test edilir. 
+3) Ön imalat astarı uygulama sürecinde, çelik yüzeyin temizliği gözlemlenir. 
+4) Ön imalat astarı materyalinin ilgili uygulama genelgesi gereklerini karşıladığı onaylanır. 
+b) Kalınlık tespiti safhasında eğer ana boya sistemi ile uyumu beyan edilmişse, çinko esaslı ön imalat astarının 
+kalınlık ve kürlenmesinin belirlenen değerlere uygun olduğu onaylanır. 
+c) Blokların oluşturulması safhasında; 
+1) Blok yapımının bitirilmesi sonrasında ve ikinci yüzey hazırlığının başlanmasından önce kenarlar için yapılan 
+işlemler de dahil, yapılan çelik yüzey işlemlerine yönelik görsel bir denetim yapılır.  Yağ, gres veya görülen diğer 
+kirleticilerin yüzeyden arındırılmış olduğu kontrol edilir.
+
+--- SAYFA 5 ---
+2) Raspa, taşlama veya temizleme sonrası ve boya uygulamasından önce hazırlanan yüzeyin görsel denetimi 
+yapılır. 
+3) Temizlik ve raspanın bitirilmesi sırasında ve sistemin ilk katının uygulanmasından önce, çelik yüzeyde kalan 
+çözünebilir tuzların seviyesi her bloğun en az bir yerinden test edilir. 
+4) Yüzey sıcaklığı, bağıl nem ve çiğlenme noktası, boya uygulaması ve kürlenme esnasında gözlemlenir ve kayıt 
+edilir. 
+5)  İlgili uygulama genelgesi ve atıf yapılan MSC kılavuzlarında belirtilen boya uygulama sürecindeki adımların 
+yerine getirildiği denetlenir. 
+6) Uygulanan boya kalınlığının ilgili uygulama genelgesi ve atıf yapılan MSC kılavuzlarının “Kuru film kalınlığı 
+ölçümü” başlıklı ekinde belirtildiği şekilde olduğu kuru film kalınlığı ölçümleri ile kontrol edilir. 
+ç) Blok montajı safhasında; 
+1) Yapılan anlaşma, yüzey hazırlama ve ilgili uygulama genelgesi ve atıf yapılan MSC kılavuzlarının gereklerine 
+uygunluğu incelenerek çelik yüzey kondisyonunun görsel denetimi yapılır. 
+2) Yüzey sıcaklığı, bağıl nem ve çiğlenme noktası, boya uygulaması başlangıcından önce ve boya uygulaması 
+sırasında düzenli olarak ölçülerek kayıt edilir. 
+3) İlgili uygulama genelgesi ve atıf yapılan MSC kılavuzlarında bahsedilen boya uygulama prosesindeki 
+adımların yerine getirildiği denetlenir. 
+Alternatif sistemler 
+MADDE 14 – (1) Epoksi esaslı olmayan tüm sistemler, bu Yönetmeliğe göre alternatif sistem olarak kabul 
+edilir. 
+(2) Bu Yönetmeliğe uygun boya sistemlerine eşdeğer performans veren diğer alternatif sistemler kullanılabilir. 
+(3) Bir başka alternatif sistemin onaylanması, asgari olarak bu Yönetmelikte belirlenen korozyon koruma 
+performansına eşdeğerlik sağladığını gösterir kanıtların belgelenmesine bağlıdır. Boya sisteminin, asgari olarak bu 
+Yönetmelikte tanımlanan boya standardına uygunluk sağlayan tatmin edici performans verdiği kanıtlarla belgelendirilir. 
+Laboratuvar testleri, ilgili uygulama genelgesi ve atıf yapılan MSC kılavuzlarında belirtilen test prosedürüne göre 
+yapılır. 
+DÖRDÜNCÜ BÖLÜM 
+Gemi Boya Denetmeni Semineri ve Yetkilendirmesi 
+Gemi boya denetmeni seminerleri düzenleme ve katılım şartları 
+MADDE 15 – (1) Gemi boya denetmeni semineri düzenlemek isteyen; Gemi Mühendisleri Odası, Gemi 
+Makineleri İşletme Mühendisleri Odası, yetkilendirilmiş klas kuruluşları, üniversitelerin lisans düzeyinde öğretim veren 
+mühendislik veya fen fakültelerinden gemi inşa mühendisliği, kimya veya metalürji dallarında öğretim veren fakülteleri 
+gemi boya denetmenliği konusunda seminer vermek üzere İdareden uygunluk talep eder. 
+(2) Seminer için uygunluk taleplerinde seminer tarihi ve yeri, seminer programı ve eğitici personelin 
+yeterlilikleri hakkında bilgilerin seminer planlama tarihinden en az 2 ay öncesinde uygunluk almak için İdareye 
+sunulması gerekmektedir. Seminer programı SSPC PCI, FROSIO III veya NACE II seviyesindeki yeterliliklere eşdeğer 
+olacak şekilde 16 ncı maddede yer alan konuları kapsar. Düzenlenecek seminerlerde asgari 10, azami 30 katılımcı 
+bulunur. Katılımcı sayısında beşinci fıkrada belirtilen personel de dikkate alınır. 
+(3) Seminer programı kabul edilen kuruluşlar, yapılan seminer çalışmasından sonra programın en az yüzde 
+seksenine katılan katılımcılara seminer katılım sertifikası düzenler. Seminer katılım sertifikasında seminer izninin tarih 
+ve sayısı, seminer tarih aralığı, semineri düzenleyen kuruluş, sertifikanın düzenlendiği tarih, katılımcının adı soyadı, 
+kimlik numarası ve katılımcı sertifikasını onaylayan kişinin unvan ve imzası yer alır. İdare tarafından gönderilen 
+gözlemci personel bu hususları kontrol eder. 
+(4) Seminerlere aşağıda belirtilen yeterlikteki kişiler katılabilir: 
+a) Üniversitelerin lisans düzeyinde öğretim veren mühendislik veya fen fakültelerinden mezun ve gemi inşa 
+sanayine hizmet veren boya firmalarında en az iki yıl çalışmış olan kimya mühendisleri, kimyagerler, metalürji 
+mühendisleri veya metalürji ve malzeme mühendisleri. 
+b) Gemi Mühendisleri Odasına kayıt şartlarını taşıyan ve boya firmalarında, gemi inşa sanayinde veya İdarede 
+en az iki yıl iş tecrübesi olan mühendisler. 
+c) Gemi inşa sanayine hizmet veren boya firmalarında veya tesiste en az iki yıl çalışmış olan gemi makine 
+işletme mühendisleri, deniz ulaştırma işletme mühendisleri ve bu bölümlerin denklerinden mezun olanlar. 
+(5) Semineri düzenleyen kuruluşlar, Bakanlıkta görevli olup dördüncü fıkradaki şartları taşıyan ve İdarece 
+görevlendirilen 3 personele seminere ücretsiz katılım hakkı verir ve devam şartının yerine getirilmesi halinde katılımcı 
+sertifikası düzenler. 
+Seminer içeriği ve seminer vereceklerin yeterlilikleri 
+MADDE 16 – (1) Gemi boya denetmeni semineri asgari olarak aşağıdaki konu başlıkları hakkında uzmanlık 
+düzeyinde bilgi içerir: 
+a) İlgili mevzuat ve uygulama genel bilgileri,
+
+--- SAYFA 6 ---
+b) Gemiyle ilgili tanımlar, 
+c) Yeni ve güncel AFS teknikleri, 
+ç) IMO Koruyucu Kaplama  Performans Standardı ve referans uluslararası standartlar, 
+d) Tesiste boya uygulamasında ve denetlenmesinde can ve çevre emniyeti, 
+e) Koruyucu kaplama uygulamasında malzemeler ve tasarım hakkında genel bilgiler, 
+f) Gemi boya denetmeninin görevleri, 
+g) Korozyon ve koruyucu kaplama uygulama hataları, 
+ğ) Boyanın kürlenme mekanizmaları, 
+h) Kaplama tipleri, muayene tip ve prosedürleri, testler ve test aletleri, 
+ı) Koruyucu kaplama prosedürleri, 
+i) Koruyucu kaplama uygulama ekipmanları, 
+j) Yüzey hazırlığı, 
+k) Su jeti ile raspa uygulaması, 
+l) Nem alma, 
+m) Boya teknik dosyası, 
+n)  Kaplama inceleme teknikleri, 
+o) Nisbi nem ve çiğ noktası sıcaklığı hesaplama, 
+ö) Endüstriyel boyalarda kullanılan kimyasallar, 
+p) Maruz kalmayı kontrol edebilme, 
+r) Zehirli ve tehlikeli maddelerin zararlı etkileri, 
+s) Risk idaresi, 
+ş) Numune alma işlemine ait detaylar, 
+t) Katodik koruma, 
+u) Yangın güvenliği, 
+ü) İlk yardım, 
+v) Uygulama örnekleri ve pratik çalışmalar. 
+(2) Birinci fıkrada belirtilen konu başlıkları hakkında seminer verecek kişilerin; üniversitelerin kimya, metalürji, 
+malzeme, gemi inşa ve denizcilik ile ilgili fakültelerinden en az lisans düzeyinde belgeleri ile eğitim verecekleri 
+konularla ilgili faaliyet alanlarında iş tecrübesi hakkındaki belgeleri 15 inci madde kapsamında seminer düzenleme yetki 
+talebi dosyasına eklenir. 
+Gemi boya denetmeni sınavı müracaat, genel şartları, sonuçlarının ilanı ve itiraz 
+MADDE 17 – (1)  Sınav ücreti ve sınavla ilgili diğer bilgiler, sınav tarihinden en az 30 gün önce İdarenin 
+internet sitesinden (www.tkygm.gov.tr) ilan edilir. 
+(2) Sınavlar İdare tarafından, belirlenen tarihlerde yapılır. 
+(3) Gemi boya denetmeni semineri katılım sertifikasına sahip kişiler sınav gününden en az 15 gün önce İdareye 
+ulaşmış olacak şekilde aşağıdaki belgelerle şahsen, kargo veya iadeli taahhütlü posta ile sınav müracaatlarını yaparlar. 
+a) Şekli İdarenin internet sitesinden yayımlanan başvuru formu, 
+b) Sınav tarihinden önceki 1 yıl içinde seminere katıldığını belirtir Gemi Boya Denetmeni Semineri Katılım 
+Sertifikasının kopyası, 
+c) Mezuniyet belgesinin sureti, 
+ç) İdarede görevli olanlar hariç ilk defa gemi boya denetmeni olarak yetkilendirilecekler için iş tecrübesini 
+gösterir ilgili firmadan alınmış yazı veya çalışma süresini gösteren resmi belge, 
+d) www.turkiye.gov.tr adresi üzerinde e-denizcilik ödeme sisteminden sınav ücretinin yatırıldığına dair makbuz. 
+(4) Sınava katılımı uygun görülen adayların isim listesi sınav tarihinden en az 5 gün önce İdarenin internet 
+sitesinden ilan edilir. 
+(5) Adaylar ilan edilen sınav günü başlama saatinden en az 30 dakika önce sınav yerinde resmi kimlik belgeleri 
+ile hazır bulunmak zorundadırlar. 
+(6) Müracaat ettiği halde sınava girmeyenlerin sınav ücreti iade edilmez. 
+(7) Sınav, 16 ncı maddenin birinci fıkrası kapsamındaki konuları içerir. 
+(8) Sınav çoktan seçmeli test usulüyle yapılır, sınav sonucunda yüz üzerinden en az yetmiş puan alan kişiler 
+başarılı sayılır. 
+(9) Sınav sonucunda başarılı olan adayların listesi sınav tarihinden itibaren 15 gün içerisinde İdarenin internet 
+sitesinden ilan edilir. 
+(10) Sınav sonuçlarına itirazlar, sınav sonuçlarının yayımlanmasını müteakip 10 işgünü içinde İdareye yazılı 
+olarak yapılır. İtirazlar, İdare tarafından en az üç kişiden oluşturulan komisyon tarafından incelenerek sonuçlandırılır. 
+(11) Sınava katılmayanların ve sınavlarında başarısız olan adayların, sonraki iki sınav başvurusunda başvuruda 
+sundukları Seminer Katılım Sertifikası geçerli kabul edilir. Bu sınavlarda da başarılı olamayanların tekrar gemi boya 
+denetmeni seminerine katılımı gereklidir.
+
+--- SAYFA 7 ---
+Gemi boya denetmenlerinin yetkilendirilmesi 
+MADDE 18 – (1) 17 nci maddede belirtilen sınavda başarılı olan adayların yetki belgesi ücretinin 
+www.turkiye.gov.tr adresi üzerinde e-denizcilik ödeme sisteminden yatırıldığına dair makbuzun şahsen, kargo veya 
+iadeli taahhütlü posta yoluyla İdareye iletilmesini müteakip Gemi Boya Denetmeni Yetki Belgesi düzenlenir. 
+(2) Daha önce SSPC PCI II, FROSIO III veya NACE II seviyesinde sertifikaya sahip olanların; 
+a) Sahip oldukları sertifikanın noter onaylı kopyalarını, 
+b) Yetki belgesi ücretinin www.turkiye.gov.tr adresi üzerinde e-denizcilik ödeme sisteminden yatırıldığına dair 
+makbuzu, 
+şahsen, kargo veya iadeli taahhütlü posta yoluyla İdareye iletmeleri halinde bu kişilere sınav koşulu aranmadan 
+beş yılı geçmeyecek şekilde sahip oldukları sertifikanın geçerlilik tarihine kadar Gemi Boya Denetmeni Yetki Belgesi 
+düzenlenir. 
+(3) Gemi Boya Denetmeni Yetki Belgesi geçerlilik süresi belge düzenleme tarihinden itibaren beş yıldır. İdarece 
+izin verilen seminer katılım sertifikası ile belgesini yenilemek isteyen gemi boya denetmenlerinin Boya Denetmeni Yetki 
+Belgesi süresince en az iki yıl gemi inşa sanayine hizmet veren boya firmalarında, tesislerde veya İdarede çalıştığını 
+gösterir belge ve yetki belgesi ücretinin www.turkiye.gov.tr adresi üzerinde e-denizcilik ödeme sisteminden yatırıldığına 
+dair makbuz ile İdareye şahsen, kargo veya iadeli taahhütlü posta yoluyla müracaatları sonucu, İdare tarafından yeniden 
+beş yıllık yetki belgesi düzenlenir. Yeni düzenlenen yetki belgesi bu yetki belgesine yönelik sunulan seminer katılım 
+sertifikasının düzenleme tarihinden itibaren beş yıldır. Bu fıkra kapsamındaki yetki belgesi yenilemelerinde sınav şartı 
+aranmaz. Ancak iki yıl çalışma şartını yerine getirmeyenler için ilk kez yetki belgesi alanlara yönelik işlemler uygulanır. 
+(4) Düzenlenen Gemi Boya Denetmeni Yetki Belgeleri gemi boya denetmeninin başvuru formunda belirtilen 
+adresine gönderilir veya boya denetmeni tarafından İdareden bizzat teslim alınır. 
+BEŞİNCİ BÖLÜM 
+Sorumluluklar ve Yaptırımlar 
+İdare bünyesindeki denetim görevlisinin sorumlulukları 
+MADDE 19 – (1) Denetim görevlileri; 
+a) Klassız gemilerde gemi boya denetmenleri tarafından sunulan raporu ve boya teknik dosyasını gözden 
+geçirerek teknik dosyanın onaylanması, IAFS sertifikasının düzenlenmesi ve kayıt belgesinin tutulmasından, 
+b) Türk Bayraklı gemiler veya Türkiye’de bulunan limanlara gelen yabancı bayraklı gemilerin, “IAFS 
+Sertifikasının” veya “AFS Beyannamesinin” olup olmadığının ve uygunluğunun belge üzerinden kontrolünden, 
+c) Alınan numunelerle ilgili test sonuçlarının değerlendirilmesi, uygunsuzluk bulunması halinde İdarenin 
+bilgilendirilmesi ve bulunan uygunsuzluğun giderilmemesi halinde ilgili sertifikanın geri çekilmesinden, 
+ç) Gemi boya denetmeninin bu Yönetmelik hükümlerine göre hareket etmediğini tespit ettiği takdirde durumu 
+İdareye bildirmekten, 
+sorumludur. 
+Tesis sahibinin veya temsilcisinin sorumlulukları 
+MADDE 20 – (1) Tesis yetkilisi; 
+a) Teknik veri föyü ve uygulama prosedürüne göre koruyucu kaplamanın uygulanmasını sağlamak ve Organik 
+Tutunma Önleyici Sistem Beyannamesini bu Yönetmelik ve Sözleşme hükümlerine göre hazırlamaktan, 
+b) Can emniyetini sağlayacak tedbirleri almaktan ve yükümlülüklerin uygulanmasından, 
+c) Bu Yönetmelik hükümlerine göre işlem yapan gemi boya denetmenine gerekli kolaylığın sağlanmasından, 
+sorumludur. 
+Yetkilendirilmiş kuruluşun sorumlulukları 
+MADDE 21 – (1) Yetkilendirilmiş kuruluş bu Yönetmeliğin ilgili maddelerine göre gerekli inceleme ve 
+denetimleri yapmak, belgeleri düzenlemek, gerekli onay işlemlerini yapmak, bu işlemlerle ilgili kayıtları tutmak ve 
+neticeden İdareye bilgi vermekle sorumludur. 
+(2) Yetkilendirilmiş kuruluş, gemi boya denetmeninin bu Yönetmelik hükümlerine göre hareket etmediğini 
+tespit ettiği takdirde durumu İdareye bildirir. 
+(3) Yetkilendirilmiş kuruluş; 
+a) Klaslı Türk Bayraklı gemilerde gemi boya denetmenleri tarafından sunulan raporu gözden geçirerek yapılacak 
+denetimden sonra Sözleşmeye uygun IAFS sertifikasının düzenlenmesi ve kayıt belgesinin tutulması, 
+b) İdarenin talebi halinde kendi klası altındaki gemilerden numune almak ve test sonuçlarının değerlendirilmesi 
+sonucunda, uygunsuzluk bulunması halinde İdarenin bilgilendirilmesi ve yetkilendirilmiş kuruluşça IAFS sertifikası 
+düzenlenmiş klası altındaki gemilerde bulunan uygunsuzluğun giderilmemesi halinde ilgili sertifikanın geri çekilmesi, 
+işlemlerini yapar. 
+(4) Yetkilendirilmiş kuruluş Türk Bayrağına geçen klası altındaki gemiler için 26 ncı maddede belirtilen 
+yükümlülüklerini uygular. 
+(5) Yetkilendirilmiş kuruluş bu Yönetmelik ve Sözleşmeye aykırı IAFS sertifikası düzenlemez. 
+(6) Yetkilendirilmiş kuruluş usulüne uygun düzenlenmemiş boya teknik dosyasını onaylamaz.
+
+--- SAYFA 8 ---
+(7) Yetkilendirilmiş kuruluş gemi sahibi veya yetkili temsilcisi tarafından sunulan beyannamede uygunsuzluk 
+tespit edilmesi halinde, uygunsuzluk giderilene kadar gemiye bayrak devleti adına yetkisi dâhilinde hiçbir belge 
+düzenlemez. 
+Gemi sahibi veya temsilcisinin sorumlulukları 
+MADDE 22 – (1) Türk Bayraklı gemilerin sahibi veya temsilcisi; 
+a) Biyosit olarak kullanılan organotin bileşikler içeren organik tutunma önleyici sistemin bu Yönetmelik 
+hükümlerine uygun hale getirilmesinden, 
+b) Organik Tutunma Önleyici Sistem Beyannamesini bu Yönetmelik ve Sözleşme hükümlerine göre 
+hazırlamaktan, 
+c) Gemisine 6 ncı maddenin beşinci fıkrası kapsamında yapılacak denetimlerde Organik Tutunma Önleyici 
+Sisteminin bu Yönetmelik hükümlerine uygun bulunmasından, 
+sorumludur. 
+Gemi boya denetmeninin sorumlulukları 
+MADDE 23 – (1) Gemi boya denetmenleri; 
+a)  13 üncü maddede belirtilen denetimleri eksiksiz yerine getirerek Ek-4 ve Ek-5’te yer alan formları düzenli 
+tutmakla, 
+b) 11 inci madde kapsamındaki teknik dosyayı eksiksiz hazırlamakla, 
+c) Aksi yönde hareket eden tesis yetkilisini İdareye bildirmekle, 
+sorumludur. 
+(2) Yetkisi askıya alınmış gemi boya denetmenlerinin askıya alındıkları tarihe kadar düzenledikleri belgeler 
+geçerli olup bu durumdaki gemi boya denetmenleri askıya alma süresi içerisinde yeni belge düzenleyemez. Askıya alma 
+süresi içerisinde gemi boya denetmeni yetki belgesi yenileme başvurusu yapamaz. 
+Yaptırımlar 
+MADDE 24 – (1) Tesis sahibi veya temsilcisine, 20 nci maddenin birinci fıkrasının; 
+a) (a) bendine aykırı hareket ettiğinin tespiti halinde koruyucu kaplama uygulaması yapılan geminin boyu esas 
+alınarak metre başına 200TL, 
+b) (b) bendine aykırı hareket ettiğinin tespiti halinde 10.000TL, 
+idari para cezası verilir. 
+(2) Yetkilendirilmiş kuruluşa, 21 inci maddenin; 
+a) Üçüncü fıkrasının (b) bendine aykırı hareket ettiğinin tespiti halinde 50.000TL, 
+b) Beşinci fıkrasına aykırı hareket ettiğinin tespiti halinde 50.000TL, 
+c) Altıncı fıkrasına aykırı hareket ettiğinin tespiti halinde 20.000TL, 
+ç) Yedinci fıkrasına aykırı hareket ettiğinin tespiti halinde 50.000TL, 
+idari para cezası verilir. 
+(3) Türk Bayraklı gemilerin sahibi veya temsilcisine, 22 nci maddenin; 
+a) Birinci fıkrasının (b) bendine aykırı hareket ettiğinin tespiti halinde 10.000TL, 
+b) İkinci fıkrasına aykırı hareket ettiğinin tespiti halinde 50.000TL, 
+idari para cezası verilir. 
+(4) Gemi boya denetmenine, 23 üncü maddesinin birinci fıkrasının (a) veya (b) bentlerinden birine aykırı hareket 
+ettiğinin tespiti halinde 10.000TL idari para cezası ve uyarı cezası verilir. Bir takvim yılı içerisinde iki uyarı cezası alan 
+gemi boya denetmeninin yetki belgesi bir (1) yıl askıya alınır. 
+İdari yaptırımların uygulanmasına ilişkin hükümler 
+MADDE 25 – (1) Bu Yönetmelikte belirtilen idari para cezaları, her takvim yılı başından geçerli olmak üzere o 
+yıl için 4/1/1961 tarihli ve 213 sayılı Vergi Usul Kanunu uyarınca tespit ve ilan edilen yeniden değerleme oranında 
+artırılarak uygulanır. Bu suretle idari para cezasının hesabında bir Türk Lirasının küsuru dikkate alınmaz. 
+(2) Bu Yönetmelik ile düzenlenen idarî yaptırım kararları; merkez teşkilatında İdare, taşra teşkilatında liman 
+başkanlıklarınca verilir. 
+(3) İdari yaptırımı gerektiren birden fazla eylemin bir arada işlenmesi halinde her eylem için ayrı ayrı idarî para 
+cezası uygulanır. Ancak, bir eylem ile birden fazla ihlalin gerçekleşmesi halinde, ilgili ihlal için öngörülen cezalardan 
+ağır olanı uygulanır. 
+(4) 20 ve 22 nci maddelerde belirtilen kişilerin aynı kişi olması ve bu maddelerde belirtilen fiillerden birinin bu 
+kişi tarafından işlenmesi halinde ilgilisine tek bir idari para cezası uygulanır. 
+(5) Verilen idarî para cezaları tebliğinden itibaren bir ay içerisinde ödenir. 
+(6) İdari yaptırımların uygulanmasına ilişkin diğer hususlarda 30/3/2005 tarihli ve 5326 sayılı Kabahatler 
+Kanununda yer alan esaslar dikkate alınır.
+
+--- SAYFA 9 ---
+ALTINCI BÖLÜM 
+Çeşitli ve Son Hükümler 
+Geminin Türk Bayrağına geçmesi 
+MADDE 26 – (1) Sözleşmeye taraf ülkelerce Sözleşmeye uygun olarak düzenlenmiş IAFS sertifikası bulunan 
+Sözleşme kapsamındaki yabancı bayraktaki gemilerin Türk Bayrağına geçmesi durumunda; 
+a) Önceki bayrak devleti tarafından yayımlanmış IAFS sertifikası mevcut haliyle Türk Bayrağında da Sözleşme 
+gereğince 3 ay süre ile geçerlidir. 
+b) Liman başkanlığınca veya yetkilendirilmiş kuruluşça, Türk Bayrağına geçişin tamamlanmasını müteakip 
+IAFS sertifikası yayınlayan önceki bayrak devletinden veya yetkilendirilmiş veya tanınmış kuruluştan geminin daha 
+önce taşıdığı IAFS sertifikalarının ve bu sertifikalarla ilgili sörvey raporlarının bir kopyası istenir. 
+c) Bayrak değişiminden sonraki ilk 3 aylık süre içerisinde liman başkanlığınca veya yetkilendirilmiş kuruluşça 
+mevcut sertifikasına istinaden yeni IAFS sertifikası yayımlanır. 
+ç) Gemiye ait IAFS sertifikalarının ve bu sertifikalarla ilgili sörvey raporlarının bir kopyasının önceki bayrak 
+idaresinden veya yetkilendirilmiş veya tanınmış kuruluştan temin edilmesinden sonra kontrol edilir. Sörvey raporlarının 
+veya sertifikanın uygun olmadığı yönünde şüpheye düşülmesi veya gemiye ait IAFS sertifikasının önceki bayrak 
+idaresinden veya yetkilendirilmiş veya tanınmış kuruluştan gelmediği veya temin edilemediği durumda, 6 ncı madde 
+kapsamında denetim ve belgelendirme işlemleri yapılır. Her durumda yabancı bayraktan Türk Bayrağına geçen gemilere 
+düzenlenecek belgenin yeni bir denetim ve belgelendirmeye veya düzenlenmiş geçerli bir sertifikaya dayanması 
+gerekmektedir. 
+(2) Koruyucu kaplamalara ilişkin 8 inci maddede belirtilen gemilerin yabancı bayraktan Türk bayrağına geçmesi 
+durumunda, 11 inci maddede tanımlanan boya teknik dosyası kontrol edilerek kabul edilir. Bu gemilerde boya teknik 
+dosyasının olmaması veya yetersiz olması durumunda Üçüncü Bölüm kapsamında teknik dosya uygun hale getirilir 
+veya yeniden hazırlanır. 
+Yabancı bir ülke tarafından yapılan denetim ve belgelendirme talepleri 
+MADDE 27 – (1) Sözleşmeye taraf ülkelerce talep edilmesi halinde İdare tarafından belirlenen liman başkanlığı 
+veya yetkilendirilmiş kuruluşça, talep eden ülkenin bayrağını taşıyan gemiye denetim ve belgelendirme yapılır. Bu 
+şekilde düzenlenen IAFS sertifikasında sertifikanın geminin bayrak devletinin talebi üzerine düzenlenmiş olduğuna ve 
+ülke idaresi tarafından düzenlenmiş IAFS sertifikaları ile aynı yaptırım ve tanınmaya sahip olduğu ifadesi yazılır. 
+(2) IAFS sertifikasının ve mümkünse bu sertifikaya ilişkin sörvey raporlarının bir nüshası talep sahibi ülkeye 
+iletilir. 
+(3) Sözleşmeye taraf olmayan bir ülkenin bayrağını taşıyan gemiler için hiçbir sertifika düzenlenmez. 
+Geçiş hükümleri 
+GEÇİCİ MADDE 1 – (1)  6 ncı maddenin birinci fıkrasının (b) bendi kapsamında ulusal sefer yapan gemilere 
+yönelik yükümlülükler en geç 1/1/2021 tarihinden sonraki ilk kara sörveyine kadar yerine getirilir. 
+(2) Uluslararası sefer yapan mevcut gemilere Sözleşme kapsamında, yetkilendirilmiş kuruluşlarca bu 
+Yönetmeliğin yayımı tarihine kadar verilmiş olan IAFS sertifikaları ve onaylanan boya teknik dosyaları geçerlidir. 
+Mevcut gemi boya denetmenleri 
+GEÇİCİ MADDE 2 – (1) Bu Yönetmeliğin yürürlüğe girdiği tarihte İdarece gemi boya denetmenine eş olarak 
+belgelendirilmiş kişiler veya 18 inci maddenin ikinci fıkrasında belirtilen sertifikalara sahip kişilerin mevcut belge ve 
+sertifikaları 1 yıl süresince gemi boya denetmeni yetki belgesi olarak geçerli kabul edilir. 
+(2) Bu Yönetmeliğin yürürlüğe girdiği tarihten önce İdarece gemi boya denetmenine eş olarak belgelendirilmiş 
+kişiler, 1 yıl içerisinde İdareye başvurmaları halinde mevcut belgeleri bu Yönetmeliğin yürürlüğe girdiği tarihten itibaren 
+geçerli olacak şekilde seminer katılım sertifikası olarak kabul edilerek sınava müracaatları değerlendirilir. 
+(3) Bu Yönetmeliğin yürürlüğe girdiği tarihten itibaren 1 yıl içerisinde bu maddenin ikinci fıkrası kapsamında 
+başvuru yapmamış kişilerden daha sonra başvuranlara ilk kez gemi boya denetmeni yetki belgesi alacaklara yönelik 
+işlemler uygulanır. 
+Yürürlük  
+MADDE 28 – (1) Bu Yönetmelik yayımı tarihinde yürürlüğe girer. 
+Yürütme 
+MADDE 29 – (1) Bu Yönetmelik hükümlerini Ulaştırma ve Altyapı Bakanı yürütür.
+
+--- SAYFA 10 ---
+Ek ~1 ULUSLARARASI om/mix TUTUNMA (‘mu-zvicl sls'r£M szmmkasl INTERNA TIUNAL AN1‘H’0L'LINC mTEM CERTIFICA TE Eu saruﬁkn, Ek'x Orgamk ‘I umnma Onlcynci Smem Knyll Ilclgesl Ilc birhku gemlidn Thu nmtﬁrale xhall I1: mpplemenled by a mom 0/I4nn—/uulmg Swlemx Gcmulerdeki zmm ozganik Tnnmma Onleyic. Sislemlerin Konlrolune lliskm Uluslm-ans: Snzleqmeye gore lmned umltr nu Inlzrnammul Carwenlmn an m Conlrnl o/Hurmﬁd Av1Ax—I"auling Synem an Ship: nuku...e....i.. y=1kiAi an...a.. Under me uulhrmly cl/Ah: Gnvrmmznl 9/ TURKIYE CUMHURIYETI Rep-ubltr a/7..nI.ey ULASTIRMA VI: ALTYAPI BAKANLIGI MINIJTR r or TRANSFDR7 AND INFRASTRUCTURE Hub€lg=.. .. .. rm: Cmxﬂcme Nplnct: me umfrale am .. unm. belgmln ycrin: W. [I-lgcr um (mncdcn hnrliclgc :mm..1c......s Isa] Gemi éullimen/rmicuzm afShip Gemi Ad: /Name afxhip Tanlnma igami /Du‘:/incxive number ur letters : Sicll Llmam / Pan ufrzgimy Gros Tonaju/Gross tonnage IMO Numamsl / IMO number 2 cl 5.. gcmiya. ...;m slraslnda veyu dshn Mmnl Sﬂzlcymfnin ck-I‘: kapsammda knmml $4.1... bir orgnm ......nn... Dnlcylcx smem llygulnnmlmlﬁllr/An anti;/an/truuymnx umlrulled uridzr/ivvrrexl haxnot btertappluddwmgar nﬂer mm....n .2/1;... 5..., DSHzk:;m:'nin ck~I'i kupsamlndn komml edim. 1... organ: m.....nu ﬂnleylcl susacm am... one: bu gum: kuI.a...1n..; mm ...|=sIsin ad... uarufmdan . Ianh . Aarilund: knI.1.nIn..;n.r./An an.../.=..nng ryxlm zmwollmlvvldvr Annex I M: on». «ppm an lhtxxhlp-p«vIau:I,v. bulhm been Iemuvedby 1.... ml: on rurvh EIsnz1es...c'..... ck-l’\ k..m......d. knmm! umzn rn. av-ynlk (umnma dnlcyiu sislem 4.... mm 1.. gemtdz uyguhmmx; Iucak . Jcstsm um. laraflmlun mu. lznhmde uygulanun buriya km up kaplnnmlsur./An anl!-ﬁmlmg xyrlrm wnlmlltd unumnnexl haxbeen app:mI..nm.uI..p prrvronxfnhulhaxbeovzuucvtdwlrhnjealuvaual/etlby nnm. on Ianh ns.mc;...c*..... ck-l'| kapsarnmda komml cdxlen bi: axunik ...u...m.. dnlcy n. .. ......... tnnhindcn um bu gcvmye nygulnnmlgnlup hm ....n.m|e.. once kuldxnlmuh vcyl hariycrkxnlc |a..1........1..J... /An ... .....:..g cm... mnlmlkd ..n....;.....=... q......a........x;............... mm ,..... muslhelemnvrd mrwvnved WI"! .m..m...n.....n mun lsau BEDGEVLE TASDIK OLUNUR Kl / THIS IS TO CERTIFY mm 1. Gem igbu Sﬁ1.lesme’nin 4.]-1k‘inin Kurnl l’i Irynnncs denelilne txbi Iululmnglur; V2 The mp ha: been .nAr\/eyed .n accordance wrth rzgulalirm 1 n/Anna 4 .9 [ha Convention, and z. ue..:u'..., gemidnki organik ...........-.. linleyici sislemin. sazlegmvuin I. Ek’indc belirﬁlen uygulnnablllr urtlnrn ..yg.... olangnnu glistennekiedir. The Jurvey .\'lu7w: that the arm-fouling syxvem on we ship camp/in wuh me a/rplicublz rzqunremenu o/Annex I m we Corxvnrman. 3.. b:1g=nIn dnunleuaiy xbrvcym lam: mnI.:/nan :1/conplrlron u[lh:mrv(yonuhr¢W lhu urufcalt .m....¢.: tar/h Bu help: ....n.ir. . mrihind: (Bclgcmn ddzculcnmc ycr1)'dc auzz..1c...1.is1.r lsvwdal yadgmn dﬂznltnmt m»; an the dam mm (I-klgryi dlnenlcyen nnkam)
+
+--- SAYFA 11 ---
+Ek-2 ORGANIK TUTUNMA ONLEYici SiSTEM KAYIT nELcEsi RECORD or ANTI-F0 ULING SYSTEM Bu hclgc, umslamasu Drgmik Tmunmn Onlzylci Sistern Scrtiﬁkasnna mm olarak eklenccekur. Thu Renard man be pmrmneruLv mmm m we International Ann-Fuulmg Symm Cemﬁca/z Gemi Ozellikleri /Parliculais 47_/‘Ship _ Gemi Ad: /Name u/mp Tamnma Igareti /nmmmve number or mm: mo Nnmanm /IMOnumber uvaumwm oncmlx nmmm oumrlcl sisrmrwtn/sisrzMLEnmlN AYRINTILARI DETAILS OFANTLFUIILING SYSTEM(S) APPLIED Kullnlllllnnrgl mnmm‘ zy xinzminlxislzmleringcqidilc kl: rypm).2/anumzurmg:ymm(;)um! orgmik ununuu anleyiei ximmin/simmlerin uygullmnn nrshi/xmhleri / Dazm) D/applfcalmn a/ amf-/Azltling .vymm(:): . . . . . . . . . Uyguhynn yirktlin/yirkrllcrin v: lexhin/luixluin inn./iximlni, uygnhnul yer/yuler /Nam:(.v) nfcampa":V(it1) and /auI1!y(t'u)/l0cDHur1(.\'}whsr:Dpphed . . . . . ‘ 7‘ . Orgpnik mlunlm anuym xblem ﬂrelitisinln/ﬂrvllcilmnin iun|'im|:ri / Namzfx) 0/ Lmlbfolrling ryx/zm rvmrI14ﬁ1cmnv(:) . . . . . .. Orymik Ilnunml llnleyiti simminlfnlemlzrln mni/ixhnkn ve rengi/renkleri /Name(:) and <alIJur(x) 9/ anwfnulmg xynemfl). . ,. .. ,.. .. mm min mndduilnndlicleri vz Kimynsll Elulz: Servit Sicil N-muun/Nununlm (CA8 munmm/numnnlml / yad1enIAs)and mm Chcmicnl Absxrw Serviocs llvgistry Numbens) [CA5 numb:r(s)) . Uygulnn-mm bnriyer Ian» us‘ i/sq‘ :rilType(s)ofsn1cx Wat. ifapplxuhk Uygulullnuu, nygnllnlu hlriyu hlllnn ismi/imnlgri ve reugi/renklnri I Name(.r) and coIz7ur(.r) afmzler cam uppzrm ./appt.-mm. ... .._ >\ . .. l!lriy:rk1IIn uygulanml mihi/ Dar: n/nppllmtuzn a/.raaVtrL'uaf nu Knydln her bnlumdln dogru olnlm TASDIK OLUNUR. THIS 15 TU CERTIFY that /ht: Rmni u Carma‘ m all vnpecl: Kaydm dﬁlemenme yeri Dﬂzenlenme tarihi (Puss al Lswa nl Record) ume M mun) (Klydx dﬂienlcyen ycmh)
+
+--- SAYFA 12 ---
+Kaynlarm Onaylanmasn Endorsemznl uflhe mm; Sﬁzlesmeﬂnin 4. Ek’inin Kural l(1)(b)'sinde §art kogulan hi: daneﬁmde, geminin Sﬁzlesme ile uyumlu oldugunun giiriild g TASDIK OLUNUR. THIS IS TO CERTIFY mm a survey reqmredin Izccrrrdance wnh regulmmn l(I )(b) 0/‘Annex 4 la the Crmvmlionfuuml than /he mp was in uumplfunce wilh /he Conwmmn IJVGULANAN DRGANIK TUTUNMA ONLEVICI SISTEMININ/SlS'|‘EMLERlNlN AVRINTILARI DETAILS OFANT1-FOULING SYS1‘EM(S) APPLIED xuuuuluu vrpnik munm. ﬂnleyicl slxluninlsislunle 'n gzyidi/pzqillzn I Typefx) a/anI1~/nulfng :y:Iem(I) med .. . orgunk mlunm mmym ummlnmmmlmn uygummn urnn/mmnen / DaA2(:} of appllcathm 9/ arm-fan/mg ryxlem/1):. . . . ., ,. . Uygllllyln ;irlumn/girkztlrrin V: Iuixinllui eri ]acI'Ix'Iy(I‘z:l/1acun‘A7n{.r) where ayphrd mlzri. -.yg.n..m. yzr/ytrler / N:1me(.r) afL'anxpany(m.r/ and orpnik nmmmn l1nl:ylv:| nisum IIminlxlnln/umlclluinin inn‘ Ieri / Namtﬂ} a/ arm-/anlmg mm" rrmnu[atIurzr(:): . .. . . . .. . Drgmik mum. bnleyici iislemm/sislunlerin ismi/isimleri ve rengi/renkleri / Nume{:) um ca1uw'{:) ../ unh-fuu/mg J;wIem(u):. . .. . . . . Etkin knlkl llllddtsi ldliellri ve Kimylul Elulre Servi.1 S I Numnrnsl/Numlnllrl (CA5 lIIlll’Ill'llI/lllllnlf Aclivc ing:ed1en|(s) and men Chznucal Abstract Scrvn‘/as Regmry Nummu) (CA5 numba11s)) ‘ |Jygu|.Im1IIQu hnriyzrluulls /cwillcri/Ty)w(s)nf:r.:Al=rwu|,ifapyvlxcaxhlz . . . . . Uygulumllsu, uygulnnuu bar er Iuumn llmi/uimleri v: mug enklen / mama; and colomfr) afmaler ma! a,.,m;.:, tfapphmhlz. .. .. .. .. . . . Buiyer mm uyguhnml urlhi / Dal: ofappllmllon afsmle;-ma!‘ Duzenlenme yeri Tam.» (Wine of issue) (Dam lmn‘ Gislled) Vc1.kIli makamln dumgasl veyx mnhm (ml or slump u/the authamy) ' Ont)/lnmmm mud. Kuydn nniylnyun yukni mmmm unmsx
+
+--- SAYFA 13 ---
+Ek-3 ORGANIK TUTUNMA 0NLEYiCi SiS'|"EM BEYANNAMESi DECLARA TION ON ANTLFUULING SYSTEM Gcmilerdeki Zararll Orgnnik Tnlunma Cnleyici Sixlemlerin Kontrolilne iliskin Uluslnrnrasl Siizlegmeye uygun olarak lllZlI‘ll.|ll.nI.9llr. Drawn up under the lnterrwliunal Convention an the cam! afﬂurmﬁd Anti-Fuulmg symm rm Ships" Gemi ("mllilsleri /Parucutars a/ship Gzmi Am /Name 0/xhm Tnmmna [sired /Dimncltve number or I21/er: Sicil Limm /Pan afreglsrry Gros Tonnjn /Gra::Ionm1gL' Buyl Laugh! IMO Numznsl (Mevcutw) / mo number (lfaplliczxble) ‘ Bu gemide kullamlan urganik |ulunma Onleyici sis|cmin Sﬂzle;memn Ek-1'i xlc uyumlu nldugunu hegmn ederim. I declare mm the anliiouling system used on this ship cnmplizs wi|h Annex I of I11: Convenlmn am;.;'.'" ' (E;;m{sa'mi»: Cm, i..§.§;.m..§. imml / s.g;m{u; o'rw'w.;('u£ uw..2r; m.}a.:.: wiii uygumm: Drgnnik Tumnnu Onlcyici Sixtcmin/Sislunlcrin 0nIy| Emloraemem r1[unIr'~ﬁ/14mg xynenmv) app/lid Kullamllnn nrymxk mmnm ﬂnleyici simmin/xislemltrin czsidi teylleri V2 uyguluum Karim/nrihlcri I Typenv) uf mu’-/;u1mg:,mem(:)mdand daIe{.v}a/appl1mlmn' . ‘ . .. . ' '(1'a:i1./|:}x=n'' " ' (6=ms sauna} Cam mi. immsl / Slgnaunc nlowncr<;rov;ner'3‘wLha||nH;Agc1\|)‘ Kullmllul nrgnnik nmmm unleyicl smemln/slxumleyin midi/gc e uyguhlllln ulrilli/O Illtri / Typz(.1) of anr1—ﬂmHngxys1em(.v)nrad am .1»/awn/ummun .. . . ., (Tanh/‘D>u;e>)> }Genu5aJ11hAv;y:‘y:1k|l‘i;cn\:|1us1n1n inﬂux. / sqmhifue uI>u\vner ax uv;n=r';Inr‘Y;A}1vi1:d};3>gzr;l})-I Kulluulnn umnik Illlunml llnleyici ximmin/sismnl arm—/au!vruz.vy:(:m(.r)uuI1 and dm(:)a/appumnon . . v=s I/¢= e uygnlnunx urihilurihleri I Ty]m(.1) nf (1a}'.h'/'ba}c)' i veyn yuknli mmsilcisuun Imz‘asAV/Vsnyulvaluvre4;}A;'Ir1e}t;rowu:(’: aulhnmzed lgenl)
+
+--- SAYFA 14 ---
+Ek-4 GDNLDK KAYITLARIN TUTULMASI i'mNEK FORMU Example Of Daily LogAnd Nan-Canfwmily Report ci3NLDK KAVIT s.y1. No: min LOG Sheet No Cami: Tlmk/Ambar ND: Verilahanui S/up Tank/Ilold Na Damhm Ylpnun Bnlllmll I Parr amrumr» : vt7zEV HAZIRLAMA /SURFACE PREPARATIDW Melnl: Alan: Muhad Arm {M7} A§lI'IrI¥I'Il‘I: Pnrlikﬂl thud}: Abrasive Farm-ul A11: Vllny s.m|.g.: um snukngu xur/am tempera/ur! Air Iernperulnre Inga Nun (lluksilnulnj: (;' um Nukmu Relalive mummy (rm) Dew puirrl smmmm. Uygulnnmul: Application a_/the xrandur! Kznxrllnll vumlr.-mum: Rounding nfedgu Vorumlar: Corrmm: I; No I Job No.. Tarih /Dale ; hm /Sigmlxlre ; non sIs1':Mi UVGULAMASI I COATING AI'I’LlCATl0N vamuun I Mzrhod S\s|emKalNo: PumNo ‘nun Hm/nS\c* vuuys mm Mnksimlun ve minimum Iilcillen lmru ﬁlm lulmlxklnn. Kl-‘K islgimleri glinlﬁk knyntlnrn ekluwczklir. Nor: - Musurz-1 rmmnmm aruimax/mum DFT DI‘7‘reavir'ng: m D: anachedla daily lag Yorum|)IrlCammm1s : I; Nu / Jab Nu : Tnrlh /Date: Imn /Stgnature. - BN"/n‘ C1gNok: KFK0lcum|eri Digerl-Iususlur‘
+
+--- SAYFA 15 ---
+Ek-5 UYGUNSUZLUK RAPORU NON-C()yVF(1RMlTY xcranr Snyl: No: Sheet No Gemi: Tank/Amlnr No: v.m.r..n.; Shxp Tank/lInM Na Dambasz yum... mnnmn I ran o/J-1.-mm: DENETIM BULGULARININ DUZELTILMESI Icm ACIKLAMA DESCRIPTIO or THE INSPECTION FIVDINGS TO BE CORRECTED Dcnelim Bulxulnrl ; Utxcnpliart of/indingr Ilgili Dvkﬂmxn (Gﬂnlik mm): Reference dacumerzt (daﬂy lag] Diiullici Eylenl: Carrecnve acrmrx mlnzn I; No /Jab Na : Tnrih / Dale inm /Signature:

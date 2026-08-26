@@ -16,3 +16,7 @@
 *.png binary
 *.7z binary
 *.exe binary
+
+# Paylaşılan UAB vektör indeksi ve yeniden üretim snapshot'ı GitHub LFS'te tutulur.
+runtime/qdrant-uab-ministry-archive/collection/uab_ministry_archive_chunks_v1/storage.sqlite filter=lfs diff=lfs merge=lfs -text
+data/processed/uab_ministry_archive_snapshot.json filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,617 @@
+--- SAYFA 1 ---
+3 Haziran 2021 PERŞEMBE 
+Resmî Gazete 
+Sayı : 31500 
+YÖNETMELİK 
+Ulaştırma ve Altyapı Bakanlığından: 
+ULAŞTIRMA HİZMETLERİ 
+DENETİM YÖNETMELİĞİ 
+  
+BİRİNCİ BÖLÜM 
+Amaç, Kapsam, Dayanak ve Tanımlar 
+Amaç 
+MADDE 1 – (1) Bu Yönetmeliğin amacı; karayoluyla yapılan ulaştırma hizmetleri alanında gerçekleştirilecek 
+faaliyetlerin denetimlerine ilişkin usul ve esaslar ile denetim yapacak personelin niteliklerini, görevlerini, yetkilerini, 
+sorumluluklarını ve yükümlülüklerini düzenlemektir. 
+Kapsam 
+MADDE 2 – (1) Bu Yönetmelik; 
+a) 10/7/2003 tarihli ve 4925 sayılı Karayolu Taşıma Kanunu, 13/10/1983 tarihli ve 2918 sayılı Karayolları Trafik 
+Kanununun 35 inci ve 65/A maddeleri, 26/9/2011 tarihli ve 655 sayılı Bakanlar Kurulu Kararı ile yürürlüğe konulan 
+Ulaştırma ve Altyapı Alanına İlişkin Bazı Düzenlemeler Hakkında Kanun Hükmünde Kararname, 10/7/2018 tarihli ve 
+30474 sayılı Resmî Gazete’de yayımlanan 1 sayılı Cumhurbaşkanlığı Teşkilatı Hakkında Cumhurbaşkanlığı 
+Kararnamesinin 477 nci ve 497 nci maddeleri kapsamında yapılacak denetimlere ilişkin usul ve esaslar ile yürütülecek 
+iş ve işlemleri, 
+b) Bu Yönetmelik kapsamında denetim yapan görevlilerin görev, yetki, sorumluluk, yükümlülük ve niteliklerini, 
+c) İdari para cezası karar tutanaklarının düzenlenmesinde ve takibinde uygulanacak usul ve esasları, 
+ç) İhlal tespit tutanakları ve verilecek uyarmalara ilişkin usul ve esasları, 
+kapsar. 
+Dayanak 
+MADDE 3 – (1) Bu Yönetmelik; 4925 sayılı Kanunun 27 nci maddesine, 655 sayılı Kanun Hükmünde 
+Kararnamenin 28 inci maddesine, 1 sayılı Cumhurbaşkanlığı Teşkilatı Hakkında Cumhurbaşkanlığı Kararnamesinin 477 
+nci ve 497 nci maddelerine ve 2918 sayılı Kanunun 8 inci maddesinin (c) bendi ile 35 inci ve 65/A maddelerine 
+dayanılarak hazırlanmıştır. 
+Tanımlar 
+MADDE 4 – (1) Bu Yönetmelikte geçen; 
+a) Adi tutanak: Kayıt altına alınması gereken bir durumu, tespit edenler tarafından hazırlanıp imzalanan belgeyi, 
+b) Araç (taşıt): Karayollarında kullanılabilen motorlu, motorsuz ve özel amaçlı taşıtlar ile iş makineleri ve lastik 
+tekerlekli traktörlerin genel adını, 
+c) Araç muayene istasyonları: Sabit, seyyar, motosiklet veya traktör muayene istasyonlarını, 
+ç) Bakanlık: Ulaştırma ve Altyapı Bakanlığını, 
+d) Bölge müdürlüğü: Ulaştırma ve Altyapı Bakanlığı bölge müdürlüklerini, 
+e) Delil: Denetim esnasında tespiti yapılan durumu tevsik edecek her türlü bilgi ve belgeleri, 
+f) Denetim: Karayoluyla yapılan ulaştırma hizmetleri alanında gerçekleştirilecek faaliyetlerin, 4925 sayılı 
+Kanuna, 2918 sayılı Kanuna ve 655 sayılı Kanun Hükmünde Kararnameye uygun olarak yapılıp yapılmadığının 
+incelenmesi, araştırılması ve kontrol edilmesini, 
+g) Denetim ekibi: Bu Yönetmelik kapsamında yapılacak olan denetimi gerçekleştirecek olan 
+denetleyici/denetleyicileri, 
+ğ) Denetim planı: İdarenin risk analizleri ile Bakanlık politika ve stratejileri doğrultusunda, İdare veya bölge 
+müdürlüklerince hazırlanan planı, 
+h) Denetim programı: Denetim planı çerçevesinde gerçekleştirilecek operasyonel faaliyetleri içeren dokümanı, 
+ı) Denetim raporu: Yapılan denetim ve incelemeler sonucunda düzenlenen raporu, 
+i) Denetleyici: İdare veya bölge müdürlüklerinde görev yapan ve bu Yönetmeliğin 18 inci maddesinde belirtilen 
+şartları taşıyan kişiyi, 
+j) Diğer denetleyici kurumlar: 4925 sayılı Kanun, 2918 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname 
+kapsamında yetkili kılınan Emniyet Genel Müdürlüğü ve Jandarma Genel Komutanlığının birimleri ile Ticaret 
+Bakanlığının sınır kapılarındaki birimleri ve belediyelerin ilgili zabıta birimlerini, 
+k) Elektronik sistemlerden faydalanılarak yapılan denetim: Uzak denetim ve U-Net Otomasyon Sistemi 
+üzerinden elde edilen veriler çerçevesinde uzaktan yapılan denetimi, 
+l) İdare: Ulaştırma Hizmetleri Düzenleme Genel Müdürlüğünü,
+
+--- SAYFA 2 ---
+m) İşletme: Kamu kurum/kuruluşları da dâhil olmak üzere kâr amacı bulunup bulunmadığına bakılmaksızın, 
+4925 sayılı Kanun, 2918 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname ve ilgili mevzuat kapsamında 
+faaliyette bulunan gerçek veya tüzel kişileri, 
+n) İşletme denetimi: İşletmelerin merkez veya şubesinin denetimini, 
+o) Kabahat: İlgili kanunlar ile bu kanunlara dayanılarak çıkarılan idari düzenlemelere aykırılık teşkil eden ve 
+karşılığında idari yaptırım uygulanması öngörülen durum ve eylemlerin her birini, 
+ö) Karayolu denetim kesimi: Genel olarak araç ve sürücülerinin denetim amacıyla durdurulduğu veya tespit 
+edilen kabahatlerin karşılığı olan yasal işlemlerin yapıldığı, işaretlerle belirlenmiş ve güvenliği sağlanmış karayolu 
+bölümünü, 
+p) Kontrol listesi: Denetimlerde kullanılmak üzere İdare tarafından hazırlanan listeleri, 
+r) Muayene merkezi: Tehlikeli madde taşımacılığı ile Bozulabilir Gıda Maddelerinin Uluslararası Taşımacılığı 
+ve Bu Taşımacılık Faaliyetinde Kullanılacak Özel Ekipmana İlişkin Anlaşma kapsamında kullanılan araç ve 
+üstyapılarının test ve muayene hizmetlerini sağlayabilecek ölçüde gerekli altyapı, teçhizat ve personele sahip olan ve 
+Bakanlık tarafından yetkilendirilmiş işletmeleri, 
+s) Ön ihbarlı denetim: Elektronik denetim sistemlerinden temin edilen bilgiler neticesinde denetime alınan 
+taşıtlarla ilgili yapılan denetimi, 
+ş) Risk analizi: Etkin ve verimli denetim yapabilmek amacıyla, denetimlerden önce taşıt, sürücü veya işletmelere 
+ilişkin veri tabanlarında bulunan bilgilerin analizini, 
+t) Sabit denetim istasyonu: Kamuya açık karayolu güzergâhında bulunan denetim istasyonlarını, 
+u) Seyyar denetim: Sabit denetim istasyonları haricinde karayolu kenarında güvenli bir noktada kolluk kuvvetleri 
+tarafından taşıtların durdurulması yolu ile yapılan denetimi, 
+ü) Tutanak: İdari para cezası karar tutanağı veya ihlal tespit tutanağını, 
+v) U-Net Otomasyon Sistemi: Bakanlığın yazılım sistemini, 
+y) U-Net Otomasyon Sistemi denetimi: U-Net Otomasyon Sistemi üzerinden tespit edilen verilere göre yapılan 
+denetimi, 
+z) Uzak Denetim: Sabit denetim istasyonlarından alınan veri ve görüntüler üzerinden yapılan sistematik 
+denetimi, 
+ifade eder. 
+(2) Bu Yönetmelikte yer alan ancak birinci fıkrada tanımlanmayan ifadeler için Bakanlık tarafından yayımlanan 
+mevzuatta belirtilen tanımlar esas alınır. 
+İKİNCİ BÖLÜM 
+Denetim Yapacak Birimler ve Görevleri 
+İdare ve bölge müdürlüklerinin görevleri 
+MADDE 5 – (1) İdarenin bu Yönetmelik kapsamındaki görevleri aşağıda belirtilmiştir: 
+a) Denetleyici yetkisi verilenlere yönelik eğitimleri verecek eğiticilerin belirlenmesi ve eğitilmesi ile ilgili iş ve 
+işlemleri yapmak. 
+b) Yapacağı denetimlere ilişkin yıllık denetim planını hazırlamak. 
+c) İlgili mevzuat kapsamında yapılması gereken denetimlerin planlanması ve koordine edilmesi, denetim usul 
+ve esasları ile denetim politika ve stratejilerinin belirlenmesine yönelik iş ve işlemleri yapmak. 
+ç) Araç muayene istasyonlarının ve muayene merkezlerinin mevzuata uygunluk denetimlerini denetim planına 
+uygun olarak yapmak. 
+d) İdarede görevli denetleyicilerin görevlendirilmesine yönelik işlemleri yürütmek. 
+e) Gerekli görülmesi halinde denetimlere iştirak etmek. 
+f) Bölge müdürlüklerince yapılan denetim faaliyetlerinin yıllık olarak değerlendirilmesini ve raporlamasını 
+yapmak. 
+g) Denetimle yetkili diğer yetkili kurumlar tarafından yapılan denetimlerin verimli ve etkili olmasına yönelik 
+çalışma, koordinasyon ve planlamayı yapmak. 
+ğ) Kontrol listelerini hazırlamak ve güncel tutmak. 
+(2) Bölge müdürlüklerinin bu Yönetmelik kapsamındaki görevleri aşağıda belirtilmiştir: 
+a) İlgili mevzuat kapsamında yapılması gereken denetimlerin planlanması, programlanması, koordine edilmesi 
+ve takibi ile ilgili iş ve işlemleri yapmak. 
+b) Denetim sonuçları ile ilgili işlemleri yürütmek. 
+c) Yapacakları denetimlere ilişkin yıllık denetim planını hazırlamak. 
+ç) Yapılan denetimlere ilişkin yıllık denetim faaliyet raporunu hazırlamak ve en geç takip eden yılın ocak ayı 
+sonuna kadar İdareye sunmak. 
+d) Denetleyicilere yönelik tamamlayıcı eğitimleri vermek veya verdirmek. 
+e) Bölge müdürlüklerinde görev yapan denetleyicilerin görevlendirilmesine yönelik işlemleri yürütmek.
+
+--- SAYFA 3 ---
+f) Gerekli durumlarda diğer denetleyici kurumlarla müşterek denetimler planlanması için gerekli koordinasyon 
+çalışmasını yapmak. 
+g) Seyyar denetimleri planlamak ve yapmak. 
+(3) Bölge müdürlükleri, denetimin niteliğine göre gerektiğinde mahalli mülki amirinden kolluk kuvveti 
+görevlendirilmesini talep eder. 
+(4) Bölge müdürlüklerince düzenlenen tutanakların tebliği, takibi ve benzeri işleri yapan personel ile denetleyici 
+personel ayrı ayrı olarak görevlendirilir. 
+Görevli ve yetkili diğer kurumlar 
+MADDE 6 – (1) Bu Yönetmelik kapsamında yapılacak denetimlerde tutanak düzenlemeye 4925 sayılı Kanun, 
+2918 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname ile yetkilendirilmiş görevli Bakanlık (İdare ve bölge 
+müdürlükleri) personeli ile denetimle yetkili diğer kurumların personeli de görevli ve yetkilidir. 
+(2) Denetim ile yetkili diğer kurumlar, yaptıkları denetim sonucuna ilişkin tutanakları ilgili bölge müdürlüğüne 
+gönderir ancak, denetimlerin sonucuna ilişkin tutanakların kendi otomasyon sistemi üzerinden elektronik ortamda 
+Bakanlığa göndermesi halinde, fiziki olarak İdareye veya bölge müdürlüğüne göndermez. 
+(3) Denetim ile yetkili diğer kurumlar bu Yönetmelik kapsamında denetim yapacak kendi personeline yönelik 
+tamamlayıcı eğitimleri verir veya verdirir. 
+(4) Denetim ile yetkili diğer kurumlar, yaptıkları denetimlere ilişkin istatistiki bilgileri, Bakanlığın talebi halinde 
+yazılı veya elektronik ortamda bildirir. 
+ÜÇÜNCÜ BÖLÜM 
+Denetim Çeşitleri 
+Denetim çeşitleri 
+MADDE 7 – (1) Denetim çeşitleri aşağıdaki gibidir: 
+a) Karayolunda yapılan denetimler; 
+1) Sabit denetim istasyonlarında denetim, 
+2) Seyyar denetim, 
+3) Sınır kapılarında yapılan denetim. 
+b) İşletme denetimleri; 
+1) Gerçek/tüzel kişilere ait işletmelerde yapılan denetim, 
+2) Araç muayene istasyonlarının işletme denetimi, 
+3) Muayene merkezlerinin işletme denetimi. 
+c) Fiziki yer ve mekân uygunluk denetimleri; 
+1) Gerçek/tüzel kişilere ait işletmelerin uygunluk denetimi, 
+2) Araç muayene istasyonlarının uygunluk denetimi, 
+3) Muayene merkezlerinin uygunluk denetimi. 
+ç) Elektronik sistemlerden faydalanılarak yapılan denetimler; 
+1) Uzak Denetim, 
+2) U-Net Otomasyon Sistemi üzerinden denetim. 
+Karayolunda yapılan denetimler 
+MADDE 8 – (1) Sabit denetim istasyonlarında denetim; 
+a) Denetim programı çerçevesinde denetimler gerçekleştirilir. 
+b) Elektronik sistemler vasıtasıyla belirlenen araçların denetlenmesi esas olup, sistemlerin bu şekilde araç 
+seçememesi halinde denetlenecek araçlar denetleyici tarafından belirlenir. 
+c) Yolcu taşımacılığı yapan taşıtların denetimi özel bir durum olmadıkça, tartım platformuna alınmadan 
+gerçekleştirilir. 
+(2) Seyyar denetim; 
+a) Denetim yapılacak karayolu denetim kesimi ve zamanı bölge müdürlükleri tarafından belirlenir. 
+b) Denetim yapılacak karayolu denetim kesiminde taşıt/taşıtların konuşlanacağı ve denetime tabi tutulacak 
+taşıtların depolanacağı yeterli ve güvenli alan olmasına özen gösterilir. 
+c) Viraj, kavşak, köprü ve tünel gibi görüşün azaldığı yerler veya yakınında, kaplamanın daraldığı ya da trafik 
+işaretlemeleri ile geçmenin yasaklandığı yol kesimlerinde ve yol zemininin karlı veya buzlu olduğu durumlar ile görüşü 
+azaltan sisli, yağışlı ve benzeri havalarda denetim yapılmamasına özen gösterilir. 
+ç) Denetimin uygulanacağı yol kesiminde araç durdurma, şerit daraltma ve benzeri trafik tedbirleri trafik 
+zabıtasınca yapılır. 
+d) Denetimlerde varsa ortak denetim alanları tercih edilmelidir. 
+(3) Bakanlık ve bölge müdürlükleri tarafından karayolunda yapılan denetimler, kontrol listeleri kullanılarak 
+yapılır. 
+(4) Sınır kapılarında yapılan denetimler, kontrol listeleri kullanılarak yapılır.
+
+--- SAYFA 4 ---
+(5) Denetim faaliyetinde bulunan ekip, denetim noktası öncesindeki elektronik sistemlerden faydalanarak 
+denetlenecek aracın belirlenmesi suretiyle ön ihbarlı denetim de gerçekleştirebilir. Buna ilişkin hususlar İdare tarafından 
+belirlenir. 
+İşletme denetimleri 
+MADDE 9 – (1) Gerçek/tüzel kişilerin işletme denetimlerinde; 
+a) İşletmelerin mekân ve/veya faaliyet denetimleri kontrol listeleri kullanılarak yapılır. 
+b) İşletme denetiminin, zamanı ve işletmelere ilişkin bilgiler önceden denetim programında belirlenir. 
+(2) Araç muayene istasyonlarının ve muayene merkezlerinin mekân ve faaliyet denetimi, İdare tarafından 
+görevlendirilen personelce, İdare tarafından hazırlanan/onaylanan denetim planı ve programı kapsamında yapılır. 
+Fiziki yer ve mekân uygunluk denetimleri 
+MADDE 10 – (1) Taşımacılık yetki belgesinin ilk düzenlenmesi veya yenilenmesinde, fiziki yer ve mekân 
+şartlarının sağlandığına yönelik denetimler kontrol listeleri kullanılarak, bölge müdürlüklerince gerçekleştirilir. 
+(2) İlk defa yetkilendirilecek veya yetki belgesi yenilenecek araç muayene istasyonlarının ve muayene 
+merkezlerinin fiziki yer ve mekân şartlarının sağlandığına yönelik denetimler İdare tarafından gerçekleştirilir. 
+(3) Tehlikeli Madde Güvenlik Danışmanlığı Kuruluşu (TMGDK) yetkilendirme, belge yenileme ve adres 
+değişikliği taleplerine ilişkin işlemlerde fiziki yer ve mekân şartlarının sağlandığına dair denetimler İdarece veya bölge 
+müdürlükleri tarafından gerçekleştirilir. 
+(4) Birinci, ikinci ve üçüncü fıkralarda belirtilen denetimler, İdare veya bölge müdürlüklerince gerekli görülen 
+hallerde gerçekleştirilir. 
+Elektronik sistemlerden faydalanılarak yapılan denetimler 
+MADDE 11 – (1) İdare ve/veya bölge müdürlükleri tarafından oluşturulan uzak denetim merkezlerinde 
+yapılacak denetimler; uzak denetim için kullanılan sistem tarafından, elektronik cihaz, ortam veya U-Net Otomasyon 
+Sistemi üzerinden tespit edilen verilere göre mevzuat kapsamında yapılır. 
+(2) Kabahat, şüpheye meydan vermeyecek şekilde tespit edilir. 
+(3) Elektronik ortamdaki kayıtlar gerektiğinde çıktı alınarak çoğaltılabilir. 
+(4) Sistem üzerinden yapılan tespitlere ilişkin tutanakların elektronik ortamda düzenlenmesi esastır. 
+(5) Uzak denetimde; kontrol edilen araçlara ilişkin olası kabahatler U-Net Otomasyon Sistemi tarafından 
+listelenir. Listelenen kayıtlar üzerinde yapılan incelemede kabahat tespit edilmesi durumunda tutanak düzenlenir. İhlalin 
+bulunmadığının tespiti halinde gerekçesi kayıt altına alınarak cezai işlem uygulanmaz. 
+(6) Uzak denetimde; cezai işlem uygulanamayacak durumlarda gerekçe U-Net Otomasyon Sisteminde belirtilir. 
+(7) Elektronik sistemlerden faydalanılarak yapılan denetimler, denetleyiciler tarafından yapılabileceği gibi İdare 
+ve/veya bölge müdürlüklerinin görevlendireceği diğer personel tarafından da gerçekleştirilebilir. 
+(8) Elektronik sistemlerden faydalanılarak yapılacak denetimler, İdare tarafından yayımlanacak esaslara göre 
+yapılır. 
+İstatistikler ve risk analizi 
+MADDE 12 – (1) İdarece, bu Yönetmelik kapsamındaki faaliyetlere ilişkin verilere dayalı istatistikler 
+oluşturulur. 
+(2) İdare, etkin ve verimli denetim yapabilmek amacıyla, taşıt, sürücü veya işletmelere ilişkin Bakanlık veri 
+tabanında bulunan bilgiler üzerinden risk analizleri yapabilir. 
+(3) İdarece, bu Yönetmelik kapsamındaki faaliyetlere ilişkin oluşturulacak istatistiki bilgiler, taşıt, sürücü veya 
+işletmelere ilişkin risk analizleri, risk analizine göre yapılabilecek sınıflandırmalar ile İdarenin uygun göreceği diğer 
+bilgi ve belgeler, gerekli görülmesi halinde ilgili diğer kamu kurum ve kuruluşları ile paylaşılabilir. 
+(4) Risk analizine göre sınıflandırma yapmak suretiyle belirli taşıt, sürücü veya işletmelerin denetlenmesine 
+öncelik verilebilir, sürekli tespit edilen bir eksikliğe veya öncelik verilecek hususlara yönelik denetim planı ve programı 
+yapılabilir. 
+(5) Üçüncü fıkraya göre oluşturulan bilgiler, Bakanlıkça belirlenecek usul ve esaslara göre bu Yönetmelik 
+kapsamında denetime tabi olan gerçek veya tüzel kişilerle paylaşılabilir. 
+DÖRDÜNCÜ BÖLÜM 
+Denetim Öncesi ve Sonrası Yapılması Gerekli İşlemler 
+Denetim planı ve denetim programı 
+MADDE 13 – (1) Bu Yönetmelik kapsamında bölge müdürlüklerince yapılacak denetimlere dair yıllık denetim 
+planı bölge müdürlüklerince hazırlanır ve her yıl kasım ayının 15’ine kadar İdareye sunulur. Sunulan yıllık denetim 
+planları İdare tarafından onaylanır. Denetim planı hazırlanırken, önceki denetim faaliyetlerinden elde edilen verilerden 
+yararlanılır. 
+(2) Bir yıllık periyodu içeren denetim planı; 
+a) Kapsadığı coğrafi alanı, 
+b) Kontrol edilecek tesis veya faaliyetlerin türünü, 
+c) Yapılacak denetimlerin çeşidini,
+
+--- SAYFA 5 ---
+içerir. 
+(3) Kesinleşen yıllık denetim planına uygun olarak, bölge müdürlükleri tarafından üçer aylık denetim programı 
+hazırlanır. Denetim programı hazırlanırken, U-Net Otomasyon Sistemi üzerinden yapılan/yapılacak risk analizi dikkate 
+alınır. 
+(4) Denetim programı yıllık denetim planını detaylandıracak şekilde, denetlenecek işletme, denetim yeri veya 
+güzergâh bilgisi, denetim süresi, denetimin çeşidi, kapsamı ve benzeri bilgileri içerir. 
+(5) İdarece veya bölge müdürlükleri tarafından gerekli görüldüğü hallerde denetim plan ve programına bağlı 
+olmaksızın da denetim yapılabilir. 
+(6) Uygulanacak denetim programı, denetimler bitinceye kadar ilgisiz kişilerle paylaşılmaz. 
+Haberli ve habersiz denetim 
+MADDE 14 – (1) Haberli denetimler sadece aşağıdaki hallerde yapılır: 
+a) İlk defa yetki verileceklerin zorunlu fiziki yer ve mekân uygunluk denetimi. 
+b) Yetki belgesi düzenlenmiş ve fiziki yer ve mekân denetimi yapılmış olan yerlerde yapılan değişikliklerin 
+denetimi. 
+c) İdare tarafından uygun görülen diğer denetimler. 
+(2) Habersiz denetim; birinci fıkra haricindeki denetimleri kapsar. 
+Kontrol listeleri ve denetim raporu 
+MADDE 15 – (1) Denetleyici, İdare tarafından yayımlanan kontrol listelerini kullanarak denetim yapar. 
+(2) Fiziksel veya elektronik ortamda düzenlenen tutanaklar, kontrol listeleri ve denetim raporu 
+denetleyici/denetleyiciler tarafından ıslak veya elektronik imza (e-imza) ile imzalanır. 
+(3) Kontrol listesi; denetlenenin haberdar edilmesi şartıyla elde edilen fotoğraf ile buna ilişkin diğer belgeler 
+varsa tutanak ile ilişkilendirilmek suretiyle U-Net Otomasyon Sisteminde beş yıl süreyle saklanır. 
+(4) Denetleyici, işletme denetimlerinde denetim raporu düzenler. 
+(5) Denetim raporu; kontrol listesi ile ilişkilendirilmek suretiyle, U-Net Otomasyon Sisteminde beş yıl süreyle 
+saklanır. 
+İdari yaptırım kararı 
+MADDE 16 – (1) Yapılan denetimlerde, mevzuatta belirtilen gerekliliklere uyulmadığının veya 
+yükümlülüklerin yerine getirilmediğinin tespit edilmesi durumunda, mevzuatta belirtilen yaptırımlar uygulanır. 
+(2) 7 nci maddenin birinci fıkrasının (ç) bendi kapsamında yapılanlar haricindeki denetimlerde; adi tutanak, 
+kontrol listesi ve denetim raporu asgari iki denetleyici tarafından imzalanır. İdari para cezası karar tutanakları ve ihlal 
+tespit tutanaklarını ise, denetleyici/görevlilerden birinin imzalaması yeterlidir. 
+Denetim sonuçlarının değerlendirilmesi 
+MADDE 17 – (1) Denetim faaliyetleri İdare tarafından yıllık olarak değerlendirilir ve aşağıdaki bilgileri içeren 
+değerlendirme raporu hazırlanır. 
+a) Denetim biriminin personel sayısı ve diğer kaynaklar ile ilgili bilgiler. 
+b) Alınan şikâyet, denetim talepleri ve yıllık denetim planı. 
+c) Gerçekleştirilen denetim çeşitleri, denetim sayısı, tespit edilen uygunsuzluklar ve uygulanan yaptırımlara 
+ilişkin veriler. 
+(2) Değerlendirme raporundaki tespitlere göre kontrol listeleri ve iş programı/akışı güncellenebilir. 
+(3) Değerlendirme sonucunda hazırlanan rapor, bir sonraki denetim planı ve programı hazırlanırken bölge 
+müdürlüklerince dikkate alınır. 
+BEŞİNCİ BÖLÜM 
+Denetleyicilerin Nitelikleri, Eğitimi, Görev, Yetki ve Sorumlulukları ile Tanıtım Kartı 
+Denetleyicilerin nitelikleri ve eğitimi 
+MADDE 18 – (1) Denetleyicilerin; 
+a) 4925 sayılı Kanun, 2918 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararnamede sayılan kurum ve 
+kuruluşların personeli olması, 
+b) Yetkilendirilmiş olması, 
+c) Yapılacak denetimin kapsamına uygun eğitimi almış olması, 
+ç) En az lise veya dengi okul mezunu olması, 
+d) Etkili iletişim kurabilme kabiliyetine haiz olması, 
+gerekir. 
+(2) Araç muayene istasyonları ile muayene merkezlerinin denetimleri mühendislik eğitimi almış personel 
+tarafından yapılır. 
+(3) İdare, 4925 sayılı Kanun, 2918 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname ile yetkilendirilmiş 
+görevli Bakanlık ve bölge müdürlükleri personeli ile denetimle yetkili diğer kurumların uygun görülen personeline 
+denetim konusunda eğitici eğitimi verir veya verdirir. Bu Yönetmelik kapsamında denetimde sorumlu Kurumların kendi 
+denetim personeline bu eğitimi alan eğiticiler tarafından denetim eğitimi verilir.
+
+--- SAYFA 6 ---
+(4) İdare, denetim eğitimi ve eğitici eğitiminin içeriği, süresi ve müfredatı ile ilgili ayrıca düzenleme yapabilir. 
+Denetleyicinin görev, yetki ve sorumlulukları 
+MADDE 19 – (1) Denetleyicinin görev ve sorumlulukları şunlardır: 
+a) Yapılacak denetimle ilgili güvenlik önlemlerini almak/aldırmak ve alınmış güvenlik önlemlerine uymak. 
+b) Yapılacak denetimlerde kullanılmak üzere kendisine zimmetle teslim edilen idari para cezası karar 
+tutanağı/ihlal tespit tutanağını muhafaza etmek, bitiminde dip koçanlarının kontrolünü müteakip zimmetle teslim etmek. 
+c) Denetim raporunu, İdareye veya bölge müdürlüğüne sunmak. 
+ç) Kendisine verilen denetim görevini yapmak. 
+d) Denetim esnasında gerekli hallerde adi tutanak tutmak ve imzalamak. 
+e) Denetimleri adil ve tarafsız yapmak. 
+f) Denetimle ilgili gerekli bilgi ve belgeleri istemek. 
+g) Talep edilen bilgi ve belgeyi vermeyenler hakkında durumu adi tutanak altına almak. 
+ğ) Gerekli hallerde kolluk kuvveti tarafından güvenlik önlemlerinin alınması için bölge müdürlüğünden talepte 
+bulunmak. 
+h) Denetim için kendisine teslim edilen araç, gereç ve tutanakları usulüne uygun şekilde kullanmak. 
+Denetim ekibinin görevlendirilmesi 
+MADDE 20 – (1) Denetimlerde, İdarece veya bölge müdürlüğü tarafından yeterli sayıda personel 
+görevlendirilir. 
+(2) Denetleyicilere yapacakları denetim hususunda gereken bilgilendirme, İdarece veya bölge müdürlüğü 
+tarafından yapılır. 
+Denetleyicinin denetlenene karşı davranışı 
+MADDE 21 – (1) Denetleyici, denetlenene karşı davranışında aşağıdaki hususlara riayet eder: 
+a) Denetime başlamadan önce denetlenene denetleyici tanıtım kartını ibraz eder ve denetim gerekçesini açıklar. 
+b) Denetim sırasında denetlenene karşı saygılı ve nazik bir üslupla hitap eder. Kişisel tartışmalardan kaçınır. 
+c) Tespit edilen kabahati muhataba açık bir şekilde bildirir. 
+Denetleyici tanıtım kartı 
+MADDE 22 – (1) İdarece veya bölge müdürlükleri tarafından görevlendirilen denetleyicilere Bakanlık 
+tarafından Ek-1’de örneği yer alan tanıtım kartı verilir. 
+(2) İdarece veya bölge müdürlükleri tarafından görevlendirilen denetleyiciler, denetim süresince denetleyici 
+tanıtım kartını takar. 
+(3) İdarece veya bölge müdürlükleri tarafından görevlendirilen denetleyicilerin takacağı tanıtım kartlarının 
+basımı, verilme, değiştirilme, geri alınma ve imha edilmesine ilişkin usul ve esaslar Bakanlıkça belirlenir. 
+(4) Denetleyici tanıtım kartının kayıp, çalıntı ve benzeri durumlarda yenisi temin edilinceye kadar personel 
+kimlik kartı, denetleyici tanıtım kartı yerine kullanılabilir. 
+Gizliliğe riayet 
+MADDE 23 – (1) Denetleyicilerin; 
+a) Kişisel verilerin gizliliğine riayet etmeleri, 
+b) Denetim programında yer alan bilgileri ilgisiz kişilere açıklamamaları, 
+c) Denetim esnasında öğrendikleri ticari sır mahiyetindeki bilgileri ilgisiz kişilere açıklamamaları, 
+ç) İhbar üzerine veya resen yapılacak denetimlere ilişkin bilgileri ilgisiz kişilere açıklamamaları, 
+zorunludur. 
+ALTINCI BÖLÜM 
+Tutanaklar 
+Düzenlenecek tutanakların şekli, içeriği, basımı ve dağıtımı 
+MADDE 24 – (1) 4925 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname kapsamında bu Yönetmelik 
+ekinde şekli ve içeriği yer alan basılı veya elektronik idari para cezası karar tutanakları ile basılı veya elektronik ihlal 
+tespit tutanakları ile zarflar kullanılır. 
+a) 4925 sayılı Kanunun İdari Para Cezası Karar Tutanağı (Ek-2), 
+b) Elektronik ortamda düzenlenen 4925 sayılı Kanunun İdari Para Cezası Karar Tutanağı (Ek-3), 
+c) 655 sayılı Kanun Hükmünde Kararnamenin 28 inci maddesinin ikinci fıkrasına istinaden düzenlenen İdari 
+Para Cezası Karar Tutanağı (Ek-4), 
+ç) Elektronik ortamda düzenlenen 655 sayılı Kanun Hükmünde Kararnamenin 28 inci maddesinin ikinci 
+fıkrasına istinaden düzenlenen İdari Para Cezası Karar Tutanağı (Ek-5), 
+d) 8/1/2018 tarihli ve 30295 sayılı Resmî Gazete’de yayımlanan Karayolu Taşıma Yönetmeliği Uyarınca 
+Düzenlenen İhlal Tespit Tutanağı (Ek-6), 
+e) Elektronik ortamda düzenlenen Karayolu Taşıma Yönetmeliği Uyarınca Düzenlenen İhlal Tespit Tutanağı 
+(Ek-7), 
+f) İdari Para Cezası Karar Tutanağı Tebligat Mazbatalı Zarf (Ek-8),
+
+--- SAYFA 7 ---
+g) İhlal Tespit Tutanağı ve Uyarmaya İlişkin Tebligat Mazbatalı Zarf (Ek-9). 
+(2) Bu Yönetmelik kapsamındaki belge, tutanak ve zarflara ilişkin tüm iş ve işlemler elektronik ortamda 
+gerçekleştirilebilir. 
+(3) Elektronik ortamda düzenlenen tutanakların; yazılım, entegrasyon ve arşivlenmesi İdare tarafından 
+belirlenecek esaslar çerçevesinde, Bakanlık Bilgi İşlem Dairesi Başkanlığınca yapılır. 
+(4) Bu Yönetmelik kapsamında düzenlenen belge, tutanak ve zarflara, karekod, doğrulama kodu gibi belge 
+doğrulama bilgileri eklenebilir. 
+(5) Basılı tutanaklar, ihtiyaçlar dikkate alınarak; İdare ve bölge müdürlüklerine, bölge müdürlüklerince de kendi 
+hizmet sınırları dâhilinde bu Yönetmeliğin 26 ncı maddesinde belirtilen diğer denetleyici kurumlara dağıtılır. 
+(6) Ayrıca, bu Yönetmeliğin ekinde yer alan tutanaklar, içeriğin değiştirilmemesi ve İdarenin uygun görüşünün 
+alınması kaydıyla, uygun seri sıra numarası tahsisi yapılması şartı ile diğer denetleyici kurumlar tarafından elektronik 
+ortamda üretilerek düzenlenebilir. 
+(7) Bu Yönetmeliğin ekinde yer alan tutanaklarda, tutanakların açıklama kısımlarında, zarflarda ve tanıtım 
+kartında gerekli görülmesi halinde Bakanlıkça güncelleme yapılabilir. 
+Tutanakların takibi 
+MADDE 25 – (1) Bakanlık, basılı tutanakları; denetim personeline verilmek üzere, İdareye ve bölge 
+müdürlüklerine zimmet karşılığı teslim eder. 
+(2) İdare ve bölge müdürlükleri, idari para cezası karar tutanakları ile ihlal tespit tutanaklarını ayrı ayrı olmak 
+üzere belirleyeceği denetleyicilere zimmetle teslim eder. Denetim görevi kapsamında bir kısmının kullanılmasını veya 
+bitmesini müteakip de kontrolünü yaparak yine zimmetle teslim alır. 
+(3) Bölge müdürlükleri, idari para cezası karar tutanakları ile ihlal tespit tutanaklarını 4925 sayılı Kanun ve 655 
+sayılı Kanun Hükmünde Kararname kapsamında denetim yapacak diğer denetleyici kurumlara zimmetle teslim eder ve 
+bitmesine müteakip de kontrolü yapılarak yine zimmetle teslim alır. 
+(4) Zimmet işlemleri “Kayıt ve Zimmet Defteri” kullanılarak yapılır. Ayrıca, eş zamanlı olarak U-Net 
+Otomasyon Sisteminde oluşturulacak modüle de işlenir. 
+(5) Tutanaklar, zimmetlendiği denetleyici/denetleyiciler tarafından kullanılır. 
+(6) Kullanılmasına müteakip dip koçanların yer aldığı ve teslim alınacak tutanaklar; 
+a) Tutanakların usulüne uygun tutulup tutulmadığı, 
+b) Seri-sıra numaraları, 
+c) İptali yapılan tutanak var ise usulüne uygun olarak iptal yapılıp yapılmadığı, 
+kontrol edilir ve uygunsuzluk tespit edilmesi durumunda ise tutulacak adi tutanakla birlikte İdareye veya bölge 
+müdürlüğüne sunulur. 
+(7) Bölge müdürlüğüne gönderilen tutanak nüshaları, denetimden sorumlu şube müdürlükleri tarafından 
+incelenir, değerlendirilir ve tutanak seri/sıra numarasına göre muhafaza edilir. Tutanak serilerinde eksiklik bulunan 
+nüshalar hakkında, ilgili birim nezdinde inceleme ve araştırma yapılır. Eksik olan nüshalara ilişkin kusuru bulunan 
+personel hakkında, kurumları nezdinde gerekli idari işlemler yapılır. 
+Tutanak düzenlemeye yetkili kılınanlar 
+MADDE 26 – (1) 4925 sayılı Kanunun 26 ncı maddesi kapsamında düzenlenecek olan idari para cezası karar 
+tutanakları ile ihlal tespit tutanaklarını düzenlemeye görevli Bakanlık ve İdare personeli ile aynı Kanunun 27 nci 
+maddesinde ve Karayolu Taşıma Yönetmeliğinin 66 ncı maddesinde belirtilen diğer kurumların personeli yetkilidir. 
+(2) 655 sayılı Kanun Hükmünde Kararnamenin 28 inci maddesi kapsamında düzenlenecek olan idari para cezası 
+karar tutanaklarını düzenlemeye görevli Bakanlık ve İdare personeli ile aynı maddede belirtilen diğer kurumların 
+personeli yetkilidir. 
+(3) 2918 sayılı Kanunun 35 inci maddesi kapsamında düzenlenecek olan idari para cezası karar tutanaklarını 
+düzenlemeye aynı Kanunun 114 üncü maddesi uyarınca görevli İdare personeli yetkilidir. 
+(4) 2918 sayılı Kanunun 65/A maddesi kapsamında düzenlenecek olan idari para cezası karar tutanaklarını 
+düzenlemeye görevli bölge müdürlüğü personeli ile aynı maddede belirtilen diğer kurumların personeli yetkilidir. 
+Tutanakların düzenlenmesi ve teslimi 
+MADDE 27 – (1) İdarî yaptırım kararına ilişkin tutanakta; 
+a) Hakkında idarî yaptırım kararı verilen gerçek/tüzel kişinin kimlik veya vergi numarası ile adresi, 
+b) İdarî yaptırım kararı verilmesini gerektiren kabahat ve mevzuat maddesi, 
+c) Bu kabahatin işlendiğini ispata yarayacak bütün deliller, 
+ç) Karar tarihi ve kararı veren kamu görevlilerinin kimliği, 
+d) Kabahatin işlendiği yer ve zaman, 
+açık bir şekilde yazılır. 
+(2) Bu Yönetmelikte belirtilen tutanakların fiziki ortamda basılarak üretilmesi ve ıslak imzalı olacak şekilde 
+düzenlenmesi halinde;
+
+--- SAYFA 8 ---
+a) Bir koçandaki her tutanak dört nüsha olarak basılır. Birinci nüsha asıl nüsha olup, diğer nüshalar kendinden 
+karbonlu kopya nüshalardır. 
+b) Her nüshası okunaklı olacak şekilde, sabit, mürekkepli veya tükenmez kalemle tam ve eksiksiz doldurulur. 
+Tutanaklar düzenleyen/düzenleyenler ile denetlenen veya temsilcisi tarafından imzalanır. Tutanakları imza etmekten 
+kaçınanlar için “İmza Etmedi”, yokluğunda düzenlenen tutanaklar ile elektronik sistemlerden faydalanılarak yapılan 
+denetimlerde tespit edilen kabahat için düzenlenen tutanaklar için ise “Gıyabında” kaydı konulur. 
+c) İdari para cezası karar tutanakları; birinci nüshası kabahatte bulunan gerçek/tüzel kişiye tebliğ edilir, ikinci 
+nüshası elektronik veri aktarılamıyor ise tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimine/ilgili vergi 
+dairesine gönderilir, üçüncü nüsha tutanağın teslim alındığı bölge müdürlüğüne gönderilir, dördüncü nüsha koçanda 
+kalır ve koçan bitimini müteakip teslim alındığı İdareye veya bölge müdürlüğüne arşivlenmek üzere teslim edilir. 
+ç) İhtiyaç halinde düzenlenmiş tutanağın nüshası çoğaltılarak kullanılabilir. 
+d) Düzenlenen ihlal tespit tutanakları; birinci ve ikinci nüshası varsa ilgili tespit dosyası ile birlikte, uyarma 
+işlemlerinin yapılabilmesi için İdareye veya bölge müdürlüğüne gönderilir, üçüncü nüsha tutanağı düzenleyen 
+görevlinin bağlı olduğu kurumun ilgili biriminde muhafaza edilir, dördüncü nüsha koçanda kalır ve koçan bitimini 
+müteakip teslim alındığı İdareye veya bölge müdürlüğüne arşivlenmek üzere teslim edilir. 
+(3) Bu Yönetmelikte belirtilen tutanakların elektronik ortamda üretilerek ıslak imzalı olacak şekilde 
+düzenlenmesi halinde; 
+a) Tutanak, düzenleyen/düzenleyenler ile denetlenen veya temsilcisi tarafından imzalanır. Tutanakları imza 
+etmekten kaçınanlar için “İmza Etmedi”, yokluğunda düzenlenen tutanaklar ile elektronik sistemlerden faydalanılarak 
+yapılan denetimlerde tespit edilen kabahat için düzenlenen tutanaklar için ise “Gıyabında” kaydı konulur. 
+b) İdari para cezası karar tutanakları üç nüsha olarak düzenlenir. Tutanağın bir nüshası kabahatte bulunan 
+gerçek/tüzel kişiye tebliğ edilir, ikinci nüshası ise tutanağı düzenleyen görevlinin bağlı olduğu kurumun ilgili biriminde 
+muhafaza edilir. Tutanağın üçüncü nüshası elektronik veri aktarılamıyor ise tahsilatla görevli ilgili Hazine ve Maliye 
+Bakanlığı birimine/ilgili vergi dairesine gönderilir. 
+c) Denetimle yetkili diğer Kurumlarca düzenlenen ihlal tespit tutanakları üç nüsha olarak düzenlenir. Tutanağın 
+birinci ve ikinci nüshası varsa ilgili tespit dosyası ile birlikte, uyarma işlemlerinin yapılabilmesi için İdareye veya bölge 
+müdürlüğüne gönderilir, üçüncü nüsha tutanağı düzenleyen görevlinin bağlı olduğu kurumun ilgili biriminde muhafaza 
+edilir. 
+ç) Bakanlık birimlerince düzenlenen ihlal tespit tutanakları iki nüsha olarak düzenlenir. 
+(4) Bu Yönetmelikte belirtilen tutanakların elektronik imzalı olacak şekilde elektronik ortamda üretilebilmesi 
+halinde; 
+a) Tutanakları imza etmekten kaçınanlar için “İmza Etmedi”, yokluğunda düzenlenen tutanaklar ile elektronik 
+sistemlerden faydalanılarak yapılan denetimlerde tespit edilen kabahat için düzenlenen tutanaklar için ise “Gıyabında” 
+kaydı konulur. Elektronik imzalı tutanak, denetlenenin imza etmekten kaçınmaması halinde elektronik imzalı veya elde 
+edilen çıktı üzerine ıslak olarak imzalanabilir. 
+b) İdari Para Cezası Karar Tutanakları iki nüsha olarak düzenlenir. Tutanağın bir nüshası kabahatte bulunan 
+gerçek/tüzel kişiye tebliğ edilir, ikinci nüsha ise tutanağı düzenleyen görevlinin bağlı olduğu kurumun ilgili biriminde 
+muhafaza edilir. Elektronik veri aktarılamıyor ise tutanağın ilave bir nüshası, tahsilatla görevli ilgili Hazine ve Maliye 
+Bakanlığı birimine/ilgili vergi dairesine fiziki olarak gönderilir. 
+c) Denetimle yetkili diğer Kurumlarca düzenlenen ihlal tespit tutanağının elektronik ortamda Bakanlığa 
+gönderilmesi esastır. Varsa ilgili tespit dosyası ile birlikte, uyarma işlemlerinin yapılabilmesi için İdareye veya Bölge 
+Müdürlüğüne gönderilir, Elektronik imzalı ihlal tespit tutanakları gerektiğinde çoğaltılarak kullanılabilir. 
+(5) Her kabahat için ayrı tutanak düzenlenir. Ancak, ihlal tespit tutanaklarının düzenlenmesine ilişkin, Karayolu 
+Taşıma Yönetmeliğinin 67 nci maddesinin dördüncü fıkrası hükümleri uygulanır. 
+(6) Aşağıdaki hallerde tutanaklar gıyaben düzenlenir. 
+a) Muhatabın hazır bulunmadığı denetimlerde. 
+b) Yol kenarı denetimlerinde kabahate konu muhatabın sürücü olmaması halinde. 
+c) Tehlikeli Madde Güvenlik Danışmanlığı Kuruluşlarına ilişkin elektronik ortamda tespit edilen ihlallerde. 
+ç) Elektronik sistemlerden faydalanılarak yapılan denetimlerde tespit edilen kabahatlerde. 
+d) Diğer zorunlu hallerde. 
+(7) Firmalar, yurt dışında bulunan taşıtları için geçiş belgeleri talepleri veya kayıp geçiş belgeleri konularında 
+uyarmaya esas kabahati; dilekçe, KEP adresi veya e-Devlet Kapısı üzerinden beyan edebilirler. 
+(8) Ticaret odaları veya ticaret ve sanayi odaları tarafından tespit edilen bölge müdürlüğüne bildirilen uyarmaya 
+konu kabahatler bölge müdürlüğünce incelenir, ihlal tespit tutanaklarıyla verilen uyarma ilgilisine tebliğ edilir. 
+(9) Denetimle yetkili diğer Kurumlarca 4925 sayılı Kanun ve 655 sayılı Kanun Hükmünde Kararname 
+kapsamında düzenlenen idari para cezası karar tutanaklarının elektronik ortamda Bakanlığa gönderilmesi esastır. 
+(10) 2918 sayılı Kanun kapsamında düzenlenen idari para cezası karar tutanaklarının düzenlenmesi ve teslimine 
+ilişkin 6/4/2011 tarihli ve 27897 sayılı Resmî Gazete’de yayımlanan Trafik İdari Para Cezası Karar Tutanaklarının
+
+--- SAYFA 9 ---
+Düzenlenmesinde, Tahsilinde ve Takibinde Uygulanacak Usul ve Esaslar Hakkında Yönetmeliğin 8 inci maddesi 
+hükümleri uygulanır. 
+Tutanak iptali 
+MADDE 28 – (1) 30/3/2005 tarihli ve 5326 sayılı Kabahatler Kanununun 30 uncu maddesinin ikinci fıkrası 
+uyarınca idari yaptırım kararının maddi hata/yanlış nedeniyle düzenlenmiş olduğunun veya idari yaptırım kararının 
+gerçekleşmesini sağlayan sebeplerin mevcut olmadığının tespiti yapılmış ise tebliğ tarihini takip eden 15 günlük 
+kesinleşme süresi içerisinde idari yaptırım kararı geri alınabilir. 
+(2) Yapılan denetimler sonucu düzenlenen idari para cezası karar tutanaklarıyla ilgili maddi hata/yanlışların 
+düzeltilme işlemi gerektiği hallerde; 
+a) Tutanakların iptal işlemi için İdarece veya bölge müdürlüğü tarafından asgari üç kişilik kurul oluşturulur. 
+b) Söz konusu karar tutanağının üzeri çizilerek “İptal” şerhi konulduktan sonra, tutanağı düzenleyen 
+görevli/görevliler tarafından, hatalı/yanlış düzenlenen tutanağın tarihi, saati, seri numarası ve “iptal etme” nedeni 
+belirtilmek ve “iptal etme” işlemine ilişkin delil teşkil eden belgeler eklenmek suretiyle kurul tarafından onaylanan iki 
+nüsha tutanaktan biri iptal edilen tutanağın ekine, diğeri ise dosyasında muhafaza edilmek üzere düzenlenir. 
+c) Tutanak diğer denetleyici kurumlar tarafından düzenlenmiş ise iptal etmeye esas teşkil eden 
+belgelerin/bilgilerin birer sureti basılı veya elektronik ortamda söz konusu tutanağı düzenleyen kuruma ivedi olarak 
+gönderilerek, iptal işlemlerinin başlatılması ve neticesinden İdareye veya bölge müdürlüğüne bilgi verilmesi istenilir. 
+ç) İptal edilen tutanak; 
+1) Tebliğ yapılmamış ise; herhangi bir tebligat işlemi yapılmaz. 
+2) İdari para cezalarına ilişkin tebliği yapılmış, ancak takip ve tahsili amacıyla tahsilatla görevli ilgili Hazine ve 
+Maliye Bakanlığı birimine/ilgili vergi dairesine gönderilmemiş ise; ilgilisine yazılı bildirimde bulunulur. 
+3) İdari para cezalarına ilişkin tebliğ yapılmış ve takip/tahsil amacıyla gönderilmişse; ilgiliye ve gönderilen 
+birime ikinci bir yazılı talimata kadar işlem yapmaması/yapılmaması, ilgili ödeme yapmışsa da ilgiliye iadesi için 
+gönderilen birime bildirimde bulunulur. 
+4) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ancak uyarmanın kaldırılması için ücreti ödenmemiş ise, bu 
+tutanağa ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir. 
+5) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ve uyarmanın kaldırılması için ücreti ödenmiş ise, bu tutanağa 
+ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir ve ücret iadesi için Bakanlık Döner Sermaye İşletme Dairesi 
+Başkanlığına bildirimde bulunulur. 
+(3) Yapılan denetimler sonucu düzenlenen tutanağa süresinde haklı itiraz edildiğinin anlaşılması halinde; 
+a) İdari para cezaları takip ve tahsili amacıyla tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimine/ilgili 
+vergi dairesine gönderilmez. 
+b) İdari para cezaları takip ve tahsili amacıyla tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimine 
+gönderilmiş ise tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimi/ilgili vergi dairesi yazılı olarak bilgilendirilir. 
+(4) Yapılan denetimler sonucu düzenlenen tutanağın Mahkeme sürecinde İdarece veya bölge müdürlükleri 
+tarafından iptal edilmesi halinde; 
+a) İdari para cezalarına ilişkin tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimine/ilgili vergi dairesine 
+gönderilmez ve ilgilisine yazılı bildirimde bulunulur. 
+b) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ancak uyarmanın kaldırılması için ücreti ödenmemiş ise, bu 
+tutanağa ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir. 
+c) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ve uyarmanın kaldırılması için ücreti ödenmiş ise, bu tutanağa 
+ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir ve ücret iadesi için Bakanlık Döner Sermaye İşletme Dairesi 
+Başkanlığına bildirimde bulunulur. 
+(5) Yapılan denetimler sonucu düzenlenen tutanağın Mahkeme tarafından iptal edilmesi halinde; 
+a) İdari para cezalarına ilişkin takip ve tahsili amacıyla tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı 
+birimine/ilgili vergi dairesine gönderilmemiş ise; ilgilisine yazılı bildirimde bulunulur. 
+b) İdari para cezalarına ilişkin takip ve tahsili amacıyla tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı 
+birimine/ilgili vergi dairesine gönderilmiş ise; tahsilatla görevli ilgili Hazine ve Maliye Bakanlığı birimine/ilgili vergi 
+dairesine gereği yapılmak üzere Mahkeme Kararı ile birlikte bildirimde bulunulur. 
+c) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ancak uyarmanın kaldırılması için ücreti ödenmemiş ise, bu 
+tutanağa ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir. 
+ç) İhlal tespit tutanaklarına ilişkin tebliğ yapılmış ve uyarmanın kaldırılması için ücreti ödenmiş ise, bu tutanağa 
+ilişkin kayıt U-Net Otomasyon Sisteminde güncellenir ve ücret iadesi için Bakanlık Döner Sermaye İşletmesi 
+Başkanlığına bildirimde bulunulur. 
+Tutanakların tebliğ işlemleri 
+MADDE 29 – (1) Düzenlenen tutanaklara ait bildirimler, 5326 sayılı Kanunun 26 ncı maddesinin dördüncü 
+fıkrasına göre elektronik tebligat imkânı bulunması halinde buna göre yapılabilir, bu imkân bulunmaması halinde ise 
+11/2/1959 tarihli ve 7201 sayılı Tebligat Kanununa ve ilgili diğer tebligat mevzuatına göre yapılır.
+
+--- SAYFA 10 ---
+(2) Bakanlık, tutanakların tebliğine ilişkin düzenleme yapabilir, ilgili kurumlarla protokol imzalayabilir ve 
+imzalanan protokole göre işlem tesis edebilir. 
+(3) 2918 sayılı Kanun kapsamında düzenlenen idari para cezası karar tutanaklarının tebliğine ilişkin Trafik İdari 
+Para Cezası Karar Tutanaklarının Düzenlenmesinde, Tahsilinde ve Takibinde Uygulanacak Usul ve Esaslar Hakkında 
+Yönetmeliğin 10 uncu maddesi uygulanır. 
+Tutanakların arşivlenmesi ve imhası 
+MADDE 30 – (1) Düzenlenen tutanaklar tebliğ tarihinden itibaren beş yıl süreyle arşivlenerek saklanır ve süresi 
+sonunda usulüne göre imha edilir. 
+(2) Düzenlenen tutanakların elektronik ortama aktarılan verileri ile ıslak ve e-imzalı elektronik tutanakların 
+verileri en az on yıl süreyle elektronik ortamda arşivlenir. 
+(3) 2918 sayılı Kanun kapsamında düzenlenen idari para cezası karar tutanaklarına ilişkin Trafik İdari Para 
+Cezası Karar Tutanaklarının Düzenlenmesinde, Tahsilinde ve Takibinde Uygulanacak Usul ve Esaslar Hakkında 
+Yönetmeliğin 18 inci maddesi uygulanır. 
+Tutanak bilgilerinin elektronik sisteme girilmesi ve bu verilerin U-Net Otomasyon Sistemine aktarılması 
+MADDE 31 – (1) Bakanlık personeli tarafından düzenlenen basılı tutanaklara ilişkin bilgiler, denetimin bitimini 
+takip eden iki iş günü içerisinde, U-Net Otomasyon Sistemine girilir. 
+(2) İlgili mevzuat kapsamında yetkilendirilen diğer denetleyici kurumlar tarafından düzenlenen basılı 
+tutanaklara ilişkin bilgiler, en geç beş iş günü içerisinde düzenleyen kurum tarafından U-Net Otomasyon Sistemine 
+iletilmek üzere kendi otomasyon sistemlerine girilir. 
+(3) Kesinleşen ve süresi içinde ödenmeyen idari para cezası karar tutanaklarına ilişkin bilgilerin 21/7/1953 tarihli 
+6183 sayılı Amme Alacaklarının Tahsil Usulü Hakkında Kanun kapsamında takip ve tahsili için Hazine ve Maliye 
+Bakanlığı Gelir İdaresi Başkanlığına elektronik ortamda gönderilmesi esastır. 
+(4) Düzenlenen basılı ihlal tespit tutanaklarına ilişkin bilgiler, İdareye veya bölge müdürlüğüne intikalini takip 
+eden iki iş günü içinde U-Net Otomasyon Sistemine girilir. 
+(5) İkinci ve üçüncü fıkra hükümleri, tarafların veri paylaşımına ilişkin imzalanacak protokollerde belirlenir. 
+YEDİNCİ BÖLÜM 
+Çeşitli ve Son Hükümler 
+Hüküm bulunmayan haller 
+MADDE 32 – (1) Bu Yönetmelikte hüküm bulunmayan hallerde 5326 sayılı Kanunun ilgili hükümleri 
+uygulanır. 
+Eğitim muafiyeti 
+GEÇİCİ MADDE 1 – (1) 1/1/2022 tarihinden önce denetimlerde görevlendirilen personel bu Yönetmeliğin 18 
+inci maddesinin birinci fıkrasının (c) bendinden muaftır. 
+Geçiş hükümleri 
+GEÇİCİ MADDE 2 – (1) 1/1/2022 tarihinden önce basımı yapılmış olan tutanak ve zarfların kullanımına 
+devam edilebilir. 
+Yürürlük 
+MADDE 33 – (1) Bu Yönetmeliğin 1 inci, 2 nci, 3 üncü, 4 üncü, 13 üncü, 33 üncü ve 34 üncü maddeleri yayımı 
+tarihinde, diğer hükümleri 1/1/2022 tarihinde yürürlüğe girer. 
+Yürütme 
+MADDE 34 – (1) Bu Yönetmelik hükümlerini Ulaştırma ve Altyapı Bakanı yürütür.
+
+--- SAYFA 11 ---
+T.C. UI.A$TlRMA VE ALTVAPI BAKANLIGI sovu. sumame r.c.x1m|iu Mu Mn-lv't:y (am up Edircv v..« DUIYD/nu 3.49. Na A’7orumznrNumbc4 . _ ULASTIRMA HIZMETLERI DENETLEYICI TANITIM KARTI Transport Services Impecmm Pelmnne/Identiﬁcation Curd (fjn yﬂz) Ek~1
+
+--- SAYFA 12 ---
+E k— 1 Eu kart sarlece uzerinde kimlicjn |)e|vr!i|mi§ mg. lamfmzlan kullmuhr Bu km Ulagnrma Hiznn.-lleri nmxenm Vonelnleliqiue gbre ven|Im§lu Ki§imn herlwugi Mr nerleme kumm Ilc iligigmm kedlmesz xlurulnumla bu kart ULASTIRMA HizMETLERi me. was tesllm Edﬂir. Karim kaybedilmesi ya «la bulunmasl haimdo asagldaki lclefona luber venlmesl DUZENLEME GENEL MUDURLU u rim olunm. Onavlayau verlhsnrun '""’«"N0 0*" rm: . ...J ../2021 www uIb.gov.u’ (Arka yijz)
+
+--- SAYFA 13 ---
+4315 S_AY|U KARAYOLU TASIMA KANUNU IDARI PARA CEZASI KARAR TUTANAGI SER5' Asmzi (ROAD mmsvom mw M01025 ADMINISTRATIVE FKNE DEKHSYON MKNUTES) , 3!RA no : $"...%n x.w-.-‘.‘~"vé‘{‘-3% (Soquam Na) DUZENLEYEN KURULUS : IAGENCV OF ESTABLKSI-IMENV) HAKKINDA CEZA TUTANAGI DUZENLENEN GERCEKITOZEL KISIWN (nu: muurss APPLIED 10 FERSONIFIRMD ADI SOYADI I UNVANI {NAME 1 FIRM NAME) ISYERI ADRESI M (sum ADRESS\ IKAMETGAH ADRESI DRESS) VERGT KIMLIK NO. (TAX ID 1) T. KIMLIK NO/FASAPORT NO (Q1 uzemsmw nu wpasmm No.) ems! PLAKA No , A ARAClN mrps; mm-5 NO > ( g (vEH\cLEs) I ‘ I , I 1 , an 4 1 1 u ‘ ~ L._l § 5 _ -roan NUMARASI R > 5 YETKI aELGEsiN[N (Me; Iwaexsramou no» ; (CERﬂV1CAYE'S) ; i CEZA TUTARI (TL) ~ [AMOUNT OF FINE} 1 taﬂhindn dz ylprlan «noun nonuuunax i (am almspecllonj (Marian ammn; -pa eaumigtu. § (usmsaxarmcpocnom ﬁsédavmmv ; 492! llylll Knruyolu Ylunll KllI|lmI'll|l|1 Hun nilddnslnh . (LIV4 of Raul Ymupon 495 mnvbemd) [REM HILIA) iembarimzm) nit: elnll mu: edliﬂlilﬁ. UMMV ﬁne wls HD9155) Dtrulﬂm SIIIJ: (ﬁlm: at Illsntclmrl) Yth5§ Yaﬁhi (Dam of Nmrmim) ' DUZENLEYEN GOREVLILERIN (OFFICERS) ADI SOVADI UPWANI s|c|L no. IMZASI (mm (mm znmcza um (swerwuns DENEFLENENIN VEYA TEMSILCIMN (INSPECTED OR REPRESENTATIVE) ADI scum : GOREVI: llama: . (NAME) (wrv) wemruae» Devmuenen Isnrncn T.C. Klmllk No: UNSPECTFD r DRIVER CWIZENBHW ID 1': Koslnloams Turlhl : .../2n. .. (nerlnna Dara) {On vuz)
+
+--- SAYFA 14 ---
+ACIKLAMALAR x. 5326 Eylll Kabahader Kanunvnun 27 nd maﬂdﬂ uyanrrca, idari para cezzsi klfillmll t$|l§ Inrlhinden itibaren 15 gun ndnde Sulh Ceza Hakimllbine iﬁiazda bulunulablﬁr. Kararm hebliﬁ ediIdi§i mime. mbaren 15 glin tginde Sulh can Hakimligine bagvurulmadvél takdlrde bu slirenin bidmlnde kamr kasinlesir. 2 Karayom Tayma Kanunu Idari Para Cezalan cenug tarihimien nibaren Dir ay Iginde Menu’. ind: my name vs taksrden _;rme hakju 4 ya 5 ma maddelerde aguanmzgar. 3. smauixau , Karavolu Taslma Kanunu Idan Para Cezalan, Ls‘/an adrsmin voksa ikametgéh adreslnin bulundutju yerdekr matorlu t§§rda_r yergsini tahsﬂe yetkﬂl vwgi dalrelenne veya Iahsilét yetklss verllen bankalara ﬁdenewlerekﬁr. 4. nu2muLL¢yE_Mi_rIAm Idari pala ozzaslnl kanun ycluna basturmadan ﬁnte (hebliﬁ tarihinden icibarm IS grin ccensinde) ddeyen kisiden bunun dame " ' tahsllgdllﬁl. 5 Klsmn ekanomik dummunun musait olmamasl narmae Kamyolu Tasama Kanunu Idari Pare Cezasmin, nx taksltinrn pqin zsdenmesz knsuluyb, bur yu Igmde V: man all takst hahnde 6da1ma'ne karar venxebmr. Taksmamiirme nasvumsu, Idari yapnrlm karannm ueuiaim mumakip kanuni ademe silresi igmde (1 av) «gm verge danesne apaacak we so: konusu mlep vergi dairesince mnuglandiglaoaklzr. 5 Oaememn yasm sﬁresi xginde vapdmamasl hallnde, 6183 sayill Amme Abcaklannln Tahsil Usulil Hakkmda Kanun hﬁkﬁmlen Uygularur. EXPLANATKONS 1. OBJECHON T0 ADMIHISIRAUVE FINES (TAKING JUDICIAL FROCEDINGS) In accordance with Itrticbe Z7 of ﬁle Law No 5326 an Misdemeanor, it is possible an appiy criminal court of peace Wrthill 15 days as of the ncmﬁcaﬁon date ufﬂle decision on adrruntstmﬁve fine. In case that rm applrﬂan is made no the mmina! mutt of peace within 15 days as of the noﬁﬁmuon Of the decision, the decision shalt be ﬁnding at me and offnls ham‘ 21 TIME OF THE FAYMENT Admlnlstraﬁve ﬁnes arﬁng from Rand ‘nansporl Law are paid wimln one momh as of the date Bf rmttﬂcatiun. The ugh: for payment with disoourfcar In insallmem is explained in Amde 4 and 5. 3. PLACE OF THE PAYMENT Admlnlsrahve ﬁnes aﬂsing from Road Tmnspovt Law shall be paid to the tax ofﬁm kmtsd around the address of the workplaces or permanent address which are authorized to mallet: rnamr vdlide Bx o( In the banks auﬂtorued In cvllea such ﬁnes. 4. RIﬁ'|T TO MAKE PAYMENT WITH DISCOUNT Three quarter ufﬁle ndminiraﬁve ﬁne is mllxtai from the Individuals who pay ﬁne bémehand without taking juﬂdial proceedings (withm 15 days as from me date of murmur»). 5. THE RIGHT TO CLAIM FOR PAYMENT IN INSTALLMENTS In case that the individual cannot afford due to his/her ﬁnnndal sanding, it can be deeded to pay the administratrve ﬁnes insing from Road Transport Law in four equal insmilments and i! one year 171 case 613! the ﬁri inmllmellt is paid in advance. The appiiation for payment in insxatlrrwm shall be made T0 the concerned EX ofﬁcz wrmm the Iegax payment penod (1 mm) following me mtifaﬁun of the dea's4on about admmi§:rative snaion and such application will be conduded by the tax ofnce. 5. PENALTIES T0 APPLV IN CASE OF FAILURE TO MAKE PAYMENT In case that the paymem is not made wcthin legal period, provisions of me Law No 5152 on Collection Pmcedure of A9928 Shel! apply. [Arka Yilz)
+
+--- SAYFA 15 ---
+ms smu KARAVOLU usm xmwu (DAR! PAnAcazAsI mua ruwuax am: mu»: vms-oavumo ms Im’ Au«wvs7nA1IvEHr4ED6crs4ou umursﬁ ‘ 7 m—..»m‘-.«m~c: SWAN ;§ﬂ—;g__4__‘Wl_MW {EMuI1vi<rtrivvId:61ua\hmv|lDIawIuv Dy mm»; mum W muuzvacmnmus mm- pawn ».«...u.. mu.-o wan y nu ADE nwm-ﬂpvgwnnu .ms.a.m...;a.m¢s., . n... .rm.....,,,m ,,,,m,,_ Cmd nu: ma “mum rrv-r Mm mm: um um ms’ Iswalul M; mmm was awn M, W ._..__%..W._..__ mnvum m.'5}...37a JIM §.T.‘.‘."."§'5.‘.'....v v9<»=a rm Inn m m m m ed M... 1-nu sum mun": ‘mm wna-1 an-nnnrr~..<.....-<..»..m....u..:...m:....:: In . m......¢..-~..»....u..-......-; mm tin vumu my wmr: Min-\‘mimLn3 nnuu...» mug!»-n~...1,‘.nn . _.%m nm%‘Jn mm 15IvvI>vu)' s..........» m souu uuvmc sax no new wlanaown um um». amrnv nummu ooaevumw niaczwir Kuauwn M. . ; . an «am. a... can-.m«..» oansnneluvzvn Istsldmn um. um ;§ Amwvm no-cw mum ; 5 m.u_.m mu Aunumu BMAMVIWII . mum-mu: mseisnmammns -yl wunu. man .......m».u.u.m..mm.»-._...,.._u...«m.a munm|upausp2nurIest.nn>uItI)umnuAnnIir.K;wnna‘A§ ..m,...¢..:.,....;.».....u.w....a...,n.....a... V Miammnzuuxlsimnnesmnm->umm:Mwm-ﬁxumncm mu...-.u....».~..»..«,,..m_..v.~.s.....m...:.m nmmm . .u..au.n.a.:...a.«a..¢.,.n¢..«n.m ; mzalmumni wummmm mm: Mnmmnuuuthw. 4..-—».-..s.»....-».....m..-p«.n.a...m.w»..../ m....uou..an.mm=s..n.m.oe .. m....vuam.a.-—m»....:......~..............«..4; : rutzwnmlmnr lhmuad-mlpnuumwu at-mt ou..u...a..o.._~y»»..,n...-..~:.~..um..:....u mmuummwuumw-mmamumma n..a...c~..auu.-.m.»...a...~mu~.w...n..g .........u.~..:.mm. mmmmzuummummm _.m.1m..m.~m.m»m(.mmmm.usa »..u.ua-..n.u..».sma~..-....mu..»..,....w.u mumaugwmmwo. uui z..m......p...n......m « . 5 mauernnaulnaaumﬁinmwumwis mmummmnmanmmmmmr-muwwm ‘M _m,_, .nu\:uwInpu\mumumtvn.nrm6rm»¢na1-vtunraux __m.,M_h_",':‘”_”.,_u"",~ ""“',‘,;'”__,,,,=,,,,_, m....._m..m.mmum..,unm.mm»-a- ,,_,_,,,,,,,,,,_,_,.,.,,,,._,,,,._.,..,,,..,..,,...,.,.. M...u...w.v...uan.n-y>awmmu..,g..y..ua-ax phage... ...........a .wa.»—m..m.:..m -may mun mama... . ‘ uluntnwunr-zamorunrnnonnazuwarr mm»...m.-.. -an u-.z..mmm._...uum .u
+
+--- SAYFA 16 ---
+Ek—4 zvaalznn TARIHLI VE us SAYILI KAINM HDKMCJNDE KARARKAMENIII 2! IKCI IIADDESININ sin]: 2 ucl FIKRABINAISTIIADEK uﬁzsnnsusu tonal (Sn-.nII) PARA cszmx Kama rutnuéc suu N . (Séwenoq No) (MINUTE as nzcnsmu ma ADMINISTRATIVE FINE IN ACCORDANCE wow PARMSRAPH 2 o F ARTICLE vnzwmzui wLm..‘=m« as or m: LEGISLATIVE DEGREE Nosss ISSUED mm »»u4n:sr:mc?A;\k1 unzsunsvsu xunuwe vs ainlul ussuzu av :~s11mv: mu um or as-mausuuzrm NAKKINDA can mumusl DOENLENEH ssncexmlzsr. xdsiniu [FINE MINUYES APPLIED TO PERSONIFIRMI ..12n.... whim sun snecuanl (darn om Ibclﬂnnamupvqmﬂ) idvul I mwlclrndl mm an-mu / mum: r lnvulnma lnnucuuda vsmm n|¢II'TabIulul»...........‘, (R617WIlion:€ommurﬁ‘luel ma». Na! llkrlsl I bend! umnﬁinoo ..»}T|'Ilk Llltl man nun nuznm ulbﬂt adllnlhllr. <nmo..u.;1nm uyﬁym-sanummmnmsnun; rwunmea) Tﬁllﬁ Tlrihir _I2ﬂ. [DIN alﬂlavncaﬂan nuzzmsvaWax:v:.n.smu (arm: AN SOYAD URVANI SICIL ND. IMZAII (NAME AND SURNAME) (TITLE) (OFFICER ID) (SIGNATURE) I I __ M_. Acmunusangxxml; faallnafnn, rhnyf (On Yiiz) ADI scum I uuvml 1 (sum mus) tarsal maul (Business ADRES5) mmzmna ADRE$I I nssmsnce ADRESSI __ VERG K MLIK M0. " tux ID 5 T.l2. KIMLIK MD. (CITIZENSHIP ID 3 , dﬂsl PLAKA MO IIMO ROI NGER ULABIII ARAGIMIII U‘/PE) ' IOYHERSI muuss-om’ VEHICLES) Wm“? "°'”“° No’ mm) mm uunwusn 3 .. aassslnln (TVPEINAME) (REGISWAYION may ( E ICERTIFIBATE 5) :3 2 g S ULA$lI| ARAEIIIIN SIIIRDCDSUIIDIII ADI SOVADI T.C. KIMUK ND! FBJPOKI‘ N0 '5 (NAME AND SURNAME) ICITIZENSHIP IDIPA§ORl NO.) ADI SDVLDI GQREVI IMZASI . nENTEET';.sE‘=-cIE|il’Im;‘EV* mm: Am summmsy mum xswsmn-umzn (INSPECTED G REPRESENTATIVE)
+
+--- SAYFA 17 ---
+Ek-4 A<;u<uu4Aun 1- 5325 saynh Kabnhauel Kanurlmun 27 Inc: rnadda uyarmna. udm para mass karermln r:hh§ ranhinuen Inrzaren 15 gun Vanda Sulh Ceza uakxndilamnz mm: Izulunulanmr. Kuann rebng emudigi lzdhlen minaret: 15 gin xginde Sulh Ccza Hammlmme bn§wruImaﬂI§I lakdlrde bu sﬁmnin biﬁmluda lmrar knsinhslr. 7- EEEEE mam, Denizulik ve uamagme Bakanlsgmm Tqkihl ve screw Haklama Kanun Hilvniinde Karamame (555;‘KHK)’ye ya-mum d1‘nen¥enen Idari Para Cualan wig tavihinden mm" hr ay ‘awe ﬁdemr. man para mean. kanun yuluna basvun-man we (mug tarihinden mharen 15 gim 1wnsb\de)édEm1 ldstden bunm name age ans] smm. Taksuendinre haklu v.!rd_n:. ‘ 3- gnmumx sss savull lcanun Hﬂkmﬂnde I<z:amam:‘ye isinadm duzmlenau man Para Catalan, ksinlesntscndm we cuayx auzenaayer idardwn ilgiii muhaseb: yelﬁilsl mmanetkrine, mumsthe birlmlelnz (merkez munasdse um, ma! mmunuaerw ve deﬂevdarhk mumeue rrisdnmidden) veya bu idarelain bankaiv arauug: ne tahsiat yettdsi buhmrnas haﬁnd: me hsaplanna keﬁnlegllsunen sonmi Igiz vergl dalrelevine Mum. 4. Gaanenn yasai iqime yaptlmalnia mime, 6133 saym Amme Nacadarvmn Yahsu Usuﬂi Hakkmda Kanun mzku-ma» umulam. EXVLANATIONS x. muzcrxou T0 ADMINISFRAUVE Fmss mmus JUDICIAL vnacsznnxasy In azcordanm mm Mia: 27 «me Law Na ms an M'sde1marvuv,ltIs possum |n appiy aimmas mm ofpeam Mlhin 15 nay: as or me nonmznou date of me dadsrnn on mmmm ﬁne. In case am no awllevun vs mad: m the uiwlinal mun gr peace wnmin 15 days I! ofme nmiﬁﬂwﬂ Hf Rh: 69.1%, meaedsm §1-Ell be bindmg am: 208 (WINS term 2. ma uvnan Ndmlnushadve ﬁnes lzgmllld hasw on tagmalive Deva on Ongaruzaziun am D1115 d the Mwiry af‘Fra1'q;o11, Mariam: Affairs and comma:-xanam (ass/xx-no am pm wmn one mm as of me am of noulkatiun. Three quarts of me mmmm ﬁne is mum: from me mdwlduals wm pan/ﬁne ngmenm wnmu mldng ymaal proceedings (wnmn 15 davs asfrnmmedatzafnmiﬁtsﬁcn)‘ Hasragmmmauepaymemwimascown. 3. PLMZE OF PAVHIHT Mfnnnlswaﬁve ﬁns (tuned m mmxance wm Legkiauwe Deu-ee No: sss shau he paid no me aomunthe aavvnam «:1 me aumaritia mm Imposed me mg, m me xcmnung was (central amounmg umz. ﬁscal amaranes and ﬁnandal mace acomrmng duectorals) or no me bank aamums «ms: aumomes max are awsann-1 (0 onilecx we hanks, am: «me has not bnensem:nced.ARe'ﬂEﬂn: *ssanmaa1,:me|>evaiammersane¢ taxamaes. 4. psnunzs TO Awu no use or FAILURE n: max: umsxr xnmsemamepaymmmmaaewwmsnnuxegaxpa-ea, pravsionsofxhe LawNo61&3onCa1|ec1icn vrmeaureumus man my. (Atka Yiiz)
+
+--- SAYFA 18 ---
+?F_MA_cK?|r\<lvuMIwW mmmm mum zvman mm! vs :55 mm mun «mum»: mummrsuin n Incl nnoulnlu : ncl nxxunu we-vmnzn nuzsmzusu mud mu csusx mm vuwum mu-eososusm mnmuwsmxnvsrms Accoawwcs mm awwm zccmrmzammmmnvsmcwszwusmmwmmv, KEI¢hwmk ovum: mnnumwlklwn uy ayemmuc; mu: ysmr,» sum no ; (Sevuenae N07 UIENLHENIMIIALWVIEWIAL mgwamnvmwmrnmwnrsnvuuxomun )1-M-vnnuunm-ui mica.» n . ...,.m... M , pm-um mmm.=.....w.. marsh kﬂlnm l‘rr,-«nevus-vn it “Wm cm pummmun ,, anze M. ux¢zuVENmm~n rmm rwnvurvmnlu gm, ma umuusl Am :4 -seam we nmxmnm may >5 mm“, 3 uuwnmn. m _u mmwmmmml mmm u rcuuuxnovrmlukrw I vuasmnmn mm m....m...,..w PWENEIFVMI1 91 win» we 1. nm n-.. m M.“ ‘lulu: ~..«..m..M. ; ham-n-4 a.....:....... «ma nun:-n CE2AYL'TAI|(“.): w.a...m.x.,»....nwu..m«.«-.... mum mumm .m. . LEM m...ma.mn-mm. »«u.....u..m..x M mwnnl mm... sumo. mus . M.“ .».,«.= U|'l'E)u£v!r4 eoasvmava mwmw mm“. .m na-em-w;awzv.v.-_- nsM:n.aaI1vsvAvsnsm:1um mymusmwn . «mm: ms 5 muumm we-m >5 gig %Mh‘Iﬂ'DE | W-"°~W‘”'""'""'““"‘"‘"""""‘""*'“"’ ssuaynramukrianuumniunntuun-vnntpnusbvmui-) ..,........n.«~_».ms..—...,....m..,..m u'ivro:1«il:I1ulSdlIw¢a§M&>1trﬁlmnbAvIhWxrmmﬂdﬂbnrrinuwumﬂhtidmmbumdnnnunui-mama mmnnuuisu‘-vast-nnmnlhezzwmmmwwmmmnm w.~....m.»_.....~u..u.......m:.,;.m...,...,. ,,,,__.,,_,,,,, .«............«...m....-m...L L xnrrnwmr , .,.. ..............;.,.... .11 uhqwmna-zoivamuhuuaunhminireca-Avzbuk-wvarmmuu-t int, ,mM,_,“;;,';;“_,';,, ....mms=mmwmm.mm~.c....mmwmmu _,~_,,,.,,.,,,,.....,_...,.,,._.,. ﬁ|tMvr.1nIIwaI:mIuh\vwIt:r-h-qv-lwnnrlukllill-virromhnmxs Iinluudgyuepmiynzwhxmmhw-42yhrdaah.Yvuhdmnda:wn. noon-I-nbnyhnnaovpnu-rnaluptaunne-n!1nuwAra:«u:«nn»e 3. Qiilmn ﬂinbmrmnummuwmkwvuwﬂhbshwhumsh mam _. Ilmuuvenwmaunnrt :uaun:mm=n __ ..~.o..~-may-wuman Dummy».-m Lnnorrmrudmmtmnm mnummnswmmnunzwmanm/»uur 0mrumyIa4uumtmtIir¢nIine.§\m9ﬂwMnIhnt-miursiusm mmummmmm m_».......u.u-um
+
+--- SAYFA 19 ---
+Bk-6 KARAVOLU TASIMA vbNEjMELiéi (K1_'Y) UVARINCA DOIENLENEN INLAL ‘rasm sERi: TUTANAéI SIRA NO 2 DUZENLEYEN KURULU5 : HAKK|NDA IHLAL TESFiT IUTANAGX DUZENLENEN GERE,‘EKI'|'flZEL ld$iN|N ADI SOVADI I UNVANI lsvsnl ADRESI MMETGAH ADRES| VERGi KMLIK N0 ‘LC. KIMLIK ND vem BELGESiNiN TOR“ NUMARASI cinsl PLAKA no ARACIN ADI SOYADI SCIRDCONUN VARSA DENETLENENIN ’ ADI soman eénavi Imznsx i VEVA TEMSILCININ ; umuna, u- duo. ....adusl 1 mwkl|'ndc yam." dnnniml mun inmbevm Iomucumﬁl ..usplkodllmIt ocuv. Kzraynlu Tagmu V5Muml{§l'n’n Incl nkmmm .bInd| glvuﬂlncl .. .. mm: v:r1lml|1lr. DUZENLEYEH GbREvLJL£R|N ADI sovAm UNVAN! sIclL No IMZASI (ON YUZ)
+
+--- SAYFA 20 ---
+_u. Ek-6 ACIKLAMALAR Hangi hallerdc yetki bclgcsi sahiple-rinc “Uyan-na” verilecegi, Kara)/olu Tsmma Yesncunexiginde (KTY'ndc) bclinilmektedir. Yctki bclgesi sahipleri; KTY’ne gére vcrilen uyxnnalan pamya cevirerck kaldnmbilirlcr. Verilen uymmalann pm-lya gevrilebilmai icin; uyanna basma; her takvim 3/111 basmdan gegerli olmak ﬁzere 0 yd i<;in 4/l/X961 tarihli ve 213 sayﬂx Vergi Usul Kanunu uyarlnca tespit ve Klan edllcn ymiden degerleme oranmda amnlan tutar kargxlxgx Tiirk Lirasmxn Bakanllk ddner sermaye hcsapkinna bdenmesi garmr. Yclki belgesi sahiplcri; uya_rmala.n paraya gevircrck kaldmnak istemcierk halinde. Bnkanhgxmxzzza dﬁzcnlenen "Cdeme Bilgilcri Belgesi”ndc yer alan ilgili Banks ve (idem: numanasr bilgileri dogmltusunda iidcme yapxlmasu gerckmcktcdir. Svhz konusu beige nzerindc toplam “Uy.anna" adodi, “Uyarma"larm kaldmlabilmesi igzin Bdenmesi gereken tular, "(")d=me bilgilcri belgesinin" geqerlilik tarihi, Banka ve Edeme numanas: bulunmakindu. S51 konusu édemcnin yapnlmasnndan scum: uyarmalar kaldmkr. Yelki belgesi sahipleri; “Gdemc Bilgileri Belg:si"ni, Kamyolu Tagma Yénetrncligi uyannca dilzenlenen Ihlal Tcspit Tumnagxmn tamﬂanna tcbliglni (Bu lcblig ye-tki belgesi sahibinin KEP hesahma da yapnlabilir.) miiteakip, Bakanhgnmza yaznlu bagvuruda bulunarak alabilirlar. Ayncx, éidame numarasn, beige sahibinin Bakanlxgzmnz U»Net Otomasyon sisteminde varsa cep lelefununa SMS olarak giinderilmcktedir. Uyarmalann pamya gevrilme siiresinin, Lakip eden yﬂda bitmesi durumunda. yeniden degerleme uramnda amnlan tutar degkeccgindcn "bdemc Bilgilcri Belgzsi“nde belirtilen i$d:me numanasr o yllm Arahk ayu smluna kadar gegerli olacakur. Bu tarihe kadar uyarmalann par-aya gevrilmemesi halinde, yeuidzn (idem: numamsx allnmasl igiu Bakanlxga muracaxl cdilmesi gcrckmcktcdir. Paraya Qevrilmeyen uyammlar kaldmlmaz. KTY'nin ilgili maddeleri getegince pmya wvrilmwcn uyarmalann mplam [50 adede ulasmasx ve bu husnsun lehli mi izleyen 15 giin icinde édme yapxlamk nyannaiarm saylsmm 150 adedinin aluna diisﬁrtilmemesi halindc. ihlale konu clan yezki belgesinin faaliyeli, ikinci bir iglzm ynpxhnaksszm durdurulur. (ARKA YUZ)
+
+--- SAYFA 21 ---
+Ek-7 muvow TASIMA véuemeuei (KTY) UVARINCA DDZENLENEN IHLAL TESPIT TUTANAGI sens: (Eleklromk Ortamda Dﬁzenlenen) snu no : ntlzsmsven kﬁkuuas HAKKINDA EHLAL vssrlr TUTANAGI oﬂzsvuusu esacexnuzn Kismln x Am SOVADI /urmm ADRESS 1'.c. KIMUK NONERGI KiMLiK N0 "7 ‘;YETK| aeusssiniu mm "WARN L 1 “um” clusl FLAKA No ( E soﬁﬂcmm I AD! scum 1.::. KIMLIK I... > ' ‘ nzuauansuln van! ‘“3' 5’°V‘°' GWEVI I ‘"155’ ‘ TEMSILCININ 3 ususrlm veki ' DENETM TAR$HisAA'ri IHLAL EDILEN KTV uunuasi uvmu KTV mnozslnlu ACIKLAMASI VARSA uiéan A<;|KLAMA DUZENLEVEN GOREVLILERIN Am sown: UNVANI siciL no inns: W ACIKLAMALAR 1HamihM|eu1n yalk: mm xariutenne -uy-mr mesa. Kn-lyw mm vmumauvau (mm; mmammsau w 2 max new s¢lpta1,K\'Y‘ne mm mm uyamnu puny: mm nlﬂlralﬂllar. ‘ avum uy-mm ulruyn mum km urn-ml mm: mum mu mm. gswil ulmak am: .7 ya an mlmst lam-11; V: 21: um vary‘ um mm uy-rm man we xhn nan yum-n o-gum-u nnnmd: .n.n-. mu: umug. M L-ralnm ammx mm mm. Ileiaulirwu Haws: mm. Nomi mm: sarivllfh uy-mam pmyl wwmmk ulmmak mum mm. am»-gamm anuuvmn mm Evglv Sch:-sfme yer inn aw E-Ia we mm numunl mm nbgnmumm mm yum. wummu so: knnusu Dig! mam mum ‘Uymmo' ma. “Uy|mn1nv4n kuumumm an Mawmeii gent»: mm '00:»: biﬁen uw.svm- geuurﬁlx lam‘ Bake vs Meme nmwul bulmulaadxr 561 mm naamnin ywulmumdm mm uyzmu kahlnhl. §Yem seuu sumpun, '0dema alum awn‘ Stun-ydu mm vac-um-mg: uynnm: am-rmm lnm mm Ymuvngxnm mum. unuaiu {Eu mg ym betgw salihwun KEP rum. an yzpﬂ1bII.)nI'nniua ammm ynzvl huvuud: btlmank ahbwiav Aynu. Mann mm.)-st, belqe mum auumgm U—Nu omnuyou aiummdc mu up Muiornm s»s mm gbv\deﬂtnoIm$41. K uynm-Mann p-rm mm. ms-nu, lﬂkv mu y-ma mm mnumuwa‘ ye-um aulubm H-mind: aﬂmlintulav as9'saet:}:mvn ‘Guam my-Ian sugesrm mm». Dduma mnuram u yllm Ankh am mm ma. wan mam. Eu mm mm uwnmamu pmya gzvmum. mum. yznvﬂen bdeme mum Aunmnsx mu mama. mm-wan animal waxmmamr. 7 Pam! wvnlmevau IlyImaiavkahu1huz_ : ‘o Kwﬂnﬂgiwmddeiatnavglncepauynoevvﬁnlleyerluyumuhmwalln15aI1eoe\lI;«r\uIuebuhus4uunbeb|o§in\u%e'ynnI5a0n anes- acme Wm: Izmvnuann svyumm :50 uamm mm dnaarnivmneu name‘ we Wm olln yam hetgesinn um. mm M ﬂan x Ylvﬂmlkmlndwmnduv. 1
+
+--- SAYFA 22 ---
+Ek-X s.m.ameuey:.. . dnmmanp 2.. . ...$seh?y‘amuh|::pye7l:e. mwgm ylpimu . yaw» mm. adivrnedniutom £5ma{.nm.w.'..}.h-km . gm. mummn . .. . 54. Srlﬂdbi/IA=ﬂ\‘w(MnuaMuwnm19muimgxnam hyflyevuberuevtlsvlkrnmaapyvm umumn 3-‘M53’! mu-ak km: seueﬁybe «nmmemmen . h:2m\nla . . Yevillm yiiﬁirun (nu; mm mm ma puma my (run) lmn we Mmmr mm ma: mm rmummn mm m,,,,..,,,g§,,v(,,,.‘a ,,,,,,,_,,,,,,,,,,,,,,,W,m,y,,, Euzuihﬁvmxmzedunadiuuulawn . . . hﬂwe my Sui an numarxh Mari Pan C!Lls|Kaxd1 Tulavmgn vlrdlr Santa a-man xauayumz ndcr ' ' mum ._%___T_.___J Bu zzrﬁx ﬁnlmuzndma dimnleneu min vc. . .. sen-sxn mlu ldari Pm Cmsx Karat Twang: vnxdu, E Buradan Katbylruz . Tebligtt Mlzhahll brf . | r . man: Memunmun Imzaslz . .. . . . .. sari slra nolu ldan Para Gezasl Karat mmsg; we tanaﬁmza verilen man para cezssma ng lnrihlndan mum 15 (cum) gun werieinde Sulh Ceza Hakiuligm: niruzda bulunabiiocegmuzx‘ bu sine upeﬁsinde ﬂrazda hulunmamgnmz takllrds iigm karann kesinlsgecagi E9 :61 kunusu Mari Para Cezzxlmn ksnun ymuna bssvurmaun érm15(Onbe§)gDn iqaminda edamsmz hslinde bunun dome Dpﬂnﬂ bdeyseeﬁiniz, mm-acaa1 Va carsmmz hsﬁnde Iaksm: meme yapolabilsuegiz husushn bilgilennizre I/ahllg olunur. Gﬁmdnm:
+
+--- SAYFA 23 ---
+Ek-9 vev Imnmhtt sensumemuazapyume weum yumb mushy! vamv saummgmn Luuhnlbnnwvmmatm .1-my .. .mm.n 51-v)"H“‘3V";3‘1i‘P(‘>hTI=dE‘5)"l|(ln|¢ Iv! Kzyfvyel habuvznerelnmmmupyumg ﬂu“ ‘J 9 M ‘€_ 6» .|lbIN§d9V mun: euymul 7‘ kins: mmamn lzaru New mu RN19: . mam mm: mm mm. roman mum mun mun (imzl mu um an (inn) vim an emmuymen ¥ Alum > > 1 > w x TMIM nwmurunun mm T: In-za w Mnhﬁr sauna Nu: Vtwmfv ﬂI4¢5§i$"'¥|T$“\9Mmvum1zr2fnIim!Ibvﬂ!d1:nyem ‘ Euzarﬁaﬁnnlmzldmtulimmlmen uymrmeyzllhk 'dirin 3 "’ yansnle. larihvc.. .. . . sezvsxraucfl. Ih.I:.ITsilTulam vvdxr ’ sama Eursdan Kauayuuz Wm IELAL rum TUT A V]: UYARMAYA ILI5KiN TE§L['GAT TAAHHIMJTLU N «mm ve mu. mm 9511;: No Bu mm furmunaildlnndtizmlcnnn \ryIrImynIYi§km bxId|.'im yum :1 mi): ve sum; mm mm Tespil mmg. vlrdn 341:9 Buradsn Kaﬂaylnll ' iﬁ Tebligar Mnzbatah Zarf . ./ ..‘.........G|‘ilIi Tcslim Edllmwnr. reblig Memunu-um inuan: ! vex: bslgasi sahlplari; Karayalu Ta§xma vanscmengms (KTY) gorevsﬁlen uyirmslnn pamya gevimek kalduracﬂirler. l Uyannalarm paraye gnwuorex kmmlmdt manrnasi hahnde, Bakanlmimlzxzi auzeoaenan “Odsms auguen seugesrnae yer aran ilgﬂi Banka ve ddama numarau hllgsluri doﬁmltuxunda m aaame tarwne kadarodeme yspnlmam uerekmektadv. ‘(meme Bilgiberv aesgesit max Te1pilTulann§mm we uyarma nmrm yazwuu wanatiannatebligim (Bu mug yam helgssw sahlbmin KEP nmabma 01 ya1zI|abilir.) mmeakip, aekanbgmza yuvll basvumdn bulunmak sureﬁyie slmabixr Kl"fn.n Agu: maddelen gecegm, tehhg sdvlen v9ka!d1rIlrniyan(odemesIyap4larak) uyarmahtm saycsmln msu same uiaynasx ve bu hususun zebnginz xzkayen 15 gun ' 'nds Mama yaaxlamk uy2rmaLarIn Iaynsmm use auemmn ahma dﬂsnmlmemesw haimde, mane Kmu man yam belgesinin faa.liye1i,1kinci bir rslem yapumaxsum duvdurumr G6rI\1er:n'
