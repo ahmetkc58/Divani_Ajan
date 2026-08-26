@@ -90,6 +90,7 @@ class LLMConfig:
     max_output_tokens: int = 2048
     temperature: float = 0.0
     max_input_chars: int = 120_000
+    runtime_enabled: bool = True
 
     def __post_init__(self) -> None:
         if not isinstance(self.provider, LLMProviderName):
@@ -125,7 +126,7 @@ class LLMConfig:
 
     @property
     def enabled(self) -> bool:
-        return self.is_local or self.api_key is not None
+        return self.runtime_enabled and (self.is_local or self.api_key is not None)
 
     @property
     def is_local(self) -> bool:
@@ -166,6 +167,19 @@ class LLMConfig:
         if not base_url:
             raise ValueError("KARAYOL_LLM_BASE_URL yapılandırılmalıdır.")
 
+        enabled_text = os.getenv("KARAYOL_LLM_ENABLED", "true").strip().casefold()
+        if enabled_text not in {
+            "1",
+            "0",
+            "true",
+            "false",
+            "yes",
+            "no",
+            "on",
+            "off",
+        }:
+            raise ValueError("KARAYOL_LLM_ENABLED bir boolean değer olmalıdır.")
+
         return cls(
             provider=provider,
             model=model,
@@ -175,6 +189,7 @@ class LLMConfig:
             max_output_tokens=int(os.getenv("KARAYOL_LLM_MAX_OUTPUT_TOKENS", "2048")),
             temperature=float(os.getenv("KARAYOL_LLM_TEMPERATURE", "0")),
             max_input_chars=int(os.getenv("KARAYOL_LLM_MAX_INPUT_CHARS", "120000")),
+            runtime_enabled=enabled_text in {"1", "true", "yes", "on"},
         )
 
 

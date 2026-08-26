@@ -42,7 +42,10 @@ from karayol_agent.retrieval.contracts import (
 )
 from karayol_agent.retrieval.hybrid import HybridRetriever
 from karayol_agent.retrieval.qdrant_store import QdrantUnavailable, SchemaMismatch
-from karayol_agent.retrieval.runtime import build_retrieval_runtime
+from karayol_agent.retrieval.runtime import (
+    ArchiveWideDomainResolver,
+    build_retrieval_runtime,
+)
 from karayol_agent.schemas import (
     ExtractedField,
     FieldStatus,
@@ -219,6 +222,11 @@ class EvrakOrchestrator:
         runtime = build_retrieval_runtime(
             self.settings,
             corpus_binding=corpus_binding,
+            domain_resolver=(
+                ArchiveWideDomainResolver()
+                if self.settings.snapshot_relevance_policy == "lexical_overlap"
+                else None
+            ),
         )
         base_retriever = runtime.hybrid_for(
             self.index,
@@ -237,6 +245,7 @@ class EvrakOrchestrator:
             base_retriever,
             candidate_top_k=self.settings.relevance_candidate_top_k,
             threshold=self.settings.min_relevance_score,
+            fallback_policy=self.settings.snapshot_relevance_policy,
         )
 
     def readiness(self) -> dict[str, object]:

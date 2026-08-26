@@ -594,6 +594,43 @@ def test_dense_search_requires_domain_query_task_and_matching_payload_metadata()
         store.dense_search([0.0] * 1024, domain="kgm_infrastructure")
 
 
+def test_snapshot_archive_wide_search_omits_only_domain_filter() -> None:
+    client = FakeQdrantClient()
+    first = _snapshot_chunk()
+    second = _snapshot_chunk(
+        chunk_id="MEV-SNAPSHOT-002",
+        domain="maritime",
+    )
+    store = _bind(
+        _store(
+            client,
+            corpus_mode=CorpusMode.COMPETITION_SNAPSHOT,
+            collection_name=DEFAULT_COMPETITION_SNAPSHOT_COLLECTION_NAME,
+        ),
+        first,
+        second,
+    )
+    store.ensure_collection()
+    client.query_results = [
+        SimpleNamespace(score=0.91, payload=store.build_payload(first)),
+        SimpleNamespace(score=0.89, payload=store.build_payload(second)),
+    ]
+
+    hits = store.dense_search([0.125] * 1024, domain="__all__", limit=2)
+
+    assert [hit.chunk.chunk_id for hit in hits] == [
+        first.chunk_id,
+        second.chunk_id,
+    ]
+    conditions = {
+        _value(condition, "key"): _value(_value(condition, "match"), "value")
+        for condition in _value(client.query_calls[0]["query_filter"], "must")
+        if _value(condition, "key") != "chunk_id"
+    }
+    assert "domain" not in conditions
+    assert conditions["corpus_fingerprint"] == store.corpus_fingerprint
+
+
 def test_dense_search_rejects_tampered_payload_with_current_corpus_identity() -> None:
     client = FakeQdrantClient()
     chunk = _approved_chunk()

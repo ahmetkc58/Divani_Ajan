@@ -12,6 +12,7 @@ from karayol_agent.retrieval.contracts import CorpusMode
 from karayol_agent.retrieval.relevance import (
     AnalysisAwareDeterministicReranker,
     AnalysisAwareTextRetrieverAdapter,
+    GENERIC_ARCHIVE_PROFILE,
     PROFILE_EXPANSIONS,
     ROAD_SURFACE_PROFILE,
     TRAFFIC_SIGN_PROFILE,
@@ -398,6 +399,40 @@ def test_unsupported_snapshot_profile_fails_closed_without_retrieval(
     assert fake.calls == []
     assert result.diagnostics.relevance_profile is None
     assert result.diagnostics.relevance_abstained is True
+
+
+def test_generic_archive_policy_accepts_only_visible_multi_term_overlap(
+    snapshot_chunks,
+) -> None:
+    by_id, _ = snapshot_chunks
+    direct = SearchHit(
+        chunk=by_id["MEV-B4102E4DDE97752F"],
+        score=0.04,
+    )
+    irrelevant = SearchHit(
+        chunk=by_id["MEV-311383AB24A5855D"],
+        score=0.05,
+    )
+    fake = _FakeAnalysisRetriever([irrelevant, direct])
+    reranker = AnalysisAwareDeterministicReranker(
+        fake,
+        fallback_policy="lexical_overlap",
+    )
+    analysis = _analysis(
+        "genel_basvuru",
+        "Karayolunun yapım ve bakım sorumluluğu hakkında bilgi talebi",
+    )
+    analysis.retrieval_evidence_text = (
+        "Karayolunun yapım ve bakım sorumluluğunu öğrenmek istiyorum."
+    )
+
+    result = reranker.search_for_analysis("karayolu bakım sorumluluğu", analysis)
+
+    assert [hit.chunk.chunk_id for hit in result.hits] == [direct.chunk.chunk_id]
+    assert result.hits[0].relevance_accepted is True
+    assert result.hits[0].relevance_profile == GENERIC_ARCHIVE_PROFILE
+    assert result.diagnostics.relevance_query_supported is True
+    assert result.diagnostics.relevance_abstained is False
 
 
 def test_expansion_terms_are_not_reported_as_original_lexical_evidence(

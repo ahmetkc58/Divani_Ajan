@@ -16,6 +16,7 @@ from karayol_agent.retrieval.hybrid import DenseRetrievalWarning
 from karayol_agent.retrieval.runtime import (
     AnalysisAwareHybridRetriever,
     AnalysisDomainResolver,
+    ArchiveWideDomainResolver,
     DomainAwareDenseRetriever,
     DomainResolutionError,
     RuntimeContractError,
@@ -180,6 +181,14 @@ def test_explicit_domain_wins_and_out_of_scope_value_fails_closed() -> None:
     assert resolver.resolve(explicit).domain == "official_writing"
     with pytest.raises(DomainResolutionError, match="aktif retrieval kapsamında değil"):
         resolver.resolve({**explicit, "domain": "aviation"})
+
+
+def test_archive_wide_resolver_is_explicit_and_deterministic() -> None:
+    resolution = ArchiveWideDomainResolver().resolve(_analysis())
+
+    assert resolution.domain == "__all__"
+    assert resolution.source == "archive_wide_opt_in"
+    assert resolution.confidence == 1.0
 
 
 def test_ambiguous_analysis_domain_fails_closed() -> None:

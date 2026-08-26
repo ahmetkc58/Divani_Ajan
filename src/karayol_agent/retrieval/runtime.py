@@ -34,6 +34,7 @@ from .hybrid import (
     RankedRetriever,
 )
 from .qdrant_store import (
+    ALL_DOMAINS_FILTER,
     DEFAULT_COLLECTION_NAME,
     DEFAULT_INDEX_VERSION,
     QdrantStore,
@@ -235,6 +236,22 @@ class AnalysisDomainResolver:
         enum_value = getattr(direct, "value", direct)
         normalized = str(enum_value).strip().casefold()
         return None if not normalized or normalized == "unknown" else normalized
+
+
+class ArchiveWideDomainResolver:
+    """Opt-in resolver for exploratory search across a fixed snapshot corpus."""
+
+    def resolve(
+        self,
+        analysis: DocumentAnalysis | Mapping[str, Any],
+    ) -> DomainResolution:
+        del analysis
+        return DomainResolution(
+            domain=ALL_DOMAINS_FILTER,
+            confidence=1.0,
+            source="archive_wide_opt_in",
+            evidence=("snapshot_relevance_policy=lexical_overlap",),
+        )
 
 
 class DomainAwareDenseRetriever:
@@ -608,6 +625,7 @@ __all__ = [
     "ACTIVE_RETRIEVAL_DOMAINS",
     "AnalysisAwareHybridRetriever",
     "AnalysisDomainResolver",
+    "ArchiveWideDomainResolver",
     "DenseVectorStore",
     "DomainAwareDenseRetriever",
     "DomainResolution",

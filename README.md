@@ -89,6 +89,31 @@ PowerShell'de Ollama kontrolü ve uygulama başlangıcını tek komutla yapmak i
 kullanılabilir. Yerel `.env` varsa yüklenir; script LLM sağlayıcısını Ollama
 olarak ayarlar. `.env` Git tarafından yok sayılır.
 
+501 belgeli sabit UAB arşivini ve depoda yayımlanan 10.048 vektörlük yerel
+Qdrant koleksiyonunu elle test etmek için ayrı başlatıcı kullanılır:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start_local_uab.ps1 -DisableLlm
+python -m http.server 3000 --directory frontend
+```
+
+Başlatıcı sorgu embedding modelini varsayılan olarak ilk NVIDIA GPU'da
+(`cuda:0`) çalıştırır. Önce CUDA destekli PyTorch kurulumunun GPU'yu gördüğünü
+doğrulayın:
+
+```powershell
+.\.venv\Scripts\python.exe -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'GPU görünmüyor')"
+```
+
+GPU bulunmayan bir ortamda `-EmbeddingDevice cpu` parametresi kullanılabilir.
+
+Bu başlatıcı `uab_ministry_archive_chunks_v1` koleksiyonunu, Jina v3 dense +
+BM25 + RRF ile açar. İki incelenmiş demo profili dışındaki evraklarda opt-in
+`lexical_overlap` keşif kapısı uygulanır: görünür chunk metniyle kullanıcı
+metninde en az iki anlamlı terim örtüşmeden atıf gösterilmez. Bu geniş profil
+yalnız manuel keşif/test içindir; korpusun `currentness_verified=false` ve
+`legal_reliance_allowed=false` bayraklarını değiştirmez.
+
 Çalışan serviste iki yapılandırılmış LLM rolünü doğrulamak için:
 
 ```powershell

@@ -560,6 +560,18 @@ def test_from_env_reads_gemini_key_without_exposing_it(
     assert "gemini-env-test-key" not in repr(config)
 
 
+def test_from_env_can_explicitly_disable_local_llm(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("KARAYOL_LLM_ENABLED", "false")
+    monkeypatch.delenv("KARAYOL_LLM_PROVIDER", raising=False)
+
+    config = LLMConfig.from_env()
+
+    assert config.provider is LLMProviderName.OLLAMA
+    assert config.enabled is False
+
+
 def test_string_restricted_classification_cannot_bypass_data_policy() -> None:
     transport = RecordingTransport()
     gateway = StructuredLLMGateway(_groq_config(), transport=transport)

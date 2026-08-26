@@ -130,6 +130,12 @@ class Settings:
             40,
         )
     )
+    snapshot_relevance_policy: str = field(
+        default_factory=lambda: (
+            _environment("KARAYOL_SNAPSHOT_RELEVANCE_POLICY", "reviewed_only")
+            or "reviewed_only"
+        )
+    )
     low_confidence_threshold: float = 0.60
     latex_timeout_seconds: int = 30
     evidence_graph_enabled: bool = field(
@@ -312,6 +318,17 @@ class Settings:
                 "'competition_snapshot' olabilir."
             )
         object.__setattr__(self, "corpus_mode", corpus_mode)
+        relevance_policy = self.snapshot_relevance_policy.casefold()
+        if relevance_policy not in {"reviewed_only", "lexical_overlap"}:
+            raise ValueError(
+                "KARAYOL_SNAPSHOT_RELEVANCE_POLICY yalnız 'reviewed_only' "
+                "veya 'lexical_overlap' olabilir."
+            )
+        object.__setattr__(
+            self,
+            "snapshot_relevance_policy",
+            relevance_policy,
+        )
         if (
             corpus_mode == "competition_snapshot"
             and self.qdrant_collection == "legal_chunks_v1"

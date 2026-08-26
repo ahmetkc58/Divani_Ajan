@@ -34,7 +34,35 @@ from karayol_agent.text_utils import (
 
 ROAD_SURFACE_PROFILE = "road_surface_maintenance_v1"
 TRAFFIC_SIGN_PROFILE = "traffic_sign_damage_v1"
+GENERIC_ARCHIVE_PROFILE = "generic_archive_lexical_overlap_v1"
 RELEVANCE_STRATEGY = "intent_profile_concept_gate_v2"
+
+
+GENERIC_QUERY_STOPWORDS = frozenset(
+    {
+        "acaba",
+        "ait",
+        "başvuru",
+        "belge",
+        "bilgi",
+        "bildiriyorum",
+        "edilmesi",
+        "ederek",
+        "etmek",
+        "gereğinin",
+        "hakkında",
+        "istiyorum",
+        "konu",
+        "lütfen",
+        "müdürlüğü",
+        "nedir",
+        "talep",
+        "talebim",
+        "tarafından",
+        "üzere",
+        "yapılması",
+    }
+)
 
 
 PROFILE_EXPANSIONS: dict[str, tuple[str, ...]] = {
@@ -343,6 +371,26 @@ def assess_query_intent(
         # A damaged official sign is already a reportable safety incident;
         # explicit remedy/report language improves the score but is optional.
         required_count = 2
+    elif profile == GENERIC_ARCHIVE_PROFILE:
+        content_terms = _generic_content_terms(evidence_text)
+        supported = len(content_terms) >= 2
+        reasons = (
+            (
+                "Geniş arşiv sorgusu için anlamlı terimler bulundu: "
+                + ", ".join(content_terms[:12])
+                + "."
+            )
+            if supported
+            else "Geniş arşiv sorgusu için en az iki anlamlı terim gerekli."
+        )
+        return QueryIntentDecision(
+            profile=profile,
+            supported=supported,
+            score=1.0 if supported else len(content_terms) / 2,
+            concepts=tuple(content_terms[:12]),
+            reasons=(reasons,),
+            evidence_basis=evidence_basis,
+        )
     else:
         return QueryIntentDecision(
             profile=profile,
@@ -410,6 +458,15 @@ def assess_query_relevance(
             display_text, normalized_query
         )
         context_required = _traffic_sign_score(context_text, normalized_query)[1]
+    elif profile == GENERIC_ARCHIVE_PROFILE:
+        score, required, reasons = _generic_archive_score(
+            display_text,
+            normalized_query,
+        )
+        context_required = _generic_archive_score(
+            context_text,
+            normalized_query,
+        )[1]
     else:
         return RelevanceDecision(
             profile=profile,
@@ -463,6 +520,7 @@ class AnalysisAwareDeterministicReranker:
         *,
         candidate_top_k: int = 40,
         threshold: float = 0.75,
+        fallback_policy: str = "reviewed_only",
     ) -> None:
         if (
             isinstance(candidate_top_k, bool)
@@ -472,9 +530,12 @@ class AnalysisAwareDeterministicReranker:
             raise ValueError("Relevance aday sayısı en az 1 olmalıdır.")
         if isinstance(threshold, bool) or not 0 <= threshold <= 1:
             raise ValueError("Relevance eşiği 0 ile 1 arasında olmalıdır.")
+        if fallback_policy not in {"reviewed_only", "lexical_overlap"}:
+            raise ValueError("Bilinmeyen snapshot relevance fallback politikası.")
         self.base_retriever = base_retriever
         self.candidate_top_k = candidate_top_k
         self.threshold = float(threshold)
+        self.fallback_policy = fallback_policy
         self.retrieval_mode = str(
             getattr(base_retriever, "retrieval_mode", "hybrid")
         )
@@ -499,6 +560,8 @@ class AnalysisAwareDeterministicReranker:
         if isinstance(top_k, bool) or not isinstance(top_k, int) or top_k < 1:
             raise ValueError("Relevance sonuç sayısı pozitif bir tam sayı olmalıdır.")
         profile = resolve_relevance_profile(analysis)
+        if profile is None and self.fallback_policy == "lexical_overlap":
+            profile = GENERIC_ARCHIVE_PROFILE
         if profile is None:
             return self._abstention_response(
                 profile=None,
@@ -609,7 +672,7 @@ class AnalysisAwareDeterministicReranker:
                 "relevance_rejected_count": len(candidates) - len(accepted),
                 "relevance_threshold": self.threshold,
                 "relevance_abstained": not final_hits,
-                "relevance_query_expansion": list(PROFILE_EXPANSIONS[profile]),
+                "relevance_query_expansion": list(PROFILE_EXPANSIONS.get(profile, ())),
                 "relevance_query_supported": query_decision.supported,
                 "relevance_query_score": query_decision.score,
                 "relevance_query_concepts": list(query_decision.concepts),
@@ -642,7 +705,7 @@ class AnalysisAwareDeterministicReranker:
                 relevance_threshold=self.threshold,
                 relevance_abstained=True,
                 relevance_query_expansion=(
-                    list(PROFILE_EXPANSIONS[profile]) if profile else []
+                    list(PROFILE_EXPANSIONS.get(profile, ())) if profile else []
                 ),
                 relevance_query_supported=(
                     query_decision.supported if query_decision else False
@@ -788,6 +851,67 @@ def _traffic_sign_score(text: str, query: str) -> tuple[float, bool, list[str]]:
         score -= 0.40
         reasons.append("Sorguda olmayan sürücü/kaza/geçit bağlamı alaka skorunu düşürdü.")
     return score, object_match and duty_match, reasons
+
+
+def _generic_archive_score(
+    text: str,
+    query: str,
+) -> tuple[float, bool, list[str]]:
+    """Gate broad archive hits using only visible, user-derived term overlap."""
+
+    query_terms = _generic_content_terms(query)
+    text_terms = _generic_content_terms(text)
+    matched = [
+        query_term
+        for query_term in query_terms
+        if any(_generic_terms_match(query_term, text_term) for text_term in text_terms)
+    ]
+    required_count = min(3, len(query_terms))
+    required = required_count >= 2 and len(matched) >= required_count
+    denominator = min(4, len(query_terms)) or 1
+    coverage = min(1.0, len(matched) / denominator)
+    score = round(0.5 + 0.5 * coverage, 4) if matched else 0.0
+    reasons = []
+    if matched:
+        reasons.append(
+            "Kullanıcı metni ile görünür kaynak metninde anlamlı terim örtüşmesi: "
+            + ", ".join(matched[:12])
+            + "."
+        )
+    if not required:
+        reasons.append(
+            f"Görünür kaynak metninde gerekli {required_count} anlamlı sorgu "
+            "terimi doğrulanamadı."
+        )
+    if required:
+        reasons.append(
+            "Sonuç geniş arşiv keşif profiliyle metinsel olarak doğrulandı; "
+            "hukuki uygulanabilirlik doğrulanmadı."
+        )
+    return score, required, reasons
+
+
+def _generic_content_terms(value: str) -> list[str]:
+    unique: list[str] = []
+    seen: set[str] = set()
+    for token in tokenize(value):
+        if (
+            len(token) < 4
+            or token.isdigit()
+            or token in GENERIC_QUERY_STOPWORDS
+            or token in seen
+        ):
+            continue
+        seen.add(token)
+        unique.append(token)
+    return unique
+
+
+def _generic_terms_match(left: str, right: str) -> bool:
+    if left == right:
+        return True
+    prefix_length = min(5, len(left), len(right))
+    return prefix_length >= 4 and left[:prefix_length] == right[:prefix_length]
 
 
 def _positive_reasons(

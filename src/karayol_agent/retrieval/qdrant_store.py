@@ -29,6 +29,7 @@ DEFAULT_PASSAGE_TASK = "retrieval.passage"
 DEFAULT_QUERY_TASK = "retrieval.query"
 DEFAULT_INDEX_VERSION = "1.0"
 DEFAULT_DISTANCE = "Cosine"
+ALL_DOMAINS_FILTER = "__all__"
 
 # Qdrant arbitrary strings as point IDs are not portable: the server accepts an
 # unsigned integer or a UUID. UUIDv5 keeps the existing, human-readable chunk_id
@@ -819,12 +820,9 @@ class QdrantStore:
 
     def _active_filter(self, domain: str, binding: CorpusBinding) -> Any:
         values = self._trust_filter_values()
-        values.extend(
-            [
-                ("domain", domain),
-                ("corpus_fingerprint", binding.fingerprint),
-            ]
-        )
+        if domain != ALL_DOMAINS_FILTER:
+            values.append(("domain", domain))
+        values.append(("corpus_fingerprint", binding.fingerprint))
         models = self._request_models()
         if models is None:
             return _CompatFilter(
@@ -1006,7 +1004,10 @@ class QdrantStore:
         trust_values = self._trust_filter_values()
         return (
             all(payload.get(key) == value for key, value in trust_values)
-            and payload.get("domain") == domain
+            and (
+                domain == ALL_DOMAINS_FILTER
+                or payload.get("domain") == domain
+            )
             and payload.get("corpus_fingerprint") == binding.fingerprint
             and payload.get("chunk_id") in binding.allowed_chunk_ids
             and payload.get("chunk_fingerprint")
