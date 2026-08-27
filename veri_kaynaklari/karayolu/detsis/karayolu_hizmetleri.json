@@ -1,0 +1,866 @@
+{
+  "source_url": "https://detsis.gov.tr/birim/24325150/24325150/2026-08-23",
+  "retrieved_at": "2026-08-23T20:56:20.712162+03:00",
+  "record_count": 92,
+  "filter_terms": [
+    "karayolu",
+    "kara yolu",
+    "otoyol",
+    "yolcu taşı",
+    "eşya taşı",
+    "yük taşı",
+    "taşıt",
+    "araç muayene",
+    "takograf",
+    "trafik",
+    "ulaştırma hizmetleri",
+    "ulaşım hizmetleri",
+    "özel yük"
+  ],
+  "filter_note": "Anahtar kelime filtresidir; kullanımdan önce insan doğrulaması gerekir.",
+  "data": [
+    {
+      "hizmetAd": "TMFB (Tehlikeli Madde Faaliyet Belgesi) Faaliyet Devir Sözleşmesi İşlemlerinin Yapılması",
+      "hizmetId": 112852,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > TEHLİKELİ YÜK TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI > KARAYOLU TEHLİKELİ YÜK TAŞIMACILIĞI ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=112852",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Gemi Trafik Hizmetleri Sistemlerinin Denetlenmesi",
+      "hizmetId": 37156,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > DENİZCİLİK GENEL MÜDÜRLÜĞÜ > DENİZ EMNİYETİ VE GÜVENLİĞİ DAİRE BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37156",
+      "filter_matches": [
+        "trafik"
+      ]
+    },
+    {
+      "hizmetAd": "Yol Kenarı Denetimi Yapan/Yapacak Personelin Eğitilmesi",
+      "hizmetId": 90940,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > YOL KENARI VE İŞLETMELER DENETİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=90940",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Tehlikeli Madde Taşımacılığı Denetimleri ile Tehlikeli Madde Taşımacılığında Kullanılan Tank, Ambalaj ve Taşıma Birimlerine Yönelik Gerçekleştirilen Test, Muayene ve Belgelendirme Çalışmalarını Raporlamak",
+      "hizmetId": 90945,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > YOL KENARI VE İŞLETMELER DENETİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=90945",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Görev Alanı ile İlgili Konularda Verilen Hizmetler Karşılığında Elde Edilen Gelirlere İlişkin Mahsuplaşma İşlemi Yapılması",
+      "hizmetId": 90889,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > YOL KENARI VE İŞLETMELER DENETİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=90889",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Tehlikeli Madde Taşımacılığı Denetimleri Yapılması",
+      "hizmetId": 90894,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > YOL KENARI VE İŞLETMELER DENETİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=90894",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "İşletme Yetki Belgesi Verilmesi",
+      "hizmetId": 84065,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > YOL KENARI VE İŞLETMELER DENETİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=84065",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Kamu Kurum ve Kuruluşlarına Personel Servis Hizmeti İhdas ve İşletebilmeleri İçin İzin Verilmesi",
+      "hizmetId": 101770,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101770",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Sözleşmeli Taşıt Muvafakat Sorgulama ve Düzenleme",
+      "hizmetId": 105360,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=105360",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Güzergah Listesi Sorgulanması ve Barkodlu Belge Düzenlenmesi",
+      "hizmetId": 86660,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=86660",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Taşıt Kartı Sorgulaması / Düzenlemesi",
+      "hizmetId": 100505,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=100505",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Plaka Bilgisinden Ödeme Sorgulaması",
+      "hizmetId": 101513,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101513",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "B1 Yetki Belgeli Firmaları Acentelerinin Sorgulanması",
+      "hizmetId": 101516,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101516",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "A1, A2 ve B1 Yetki Belgesine Sahip Firmaların Şubelerinin Sorgulanması",
+      "hizmetId": 101517,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101517",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "T3 Yetki Belgesi için Şube Açılış İşlemleri",
+      "hizmetId": 101649,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101649",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Yolcu Taşımacılığı Yapan Firmalara Ait Güzergahlarının Sorgulanması",
+      "hizmetId": 88289,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=88289",
+      "filter_matches": [
+        "karayolu",
+        "yolcu taşı"
+      ]
+    },
+    {
+      "hizmetAd": "Zaman Tarifesinin Sorgulanması ve Barkodlu Belgenin Düzenlenmesi",
+      "hizmetId": 107762,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=107762",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Ücret Tarifesinin Sorgulanması ve Barkodlu Belgenin Düzenlenmesi",
+      "hizmetId": 107766,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=107766",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "T3 Yetki Belgesi Verilmesi ve Yenilenmesi",
+      "hizmetId": 84084,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=84084",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Sorgulanan ve Barkodlu Olarak Düzenlenen Güzergah Listesi Belgelerinin Doğrulanması",
+      "hizmetId": 110449,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110449",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Ücret Tarifesi Belgesinin Doğrulanması",
+      "hizmetId": 110424,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110424",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Zaman Tarifesi Belgesinin Doğrulanması",
+      "hizmetId": 110425,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110425",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "U-ETDS (Ulaştırma Elektronik Takip Ve Denetim Sistemi)'ye IP ve Operatör Tanımlanması",
+      "hizmetId": 110434,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110434",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "UETDS Terminal Taşıt Hareket Bildiriminin Yapılması",
+      "hizmetId": 110683,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110683",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Firmaların Acentelik Muvafakat İşlemlerinin Yapılması",
+      "hizmetId": 110684,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110684",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Mesleki Yeterlilik Belgesi (ODY/ÜDY) Sahibi Kişilerin Muvafakat İşlemlerinin Yapılması",
+      "hizmetId": 110685,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110685",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Tüzel Kişilere Sözleşmeli Taşıt Muvafakat İşlemleri İçin İzin Verilmesi",
+      "hizmetId": 110686,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110686",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesi Sahiplerinin İlave Şube Başvurularının Alınması",
+      "hizmetId": 110687,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110687",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesi Sahiplerinin İlave Acentelik Başvurularının Alınması",
+      "hizmetId": 110688,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110688",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesi Sahibi Firmaların Mesleki Yeterlilik Belgesi (ODY/ÜDY) Sahibi Kişileri Belgeye Eklemesi",
+      "hizmetId": 110689,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110689",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesi Sahibi Firmaların Acente Listesini Düzenlemesi ve Sorgulaması",
+      "hizmetId": 110690,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=110690",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesi Sahibi Firmaların Barkodlu Acente Listesinin Doğrulanması",
+      "hizmetId": 111836,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=111836",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "A1 Yetki Belgesi Verilmesi ve Yenilenmesi",
+      "hizmetId": 40447,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40447",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "A2 Yetki Belgesi Verilmesi ve Yenilenmesi.",
+      "hizmetId": 40466,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40466",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Uluslararası Hat ilave ve Hat süre uzatımı işlemlerinin yapılması",
+      "hizmetId": 81326,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > KARAYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=81326",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Denetimlerde Yaşanan Sorunların Çözüme Kavuşturulması",
+      "hizmetId": 40806,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40806",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene İstasyonlarına İşletme Yetki Belgesi Verilmesi/Yenilenmesi",
+      "hizmetId": 40812,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40812",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene İstasyonlarına Geçici İşletme Yetki Belgesi Verilmesi/Yenilenmesi",
+      "hizmetId": 40814,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40814",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Barkodlu Araç Muayene Raporu Sorgulaması Yapılması",
+      "hizmetId": 100465,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=100465",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Barkodlu Araç Muayene Raporu Doğrulaması Yapılması",
+      "hizmetId": 100467,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=100467",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "4925 Sayılı Karayolu Taşıma Kanunu Kapsamında Düzenlenen İdari Para Cezalarının Sorgulanması",
+      "hizmetId": 100469,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=100469",
+      "filter_matches": [
+        "karayolu",
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Uyarınca Düzenlenen Uyarmaların Sorgulanması/Paraya Çevirilmesi",
+      "hizmetId": 100471,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=100471",
+      "filter_matches": [
+        "karayolu",
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Seyyar Araç Muayene İstasyonlarının İş Programlarının Onaylanması",
+      "hizmetId": 101518,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101518",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Seyyar Araç Muayene İstasyonu Bilgisi Sorgulaması",
+      "hizmetId": 101551,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101551",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene Durum Sorgulaması",
+      "hizmetId": 101552,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101552",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene İstasyonu Bilgisi Sorgulaması",
+      "hizmetId": 101553,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101553",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene Randevusunun İptal edilmesi",
+      "hizmetId": 101554,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101554",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene Randevu Kaydının Yapılması",
+      "hizmetId": 101555,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101555",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene Randevularını Listeleme",
+      "hizmetId": 101556,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101556",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene İstasyonlarında Çalışacak Personelin Onaylanması",
+      "hizmetId": 101839,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101839",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Traktör Muayene İstasyonlarının İş Programlarının Onaylanması",
+      "hizmetId": 101847,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101847",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "UETDS Tarifeli Yolcu Taşımacılığı Bildirim İşlemlerinin Yapılması",
+      "hizmetId": 112844,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=112844",
+      "filter_matches": [
+        "yolcu taşı",
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Ulaştırma ve Altyapı Bakanlığı Tarafından Uygulanan İdari Para Cezalarının Sorgulanabilmesi",
+      "hizmetId": 117452,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=117452",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Araç Muayene İstasyonlarına Yola Elverişlilik Muayene Yetki Yetki Belgesi Verilmesi/Yenilenmesi",
+      "hizmetId": 101671,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101671",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "UETDS Tarifesiz Yolcu Taşımacılığı Bildirim İşlemlerinin Yapılması",
+      "hizmetId": 112845,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=112845",
+      "filter_matches": [
+        "yolcu taşı",
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "UETDS Tarifesiz Yolcu Taşımacılığının Raporlanması",
+      "hizmetId": 112846,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=112846",
+      "filter_matches": [
+        "yolcu taşı",
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Tehlikeli malların karayoluyla taşınması için işletmelere muafiyet ve/veya özel izin vermek",
+      "hizmetId": 84793,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > TEHLİKELİ YÜK TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=84793",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği kapsamında Yetki Belgesi Basvuru Durum Sorgulaması",
+      "hizmetId": 101528,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101528",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği kapsamında Yetki Belgesi Sorgulaması",
+      "hizmetId": 101530,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101530",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Alınan Yetki Belgesi Sorumlu Kişi Sorgulaması",
+      "hizmetId": 101620,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101620",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesi Sahibi Firmaların İletişim Bilgisi Güncelleme",
+      "hizmetId": 101621,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101621",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesi Sahibi Firmaların Sorgulanması",
+      "hizmetId": 101622,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101622",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesi Sahibi Firmaları Taşıma Kapasitesine Göre Sorgulama",
+      "hizmetId": 101623,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101623",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği kapsamında uluslararası taşımacılık faaliyetinde bulunan Firma Sorgulaması",
+      "hizmetId": 101624,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101624",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Alınan Yetki Belgelerini Doğrulama",
+      "hizmetId": 101627,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101627",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesi eki Taşıt Belgelerini Doğrulama",
+      "hizmetId": 101628,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101628",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesi eki Taşıt Belgesi Sorgulama / Düzenleme",
+      "hizmetId": 101629,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101629",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Ödeme Numarasından Ödeme Detayı Sorgulama",
+      "hizmetId": 101630,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101630",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşıma Yönetmeliği Kapsamında Yetki Belgesinin Ödemelerini Sorgulama",
+      "hizmetId": 101631,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=101631",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Elektronik tutanakların doğrulanması",
+      "hizmetId": 117573,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > DENETİM BİLGİ TEKNOLOJİLERİ ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=117573",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Elektronik tutanakların sorgulanması",
+      "hizmetId": 117580,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ARAÇ MUAYENE VE DENETİM DAİRESİ BAŞKANLIĞI > DENETİM BİLGİ TEKNOLOJİLERİ ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=117580",
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "hizmetAd": "Gezi Tekneleri ve Kişisel Deniz Taşıtlarına Yönelik Piyasa Gözetimi ve Denetiminin Yaptırılması",
+      "hizmetId": 37499,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > TERSANELER VE KIYI YAPILARI GENEL MÜDÜRLÜĞÜ > GENEL MÜDÜR YARDIMCILIĞI 2 > DENİZ ENDÜSTRİSİ DAİRE BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37499",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Gezi Tekneleri ve Kişisel Deniz Taşıtları Kapsamındaki Ürünler İçin Onaylanmış Kuruluşların Yetkilendirilmesi (Onaylanmış Kuruluşlar Listesi)",
+      "hizmetId": 40127,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > TERSANELER VE KIYI YAPILARI GENEL MÜDÜRLÜĞÜ > GENEL MÜDÜR YARDIMCILIĞI 2 > DENİZ ENDÜSTRİSİ DAİRE BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40127",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Gezi Tekneleri ve Kişisel Deniz Taşıtları Kapsamındaki Ürünler İçin Atanan Onaylanmış Kuruluşların Denetlenmesi",
+      "hizmetId": 42133,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > TERSANELER VE KIYI YAPILARI GENEL MÜDÜRLÜĞÜ > GENEL MÜDÜR YARDIMCILIĞI 2 > DENİZ ENDÜSTRİSİ DAİRE BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=42133",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Gezi Tekneleri Ve Kişisel Deniz Taşıtları İle Gemi Teçhizatına Yönelik Avrupa Birliği Teknik Mevzuatının Uyumlaştırılması Ve Uygulamaya Konulması",
+      "hizmetId": 83655,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. DURMUŞ ÜNÜVAR) > TERSANELER VE KIYI YAPILARI GENEL MÜDÜRLÜĞÜ > GENEL MÜDÜR YARDIMCILIĞI 2 > DENİZ ENDÜSTRİSİ DAİRE BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=83655",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yol Kenarı Denetim İstasyonlarında Taşıtların Belgelerinin Denetim ve Kontrollerinin Yapılması",
+      "hizmetId": 40354,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40354",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Tehlikeli Madde ve Karayolu taşımacılığı yapan firmaların işletme denetimlerinin yapılması",
+      "hizmetId": 40361,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40361",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşımacılığı Yetki Belgesi Sahibi Gerçek veya Tüzel Kişilerin Adres Değişiklikleri Doğrultusunda Yetki Belgesi İle Taşıt Belgesinin Yeniden Verilmesi",
+      "hizmetId": 37176,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37176",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesinde Kayıtlı Olan Taşıt Kartının Zayi Durumunda Yeniden Verilmesi",
+      "hizmetId": 37178,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37178",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesine Özmal Taşıt Kayıtlarının Yapılması",
+      "hizmetId": 37179,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37179",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Uluslararası ve Yurtiçi Yetki Belgelerine Kiralık (Sözleşmeli) Taşıtların İlave Edilmesi",
+      "hizmetId": 37181,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37181",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yetki Belgesinden Özmal Taşıt Kayıt Düşümlerinin Yapılması",
+      "hizmetId": 37183,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37183",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolunda Faaliyet Gösterenlerin Yetki Belgelerinde Kayıtlı Olan Kiralık Taşıtların Kayıt Düşümlerinin Yapılması",
+      "hizmetId": 37192,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37192",
+      "filter_matches": [
+        "karayolu",
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Yolcu ve Eşya Taşımacılığı Alanında Acentelik Yapan Firmaların Yetki Belgesine Firma Kayıtlarının Yapılması",
+      "hizmetId": 37281,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=37281",
+      "filter_matches": [
+        "eşya taşı"
+      ]
+    },
+    {
+      "hizmetAd": "Karayolu Taşımacılık Faaliyetleri Tehlikeli Madde Mesleki Yeterlilik Eğitim Merkezlerinin Denetlenmesi",
+      "hizmetId": 42412,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. OSMAN BOYRAZ) > ULAŞTIRMA VE ALTYAPI BAKANLIĞI I. BÖLGE MÜDÜRLÜĞÜ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=42412",
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "hizmetAd": "Demiryolu Yolcu Taşımacılığında Kamu Hizmeti Yükümlülüğü Sözleşmesinin Yapılması",
+      "hizmetId": 83783,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > DEMİRYOLU TAŞIMACILIĞI DAİRESİ BAŞKANLIĞI > ALTYAPI ERİŞİM ŞUBESİ",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=83783",
+      "filter_matches": [
+        "yolcu taşı"
+      ]
+    },
+    {
+      "hizmetAd": "Taşıtlara Geçici İhraç İzni Verilmesi",
+      "hizmetId": 40208,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40208",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Sergi, Fuar, Test, Tamir/Bakım v.b Amacıyla Yurtdışına Çıkış veya Yurtdışından Giriş Yapacak Taşıtlara İzin Verilmesi",
+      "hizmetId": 40227,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40227",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Grup Şirketlerinin Özmal Taşıtlarına kullanma izni verilmesi",
+      "hizmetId": 40352,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40352",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Trafik tescil kaydı olmayan Sanayi Odalarınca tescilli taşıtların geçici ihraç kapsamında yurtdışına Otomasyon Sistemi üzerinden çıkış izni verilmesi",
+      "hizmetId": 40288,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=40288",
+      "filter_matches": [
+        "taşıt",
+        "trafik"
+      ]
+    },
+    {
+      "hizmetAd": "Yurtdışında Bulunan Taşıtlara Geçiş Belgesi Tahsis Edilmesi",
+      "hizmetId": 82961,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=82961",
+      "filter_matches": [
+        "taşıt"
+      ]
+    },
+    {
+      "hizmetAd": "Taşıtların Euro Norm Bildiriminin Yapılması",
+      "hizmetId": 51585,
+      "kurumHiyerarsik": "ULAŞTIRMA VE ALTYAPI BAKANLIĞI > BAKAN YARDIMCILIĞI (SN. SELİM DURSUN) > ULAŞTIRMA HİZMETLERİ DÜZENLEME GENEL MÜDÜRLÜĞÜ > ULUSLARARASI İLİŞKİLER DAİRESİ BAŞKANLIĞI",
+      "detail_url": "https://envanter.kaysis.gov.tr/HizmetDetay.aspx?ID=51585",
+      "filter_matches": [
+        "taşıt"
+      ]
+    }
+  ]
+}

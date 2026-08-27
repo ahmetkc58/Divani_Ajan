@@ -1,0 +1,41 @@
+{
+  "source_url": "https://detsis.gov.tr/birim/24325150/24325150/2026-08-23",
+  "retrieved_at": "2026-08-23T20:56:20.688162+03:00",
+  "record_count": 1,
+  "data": {
+    "id": 24325150,
+    "detsisNo": "24325150",
+    "birimAdi": "Ulaştırma ve Altyapı Bakanlığı",
+    "ingilizceAdi": "MINISTRY OF TRANSPORT AND INFRASTRUCTURE",
+    "kurumHiyerarsi": "Ulaştırma ve Altyapı Bakanlığı",
+    "kurumHiyerarsiList": [
+      {
+        "birimAdi": "Ulaştırma ve Altyapı Bakanlığı",
+        "ingilizceAdi": "",
+        "id": 24325150
+      }
+    ],
+    "bagliOlduguKurumId": null,
+    "bagliOlduguKurum": "",
+    "anaKurumMu": true,
+    "tuzelKisilik": "Devlet Tüzel Kişiliği",
+    "butceTuru": "Genel Bütçe (I Sayılı Cetvel)",
+    "kategori": "BAKANLIK",
+    "statu": "Bakanlık",
+    "internetAdresi": "https://www.uab.gov.tr",
+    "eposta": "bilgi@uab.gov.tr",
+    "telefon": "03122031000",
+    "telefonDahiliNumara": null,
+    "belgegecer": "03122031000",
+    "acikAdres": "Ulaştırma ve Altyapı Bakanlığı Hakkı Turayliç Caddesi No:5 06338 Emek -  ÇANKAYA/ANKARA ",
+    "kep": "uab@hs01.kep.tr",
+    "faaliyetDurumuId": 1,
+    "kurulusMevzuatlari": [
+      {
+        "mevzuatAdi": "CUMHURBAŞKANLIĞI TEŞKİLATI HAKKINDA CUMHURBAŞKANLIĞI KARARNAMESİ",
+        "mevzuatTarihi": "10/07/2018",
+        "mevzuatSayisi": "1"
+      }
+    ]
+  }
+}

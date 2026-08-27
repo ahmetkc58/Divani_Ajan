@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0",
+  "report_kind": "blind_generalization_measurement",
+  "generated_at": "2026-08-25T20:52:01.764086+00:00",
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "dataset": {
+    "path": "data\\evaluation\\blind_documents_v1.json",
+    "sha256": "57bfbc6c842a74c16bdf6ca8b7f3fbb07b98eb10c94b811dcbb66cb181a75beb",
+    "record_count": 20
+  },
+  "orchestrator_config": {
+    "retrieval_mode": "bm25",
+    "corpus_mode": "trusted_synthetic"
+  },
+  "category_summary": {
+    "near_miss_ambiguous": {
+      "passed": 4,
+      "total": 5,
+      "ratio": "4/5",
+      "failed_ids": [
+        "BLIND-B3"
+      ]
+    },
+    "no_answer_offtopic": {
+      "passed": 1,
+      "total": 4,
+      "ratio": "1/4",
+      "failed_ids": [
+        "BLIND-C1",
+        "BLIND-C2",
+        "BLIND-C4"
+      ]
+    },
+    "ocr_noise_variant": {
+      "passed": 3,
+      "total": 4,
+      "ratio": "3/4",
+      "failed_ids": [
+        "BLIND-D2"
+      ]
+    },
+    "paraphrase_positive": {
+      "passed": 1,
+      "total": 7,
+      "ratio": "1/7",
+      "failed_ids": [
+        "BLIND-A1",
+        "BLIND-A2",
+        "BLIND-A3",
+        "BLIND-A4",
+        "BLIND-A6",
+        "BLIND-A7"
+      ]
+    }
+  },
+  "overall": {
+    "passed": 9,
+    "total": 20,
+    "ratio": "9/20"
+  },
+  "records": [
+    {
+      "id": "BLIND-A1",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.64,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 3,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": true,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-A2",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "sikayet",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 0,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": false,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-A3",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "ust_yazi",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 0,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": false,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-A4",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "genel_basvuru",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.35,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 1,
+      "missing_fields": [
+        "talep"
+      ],
+      "passed": false,
+      "type_correct": false,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-A5",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "sikayet",
+      "predicted_unit_id": "KGM-ETUT-CEVRE",
+      "predicted_confidence": 0.64,
+      "requires_human_review": false,
+      "routing_status": "proposed",
+      "verified_reference_count": 0,
+      "missing_fields": [
+        "talep"
+      ],
+      "passed": true,
+      "type_correct": true,
+      "unit_correct": true
+    },
+    {
+      "id": "BLIND-A6",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "dilekce",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 4,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": true,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-A7",
+      "category": "paraphrase_positive",
+      "predicted_document_type": "genel_basvuru",
+      "predicted_unit_id": "KGM-HUKUK",
+      "predicted_confidence": 0.35,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 3,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": false,
+      "unit_correct": true
+    },
+    {
+      "id": "BLIND-B1",
+      "category": "near_miss_ambiguous",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-TG-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 5,
+      "missing_fields": [],
+      "passed": true,
+      "type_acceptable": true,
+      "review_flagged": true
+    },
+    {
+      "id": "BLIND-B2",
+      "category": "near_miss_ambiguous",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-TG-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 5,
+      "missing_fields": [],
+      "passed": true,
+      "type_acceptable": true,
+      "review_flagged": true
+    },
+    {
+      "id": "BLIND-B3",
+      "category": "near_miss_ambiguous",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-YB-001",
+      "predicted_confidence": 0.69,
+      "requires_human_review": false,
+      "routing_status": "proposed",
+      "verified_reference_count": 1,
+      "missing_fields": [],
+      "passed": false,
+      "type_acceptable": true,
+      "review_flagged": false
+    },
+    {
+      "id": "BLIND-B4",
+      "category": "near_miss_ambiguous",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.64,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 3,
+      "missing_fields": [
+        "konum"
+      ],
+      "passed": true,
+      "type_acceptable": true,
+      "review_flagged": true
+    },
+    {
+      "id": "BLIND-B5",
+      "category": "near_miss_ambiguous",
+      "predicted_document_type": "hasar_bildirimi",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.64,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 1,
+      "missing_fields": [
+        "talep"
+      ],
+      "passed": true,
+      "type_acceptable": true,
+      "review_flagged": true
+    },
+    {
+      "id": "BLIND-C1",
+      "category": "no_answer_offtopic",
+      "predicted_document_type": "genel_basvuru",
+      "predicted_unit_id": "KGM-PER-OZLUK",
+      "predicted_confidence": 0.35,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 3,
+      "missing_fields": [],
+      "passed": false,
+      "no_confident_specific_unit": true,
+      "no_fabricated_legislation": false
+    },
+    {
+      "id": "BLIND-C2",
+      "category": "no_answer_offtopic",
+      "predicted_document_type": "genel_basvuru",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.35,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 1,
+      "missing_fields": [],
+      "passed": false,
+      "no_confident_specific_unit": true,
+      "no_fabricated_legislation": false
+    },
+    {
+      "id": "BLIND-C3",
+      "category": "no_answer_offtopic",
+      "predicted_document_type": "genel_basvuru",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.35,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 0,
+      "missing_fields": [
+        "talep"
+      ],
+      "passed": true,
+      "no_confident_specific_unit": true,
+      "no_fabricated_legislation": true
+    },
+    {
+      "id": "BLIND-C4",
+      "category": "no_answer_offtopic",
+      "predicted_document_type": "dilekce",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.6,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 2,
+      "missing_fields": [
+        "talep"
+      ],
+      "passed": false,
+      "no_confident_specific_unit": true,
+      "no_fabricated_legislation": false
+    },
+    {
+      "id": "BLIND-D1",
+      "category": "ocr_noise_variant",
+      "predicted_document_type": "yol_bakim_talebi",
+      "predicted_unit_id": "ORKGM-YB-001",
+      "predicted_confidence": 0.82,
+      "requires_human_review": false,
+      "routing_status": "proposed",
+      "verified_reference_count": 1,
+      "missing_fields": [],
+      "passed": true,
+      "type_correct": true,
+      "unit_correct": true
+    },
+    {
+      "id": "BLIND-D2",
+      "category": "ocr_noise_variant",
+      "predicted_document_type": "sikayet",
+      "predicted_unit_id": "ORKGM-TG-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 2,
+      "missing_fields": [],
+      "passed": false,
+      "type_correct": false,
+      "unit_correct": true
+    },
+    {
+      "id": "BLIND-D3",
+      "category": "ocr_noise_variant",
+      "predicted_document_type": "hasar_bildirimi",
+      "predicted_unit_id": "ORKGM-EB-001",
+      "predicted_confidence": 0.58,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 2,
+      "missing_fields": [
+        "konum"
+      ],
+      "passed": true,
+      "type_correct": true,
+      "unit_correct": false
+    },
+    {
+      "id": "BLIND-D4",
+      "category": "ocr_noise_variant",
+      "predicted_document_type": "bilgi_talebi",
+      "predicted_unit_id": "ORKGM-YB-001",
+      "predicted_confidence": 0.97,
+      "requires_human_review": true,
+      "routing_status": "needs_review",
+      "verified_reference_count": 4,
+      "missing_fields": [],
+      "passed": true,
+      "type_correct": true,
+      "unit_correct": false
+    }
+  ],
+  "disclaimer": "Bu ölçüm 20 kayıtlık küçük ölçekli bir mühendislik regresyonudur; gerçek saha başarımı, bağımsız akademik değerlendirme veya hukuki doğruluk iddiası taşımaz. 'Gold' etiketleri bu depoyu geliştiren kişi tarafından atanmıştır; tam bağımsızlık için ayrı bir değerlendiricinin dondurulmuş veri setini yeniden puanlaması önerilir."
+}

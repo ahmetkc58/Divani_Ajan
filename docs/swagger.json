@@ -1,0 +1,2352 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Karayolu Evrak Akıllı Ajan REST API",
+    "description": "Bağımsız frontend istemcileri için kaynak doğrulamalı evrak işleme servisi",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8010",
+      "description": "Yerel geliştirme backend'i"
+    }
+  ],
+  "paths": {
+    "/api/v1/system/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Backend sağlık durumunu getir",
+        "operationId": "getSystemHealth",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Getsystemhealth"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/system/readiness": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "İşleme altyapısının hazır olup olmadığını getir",
+        "operationId": "getSystemReadiness",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Getsystemreadiness"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/text": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Metin evrakı işle",
+        "operationId": "processTextDocument",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextProcessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/file": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Dosya evrakı yükle ve işle",
+        "operationId": "uploadDocument",
+        "parameters": [
+          {
+            "name": "compile_pdf",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Compile Pdf"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_uploadDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}": {
+      "get": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Evrak sürecini getir",
+        "operationId": "getProcess",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/information": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Eksik evrak bilgilerini tamamla",
+        "operationId": "updateProcessInformation",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformationUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/approval": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Evrak taslağını onayla",
+        "operationId": "approveProcess",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/artifacts/tex": {
+      "get": {
+        "tags": [
+          "artifacts"
+        ],
+        "summary": "LaTeX artifact'ını indir",
+        "operationId": "downloadLatexArtifact",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/artifacts/pdf": {
+      "get": {
+        "tags": [
+          "artifacts"
+        ],
+        "summary": "PDF artifact'ını indir",
+        "operationId": "downloadPdfArtifact",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApprovalRequest": {
+        "properties": {
+          "approved_by": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 2,
+            "title": "Approved By"
+          }
+        },
+        "type": "object",
+        "required": [
+          "approved_by"
+        ],
+        "title": "ApprovalRequest"
+      },
+      "ArtifactResult": {
+        "properties": {
+          "tex_path": {
+            "type": "string",
+            "title": "Tex Path"
+          },
+          "pdf_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pdf Path"
+          },
+          "tex_download_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tex Download Url"
+          },
+          "pdf_download_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pdf Download Url"
+          },
+          "compiled": {
+            "type": "boolean",
+            "title": "Compiled",
+            "default": false
+          },
+          "compiler": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Compiler"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tex_path"
+        ],
+        "title": "ArtifactResult"
+      },
+      "Body_uploadDocument": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_uploadDocument"
+      },
+      "ComplianceResult": {
+        "properties": {
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "applied_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Applied Rule Ids"
+          },
+          "rule_source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Source Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passed",
+          "score"
+        ],
+        "title": "ComplianceResult"
+      },
+      "DocumentAnalysis": {
+        "properties": {
+          "document_type": {
+            "type": "string",
+            "title": "Document Type"
+          },
+          "general_document_type": {
+            "type": "string",
+            "title": "General Document Type",
+            "default": "genel_basvuru"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "retrieval_evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retrieval Evidence Text"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ExtractedField"
+            },
+            "type": "object",
+            "title": "Fields"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_type",
+          "confidence",
+          "summary",
+          "fields"
+        ],
+        "title": "DocumentAnalysis"
+      },
+      "DraftPayload": {
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "institution_name": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "date": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "number": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "recipient": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "paragraphs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Paragraphs"
+          },
+          "signer": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "signer_title": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "interest": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Interest"
+          },
+          "attachments": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Attachments"
+          },
+          "distribution": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Distribution"
+          },
+          "contact_information": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Contact Information"
+          },
+          "initials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Initials"
+          },
+          "electronic_signature": {
+            "$ref": "#/components/schemas/ExtractedField"
+          },
+          "document_metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Document Metadata"
+          },
+          "authority_relation": {
+            "type": "string",
+            "title": "Authority Relation",
+            "default": "unknown"
+          },
+          "closing": {
+            "type": "string",
+            "title": "Closing",
+            "default": ""
+          },
+          "references": {
+            "items": {
+              "$ref": "#/components/schemas/VerifiedReference"
+            },
+            "type": "array",
+            "title": "References"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          }
+        },
+        "type": "object",
+        "required": [
+          "template_id",
+          "institution_name",
+          "date",
+          "number",
+          "subject",
+          "recipient",
+          "paragraphs",
+          "signer",
+          "signer_title"
+        ],
+        "title": "DraftPayload"
+      },
+      "ExtractedField": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "status": {
+            "$ref": "#/components/schemas/FieldStatus"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ExtractedField"
+      },
+      "FieldStatus": {
+        "type": "string",
+        "enum": [
+          "kaynaktan_alindi",
+          "metinden_cikarildi",
+          "yonlendirmeden_uretildi",
+          "kullanici_girdisi_gerekli"
+        ],
+        "title": "FieldStatus"
+      },
+      "GraphDecisionTrace": {
+        "properties": {
+          "strategy": {
+            "type": "string",
+            "title": "Strategy",
+            "default": "not_applied"
+          },
+          "graph_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graph Id"
+          },
+          "applied": {
+            "type": "boolean",
+            "title": "Applied",
+            "default": false
+          },
+          "matched_rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Rule Ids"
+          },
+          "candidate_template_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Candidate Template Ids"
+          },
+          "candidate_unit_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Candidate Unit Ids"
+          },
+          "required_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Required Fields"
+          },
+          "paths": {
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Paths"
+          },
+          "evidence_record_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Record Ids"
+          },
+          "legal_reliance_allowed": {
+            "type": "boolean",
+            "title": "Legal Reliance Allowed",
+            "default": false
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          }
+        },
+        "type": "object",
+        "title": "GraphDecisionTrace",
+        "description": "Auditable, non-authoritative evidence-graph advice for one run."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InformationUpdateRequest": {
+        "properties": {
+          "fields": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "minProperties": 1,
+            "title": "Fields"
+          },
+          "compile_pdf": {
+            "type": "boolean",
+            "title": "Compile Pdf",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "fields"
+        ],
+        "title": "InformationUpdateRequest"
+      },
+      "LLMRunTrace": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "title": "Mode",
+            "default": "disabled"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": false
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "used": {
+            "type": "boolean",
+            "title": "Used",
+            "default": false
+          },
+          "deterministic_fallback_used": {
+            "type": "boolean",
+            "title": "Deterministic Fallback Used",
+            "default": true
+          },
+          "external_data_allowed": {
+            "type": "boolean",
+            "title": "External Data Allowed",
+            "default": false
+          },
+          "local_execution": {
+            "type": "boolean",
+            "title": "Local Execution",
+            "default": false
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/LLMStepTrace"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          }
+        },
+        "type": "object",
+        "title": "LLMRunTrace",
+        "description": "Run-level disclosure for optional external LLM assistance."
+      },
+      "LLMStepTrace": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "data_classification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Classification"
+          },
+          "external_data_allowed": {
+            "type": "boolean",
+            "title": "External Data Allowed",
+            "default": false
+          },
+          "local_execution": {
+            "type": "boolean",
+            "title": "Local Execution",
+            "default": false
+          },
+          "network_attempted": {
+            "type": "boolean",
+            "title": "Network Attempted",
+            "default": false
+          },
+          "redacted": {
+            "type": "boolean",
+            "title": "Redacted",
+            "default": false
+          },
+          "redaction_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Redaction Count",
+            "default": 0
+          },
+          "failure_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Code"
+          },
+          "retryable": {
+            "type": "boolean",
+            "title": "Retryable",
+            "default": false
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "candidate_document_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Document Type"
+          },
+          "candidate_summary": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidate Summary"
+          },
+          "selected_template_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Template Id"
+          },
+          "selected_unit_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Unit Id"
+          },
+          "accepted_reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Accepted Reference Ids"
+          },
+          "human_review_required": {
+            "type": "boolean",
+            "title": "Human Review Required",
+            "default": false
+          },
+          "decision_applied": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Applied"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "status"
+        ],
+        "title": "LLMStepTrace",
+        "description": "Persistable outcome of a guarded LLM role invocation."
+      },
+      "LegislationChunk": {
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "title": "Chunk Id"
+          },
+          "document_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 2,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "article": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Article"
+          },
+          "paragraph": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paragraph"
+          },
+          "clause": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Sha256"
+          },
+          "source_kind": {
+            "type": "string",
+            "title": "Source Kind",
+            "default": "unknown"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "page_end": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page End"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "document_type": {
+            "type": "string",
+            "title": "Document Type",
+            "default": "unknown"
+          },
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "default": "unknown"
+          },
+          "subdomain": {
+            "type": "string",
+            "title": "Subdomain",
+            "default": "unknown"
+          },
+          "validity_status": {
+            "type": "string",
+            "title": "Validity Status",
+            "default": "needs_verification"
+          },
+          "approved_for_active_rag": {
+            "type": "boolean",
+            "title": "Approved For Active Rag",
+            "default": false
+          },
+          "ocr_status": {
+            "type": "string",
+            "title": "Ocr Status",
+            "default": "not_inspected"
+          },
+          "context_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Text"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "unknown"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "title",
+          "section",
+          "text",
+          "source"
+        ],
+        "title": "LegislationChunk"
+      },
+      "ProcessEvent": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ProcessStatus"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "agent": {
+            "type": "string",
+            "title": "Agent"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message",
+          "agent"
+        ],
+        "title": "ProcessEvent"
+      },
+      "ProcessState": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProcessStatus",
+            "default": "alindi"
+          },
+          "current_stage": {
+            "type": "string",
+            "title": "Current Stage",
+            "default": "evrak_alimi"
+          },
+          "completed_steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Completed Steps"
+          },
+          "pending_actions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pending Actions"
+          },
+          "missing_information": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Information"
+          },
+          "next_step": {
+            "type": "string",
+            "title": "Next Step",
+            "default": "Evrakın işlenmesini başlatınız."
+          },
+          "possible_actions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Possible Actions"
+          },
+          "provided_information": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Provided Information"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "raw_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Text"
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "search_hits": {
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            },
+            "type": "array",
+            "title": "Search Hits"
+          },
+          "retrieval_diagnostics": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RetrievalDiagnostics"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "graph_decision_trace": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GraphDecisionTrace"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "llm_trace": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LLMRunTrace"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "verified_references": {
+            "items": {
+              "$ref": "#/components/schemas/VerifiedReference"
+            },
+            "type": "array",
+            "title": "Verified References"
+          },
+          "template_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TemplateDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "routing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoutingRecommendation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DraftPayload"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "artifact": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ArtifactResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "compliance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComplianceResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/ProcessEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_id"
+        ],
+        "title": "ProcessState"
+      },
+      "ProcessStatus": {
+        "type": "string",
+        "enum": [
+          "alindi",
+          "okunuyor",
+          "siniflandiriliyor",
+          "mevzuat_araniyor",
+          "kaynak_dogrulaniyor",
+          "eksik_bilgi_bekleniyor",
+          "yazi_turu_seciliyor",
+          "birim_yonlendiriliyor",
+          "taslak_hazirlaniyor",
+          "uygunluk_kontrolunde",
+          "kullanici_onayi_bekleniyor",
+          "tamamlandi",
+          "hata"
+        ],
+        "title": "ProcessStatus"
+      },
+      "RetrievalChannelContribution": {
+        "properties": {
+          "channel": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Channel"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Rank"
+          },
+          "raw_score": {
+            "type": "number",
+            "title": "Raw Score"
+          },
+          "rrf_contribution": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Rrf Contribution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "channel",
+          "rank",
+          "raw_score",
+          "rrf_contribution"
+        ],
+        "title": "RetrievalChannelContribution",
+        "description": "Observable contribution of one ranked retrieval channel."
+      },
+      "RetrievalDiagnostics": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "title": "Mode",
+            "default": "bm25"
+          },
+          "dense_status": {
+            "type": "string",
+            "title": "Dense Status",
+            "default": "not_requested"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used",
+            "default": false
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          },
+          "dense_error_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dense Error Type"
+          },
+          "lexical_candidate_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Lexical Candidate Count",
+            "default": 0
+          },
+          "dense_candidate_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Dense Candidate Count",
+            "default": 0
+          },
+          "fused_candidate_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Fused Candidate Count",
+            "default": 0
+          },
+          "channel_top_n": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Top N"
+          },
+          "rrf_k": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rrf K"
+          },
+          "relevance_strategy": {
+            "type": "string",
+            "title": "Relevance Strategy",
+            "default": "not_applied"
+          },
+          "relevance_profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Profile"
+          },
+          "relevance_candidate_top_k": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Candidate Top K"
+          },
+          "relevance_candidate_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Relevance Candidate Count",
+            "default": 0
+          },
+          "relevance_accepted_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Relevance Accepted Count",
+            "default": 0
+          },
+          "relevance_rejected_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Relevance Rejected Count",
+            "default": 0
+          },
+          "relevance_threshold": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Threshold"
+          },
+          "relevance_abstained": {
+            "type": "boolean",
+            "title": "Relevance Abstained",
+            "default": false
+          },
+          "relevance_query_expansion": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relevance Query Expansion"
+          },
+          "relevance_query_supported": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Query Supported"
+          },
+          "relevance_query_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Query Score"
+          },
+          "relevance_query_concepts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relevance Query Concepts"
+          },
+          "relevance_query_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relevance Query Reasons"
+          },
+          "relevance_query_evidence_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Query Evidence Basis"
+          }
+        },
+        "type": "object",
+        "title": "RetrievalDiagnostics",
+        "description": "Persistable retrieval health information for one process run."
+      },
+      "RoutingRecommendation": {
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "title": "Unit Id"
+          },
+          "unit_name": {
+            "type": "string",
+            "title": "Unit Name"
+          },
+          "hierarchy": {
+            "type": "string",
+            "title": "Hierarchy"
+          },
+          "rationale": {
+            "type": "string",
+            "title": "Rationale"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "alternatives": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          },
+          "routing_status": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "needs_review"
+            ],
+            "title": "Routing Status",
+            "default": "proposed"
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "title": "Requires Human Review",
+            "default": false
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "decision_basis": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Decision Basis"
+          },
+          "organization_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organization Version"
+          },
+          "target_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Level"
+          },
+          "score_margin": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Margin"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit_id",
+          "unit_name",
+          "hierarchy",
+          "rationale",
+          "score"
+        ],
+        "title": "RoutingRecommendation"
+      },
+      "SearchHit": {
+        "properties": {
+          "chunk": {
+            "$ref": "#/components/schemas/LegislationChunk"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "matched_terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Matched Terms"
+          },
+          "expansion_matched_terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expansion Matched Terms"
+          },
+          "fusion_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fusion Method"
+          },
+          "channel_contributions": {
+            "items": {
+              "$ref": "#/components/schemas/RetrievalChannelContribution"
+            },
+            "type": "array",
+            "title": "Channel Contributions"
+          },
+          "relevance_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Score"
+          },
+          "relevance_accepted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Accepted"
+          },
+          "relevance_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relevance Reasons"
+          },
+          "relevance_profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Profile"
+          },
+          "relevance_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Basis"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chunk",
+          "score"
+        ],
+        "title": "SearchHit"
+      },
+      "TemplateDecision": {
+        "properties": {
+          "document_type": {
+            "type": "string",
+            "title": "Document Type"
+          },
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "rationale": {
+            "type": "string",
+            "title": "Rationale"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "user_approval_required": {
+            "type": "boolean",
+            "title": "User Approval Required",
+            "default": true
+          },
+          "alternatives": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_type",
+          "template_id",
+          "rationale",
+          "confidence"
+        ],
+        "title": "TemplateDecision"
+      },
+      "TextProcessRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 200000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "source_name": {
+            "type": "string",
+            "title": "Source Name",
+            "default": "kullanici_metni.txt"
+          },
+          "compile_pdf": {
+            "type": "boolean",
+            "title": "Compile Pdf",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "TextProcessRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VerifiedReference": {
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "title": "Chunk Id"
+          },
+          "document_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "article": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Article"
+          },
+          "paragraph": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paragraph"
+          },
+          "clause": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "page_end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page End"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_kind": {
+            "type": "string",
+            "title": "Source Kind",
+            "default": "unknown"
+          },
+          "corpus_mode": {
+            "type": "string",
+            "title": "Corpus Mode",
+            "default": "unknown"
+          },
+          "currentness_verified": {
+            "type": "boolean",
+            "title": "Currentness Verified",
+            "default": false
+          },
+          "legal_reliance_allowed": {
+            "type": "boolean",
+            "title": "Legal Reliance Allowed",
+            "default": false
+          },
+          "usage_notice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usage Notice"
+          },
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "default": "unknown"
+          },
+          "excerpt": {
+            "type": "string",
+            "title": "Excerpt"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "verified": {
+            "type": "boolean",
+            "title": "Verified"
+          },
+          "verification_note": {
+            "type": "string",
+            "title": "Verification Note"
+          },
+          "evidence_channels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Channels"
+          },
+          "channel_contributions": {
+            "items": {
+              "$ref": "#/components/schemas/RetrievalChannelContribution"
+            },
+            "type": "array",
+            "title": "Channel Contributions"
+          },
+          "relevance_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Score"
+          },
+          "relevance_accepted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Accepted"
+          },
+          "relevance_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relevance Reasons"
+          },
+          "relevance_profile": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Profile"
+          },
+          "relevance_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Basis"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "title",
+          "source",
+          "excerpt",
+          "score",
+          "verified",
+          "verification_note"
+        ],
+        "title": "VerifiedReference",
+        "description": "A retrieval/provenance decision and its legal-reliance disclosure.\n\n``verified`` means that the reference passed the applicable source contract\nand retrieval evidence checks.  It does not, by itself, promise that a\nsource is current law; callers must also inspect the explicit disclosure\nfields below."
+      }
+    }
+  }
+}

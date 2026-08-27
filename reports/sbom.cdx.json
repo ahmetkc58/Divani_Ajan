@@ -1,0 +1,1403 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "serialNumber": "urn:uuid:08e8f56e-30a9-4494-8347-382033e00bc4",
+  "metadata": {
+    "timestamp": "2026-08-25T08:17:02.564783000Z",
+    "tools": [
+      {
+        "vendor": "Astral Software Inc.",
+        "name": "uv",
+        "version": "0.12.1"
+      }
+    ],
+    "component": {
+      "type": "library",
+      "bom-ref": "karayol-evrak-agent-1@0.1.0",
+      "name": "karayol-evrak-agent",
+      "version": "0.1.0",
+      "properties": [
+        {
+          "name": "uv:package:is_project_root",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "annotated-doc-2@0.0.5",
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "purl": "pkg:pypi/annotated-doc@0.0.5"
+    },
+    {
+      "type": "library",
+      "bom-ref": "annotated-types-3@0.8.0",
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "purl": "pkg:pypi/annotated-types@0.8.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "anyio-4@4.14.2",
+      "name": "anyio",
+      "version": "4.14.2",
+      "purl": "pkg:pypi/anyio@4.14.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "certifi-5@2026.7.22",
+      "name": "certifi",
+      "version": "2026.7.22",
+      "purl": "pkg:pypi/certifi@2026.7.22"
+    },
+    {
+      "type": "library",
+      "bom-ref": "charset-normalizer-6@3.5.1",
+      "name": "charset-normalizer",
+      "version": "3.5.1",
+      "purl": "pkg:pypi/charset-normalizer@3.5.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "click-7@8.4.2",
+      "name": "click",
+      "version": "8.4.2",
+      "purl": "pkg:pypi/click@8.4.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "colorama-8@0.4.6",
+      "name": "colorama",
+      "version": "0.4.6",
+      "purl": "pkg:pypi/colorama@0.4.6",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'win32'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "cuda-bindings-9@13.3.1",
+      "name": "cuda-bindings",
+      "version": "13.3.1",
+      "purl": "pkg:pypi/cuda-bindings@13.3.1",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version < '3.15' and sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "cuda-pathfinder-10@1.7.0",
+      "name": "cuda-pathfinder",
+      "version": "1.7.0",
+      "purl": "pkg:pypi/cuda-pathfinder@1.7.0",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version < '3.15' and sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "cuda-toolkit-11@13.0.3.0",
+      "name": "cuda-toolkit",
+      "version": "13.0.3.0",
+      "purl": "pkg:pypi/cuda-toolkit@13.0.3.0",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "easyocr-12@1.7.2",
+      "name": "easyocr",
+      "version": "1.7.2",
+      "purl": "pkg:pypi/easyocr@1.7.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "einops-13@0.8.2",
+      "name": "einops",
+      "version": "0.8.2",
+      "purl": "pkg:pypi/einops@0.8.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "fastapi-14@0.141.1",
+      "name": "fastapi",
+      "version": "0.141.1",
+      "purl": "pkg:pypi/fastapi@0.141.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "filelock-15@3.32.4",
+      "name": "filelock",
+      "version": "3.32.4",
+      "purl": "pkg:pypi/filelock@3.32.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "fsspec-16@2026.7.0",
+      "name": "fsspec",
+      "version": "2026.7.0",
+      "purl": "pkg:pypi/fsspec@2026.7.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "grpcio-17@1.83.0",
+      "name": "grpcio",
+      "version": "1.83.0",
+      "purl": "pkg:pypi/grpcio@1.83.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "grpcio-tools-18@1.83.0",
+      "name": "grpcio-tools",
+      "version": "1.83.0",
+      "purl": "pkg:pypi/grpcio-tools@1.83.0",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version >= '3.13'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "h11-19@0.16.0",
+      "name": "h11",
+      "version": "0.16.0",
+      "purl": "pkg:pypi/h11@0.16.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "h2-20@4.4.1",
+      "name": "h2",
+      "version": "4.4.1",
+      "purl": "pkg:pypi/h2@4.4.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "hf-xet-21@1.6.0",
+      "name": "hf-xet",
+      "version": "1.6.0",
+      "purl": "pkg:pypi/hf-xet@1.6.0",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hpack-22@4.2.0",
+      "name": "hpack",
+      "version": "4.2.0",
+      "purl": "pkg:pypi/hpack@4.2.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "httpcore-23@1.0.9",
+      "name": "httpcore",
+      "version": "1.0.9",
+      "purl": "pkg:pypi/httpcore@1.0.9"
+    },
+    {
+      "type": "library",
+      "bom-ref": "httpx-24@0.28.1",
+      "name": "httpx",
+      "version": "0.28.1",
+      "purl": "pkg:pypi/httpx@0.28.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "huggingface-hub-25@0.36.2",
+      "name": "huggingface-hub",
+      "version": "0.36.2",
+      "purl": "pkg:pypi/huggingface-hub@0.36.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "hyperframe-26@6.1.0",
+      "name": "hyperframe",
+      "version": "6.1.0",
+      "purl": "pkg:pypi/hyperframe@6.1.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "idna-27@3.19",
+      "name": "idna",
+      "version": "3.19",
+      "purl": "pkg:pypi/idna@3.19"
+    },
+    {
+      "type": "library",
+      "bom-ref": "imageio-28@2.37.4",
+      "name": "imageio",
+      "version": "2.37.4",
+      "purl": "pkg:pypi/imageio@2.37.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "iniconfig-29@2.3.0",
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "purl": "pkg:pypi/iniconfig@2.3.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "jinja2-30@3.1.6",
+      "name": "jinja2",
+      "version": "3.1.6",
+      "purl": "pkg:pypi/jinja2@3.1.6"
+    },
+    {
+      "type": "library",
+      "bom-ref": "joblib-31@1.5.3",
+      "name": "joblib",
+      "version": "1.5.3",
+      "purl": "pkg:pypi/joblib@1.5.3"
+    },
+    {
+      "type": "library",
+      "bom-ref": "lazy-loader-32@0.5",
+      "name": "lazy-loader",
+      "version": "0.5",
+      "purl": "pkg:pypi/lazy-loader@0.5"
+    },
+    {
+      "type": "library",
+      "bom-ref": "markupsafe-33@3.0.3",
+      "name": "markupsafe",
+      "version": "3.0.3",
+      "purl": "pkg:pypi/markupsafe@3.0.3"
+    },
+    {
+      "type": "library",
+      "bom-ref": "mpmath-34@1.3.0",
+      "name": "mpmath",
+      "version": "1.3.0",
+      "purl": "pkg:pypi/mpmath@1.3.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "narwhals-35@2.25.0",
+      "name": "narwhals",
+      "version": "2.25.0",
+      "purl": "pkg:pypi/narwhals@2.25.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "networkx-36@3.6.1",
+      "name": "networkx",
+      "version": "3.6.1",
+      "purl": "pkg:pypi/networkx@3.6.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "ninja-37@1.13.0",
+      "name": "ninja",
+      "version": "1.13.0",
+      "purl": "pkg:pypi/ninja@1.13.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "numpy-38@1.26.4",
+      "name": "numpy",
+      "version": "1.26.4",
+      "purl": "pkg:pypi/numpy@1.26.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cublas-39@13.1.1.3",
+      "name": "nvidia-cublas",
+      "version": "13.1.1.3",
+      "purl": "pkg:pypi/nvidia-cublas@13.1.1.3",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cuda-cupti-40@13.0.85",
+      "name": "nvidia-cuda-cupti",
+      "version": "13.0.85",
+      "purl": "pkg:pypi/nvidia-cuda-cupti@13.0.85",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cuda-nvrtc-41@13.0.88",
+      "name": "nvidia-cuda-nvrtc",
+      "version": "13.0.88",
+      "purl": "pkg:pypi/nvidia-cuda-nvrtc@13.0.88",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cuda-runtime-42@13.0.96",
+      "name": "nvidia-cuda-runtime",
+      "version": "13.0.96",
+      "purl": "pkg:pypi/nvidia-cuda-runtime@13.0.96",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cudnn-cu13-43@9.20.0.48",
+      "name": "nvidia-cudnn-cu13",
+      "version": "9.20.0.48",
+      "purl": "pkg:pypi/nvidia-cudnn-cu13@9.20.0.48",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cufft-44@12.0.0.61",
+      "name": "nvidia-cufft",
+      "version": "12.0.0.61",
+      "purl": "pkg:pypi/nvidia-cufft@12.0.0.61",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cufile-45@1.15.1.6",
+      "name": "nvidia-cufile",
+      "version": "1.15.1.6",
+      "purl": "pkg:pypi/nvidia-cufile@1.15.1.6",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-curand-46@10.4.0.35",
+      "name": "nvidia-curand",
+      "version": "10.4.0.35",
+      "purl": "pkg:pypi/nvidia-curand@10.4.0.35",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cusolver-47@12.0.4.66",
+      "name": "nvidia-cusolver",
+      "version": "12.0.4.66",
+      "purl": "pkg:pypi/nvidia-cusolver@12.0.4.66",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cusparse-48@12.6.3.3",
+      "name": "nvidia-cusparse",
+      "version": "12.6.3.3",
+      "purl": "pkg:pypi/nvidia-cusparse@12.6.3.3",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-cusparselt-cu13-49@0.8.1",
+      "name": "nvidia-cusparselt-cu13",
+      "version": "0.8.1",
+      "purl": "pkg:pypi/nvidia-cusparselt-cu13@0.8.1",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-nccl-cu13-50@2.29.7",
+      "name": "nvidia-nccl-cu13",
+      "version": "2.29.7",
+      "purl": "pkg:pypi/nvidia-nccl-cu13@2.29.7",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-nvjitlink-51@13.3.33",
+      "name": "nvidia-nvjitlink",
+      "version": "13.3.33",
+      "purl": "pkg:pypi/nvidia-nvjitlink@13.3.33",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-nvshmem-cu13-52@3.4.5",
+      "name": "nvidia-nvshmem-cu13",
+      "version": "3.4.5",
+      "purl": "pkg:pypi/nvidia-nvshmem-cu13@3.4.5",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "nvidia-nvtx-53@13.0.85",
+      "name": "nvidia-nvtx",
+      "version": "13.0.85",
+      "purl": "pkg:pypi/nvidia-nvtx@13.0.85",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "(platform_machine == 'aarch64' and sys_platform == 'linux') or (platform_machine == 'x86_64' and sys_platform == 'linux')"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "opencv-python-headless-54@4.11.0.86",
+      "name": "opencv-python-headless",
+      "version": "4.11.0.86",
+      "purl": "pkg:pypi/opencv-python-headless@4.11.0.86"
+    },
+    {
+      "type": "library",
+      "bom-ref": "packaging-55@26.3",
+      "name": "packaging",
+      "version": "26.3",
+      "purl": "pkg:pypi/packaging@26.3"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pillow-56@12.3.0",
+      "name": "pillow",
+      "version": "12.3.0",
+      "purl": "pkg:pypi/pillow@12.3.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pluggy-57@1.6.0",
+      "name": "pluggy",
+      "version": "1.6.0",
+      "purl": "pkg:pypi/pluggy@1.6.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "portalocker-58@2.10.1",
+      "name": "portalocker",
+      "version": "2.10.1",
+      "purl": "pkg:pypi/portalocker@2.10.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "protobuf-59@7.36.0",
+      "name": "protobuf",
+      "version": "7.36.0",
+      "purl": "pkg:pypi/protobuf@7.36.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pyclipper-60@1.4.0",
+      "name": "pyclipper",
+      "version": "1.4.0",
+      "purl": "pkg:pypi/pyclipper@1.4.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pydantic-61@2.13.4",
+      "name": "pydantic",
+      "version": "2.13.4",
+      "purl": "pkg:pypi/pydantic@2.13.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pydantic-core-62@2.46.4",
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "purl": "pkg:pypi/pydantic-core@2.46.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pygments-63@2.21.0",
+      "name": "pygments",
+      "version": "2.21.0",
+      "purl": "pkg:pypi/pygments@2.21.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pymupdf-64@1.28.2",
+      "name": "pymupdf",
+      "version": "1.28.2",
+      "purl": "pkg:pypi/pymupdf@1.28.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pypdf-65@6.16.2",
+      "name": "pypdf",
+      "version": "6.16.2",
+      "purl": "pkg:pypi/pypdf@6.16.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pytest-66@8.4.2",
+      "name": "pytest",
+      "version": "8.4.2",
+      "purl": "pkg:pypi/pytest@8.4.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "python-bidi-67@0.6.11",
+      "name": "python-bidi",
+      "version": "0.6.11",
+      "purl": "pkg:pypi/python-bidi@0.6.11"
+    },
+    {
+      "type": "library",
+      "bom-ref": "python-multipart-68@0.0.32",
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "purl": "pkg:pypi/python-multipart@0.0.32"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pywin32-69@312",
+      "name": "pywin32",
+      "version": "312",
+      "purl": "pkg:pypi/pywin32@312",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "sys_platform == 'win32'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pyyaml-70@6.0.3",
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "purl": "pkg:pypi/pyyaml@6.0.3"
+    },
+    {
+      "type": "library",
+      "bom-ref": "qdrant-client-71@1.12.1",
+      "name": "qdrant-client",
+      "version": "1.12.1",
+      "purl": "pkg:pypi/qdrant-client@1.12.1",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version >= '3.13'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "qdrant-client-72@1.19.0",
+      "name": "qdrant-client",
+      "version": "1.19.0",
+      "purl": "pkg:pypi/qdrant-client@1.19.0",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version < '3.13'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "regex-73@2026.7.19",
+      "name": "regex",
+      "version": "2026.7.19",
+      "purl": "pkg:pypi/regex@2026.7.19"
+    },
+    {
+      "type": "library",
+      "bom-ref": "reportlab-74@5.0.1",
+      "name": "reportlab",
+      "version": "5.0.1",
+      "purl": "pkg:pypi/reportlab@5.0.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "requests-75@2.34.2",
+      "name": "requests",
+      "version": "2.34.2",
+      "purl": "pkg:pypi/requests@2.34.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "safetensors-76@0.8.0",
+      "name": "safetensors",
+      "version": "0.8.0",
+      "purl": "pkg:pypi/safetensors@0.8.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "scikit-image-77@0.26.0",
+      "name": "scikit-image",
+      "version": "0.26.0",
+      "purl": "pkg:pypi/scikit-image@0.26.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "scikit-learn-78@1.9.0",
+      "name": "scikit-learn",
+      "version": "1.9.0",
+      "purl": "pkg:pypi/scikit-learn@1.9.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "scipy-79@1.17.1",
+      "name": "scipy",
+      "version": "1.17.1",
+      "purl": "pkg:pypi/scipy@1.17.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "sentence-transformers-80@5.7.0",
+      "name": "sentence-transformers",
+      "version": "5.7.0",
+      "purl": "pkg:pypi/sentence-transformers@5.7.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "setuptools-81@84.0.0",
+      "name": "setuptools",
+      "version": "84.0.0",
+      "purl": "pkg:pypi/setuptools@84.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "shapely-82@2.1.2",
+      "name": "shapely",
+      "version": "2.1.2",
+      "purl": "pkg:pypi/shapely@2.1.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "starlette-83@1.6.0",
+      "name": "starlette",
+      "version": "1.6.0",
+      "purl": "pkg:pypi/starlette@1.6.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "sympy-84@1.14.0",
+      "name": "sympy",
+      "version": "1.14.0",
+      "purl": "pkg:pypi/sympy@1.14.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "threadpoolctl-85@3.6.0",
+      "name": "threadpoolctl",
+      "version": "3.6.0",
+      "purl": "pkg:pypi/threadpoolctl@3.6.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "tifffile-86@2026.3.3",
+      "name": "tifffile",
+      "version": "2026.3.3",
+      "purl": "pkg:pypi/tifffile@2026.3.3"
+    },
+    {
+      "type": "library",
+      "bom-ref": "tokenizers-87@0.22.2",
+      "name": "tokenizers",
+      "version": "0.22.2",
+      "purl": "pkg:pypi/tokenizers@0.22.2"
+    },
+    {
+      "type": "library",
+      "bom-ref": "torch-88@2.13.0",
+      "name": "torch",
+      "version": "2.13.0",
+      "purl": "pkg:pypi/torch@2.13.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "torchvision-89@0.28.0",
+      "name": "torchvision",
+      "version": "0.28.0",
+      "purl": "pkg:pypi/torchvision@0.28.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "tqdm-90@4.70.0",
+      "name": "tqdm",
+      "version": "4.70.0",
+      "purl": "pkg:pypi/tqdm@4.70.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "transformers-91@4.57.6",
+      "name": "transformers",
+      "version": "4.57.6",
+      "purl": "pkg:pypi/transformers@4.57.6"
+    },
+    {
+      "type": "library",
+      "bom-ref": "triton-92@3.7.1",
+      "name": "triton",
+      "version": "3.7.1",
+      "purl": "pkg:pypi/triton@3.7.1",
+      "properties": [
+        {
+          "name": "uv:package:marker",
+          "value": "python_full_version < '3.15' and sys_platform == 'linux'"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "typing-extensions-93@4.16.0",
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "purl": "pkg:pypi/typing-extensions@4.16.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "typing-inspection-94@0.4.4",
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "purl": "pkg:pypi/typing-inspection@0.4.4"
+    },
+    {
+      "type": "library",
+      "bom-ref": "urllib3-95@2.7.0",
+      "name": "urllib3",
+      "version": "2.7.0",
+      "purl": "pkg:pypi/urllib3@2.7.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "uvicorn-96@0.52.4",
+      "name": "uvicorn",
+      "version": "0.52.4",
+      "purl": "pkg:pypi/uvicorn@0.52.4"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "annotated-doc-2@0.0.5"
+    },
+    {
+      "ref": "annotated-types-3@0.8.0"
+    },
+    {
+      "ref": "anyio-4@4.14.2",
+      "dependsOn": [
+        "idna-27@3.19",
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "certifi-5@2026.7.22"
+    },
+    {
+      "ref": "charset-normalizer-6@3.5.1"
+    },
+    {
+      "ref": "click-7@8.4.2",
+      "dependsOn": [
+        "colorama-8@0.4.6"
+      ]
+    },
+    {
+      "ref": "colorama-8@0.4.6"
+    },
+    {
+      "ref": "cuda-bindings-9@13.3.1",
+      "dependsOn": [
+        "cuda-pathfinder-10@1.7.0"
+      ]
+    },
+    {
+      "ref": "cuda-pathfinder-10@1.7.0"
+    },
+    {
+      "ref": "cuda-toolkit-11@13.0.3.0",
+      "dependsOn": [
+        "nvidia-cublas-39@13.1.1.3",
+        "nvidia-cuda-cupti-40@13.0.85",
+        "nvidia-cuda-nvrtc-41@13.0.88",
+        "nvidia-cuda-runtime-42@13.0.96",
+        "nvidia-cufft-44@12.0.0.61",
+        "nvidia-cufile-45@1.15.1.6",
+        "nvidia-curand-46@10.4.0.35",
+        "nvidia-cusolver-47@12.0.4.66",
+        "nvidia-cusparse-48@12.6.3.3",
+        "nvidia-nvjitlink-51@13.3.33",
+        "nvidia-nvtx-53@13.0.85"
+      ]
+    },
+    {
+      "ref": "easyocr-12@1.7.2",
+      "dependsOn": [
+        "ninja-37@1.13.0",
+        "numpy-38@1.26.4",
+        "opencv-python-headless-54@4.11.0.86",
+        "pillow-56@12.3.0",
+        "pyclipper-60@1.4.0",
+        "python-bidi-67@0.6.11",
+        "pyyaml-70@6.0.3",
+        "scikit-image-77@0.26.0",
+        "scipy-79@1.17.1",
+        "shapely-82@2.1.2",
+        "torch-88@2.13.0",
+        "torchvision-89@0.28.0"
+      ]
+    },
+    {
+      "ref": "einops-13@0.8.2"
+    },
+    {
+      "ref": "fastapi-14@0.141.1",
+      "dependsOn": [
+        "annotated-doc-2@0.0.5",
+        "pydantic-61@2.13.4",
+        "starlette-83@1.6.0",
+        "typing-extensions-93@4.16.0",
+        "typing-inspection-94@0.4.4"
+      ]
+    },
+    {
+      "ref": "filelock-15@3.32.4"
+    },
+    {
+      "ref": "fsspec-16@2026.7.0"
+    },
+    {
+      "ref": "grpcio-17@1.83.0",
+      "dependsOn": [
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "grpcio-tools-18@1.83.0",
+      "dependsOn": [
+        "grpcio-17@1.83.0",
+        "protobuf-59@7.36.0",
+        "setuptools-81@84.0.0"
+      ]
+    },
+    {
+      "ref": "h11-19@0.16.0"
+    },
+    {
+      "ref": "h2-20@4.4.1",
+      "dependsOn": [
+        "hpack-22@4.2.0",
+        "hyperframe-26@6.1.0"
+      ]
+    },
+    {
+      "ref": "hf-xet-21@1.6.0"
+    },
+    {
+      "ref": "hpack-22@4.2.0"
+    },
+    {
+      "ref": "httpcore-23@1.0.9",
+      "dependsOn": [
+        "certifi-5@2026.7.22",
+        "h11-19@0.16.0"
+      ]
+    },
+    {
+      "ref": "httpx-24@0.28.1",
+      "dependsOn": [
+        "anyio-4@4.14.2",
+        "certifi-5@2026.7.22",
+        "h2-20@4.4.1",
+        "httpcore-23@1.0.9",
+        "idna-27@3.19"
+      ]
+    },
+    {
+      "ref": "huggingface-hub-25@0.36.2",
+      "dependsOn": [
+        "filelock-15@3.32.4",
+        "fsspec-16@2026.7.0",
+        "hf-xet-21@1.6.0",
+        "packaging-55@26.3",
+        "pyyaml-70@6.0.3",
+        "requests-75@2.34.2",
+        "tqdm-90@4.70.0",
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "hyperframe-26@6.1.0"
+    },
+    {
+      "ref": "idna-27@3.19"
+    },
+    {
+      "ref": "imageio-28@2.37.4",
+      "dependsOn": [
+        "numpy-38@1.26.4",
+        "pillow-56@12.3.0"
+      ]
+    },
+    {
+      "ref": "iniconfig-29@2.3.0"
+    },
+    {
+      "ref": "jinja2-30@3.1.6",
+      "dependsOn": [
+        "markupsafe-33@3.0.3"
+      ]
+    },
+    {
+      "ref": "joblib-31@1.5.3"
+    },
+    {
+      "ref": "karayol-evrak-agent-1@0.1.0",
+      "dependsOn": [
+        "easyocr-12@1.7.2",
+        "einops-13@0.8.2",
+        "fastapi-14@0.141.1",
+        "httpx-24@0.28.1",
+        "jinja2-30@3.1.6",
+        "numpy-38@1.26.4",
+        "opencv-python-headless-54@4.11.0.86",
+        "pydantic-61@2.13.4",
+        "pymupdf-64@1.28.2",
+        "pypdf-65@6.16.2",
+        "pytest-66@8.4.2",
+        "python-multipart-68@0.0.32",
+        "qdrant-client-71@1.12.1",
+        "qdrant-client-72@1.19.0",
+        "reportlab-74@5.0.1",
+        "scikit-image-77@0.26.0",
+        "sentence-transformers-80@5.7.0",
+        "tifffile-86@2026.3.3",
+        "torch-88@2.13.0",
+        "torchvision-89@0.28.0",
+        "transformers-91@4.57.6",
+        "uvicorn-96@0.52.4"
+      ]
+    },
+    {
+      "ref": "lazy-loader-32@0.5",
+      "dependsOn": [
+        "packaging-55@26.3"
+      ]
+    },
+    {
+      "ref": "markupsafe-33@3.0.3"
+    },
+    {
+      "ref": "mpmath-34@1.3.0"
+    },
+    {
+      "ref": "narwhals-35@2.25.0"
+    },
+    {
+      "ref": "networkx-36@3.6.1"
+    },
+    {
+      "ref": "ninja-37@1.13.0"
+    },
+    {
+      "ref": "numpy-38@1.26.4"
+    },
+    {
+      "ref": "nvidia-cublas-39@13.1.1.3",
+      "dependsOn": [
+        "nvidia-cuda-nvrtc-41@13.0.88"
+      ]
+    },
+    {
+      "ref": "nvidia-cuda-cupti-40@13.0.85"
+    },
+    {
+      "ref": "nvidia-cuda-nvrtc-41@13.0.88"
+    },
+    {
+      "ref": "nvidia-cuda-runtime-42@13.0.96"
+    },
+    {
+      "ref": "nvidia-cudnn-cu13-43@9.20.0.48",
+      "dependsOn": [
+        "nvidia-cublas-39@13.1.1.3"
+      ]
+    },
+    {
+      "ref": "nvidia-cufft-44@12.0.0.61",
+      "dependsOn": [
+        "nvidia-nvjitlink-51@13.3.33"
+      ]
+    },
+    {
+      "ref": "nvidia-cufile-45@1.15.1.6"
+    },
+    {
+      "ref": "nvidia-curand-46@10.4.0.35"
+    },
+    {
+      "ref": "nvidia-cusolver-47@12.0.4.66",
+      "dependsOn": [
+        "nvidia-cublas-39@13.1.1.3",
+        "nvidia-cusparse-48@12.6.3.3",
+        "nvidia-nvjitlink-51@13.3.33"
+      ]
+    },
+    {
+      "ref": "nvidia-cusparse-48@12.6.3.3",
+      "dependsOn": [
+        "nvidia-nvjitlink-51@13.3.33"
+      ]
+    },
+    {
+      "ref": "nvidia-cusparselt-cu13-49@0.8.1"
+    },
+    {
+      "ref": "nvidia-nccl-cu13-50@2.29.7"
+    },
+    {
+      "ref": "nvidia-nvjitlink-51@13.3.33"
+    },
+    {
+      "ref": "nvidia-nvshmem-cu13-52@3.4.5"
+    },
+    {
+      "ref": "nvidia-nvtx-53@13.0.85"
+    },
+    {
+      "ref": "opencv-python-headless-54@4.11.0.86",
+      "dependsOn": [
+        "numpy-38@1.26.4"
+      ]
+    },
+    {
+      "ref": "packaging-55@26.3"
+    },
+    {
+      "ref": "pillow-56@12.3.0"
+    },
+    {
+      "ref": "pluggy-57@1.6.0"
+    },
+    {
+      "ref": "portalocker-58@2.10.1",
+      "dependsOn": [
+        "pywin32-69@312"
+      ]
+    },
+    {
+      "ref": "protobuf-59@7.36.0"
+    },
+    {
+      "ref": "pyclipper-60@1.4.0"
+    },
+    {
+      "ref": "pydantic-61@2.13.4",
+      "dependsOn": [
+        "annotated-types-3@0.8.0",
+        "pydantic-core-62@2.46.4",
+        "typing-extensions-93@4.16.0",
+        "typing-inspection-94@0.4.4"
+      ]
+    },
+    {
+      "ref": "pydantic-core-62@2.46.4",
+      "dependsOn": [
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "pygments-63@2.21.0"
+    },
+    {
+      "ref": "pymupdf-64@1.28.2"
+    },
+    {
+      "ref": "pypdf-65@6.16.2"
+    },
+    {
+      "ref": "pytest-66@8.4.2",
+      "dependsOn": [
+        "colorama-8@0.4.6",
+        "iniconfig-29@2.3.0",
+        "packaging-55@26.3",
+        "pluggy-57@1.6.0",
+        "pygments-63@2.21.0"
+      ]
+    },
+    {
+      "ref": "python-bidi-67@0.6.11"
+    },
+    {
+      "ref": "python-multipart-68@0.0.32"
+    },
+    {
+      "ref": "pywin32-69@312"
+    },
+    {
+      "ref": "pyyaml-70@6.0.3"
+    },
+    {
+      "ref": "qdrant-client-71@1.12.1",
+      "dependsOn": [
+        "grpcio-17@1.83.0",
+        "grpcio-tools-18@1.83.0",
+        "httpx-24@0.28.1",
+        "numpy-38@1.26.4",
+        "portalocker-58@2.10.1",
+        "pydantic-61@2.13.4",
+        "urllib3-95@2.7.0"
+      ]
+    },
+    {
+      "ref": "qdrant-client-72@1.19.0",
+      "dependsOn": [
+        "grpcio-17@1.83.0",
+        "httpx-24@0.28.1",
+        "numpy-38@1.26.4",
+        "portalocker-58@2.10.1",
+        "protobuf-59@7.36.0",
+        "pydantic-61@2.13.4",
+        "urllib3-95@2.7.0"
+      ]
+    },
+    {
+      "ref": "regex-73@2026.7.19"
+    },
+    {
+      "ref": "reportlab-74@5.0.1",
+      "dependsOn": [
+        "charset-normalizer-6@3.5.1",
+        "pillow-56@12.3.0"
+      ]
+    },
+    {
+      "ref": "requests-75@2.34.2",
+      "dependsOn": [
+        "certifi-5@2026.7.22",
+        "charset-normalizer-6@3.5.1",
+        "idna-27@3.19",
+        "urllib3-95@2.7.0"
+      ]
+    },
+    {
+      "ref": "safetensors-76@0.8.0"
+    },
+    {
+      "ref": "scikit-image-77@0.26.0",
+      "dependsOn": [
+        "imageio-28@2.37.4",
+        "lazy-loader-32@0.5",
+        "networkx-36@3.6.1",
+        "numpy-38@1.26.4",
+        "packaging-55@26.3",
+        "pillow-56@12.3.0",
+        "scipy-79@1.17.1",
+        "tifffile-86@2026.3.3"
+      ]
+    },
+    {
+      "ref": "scikit-learn-78@1.9.0",
+      "dependsOn": [
+        "joblib-31@1.5.3",
+        "narwhals-35@2.25.0",
+        "numpy-38@1.26.4",
+        "scipy-79@1.17.1",
+        "threadpoolctl-85@3.6.0"
+      ]
+    },
+    {
+      "ref": "scipy-79@1.17.1",
+      "dependsOn": [
+        "numpy-38@1.26.4"
+      ]
+    },
+    {
+      "ref": "sentence-transformers-80@5.7.0",
+      "dependsOn": [
+        "huggingface-hub-25@0.36.2",
+        "numpy-38@1.26.4",
+        "scikit-learn-78@1.9.0",
+        "scipy-79@1.17.1",
+        "tokenizers-87@0.22.2",
+        "torch-88@2.13.0",
+        "tqdm-90@4.70.0",
+        "transformers-91@4.57.6",
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "setuptools-81@84.0.0"
+    },
+    {
+      "ref": "shapely-82@2.1.2",
+      "dependsOn": [
+        "numpy-38@1.26.4"
+      ]
+    },
+    {
+      "ref": "starlette-83@1.6.0",
+      "dependsOn": [
+        "anyio-4@4.14.2",
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "sympy-84@1.14.0",
+      "dependsOn": [
+        "mpmath-34@1.3.0"
+      ]
+    },
+    {
+      "ref": "threadpoolctl-85@3.6.0"
+    },
+    {
+      "ref": "tifffile-86@2026.3.3",
+      "dependsOn": [
+        "numpy-38@1.26.4"
+      ]
+    },
+    {
+      "ref": "tokenizers-87@0.22.2",
+      "dependsOn": [
+        "huggingface-hub-25@0.36.2"
+      ]
+    },
+    {
+      "ref": "torch-88@2.13.0",
+      "dependsOn": [
+        "cuda-bindings-9@13.3.1",
+        "cuda-toolkit-11@13.0.3.0",
+        "filelock-15@3.32.4",
+        "fsspec-16@2026.7.0",
+        "jinja2-30@3.1.6",
+        "networkx-36@3.6.1",
+        "nvidia-cudnn-cu13-43@9.20.0.48",
+        "nvidia-cusparselt-cu13-49@0.8.1",
+        "nvidia-nccl-cu13-50@2.29.7",
+        "nvidia-nvshmem-cu13-52@3.4.5",
+        "setuptools-81@84.0.0",
+        "sympy-84@1.14.0",
+        "triton-92@3.7.1",
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "torchvision-89@0.28.0",
+      "dependsOn": [
+        "numpy-38@1.26.4",
+        "pillow-56@12.3.0",
+        "torch-88@2.13.0"
+      ]
+    },
+    {
+      "ref": "tqdm-90@4.70.0",
+      "dependsOn": [
+        "colorama-8@0.4.6"
+      ]
+    },
+    {
+      "ref": "transformers-91@4.57.6",
+      "dependsOn": [
+        "filelock-15@3.32.4",
+        "huggingface-hub-25@0.36.2",
+        "numpy-38@1.26.4",
+        "packaging-55@26.3",
+        "pyyaml-70@6.0.3",
+        "regex-73@2026.7.19",
+        "requests-75@2.34.2",
+        "safetensors-76@0.8.0",
+        "tokenizers-87@0.22.2",
+        "tqdm-90@4.70.0"
+      ]
+    },
+    {
+      "ref": "triton-92@3.7.1"
+    },
+    {
+      "ref": "typing-extensions-93@4.16.0"
+    },
+    {
+      "ref": "typing-inspection-94@0.4.4",
+      "dependsOn": [
+        "typing-extensions-93@4.16.0"
+      ]
+    },
+    {
+      "ref": "urllib3-95@2.7.0"
+    },
+    {
+      "ref": "uvicorn-96@0.52.4",
+      "dependsOn": [
+        "click-7@8.4.2",
+        "h11-19@0.16.0"
+      ]
+    }
+  ]
+}

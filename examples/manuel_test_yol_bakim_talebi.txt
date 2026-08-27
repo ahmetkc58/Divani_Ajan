@@ -1,0 +1,12 @@
+Adı Soyadı: Zeynep Kaya
+Tarih: 23.08.2026
+Konu: D-650 karayolundaki asfalt bozulması ve çukurlar
+Konum: Örnek İl, Merkez İlçe, D-650 karayolu 18. kilometre
+Telefon: 0555 000 20 26
+E-posta: zeynep.kaya@example.test
+
+Belirtilen yol kesiminde son yağışlardan sonra asfalt yüzeyinde geniş çatlaklar
+ve derin çukurlar oluşmuştur. Özellikle gece saatlerinde sürücülerin çukurları
+fark etmesi güçleşmekte, araçlar ani manevra yapmak zorunda kalmaktadır.
+
+Trafik güvenliğinin sağlanması amacıyla ilgili yol kesiminde teknik inceleme yapılmasını ve gerekli bakım ile asfalt onarım çalışmalarının başlatılmasını talep ediyorum.

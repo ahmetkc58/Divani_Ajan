@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T15:34:31.9225411+03:00",
+  "description": "GPU ile üretilen competition snapshot, kalıcı Qdrant ve uçtan uca demo çıktılarının teslim manifesti.",
+  "total_bytes": 37724178,
+  "artifacts": [
+    {
+      "path": "data/processed/competition_snapshot.json",
+      "bytes": 4562507,
+      "sha256": "885132c8a4fdd27521cda6fbeb44caccbe94490722128f6f57f065ff01421756"
+    },
+    {
+      "path": "data/processed/stage3_quarantine/official-writing-guide.json",
+      "bytes": 67601,
+      "sha256": "e94b9e610d9608224b39c93d7f5a244a50ec2896bfc77ee1f5ff8dcb552f7b52"
+    },
+    {
+      "path": "data/processed/stage3_quarantine/official-writing-regulation.json",
+      "bytes": 280051,
+      "sha256": "c50e45c23a5d851c759dabc1a19312b933f2cb82aec47ecb67c449951babd825"
+    },
+    {
+      "path": "runtime/qdrant-competition-snapshot/collection/competition_snapshot_chunks_v1/storage.sqlite",
+      "bytes": 32768000,
+      "sha256": "20029867b2d00bcd501d32aeb3deea64f49f21fd94237957373aafc2568428b2"
+    },
+    {
+      "path": "runtime/qdrant-competition-snapshot/meta.json",
+      "bytes": 564,
+      "sha256": "a93ef4fe252afc3c61e3fa85e4f7e3917c779a2c376c6019dad43514a162ee61"
+    },
+    {
+      "path": "runtime/processes/EVR-20260824-63F3CF06.json",
+      "bytes": 43154,
+      "sha256": "77ff7954fd7330b59833abf07b80a7aaf78154fce0683a71115bd5f0b09640a9"
+    },
+    {
+      "path": "output/EVR-20260824-63F3CF06/taslak.tex",
+      "bytes": 2301,
+      "sha256": "1062026bf9a74ab5c02e2de1e62025d837c0a5f7f62f682666af2c6f3eab0f7f"
+    }
+  ],
+  "excluded_ephemeral_files": [
+    "runtime/qdrant-competition-snapshot/.lock",
+    "**/__pycache__/**",
+    ".pytest_cache/**"
+  ]
+}

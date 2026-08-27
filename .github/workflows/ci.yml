@@ -1,0 +1,42 @@
+name: test-and-package
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Install locked core and test dependencies
+        run: uv sync --locked --extra dev
+      - name: Compile
+        run: uv run --locked python -m compileall -q src scripts
+      - name: Core acceptance tests
+        run: >-
+          uv run --locked pytest -o addopts='' -q
+          tests/test_evaluation.py
+          tests/test_acceptance_metrics.py
+          tests/test_orchestrator.py
+          tests/test_official_closing_regression_1.py
+          tests/test_extractor.py
+          tests/test_delivery_inventory.py
+          tests/test_evidence_graph.py
+          tests/test_graph_decision_support.py
+          tests/test_llm_gateway.py
+          tests/test_llm_schema_privacy.py
+      - name: Build wheel and source archive
+        run: uv build
+      - name: Verify wheel contains demo assets
+        run: >-
+          uv run --locked python -c
+          "import zipfile,glob; p=glob.glob('dist/*.whl')[0]; n=zipfile.ZipFile(p).namelist(); assert any(x.endswith('share/karayol-agent/data/synthetic_units.json') for x in n); assert any(x.endswith('share/karayol-agent/templates/ust_yazi_v1/template.tex') for x in n)"
+      - name: Delivery inventory must have no unclassified file
+        run: uv run --locked python scripts/audit_delivery_inventory.py --output /tmp/delivery-inventory.json

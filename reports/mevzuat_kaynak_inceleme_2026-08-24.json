@@ -1,0 +1,575 @@
+{
+  "schema_version": "1.0",
+  "generated_date": "2026-08-24",
+  "manifest_path": "data/manifests/core_legislation_manifest.json",
+  "report_path": "reports/MEVZUAT_KAYNAK_INCELEME_2026-08-24.md",
+  "purpose": "Core legislation source identity, provenance, version/currency and local-file match review package; not a legal opinion or approval.",
+  "policy": {
+    "human_legal_expert_role_assumed": false,
+    "embedded_pdf_instructions_treated_as_work_instructions": false,
+    "approved_for_active_rag_modified": false,
+    "automatic_active_rag_approval_allowed": false
+  },
+  "summary": {
+    "record_count": 8,
+    "identity_supported_count": 8,
+    "manifest_local_integrity_match_count": 8,
+    "exact_match_to_manifest_official_url_count": 6,
+    "definitely_stale_count": 4,
+    "incomplete_local_copy_count": 1,
+    "noncanonical_provenance_or_ocr_block_count": 1,
+    "conditional_current_signal_count": 2,
+    "approved_for_active_rag_observed_true_count": 0,
+    "ready_for_automatic_activation_count": 0
+  },
+  "records": [
+    {
+      "document_id": "law-2918",
+      "legislation_id": 2201991082,
+      "title": "2918 Sayılı Karayolları Trafik Kanunu",
+      "document_type": "kanun",
+      "manifest_domain": "kgm_infrastructure",
+      "manifest_subdomain": "traffic_safety",
+      "scope_summary": "Karayollarında trafik düzeni ve güvenliği; kurallar, hak ve yükümlülükler, ilgili kurumların görev ve yetkileri.",
+      "scope_inference": true,
+      "scope_inference_note": "Manifest domain is narrower than the law's cross-institutional scope; secondary-domain labels require human review.",
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "2918",
+        "issuing_authority": "Türkiye Büyük Millet Meclisi; resmî yayım Resmî Gazete",
+        "acceptance_or_decision_date": "1983-10-13",
+        "official_publication_date": "1983-10-18",
+        "official_gazette_number": "18195",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+        "sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+        "bytes": 1188796,
+        "pages": 90,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+        "remote_sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+        "remote_bytes": 1188796,
+        "remote_pages": 90,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "definitely_stale",
+        "local_version_horizon": "Local change table ends with an 11.07.2023 Constitutional Court decision.",
+        "later_official_signal": "Law 7574, published in Official Gazette 27.02.2026/33181, amends multiple provisions of Law 2918.",
+        "inference": false,
+        "confidence": "high"
+      },
+      "review_outcome": "blocked_stale",
+      "blockers": [
+        "Later official amendments are absent from the local consolidated text.",
+        "Cross-institutional scope needs secondary-domain review.",
+        "Human validity and scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "replace_with_current_canonical_copy_then_review",
+        "actions": [
+          "Archive the current MBS consolidated copy with retrieval timestamp and hash.",
+          "Compare amendment table and affected articles, including Law 7574.",
+          "Review domain/secondary-domain coverage and then issue a human approve/reject decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS current record", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=2918&MevzuatTur=1&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf"},
+        {"label": "Official Gazette 27.02.2026 / Law 7574", "url": "https://resmigazete.gov.tr/27.02.2026"},
+        {"label": "TBMM Law 7574 text", "url": "https://cdn.tbmm.gov.tr/KKBSPublicFile/D28/Y4/KanunMetni/df1886cd-184c-4347-a107-15075f1cc0f3.htm"}
+      ]
+    },
+    {
+      "document_id": "law-4925",
+      "legislation_id": 1256867999,
+      "title": "4925 Sayılı Karayolu Taşıma Kanunu",
+      "document_type": "kanun",
+      "manifest_domain": "road_transport",
+      "manifest_subdomain": "transport_operations",
+      "scope_summary": "Kamuya açık karayolunda motorlu taşıtlarla yolcu/eşya taşıması ve ilgili işletmeci, çalışan, araç ve tesisler.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "4925",
+        "issuing_authority": "Türkiye Büyük Millet Meclisi; resmî yayım Resmî Gazete",
+        "acceptance_or_decision_date": "2003-07-10",
+        "official_publication_date": "2003-07-19",
+        "official_gazette_number": "25173",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/07_uab_mevzuat.pdf",
+        "sha256": "e117603dd4fa383ec8844902b79d90fdd84abb4a766ca613cb30a4e438bfba96",
+        "bytes": 391477,
+        "pages": 14,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/gbabqkkn/karayolu-taşima-kanunu.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/gbabqkkn/karayolu-taşima-kanunu.pdf",
+        "remote_sha256": "e117603dd4fa383ec8844902b79d90fdd84abb4a766ca613cb30a4e438bfba96",
+        "remote_bytes": 391477,
+        "remote_pages": 14,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "definitely_stale",
+        "local_version_horizon": "Local change table ends with Law 7491, effective 01.01.2024.",
+        "later_official_signal": "Law 7546, Official Gazette 30.03.2025/32857, rewrote article 26 of Law 4925.",
+        "inference": false,
+        "confidence": "high"
+      },
+      "review_outcome": "blocked_stale",
+      "blockers": [
+        "The official 30.03.2025 amendment is absent from the local consolidated text.",
+        "Human validity and scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "replace_with_current_canonical_copy_then_review",
+        "actions": [
+          "Archive the current MBS consolidated copy with hash and timestamp.",
+          "Verify article 26 and the amendment table against Law 7546.",
+          "Issue a human validity and scope decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS current record", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=4925&MevzuatTur=1&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/gbabqkkn/karayolu-taşima-kanunu.pdf"},
+        {"label": "TBMM Law 4925 identity", "url": "https://tbmm.gov.tr/Yasama/Kanun/f72877bd-b3b6-037b-e050-007f01005610"},
+        {"label": "TBMM Law 7546 identity/publication", "url": "https://www.tbmm.gov.tr/Yasama/Kanun/120dfb72-8497-4a49-a41a-019580137ac7"},
+        {"label": "TBMM Law 7546 text", "url": "https://cdn.tbmm.gov.tr/KKBSPublicFile/D28/Y3/KanunMetni/5001139f-708f-4b18-ac1b-e0b6ac9b196f.htm"}
+      ]
+    },
+    {
+      "document_id": "official-writing-guide",
+      "legislation_id": 2053470426,
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik Kılavuzu",
+      "document_type": "kilavuz",
+      "manifest_domain": "official_writing",
+      "manifest_subdomain": "formal_correspondence",
+      "scope_summary": "Resmî yazışma biçimi, alanları, kullanım kuralları ve uygulama örnekleri.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "2025 guide prepared under Regulation article 36",
+        "issuing_authority": "T.C. Cumhurbaşkanlığı Genel Sekreterliği, Destek ve Mali Hizmetler Genel Müdürlüğü, Bilgi ve Belge Yönetimi Daire Başkanlığı",
+        "acceptance_or_decision_date": null,
+        "official_publication_date": "2025",
+        "official_gazette_number": null,
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "mevzuat-kılavuz.pdf",
+        "sha256": "0716b0e39b62fadf8d9ded7b20f6be3660199eea397f417e127b81775ca129e1",
+        "bytes": 7599373,
+        "pages": 26,
+        "text_layer_status": "ocr_required",
+        "manifest_integrity_match": true,
+        "manifest_source_url": null
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://erzincan.meb.gov.tr/meb_iys_dosyalar/2025_04/24150714_cumhurbaskanligiresmiyazisma2025.pdf",
+        "remote_sha256": "0899b5a8e0328a598cac70619c4ab957507a1bac425de87a6a99fb62950a7d74",
+        "remote_bytes": 13351903,
+        "remote_pages": 102,
+        "exact_byte_match": false,
+        "evidence": "Rendered local pages 3 and 26 match the same-numbered pages in the official MEB mirror in design/content; local file ends at 26 pages (printed internal page 22) while the mirror has 102 pages.",
+        "confidence": "high_for_identity_and_incompleteness"
+      },
+      "currency": {
+        "status": "incomplete_copy_of_current_2025_edition",
+        "local_version_horizon": "Local copy contains only the first 26 pages of the observed 102-page 2025 public-sector mirror.",
+        "later_official_signal": "KTB states that the guide was updated for TDK changes and published on the Presidency official guide page.",
+        "inference": true,
+        "inference_note": "The partial-export conclusion is inferred from matching rendered pages, page counts, local Microsoft Print to PDF metadata and the local final printed page number; there is no byte identity.",
+        "confidence": "medium_high"
+      },
+      "review_outcome": "blocked_incomplete",
+      "blockers": [
+        "Local PDF is truncated/incomplete relative to the 102-page official public-sector mirror.",
+        "Manifest source URL is missing.",
+        "OCR and page-integrity QA are required.",
+        "Human scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "reject_local_copy_replace_with_complete_official_edition",
+        "actions": [
+          "Retrieve the complete edition from the Presidency official guide page.",
+          "Record canonical source URL, hash, page count and retrieval timestamp.",
+          "Run OCR and page-integrity QA, then request human scope approval."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "Presidency official guide page", "url": "https://www.tccb.gov.tr/resmiyazisma/kilavuz/"},
+        {"label": "KTB update announcement", "url": "https://btgm.ktb.gov.tr/TR-347591/resmi-yazisma-kilavuzu-guncellenmistir.html"},
+        {"label": "MEB official 2025 PDF mirror", "url": "https://erzincan.meb.gov.tr/meb_iys_dosyalar/2025_04/24150714_cumhurbaskanligiresmiyazisma2025.pdf"}
+      ]
+    },
+    {
+      "document_id": "official-writing-regulation",
+      "legislation_id": 4826957269,
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "manifest_domain": "official_writing",
+      "manifest_subdomain": "formal_correspondence",
+      "scope_summary": "Elektronik ve zorunlu fiziksel resmî yazışma kuralları, güvenli belge alışverişi ve uygulama birliği.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "Cumhurbaşkanı Kararı 2646",
+        "issuing_authority": "T.C. Cumhurbaşkanlığı; yürütme Cumhurbaşkanı",
+        "acceptance_or_decision_date": "2020-06-09",
+        "official_publication_date": "2020-06-10",
+        "official_gazette_number": "31151",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "mevzuat-1.pdf",
+        "sha256": "aabd2d739037fff061f348c4a1f239afac5e1a58241fe041f15728775d6ccab9",
+        "bytes": 13689739,
+        "pages": 49,
+        "text_layer_status": "ocr_required",
+        "manifest_integrity_match": true,
+        "manifest_source_url": null
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.tuik.gov.tr/media/corporatecontent/21.5.2646Resmi_Yazismalarda_Uygulanacak_Usul_ve_Esaslar_Hakkinda_Yonetmelik.pdf",
+        "remote_sha256": "3bf2dadbe0088bc106761f5343e56b085e93d91e936dec6e28bcc084226646a1",
+        "remote_bytes": 471635,
+        "remote_pages": 13,
+        "exact_byte_match": false,
+        "evidence": "Title, Decision 2646, purpose and ending articles 38-39 support content identity; the local file is a 49-page Microsoft Print to PDF package with appendices/examples, while the TÜİK mirror is a 13-page core-text PDF.",
+        "confidence": "high_for_identity_medium_for_complete_version_match"
+      },
+      "currency": {
+        "status": "current_signal_but_local_noncanonical",
+        "local_version_horizon": "Local PDF print metadata is 12.08.2026, but this is not a legal version date.",
+        "later_official_signal": "MBS record 2646 and a Ministry of Health list dated 19.05.2026 still list the regulation; no later amendment was located in the official-source search.",
+        "inference": true,
+        "inference_note": "Continued validity is inferred from current official listings and absence of an official amendment result; a legal expert must verify at decision time.",
+        "confidence": "medium"
+      },
+      "review_outcome": "blocked_noncanonical_provenance_and_ocr",
+      "blockers": [
+        "Manifest source URL is missing.",
+        "Local package does not byte-match the official comparison mirror.",
+        "OCR and appendix completeness QA are required.",
+        "Human validity and scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "replace_or_bind_to_canonical_mbs_copy_then_review",
+        "actions": [
+          "Acquire the canonical MBS/Presidency text and complete appendix set.",
+          "Record provenance, hash and retrieval timestamp.",
+          "OCR and compare all articles and appendices, then request a human validity/scope decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS record 2646", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=2646&MevzuatTertip=5&MevzuatTur=21"},
+        {"label": "HMB identity/publication information", "url": "https://kmyd.hmb.gov.tr/mevzuat-hazirlama"},
+        {"label": "KTB record linking MBS", "url": "https://teftis.ktb.gov.tr/TR-265426/resmi-yazismalarda-uygulanacak-usul-ve-esaslar-hakkinda-yonetmelik-karar-sayisi-2646.html"},
+        {"label": "TÜİK official PDF mirror", "url": "https://www.tuik.gov.tr/media/corporatecontent/21.5.2646Resmi_Yazismalarda_Uygulanacak_Usul_ve_Esaslar_Hakkinda_Yonetmelik.pdf"},
+        {"label": "Ministry of Health 2026 regulation list", "url": "https://sygm.saglik.gov.tr/TR-28881/yonetmelikler.html"}
+      ]
+    },
+    {
+      "document_id": "uab-road-expropriation-regulation",
+      "legislation_id": 3663719909,
+      "title": "Karayolu Yapımı Amaçlı Kamulaştırmalarda Hazine Taşınmazlarının Trampası Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "manifest_domain": "kgm_infrastructure",
+      "manifest_subdomain": "expropriation",
+      "scope_summary": "KGM road acquisition compensation through consensual swaps using Treasury immovables transferred under Law 6001 article 23.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "MBS 21396",
+        "issuing_authority": "Maliye Bakanlığı and Ulaştırma, Denizcilik ve Haberleşme Bakanlığı; KGM implementation",
+        "acceptance_or_decision_date": null,
+        "official_publication_date": "2016-01-30",
+        "official_gazette_number": "29609",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/01_uab_mevzuat.pdf",
+        "sha256": "6318e04b71eaf295b66c76fc27c206bdf849c7922f7dec64d22b69a1d7aa7d75",
+        "bytes": 42165,
+        "pages": 3,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/iejpzo3a/karayolu-yapimi-amaçli-kamulaştirmalarda-hazine-taşinmazlarinin-trampasi-hakkinda-yoenetmelik.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/iejpzo3a/karayolu-yapimi-amaçli-kamulaştirmalarda-hazine-taşinmazlarinin-trampasi-hakkinda-yoenetmelik.pdf",
+        "remote_sha256": "6318e04b71eaf295b66c76fc27c206bdf849c7922f7dec64d22b69a1d7aa7d75",
+        "remote_bytes": 42165,
+        "remote_pages": 3,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly; TKGM independently confirms the title and Official Gazette identity.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "conditional_current_signal",
+        "local_version_horizon": "Original 2016 text; no amendment table is present.",
+        "later_official_signal": "KGM currently lists the regulation; no official amendment or repeal result was located.",
+        "inference": true,
+        "inference_note": "Negative search and current listing are not a legal validity determination.",
+        "confidence": "medium"
+      },
+      "review_outcome": "conditional_candidate_human_review_required",
+      "blockers": [
+        "Decision-time MBS/Official Gazette amendment and repeal check is required.",
+        "Human scope and validity approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "expert_verify_current_status_then_decide",
+        "actions": [
+          "Compare the local text article-by-article with the current MBS canonical text.",
+          "Check amendments/repeal at decision time and issue a human approve/reject decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS record 21396", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=21396&MevzuatTur=7&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/iejpzo3a/karayolu-yapimi-amaçli-kamulaştirmalarda-hazine-taşinmazlarinin-trampasi-hakkinda-yoenetmelik.pdf"},
+        {"label": "TKGM announcement", "url": "https://www.tkgm.gov.tr/30012016-tarihli-ve-29609-sayili-resmi-gazete%27de-yayimlanan-karayolu-yapimi-amacli"},
+        {"label": "KGM current regulations list", "url": "https://www.kgm.gov.tr/Sayfalar/KGM/SiteTr/Kurumsal/Yonetmelikler.aspx"}
+      ]
+    },
+    {
+      "document_id": "uab-road-infrastructure-safety-regulation",
+      "legislation_id": 2915464714,
+      "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "manifest_domain": "kgm_infrastructure",
+      "manifest_subdomain": "traffic_safety",
+      "scope_summary": "Road-infrastructure safety impact assessment, audit, network ranking/management and inspection on the Turkish TEN-T road network, excluding tunnels longer than 500 metres.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "MBS 25893",
+        "issuing_authority": "Ulaştırma ve Altyapı Bakanlığı / Karayolları Genel Müdürlüğü; execution by KGM General Director",
+        "acceptance_or_decision_date": null,
+        "official_publication_date": "2018-10-21",
+        "official_gazette_number": "30572",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+        "sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+        "bytes": 43901,
+        "pages": 3,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+        "remote_sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+        "remote_bytes": 43901,
+        "remote_pages": 3,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "conditional_current_pending_revision_watch",
+        "local_version_horizon": "Original 21.10.2018/30572 text.",
+        "later_official_signal": "KGM 2025 Activity Report and 2026 Performance Programme state that a revision responding to EU Directive 2019/1936 was prepared and remained in the publication process.",
+        "inference": true,
+        "inference_note": "No published amendment was located in the official-source search, so the original text appears current, but the announced publication process creates a high decision-time change risk.",
+        "confidence": "medium"
+      },
+      "review_outcome": "conditional_candidate_publication_watch",
+      "blockers": [
+        "A formally announced revision may be published at or after the research date.",
+        "Decision-time Official Gazette/MBS check is required.",
+        "Human scope and validity approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "hold_for_publication_check_then_expert_decide",
+        "actions": [
+          "Check Official Gazette and MBS for the announced revision immediately before ingestion.",
+          "If unchanged, compare the canonical text and issue a human decision; if revised, replace and re-review."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS record 25893", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=25893&MevzuatTur=7&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf"},
+        {"label": "KGM current regulations list", "url": "https://www.kgm.gov.tr/Sayfalar/KGM/SiteTr/Kurumsal/Yonetmelikler.aspx"},
+        {"label": "KGM 2026 Performance Programme", "url": "https://www.kgm.gov.tr/SiteCollectionDocuments/KGMdocuments/MerkezBirimler/Kurumsal/PerformansProgrami/2026Performans.pdf"},
+        {"label": "KGM 2025 Activity Report", "url": "https://www.kgm.gov.tr/SiteCollectionDocuments/KGMdocuments/MerkezBirimler/Kurumsal/FaaliyetRaporu/2025Faaliyet.pdf"}
+      ]
+    },
+    {
+      "document_id": "uab-road-traffic-regulation",
+      "legislation_id": 2265614591,
+      "title": "Karayolları Trafik Yönetmeliği",
+      "document_type": "yonetmelik",
+      "manifest_domain": "kgm_infrastructure",
+      "manifest_subdomain": "traffic_safety",
+      "scope_summary": "Traffic institutions, vehicle registration and conditions, drivers, road rules, health/psychotechnical matters and schedules.",
+      "scope_inference": true,
+      "scope_inference_note": "Manifest domain is narrower than the regulation's cross-institutional scope; secondary-domain labels require human review.",
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "MBS 8182",
+        "issuing_authority": "İçişleri Bakanlığı and other competent ministries according to subject; resmî yayım Resmî Gazete",
+        "acceptance_or_decision_date": null,
+        "official_publication_date": "1997-07-18",
+        "official_gazette_number": "23053 mükerrer",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+        "sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+        "bytes": 1678165,
+        "pages": 114,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+        "remote_sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+        "remote_bytes": 1678165,
+        "remote_pages": 114,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "definitely_stale",
+        "local_version_horizon": "Local amendment table ends at 10.02.2024/32456.",
+        "later_official_signal": "Official Gazette 19.08.2025/32991 changed provisional articles 12 and 13.",
+        "inference": false,
+        "confidence": "high"
+      },
+      "review_outcome": "blocked_stale",
+      "blockers": [
+        "The 19.08.2025 official amendment is absent from the local text.",
+        "Broad cross-institutional subject matter needs secondary-domain review.",
+        "Human validity and scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "replace_with_current_canonical_copy_then_review",
+        "actions": [
+          "Replace with the current MBS consolidated copy and complete appendices.",
+          "Verify provisional articles 12 and 13 and the amendment table.",
+          "Review secondary domains and issue a human validity/scope decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS record 8182", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=8182&MevzuatTur=7&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf"},
+        {"label": "Official Gazette amendment 19.08.2025", "url": "https://resmigazete.gov.tr/eskiler/2025/08/20250819-1.htm"},
+        {"label": "KGM current regulations list", "url": "https://www.kgm.gov.tr/Sayfalar/KGM/SiteTr/Kurumsal/Yonetmelikler.aspx"}
+      ]
+    },
+    {
+      "document_id": "uab-road-transport-regulation",
+      "legislation_id": 4999151388,
+      "title": "Karayolu Taşıma Yönetmeliği",
+      "document_type": "yonetmelik",
+      "manifest_domain": "road_transport",
+      "manifest_subdomain": "transport_operations",
+      "scope_summary": "Passenger/goods road transport, authorisation documents, vehicle/operator conditions, workers, terminals and supervision.",
+      "scope_inference": false,
+      "scope_inference_note": null,
+      "identity": {
+        "status": "supported",
+        "legal_identifier": "MBS 24299",
+        "issuing_authority": "Ulaştırma ve Altyapı Bakanlığı",
+        "acceptance_or_decision_date": null,
+        "official_publication_date": "2018-01-08",
+        "official_gazette_number": "30295",
+        "confidence": "high"
+      },
+      "local_file": {
+        "path": "veri_kaynaklari/karayolu/uab_pdf/08_uab_mevzuat.pdf",
+        "sha256": "13b6d0dec53030f70bcc2c78eb2ded5215fa0f9ef185e63feba45a1eb5af9feb",
+        "bytes": 1175538,
+        "pages": 54,
+        "text_layer_status": "available",
+        "manifest_integrity_match": true,
+        "manifest_source_url": "https://www.uab.gov.tr/media/potlbwur/karayolu-taşima-yoenetmeliği.pdf"
+      },
+      "official_source_comparison": {
+        "retrieved_at": "2026-08-24",
+        "source_url": "https://www.uab.gov.tr/media/potlbwur/karayolu-taşima-yoenetmeliği.pdf",
+        "remote_sha256": "13b6d0dec53030f70bcc2c78eb2ded5215fa0f9ef185e63feba45a1eb5af9feb",
+        "remote_bytes": 1175538,
+        "remote_pages": 54,
+        "exact_byte_match": true,
+        "evidence": "Fresh UAB download matched local SHA-256 and byte size exactly.",
+        "confidence": "high"
+      },
+      "currency": {
+        "status": "definitely_stale",
+        "local_version_horizon": "Local amendment table ends at 16.07.2023/32250.",
+        "later_official_signal": "Official amendments were published on 31.05.2024/32562 and 15.05.2025/32901; the latter introduced, among other matters, motorcycle courier regulation.",
+        "inference": false,
+        "confidence": "high"
+      },
+      "review_outcome": "blocked_stale",
+      "blockers": [
+        "Official 2024 and 2025 amendments are absent from the local text.",
+        "Human validity and scope approval is missing."
+      ],
+      "recommended_expert_decision": {
+        "code": "replace_with_current_canonical_copy_then_review",
+        "actions": [
+          "Replace with the current MBS consolidated text and appendices.",
+          "Verify all post-16.07.2023 amendments, including 31.05.2024 and 15.05.2025.",
+          "Issue a human validity and scope decision."
+        ]
+      },
+      "approved_for_active_rag_observed": false,
+      "approval_changed": false,
+      "official_sources": [
+        {"label": "MBS record 24299", "url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=24299&MevzuatTur=7&MevzuatTertip=5"},
+        {"label": "UAB PDF", "url": "https://www.uab.gov.tr/media/potlbwur/karayolu-taşima-yoenetmeliği.pdf"},
+        {"label": "Official Gazette amendment 31.05.2024", "url": "https://resmigazete.gov.tr/eskiler/2024/05/20240531-15.htm"},
+        {"label": "UAB amendment announcement 15.05.2025", "url": "https://www.uab.gov.tr/haberler/karayolu-tasima-yoenetmeliginde-degisiklik/"},
+        {"label": "KGM current regulations list", "url": "https://www.kgm.gov.tr/Sayfalar/KGM/SiteTr/Kurumsal/Yonetmelikler.aspx"}
+      ]
+    }
+  ]
+}

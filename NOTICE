@@ -1,0 +1,14 @@
+Divani Ajan / YolYaz - Karayolu Evrak Akıllı Ajan Sistemi
+Copyright 2026 Divani Ajan contributors
+
+Bu proje sentetik verilerle geliştirilmiş bir yarışma prototipidir.
+Haricî kaynak ve lisans kayıtları resources/manifests/sources.json dosyasında tutulur.
+
+Jina Embeddings v3, ilgili XLM-RoBERTa Flash remote-code uygulaması ve isteğe
+bağlı Jina Reranker v2, CC BY-NC 4.0 kapsamındadır. Model dosyaları bu depoda
+dağıtılmaz; ticari kullanım ayrı bir Jina AI lisansı gerektirebilir.
+
+EasyOCR 1.7.2 kodu Apache-2.0 kapsamındadır. EasyOCR tarafından sağlanan CRAFT
+ve Latin G2 model ağırlıkları yalnız haricî model önbelleğinde tutulur. Bu
+ağırlıklar için ayrı bir lisans beyanı doğrulanamadığından hukuk incelemesi
+tamamlanmadan yeniden dağıtılmaz.

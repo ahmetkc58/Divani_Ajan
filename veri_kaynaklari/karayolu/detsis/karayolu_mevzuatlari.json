@@ -1,0 +1,485 @@
+{
+  "source_url": "https://detsis.gov.tr/birim/24325150/24325150/2026-08-23",
+  "retrieved_at": "2026-08-23T20:56:20.714164+03:00",
+  "record_count": 33,
+  "filter_terms": [
+    "karayolu",
+    "kara yolu",
+    "otoyol",
+    "yolcu taşı",
+    "eşya taşı",
+    "yük taşı",
+    "taşıt",
+    "araç muayene",
+    "takograf",
+    "trafik",
+    "ulaştırma hizmetleri",
+    "ulaşım hizmetleri",
+    "özel yük"
+  ],
+  "filter_note": "Anahtar kelime filtresidir; kullanımdan önce insan doğrulaması gerekir.",
+  "data": [
+    {
+      "mevzuatId": 33344,
+      "turId": 23,
+      "sayi": "7/17694",
+      "ad": "KARAYOLU SINIR KAPILARI İLE ULUSLARARASI TRAFİĞE AÇIK HAVA LİMANLARINDA GÜVENLİĞİN VE BU YERLERE HİZMET VEREN KURULUŞLAR ARASINDA İŞBİRLİĞİ VE EŞGÜDÜM SAĞLANMASI HAKKINDA YÖNETMELİK",
+      "rgSayi": "16696                                             ",
+      "rgTarih": "1979-07-14T00:00:00",
+      "tur": "Bakanlar Kurulu Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/33344",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 170049,
+      "turId": 20,
+      "sayi": "",
+      "ad": "ARAÇ MUAYENE İSTASYONLARININ AÇILMASI, İŞLETİLMESİ VE ARAÇ MUAYENESİ HAKKINDA YÖNETMELİK",
+      "rgSayi": "31356                                             ",
+      "rgTarih": "2021-01-06T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/170049",
+      "local_archive": null,
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "mevzuatId": 139376,
+      "turId": 20,
+      "sayi": "",
+      "ad": "KARAYOLU TAŞIMA YÖNETMELİĞİ",
+      "rgSayi": "30295                                             ",
+      "rgTarih": "2018-01-08T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/139376",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 35989,
+      "turId": 20,
+      "sayi": "",
+      "ad": "KARAYOLU TAŞIMACILIK FAALİYETLERİ MESLEKİ YETERLİLİK EĞİTİMİ YÖNETMELİĞİ",
+      "rgSayi": "25572                                             ",
+      "rgTarih": "2004-09-03T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/35989",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 69973,
+      "turId": 20,
+      "sayi": "",
+      "ad": "KARAYOLU YAPIMI AMAÇLI KAMULAŞTIRMALARDA HAZİNE TAŞINMAZLARININ TRAMPASI HAKKINDA YÖNETMELİK",
+      "rgSayi": "29609                                             ",
+      "rgTarih": "2016-01-30T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/69973",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 190858,
+      "turId": 20,
+      "sayi": "",
+      "ad": "KARAYOLUYLA TAŞINAN YÜKLERİN DENİZYOLUNA AKTARILMASININ DESTEKLENMESİ HAKKINDA YÖNETMELİK",
+      "rgSayi": "31918                                             ",
+      "rgTarih": "2022-08-09T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/190858",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 190381,
+      "turId": 20,
+      "sayi": "",
+      "ad": "TEHLİKELİ MADDELERİN KARAYOLUYLA TAŞINMASI HAKKINDA YÖNETMELİK",
+      "rgSayi": "31870                                             ",
+      "rgTarih": "2022-06-18T00:00:00",
+      "tur": "Kurum Yönetmeliği                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/190381",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 23597,
+      "turId": 4,
+      "sayi": "B.11.0.KUG.0.00.17.00/230-9317",
+      "ad": "2011/KUGM-17/ARAÇ MUAYENE GENELGESİ",
+      "rgSayi": null,
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/23597",
+      "local_archive": null,
+      "filter_matches": [
+        "araç muayene"
+      ]
+    },
+    {
+      "mevzuatId": 45509,
+      "turId": 4,
+      "sayi": "B.11.0.KDG.0.17.00.02-225.09-22239",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2012/KDGM- 07 SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45509",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 45471,
+      "turId": 4,
+      "sayi": "B.11.0.KDG.0.17.00.03/225-09-14071",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2012/KGM-05 SAYILI GENELGE",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45471",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 53450,
+      "turId": 4,
+      "sayi": "22692",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2013/KDGM-02/YOLCU SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/53450",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 53501,
+      "turId": 4,
+      "sayi": "23305",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2013/KDGM-07/YOLCU SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/53501",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 53506,
+      "turId": 4,
+      "sayi": "14823",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2013/KDGM-14/YOLCU SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/53506",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 45495,
+      "turId": 4,
+      "sayi": "70514986-225.01-18200",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2014/KDGM- 02 SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45495",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 45486,
+      "turId": 4,
+      "sayi": "21902444-010.06.01/ 69668",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2014/KDGM- 10 SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45486",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 45476,
+      "turId": 4,
+      "sayi": "66002798-225.03-47486",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2014/KDGM-07 SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45476",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 45480,
+      "turId": 4,
+      "sayi": "66002798-225.03-12653",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN 2015/KDGM- 02/SAYILI GENELGESİ",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Kurum Genelgesi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/45480",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 38211,
+      "turId": 15,
+      "sayi": "",
+      "ad": "BİR KISIM MOTORLU KARAYOLU TAŞITLARININ PİYASADAN ÇEKİLMESİNE İLİŞKİN TEBLİĞ (TEBLİĞ NO: 49)",
+      "rgSayi": "26703                                             ",
+      "rgTarih": "2007-11-17T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/38211",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 38927,
+      "turId": 15,
+      "sayi": "",
+      "ad": "BİR KISIM MOTORLU KARAYOLU TAŞITLARININ PİYASADAN ÇEKİLMESİNE İLİŞKİN TEBLİĞ (TEBLİĞ NO: 56)",
+      "rgSayi": "27174                                             ",
+      "rgTarih": "2009-03-19T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/38927",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 39923,
+      "turId": 15,
+      "sayi": "",
+      "ad": "BİR KISIM MOTORLU KARAYOLU TAŞITLARININ PİYASADAN ÇEKİLMESİNE İLİŞKİN TEBLİĞ (TEBLİĞ NO: 62)",
+      "rgSayi": "27749                                             ",
+      "rgTarih": "2010-11-04T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/39923",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 41766,
+      "turId": 15,
+      "sayi": "",
+      "ad": "BİR KISIM MOTORLU KARAYOLU TAŞITLARININ PİYASADAN ÇEKİLMESİNE İLİŞKİN TEBLİĞ (TEBLİĞ NO: 66)",
+      "rgSayi": "28470                                             ",
+      "rgTarih": "2012-11-17T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/41766",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 184374,
+      "turId": 15,
+      "sayi": "",
+      "ad": "KARAYOLU YOLCU TAŞIMACILIĞINDA KULLANILAN TERMİNALLERE İLİŞKİN TAVAN ÜCRET TARİFELERİ HAKKINDA TEBLİĞ",
+      "rgSayi": "31706                                             ",
+      "rgTarih": "2021-12-31T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/184374",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 160959,
+      "turId": 15,
+      "sayi": "",
+      "ad": "KARAYOLU YOLCU TAŞIMACILIĞINDA KULLANILAN TERMİNALLERE İLİŞKİN TAVAN ÜCRET TARİFELERİ HAKKINDA TEBLİĞ",
+      "rgSayi": "31127                                             ",
+      "rgTarih": "2020-05-14T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/160959",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 41765,
+      "turId": 15,
+      "sayi": "",
+      "ad": "KARAYOLU YOLCU TAŞIMACILIĞINDA KULLANILAN TERMİNALLERE İLİŞKİN TAVAN ÜCRET TARİFELERİ HAKKINDA TEBLİĞ (TEBLİĞ NO: 65)",
+      "rgSayi": "28470                                             ",
+      "rgTarih": "2012-11-17T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/41765",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 60734,
+      "turId": 15,
+      "sayi": "",
+      "ad": "KARAYOLU YOLCU TAŞIMACILIĞINDA KULLANILAN TERMİNALLERE İLİŞKİN TAVAN ÜCRET TARİFELERİ HAKKINDA TEBLİĞ (TEBLİĞ NO: 70)",
+      "rgSayi": "29522                                             ",
+      "rgTarih": "2015-11-04T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/60734",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 180097,
+      "turId": 15,
+      "sayi": "",
+      "ad": "KARAYOLUYLA YOLCU TAŞIMACILIĞI ALANINDA UYGULANACAK TAVAN ÜCRET TARİFESİ HAKKINDA TEBLİĞ",
+      "rgSayi": "31541                                             ",
+      "rgTarih": "2021-07-14T00:00:00",
+      "tur": "Tebliğ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/180097",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 23169,
+      "turId": 19,
+      "sayi": "6876",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜ EMRİYLE UBAK İZİN BELGELERİ DAĞITIM ESASLARI YÖNERGESİ",
+      "rgSayi": null,
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Yönerge                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/23169",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 23424,
+      "turId": 19,
+      "sayi": "50645",
+      "ad": "KARAYOLUYLA TEHLİKELİ MADDE TAŞIYAN ARAÇ ŞOFÖRLERİNE YÖNELİK MESLEKİ YETERLİLİK EĞİTİMİ YÖNERGESİ",
+      "rgSayi": null,
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Yönerge                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/23424",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 54959,
+      "turId": 14,
+      "sayi": "12978",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN D4 YETKİ BELGESİ KONULU TALİMATI",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Talimat / Talimatname / İç Emir                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/54959",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 54989,
+      "turId": 14,
+      "sayi": "32909",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN D4 YETKİ BELGESİ KONULU TALİMATI",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Talimat / Talimatname / İç Emir                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/54989",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 54996,
+      "turId": 14,
+      "sayi": "19033",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN D4 YETKİ BELGESİ KONULU TALİMATI",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Talimat / Talimatname / İç Emir                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/54996",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 54997,
+      "turId": 14,
+      "sayi": "26838",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN D4 YETKİ BELGESİ KONULU TALİMATI",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Talimat / Talimatname / İç Emir                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/54997",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    },
+    {
+      "mevzuatId": 55003,
+      "turId": 14,
+      "sayi": "19562",
+      "ad": "KARAYOLU DÜZENLEME GENEL MÜDÜRLÜĞÜNÜN D4 YETKİ BELGESİ KONULU TALİMATI",
+      "rgSayi": "                                                  ",
+      "rgTarih": "0001-01-01T00:00:00",
+      "tur": "Talimat / Talimatname / İç Emir                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ",
+      "detail_url": "https://kms.kaysis.gov.tr/Home/Goster/55003",
+      "local_archive": null,
+      "filter_matches": [
+        "karayolu"
+      ]
+    }
+  ]
+}
