@@ -88,7 +88,7 @@ OFFICIAL_WRITING_GUIDE_SPEC = OcrCandidateSpec(
         "0716b0e39b62fadf8d9ded7b20f6be3660199eea397f417e127b81775ca129e1"
     ),
     candidate_sha256=(
-        "db6f4a622b83bbc17ae0216474c4a4e844120bf7655c458d21919ae884ffb723"
+        "835a6cbca5477d507c0f50ea50314d478d7c2c62a0907c45e17c8316ca624828"
     ),
     page_count=26,
     strategy="official_writing_guide",
@@ -111,7 +111,7 @@ OFFICIAL_WRITING_REGULATION_SPEC = OcrCandidateSpec(
         "aabd2d739037fff061f348c4a1f239afac5e1a58241fe041f15728775d6ccab9"
     ),
     candidate_sha256=(
-        "79e089f90b46e0d91398a21065e0521a0ab2c382fb33ff06b1bbe9061d9f3c50"
+        "ed4dd1891e81988aab2829216d584b4f96a656fdf0d9d2fa58cf40f6be26adca"
     ),
     page_count=49,
     strategy="official_writing_regulation",

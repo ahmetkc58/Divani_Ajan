@@ -354,6 +354,7 @@ class EvidenceGraphBuilder:
         output_path.write_text(
             json.dumps(graph.model_dump(mode="json"), ensure_ascii=False, indent=2),
             encoding="utf-8",
+            newline="\n",
         )
         return output_path
 

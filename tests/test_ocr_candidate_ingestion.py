@@ -231,7 +231,7 @@ def test_regulation_rejects_the_earlier_mixed_ocr_candidate() -> None:
             "official-writing-regulation.ocr-candidate.txt"
         ),
         candidate_sha256=(
-            "2b5ce92842f6a853775fde0be6cb146bfa1464b9a3a477f4bf4e35da02e59a5a"
+            "b40cb8a26818d88350c154f226d19e00d9303c013b5baaf9a1645cd51ee10d4f"
         ),
         ocr_report="reports/ocr_review_2026-08-24.json",
     )

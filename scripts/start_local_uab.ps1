@@ -8,16 +8,21 @@ param(
 $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$dotenvPath = Join-Path $projectRoot ".env"
-if (Test-Path -LiteralPath $dotenvPath) {
-    Get-Content -LiteralPath $dotenvPath | ForEach-Object {
-        $line = $_.Trim()
-        if ($line -and -not $line.StartsWith("#") -and $line.Contains("=")) {
-            $name, $value = $line.Split("=", 2)
-            [Environment]::SetEnvironmentVariable(
-                $name.Trim(), $value.Trim(), "Process"
-            )
+$envFile = Join-Path $projectRoot ".env"
+
+if (Test-Path -LiteralPath $envFile) {
+    foreach ($line in Get-Content -LiteralPath $envFile) {
+        $trimmed = $line.Trim().TrimStart([char]0xFEFF)
+        if (-not $trimmed -or $trimmed.StartsWith("#")) {
+            continue
         }
+        $separatorIndex = $trimmed.IndexOf("=")
+        if ($separatorIndex -lt 1) {
+            throw ".env içinde geçersiz satır bulundu."
+        }
+        $name = $trimmed.Substring(0, $separatorIndex)
+        $value = $trimmed.Substring($separatorIndex + 1)
+        [Environment]::SetEnvironmentVariable($name, $value, "Process")
     }
 }
 if ([string]::IsNullOrWhiteSpace($PythonPath)) {

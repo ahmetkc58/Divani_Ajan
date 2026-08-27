@@ -5,6 +5,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
+from karayol_agent.retrieval.article_context import ArticleIndex, full_article_text
 from karayol_agent.retrieval.contracts import (
     COMPETITION_SNAPSHOT_NOTICE,
     CorpusMode,
@@ -137,7 +138,17 @@ class LegislationResearchAgent:
 class SourceVerificationAgent:
     name = "Kaynak Doğrulama Ajanı (Auditor)"
 
-    def __init__(self, min_retrieval_score: float = 0.20) -> None:
+    # Tek bir fıkra/bent parçasından çok daha uzun olabilen tam madde metni
+    # için ayrı, daha geniş bir kırpma sınırı; madde bilinmediğinde eski
+    # tek-chunk davranışı (360) korunur.
+    FULL_ARTICLE_EXCERPT_CHAR_LIMIT = 4000
+
+    def __init__(
+        self,
+        min_retrieval_score: float = 0.20,
+        *,
+        article_index: ArticleIndex | None = None,
+    ) -> None:
         if (
             isinstance(min_retrieval_score, bool)
             or not math.isfinite(min_retrieval_score)
@@ -145,6 +156,7 @@ class SourceVerificationAgent:
         ):
             raise ValueError("Dense retrieval kabul eşiği 0 ile 1 arasında olmalıdır.")
         self.min_retrieval_score = float(min_retrieval_score)
+        self._article_index = article_index
 
     def run(
         self, hits: list[SearchHit], analysis: DocumentAnalysis
@@ -274,7 +286,7 @@ class SourceVerificationAgent:
                     ),
                     usage_notice=source_decision.usage_notice,
                     domain=hit.chunk.domain,
-                    excerpt=truncate(hit.chunk.text, 360),
+                    excerpt=self._excerpt_for(hit.chunk),
                     score=round(relative_score, 4),
                     verified=accepted,
                     verification_note=note,
@@ -288,6 +300,27 @@ class SourceVerificationAgent:
                 )
             )
         return verified
+
+    def _excerpt_for(self, chunk: LegislationChunk) -> str:
+        """Return a citation excerpt spanning the chunk's whole madde.
+
+        A retrieval hit is fıkra/bent-sized and can land mid-article, missing
+        the article's opening definition. When the corpus is indexed by
+        article (``article_index`` bound), sibling fragments of the same
+        ``(document_id, article)`` are stitched back together so citations,
+        drafts and the LLM prompt see the full madde instead of an isolated
+        middle fragment. Falls back to the single chunk's own text otherwise.
+        """
+
+        text = full_article_text(chunk, self._article_index)
+        expanded = (
+            self._article_index is not None
+            and chunk.document_id is not None
+            and chunk.article is not None
+            and (chunk.document_id, chunk.article) in self._article_index
+        )
+        limit = self.FULL_ARTICLE_EXCERPT_CHAR_LIMIT if expanded else 360
+        return truncate(text, limit)
 
     @staticmethod
     def _trusted_source(chunk: LegislationChunk) -> tuple[bool, str]:

@@ -305,6 +305,12 @@ class OpenAICompatibleProvider:
                 },
             },
         }
+        if self.config.provider is LLMProviderName.OPENAI_COMPATIBLE:
+            # EVREN/vLLM Qwen tabanlı modellerinde thinking modu uzun JSON
+            # şemalarında tüm token bütçesini tüketip boş content
+            # döndürebilir. Belge/RAG ajanları yalnız nihai yapılandırılmış
+            # kararı kullandığı için bu modu açıkça kapalı tutarız.
+            payload["chat_template_kwargs"] = {"enable_thinking": False}
         token_field = (
             "max_completion_tokens"
             if self.config.provider is LLMProviderName.GROQ

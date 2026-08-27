@@ -35,6 +35,7 @@ from karayol_agent.retrieval import (
     BM25Index,
     LegislationRepository,
 )
+from karayol_agent.retrieval.article_context import build_article_index
 from karayol_agent.retrieval.contracts import (
     COMPETITION_SNAPSHOT_NOTICE,
     CorpusMode,
@@ -144,7 +145,10 @@ class EvrakOrchestrator:
             self.retriever, top_k=app_settings.retrieval_top_k
         )
         self.verifier = SourceVerificationAgent(
-            min_retrieval_score=app_settings.min_retrieval_score
+            min_retrieval_score=app_settings.min_retrieval_score,
+            article_index=build_article_index(
+                document.chunk for document in self.index.documents
+            ),
         )
         self.graph_advisor: EvidenceGraphAdvisor | None = None
         if app_settings.evidence_graph_enabled:
@@ -364,7 +368,11 @@ class EvrakOrchestrator:
             "llm_enabled": bool(config.enabled),
             "llm_provider": str(config.provider.value),
             "llm_model": config.model,
-            "llm_data_policy": "pinned_synthetic_input_closed_public_metadata",
+            "llm_data_policy": (
+                "explicit_restricted_external_opt_in"
+                if getattr(self.llm_gateway.config, "allow_restricted_external", False)
+                else "pinned_synthetic_input_closed_public_metadata"
+            ),
             "llm_deterministic_fallback": True,
             "evidence_graph_enabled": self.settings.evidence_graph_enabled,
             "evidence_graph_ready": self.graph_advisor is not None,
@@ -689,6 +697,12 @@ class EvrakOrchestrator:
         adjudication_classification = self._llm_adjudication_data_classification(
             state
         )
+        self._transition(
+            state,
+            ProcessStatus.ROUTING,
+            "Yalnız doğrulanmış kanıtlarla birim ve şablon kararı değerlendiriliyor.",
+            self.llm_adjudicator.name,
+        )
         adjudication = self.llm_adjudicator.run(
             analysis=state.analysis,
             references=state.verified_references,
@@ -717,6 +731,16 @@ class EvrakOrchestrator:
             decision_applied=adjudication_applied,
             data_classification=adjudication_classification,
         )
+        if adjudication_applied:
+            self._complete(
+                state,
+                "Adjudicator kararı doğrulanmış kanıtlarla uygulandı.",
+            )
+        else:
+            self._complete(
+                state,
+                "Adjudicator kararı uygulanmadı; denetlenebilir temel karar korundu.",
+            )
         self._complete(state, f"Önerilen birim: {state.routing.unit_name}.")
 
         self._transition(
@@ -840,6 +864,13 @@ class EvrakOrchestrator:
     def _new_llm_trace(self, classification: DataClassification) -> LLMRunTrace:
         config = self.llm_gateway.config
         local_execution = bool(getattr(config, "is_local", False))
+        restricted_external_allowed = bool(
+            getattr(config, "allow_restricted_external", False)
+        )
+        network_allowed = (
+            classification is not DataClassification.RESTRICTED
+            or restricted_external_allowed
+        )
         return LLMRunTrace(
             mode=(
                 "guarded_structured_local"
@@ -850,15 +881,14 @@ class EvrakOrchestrator:
             provider=str(config.provider.value),
             model=config.model,
             external_data_allowed=(
-                not local_execution
-                and classification is not DataClassification.RESTRICTED
+                not local_execution and network_allowed
             ),
             local_execution=local_execution,
             warning=(
                 "Yerel Ollama kullanılıyor; evrak verisi cihaz dışına gönderilmez."
                 if local_execution
                 else None
-                if classification is DataClassification.SYNTHETIC
+                if network_allowed
                 else (
                     "Gerçek/kısıtlı evrak harici ücretsiz LLM API'sine gönderilmedi; "
                     "yerel deterministik akış kullanıldı."
@@ -886,6 +916,13 @@ class EvrakOrchestrator:
         local_execution = bool(
             getattr(self.llm_gateway.config, "is_local", False)
         )
+        restricted_external_allowed = bool(
+            getattr(
+                self.llm_gateway.config,
+                "allow_restricted_external",
+                False,
+            )
+        )
         failure = getattr(outcome, "failure", None)
         status = getattr(getattr(outcome, "status", None), "value", "unknown")
         state.llm_trace.steps.append(
@@ -900,7 +937,10 @@ class EvrakOrchestrator:
                 ),
                 external_data_allowed=(
                     not local_execution
-                    and data_classification is not DataClassification.RESTRICTED
+                    and (
+                        data_classification is not DataClassification.RESTRICTED
+                        or restricted_external_allowed
+                    )
                 ),
                 local_execution=local_execution,
                 network_attempted=bool(getattr(outcome, "network_attempted", False)),
@@ -931,6 +971,7 @@ class EvrakOrchestrator:
         if (
             data_classification is DataClassification.RESTRICTED
             and not local_execution
+            and not restricted_external_allowed
             and state.llm_trace.warning is None
         ):
             state.llm_trace.warning = (

@@ -67,12 +67,17 @@ def _request(**overrides: object) -> StructuredLLMRequest:
     return StructuredLLMRequest(**values)  # type: ignore[arg-type]
 
 
-def _groq_config(*, api_key: str | None = "groq-test-key") -> LLMConfig:
+def _groq_config(
+    *,
+    api_key: str | None = "groq-test-key",
+    allow_restricted_external: bool = False,
+) -> LLMConfig:
     return LLMConfig(
         provider=LLMProviderName.GROQ,
         model="openai/gpt-oss-120b",
         api_key=api_key,
         base_url="https://api.groq.com/openai/v1",
+        allow_restricted_external=allow_restricted_external,
     )
 
 
@@ -163,6 +168,26 @@ def test_restricted_data_is_rejected_before_networking() -> None:
     assert result.status is LLMStatus.POLICY_REJECTED
     assert result.network_attempted is False
     assert transport.requests == []
+
+
+def test_restricted_data_can_use_explicit_external_provider_opt_in() -> None:
+    transport = RecordingTransport(
+        _openai_response(
+            '{"document_type":"yol_bakim_talebi","confidence":0.93}'
+        )
+    )
+    gateway = StructuredLLMGateway(
+        _groq_config(allow_restricted_external=True),
+        transport=transport,
+    )
+
+    result = gateway.invoke(
+        _request(data_classification=DataClassification.RESTRICTED)
+    )
+
+    assert result.status is LLMStatus.SUCCESS
+    assert result.network_attempted is True
+    assert len(transport.requests) == 1
 
 
 def test_data_classification_defaults_to_restricted_fail_closed() -> None:

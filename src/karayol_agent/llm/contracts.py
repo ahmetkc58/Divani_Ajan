@@ -91,6 +91,7 @@ class LLMConfig:
     temperature: float = 0.0
     max_input_chars: int = 120_000
     runtime_enabled: bool = True
+    allow_restricted_external: bool = False
 
     def __post_init__(self) -> None:
         if not isinstance(self.provider, LLMProviderName):
@@ -180,6 +181,23 @@ class LLMConfig:
         }:
             raise ValueError("KARAYOL_LLM_ENABLED bir boolean değer olmalıdır.")
 
+        restricted_external_text = os.getenv(
+            "KARAYOL_LLM_ALLOW_RESTRICTED_EXTERNAL", "false"
+        ).strip().casefold()
+        if restricted_external_text not in {
+            "1",
+            "0",
+            "true",
+            "false",
+            "yes",
+            "no",
+            "on",
+            "off",
+        }:
+            raise ValueError(
+                "KARAYOL_LLM_ALLOW_RESTRICTED_EXTERNAL bir boolean değer olmalıdır."
+            )
+
         return cls(
             provider=provider,
             model=model,
@@ -190,6 +208,9 @@ class LLMConfig:
             temperature=float(os.getenv("KARAYOL_LLM_TEMPERATURE", "0")),
             max_input_chars=int(os.getenv("KARAYOL_LLM_MAX_INPUT_CHARS", "120000")),
             runtime_enabled=enabled_text in {"1", "true", "yes", "on"},
+            allow_restricted_external=(
+                restricted_external_text in {"1", "true", "yes", "on"}
+            ),
         )
 
 

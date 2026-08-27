@@ -78,17 +78,20 @@ class StructuredLLMGateway:
             )
 
         try:
+            allow_restricted = (
+                self.config.is_local or self.config.allow_restricted_external
+            )
             guarded = self.data_guard.prepare(
                 request.input_data,
                 classification=request.data_classification,
                 allow_automatic_redaction=request.allow_automatic_redaction,
-                allow_restricted_local=self.config.is_local,
+                allow_restricted_local=allow_restricted,
             )
             guarded_instructions = self.data_guard.prepare(
                 {"value": request.trusted_instructions},
                 classification=request.data_classification,
                 allow_automatic_redaction=request.allow_automatic_redaction,
-                allow_restricted_local=self.config.is_local,
+                allow_restricted_local=allow_restricted,
             )
             redaction_count = len(guarded.findings) + len(
                 guarded_instructions.findings

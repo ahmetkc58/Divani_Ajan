@@ -16,6 +16,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 
+from karayol_agent.ingestion.chunker import LegalStructureChunker, StructureNotFoundError
 from karayol_agent.retrieval.contracts import (
     COMPETITION_SNAPSHOT_DATASET_NAME,
     COMPETITION_SNAPSHOT_NOTICE,
@@ -61,12 +62,20 @@ def _ocr_page(page: object, *, dpi: int, timeout: int) -> str:
         output_base = Path(temp_dir) / "page-ocr"
         pixmap.save(image_path)
         result = subprocess.run(
-            ["tesseract", str(image_path), str(output_base), "-l", "eng"],
+            ["tesseract", str(image_path), str(output_base), "-l", "tur+eng"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             timeout=timeout,
             check=False,
         )
+        if result.returncode != 0 and b"tur" in (result.stderr or b"").lower():
+            result = subprocess.run(
+                ["tesseract", str(image_path), str(output_base), "-l", "eng"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=timeout,
+                check=False,
+            )
         output_path = output_base.with_suffix(".txt")
         if result.returncode == 0 and output_path.is_file():
             text = normalize_whitespace(_decode_output(output_path.read_bytes()))
@@ -170,10 +179,15 @@ def build(args: argparse.Namespace) -> dict[str, object]:
         records = records[: args.limit]
     documents: list[dict[str, object]] = []
     chunks: list[dict[str, object]] = []
+    chunk_id_owner: dict[str, dict[str, object]] = {}
     ocr_document_count = 0
     ocr_page_count = 0
     metadata_fallback_page_count = 0
     args.ocr_dir.mkdir(parents=True, exist_ok=True)
+    # Madde-yapısını koruyan chunker asıl yoldur (bkz. LegalStructureChunker);
+    # sayfa/karakter tabanlı eski chunker yalnız MADDE yapısı bulunamayan
+    # belgeler (genelge, kılavuz vb.) için düşülen yedek yoldur.
+    article_chunker = LegalStructureChunker(max_chars=args.max_chars)
 
     for position, record in enumerate(records, start=1):
         if len(record.get("local_pdfs") or []) != 1:
@@ -215,7 +229,7 @@ def build(args: argparse.Namespace) -> dict[str, object]:
                 f"--- SAYFA {index} ---\n{text}"
                 for index, text in enumerate(page_texts, start=1)
             )
-            derived_path.write_text(derived_text, encoding="utf-8")
+            derived_path.write_text(derived_text, encoding="utf-8", newline="\n")
             derived_hash: str | None = sha256(derived_path.read_bytes()).hexdigest()
             derived_file: str | None = _portable(derived_path)
         else:
@@ -225,29 +239,91 @@ def build(args: argparse.Namespace) -> dict[str, object]:
             derived_file = None
 
         document_chunks: list[dict[str, object]] = []
-        for page_number, page_text in enumerate(page_texts, start=1):
-            fallback = not bool(normalize_whitespace(page_text))
-            metadata_fallback_page_count += int(fallback)
-            document_chunks.extend(
-                _page_chunks(
-                    text=page_text,
-                    page_number=page_number,
-                    max_chars=args.max_chars,
-                    document_id=document_id,
-                    title=title,
-                    source_path=source_path,
-                    source_url=source_url,
-                    source_sha256=source_hash,
-                    document_type=document_type,
-                    domain=domain,
-                    subdomain=subdomain,
-                    ocr_status=ocr_status,
-                    metadata_fallback=fallback,
-                )
+        duplicate_row_count = 0
+        try:
+            # Madde-yapısını koruyan chunker her parçaya doğru "article"
+            # etiketini atar (bkz. LegalStructureChunker); bu sayede bir
+            # retrieval isabeti maddenin ortasına düştüğünde bile hangi
+            # maddede olduğu bilinir ve tam madde metni geri kazanılabilir.
+            structured_chunks = article_chunker.chunk_pages(
+                page_texts,
+                title=title,
+                source=source_path,
+                source_status=COMPETITION_SNAPSHOT_STATUS,
+                document_id=document_id,
+                source_url=source_url,
+                source_sha256=source_hash,
+                source_kind=CorpusMode.COMPETITION_SNAPSHOT.value,
+                document_type=document_type,
+                domain=domain,
+                subdomain=subdomain,
+                validity_status="needs_verification",
+                approved_for_active_rag=False,
+                ocr_status=ocr_status,
             )
+            raw_chunks = [chunk.model_dump(mode="json") for chunk in structured_chunks]
+            # Bazı kaynak PDF'ler aynı maddeyi (örn. tekrarlanan sayfa veya
+            # metnin birebir alıntılandığı bir ek) içinde ikinci kez taşır.
+            # chunk_id içerik-türevli olduğundan birebir aynı içerik aynı
+            # kimliği üretir; bunları hata saymak yerine açıkça konsolide
+            # ederiz (bkz. documents[].exact_duplicate_rows_consolidated).
+            seen_chunk_ids: set[str] = set()
+            document_chunks = []
+            for chunk in raw_chunks:
+                if chunk["chunk_id"] in seen_chunk_ids:
+                    duplicate_row_count += 1
+                    continue
+                seen_chunk_ids.add(chunk["chunk_id"])
+                document_chunks.append(chunk)
+            metadata_fallback_page_count += sum(
+                1 for page_text in page_texts if not normalize_whitespace(page_text)
+            )
+        except StructureNotFoundError:
+            # MADDE yapısı bulunamayan belgeler (genelge, kılavuz vb.) için
+            # sayfa/karakter tabanlı eski davranışa düşülür; bu belgelerde
+            # "article" boş kalmaya devam eder.
+            for page_number, page_text in enumerate(page_texts, start=1):
+                fallback = not bool(normalize_whitespace(page_text))
+                metadata_fallback_page_count += int(fallback)
+                document_chunks.extend(
+                    _page_chunks(
+                        text=page_text,
+                        page_number=page_number,
+                        max_chars=args.max_chars,
+                        document_id=document_id,
+                        title=title,
+                        source_path=source_path,
+                        source_url=source_url,
+                        source_sha256=source_hash,
+                        document_type=document_type,
+                        domain=domain,
+                        subdomain=subdomain,
+                        ocr_status=ocr_status,
+                        metadata_fallback=fallback,
+                    )
+                )
         if not document_chunks:
             raise ValueError(f"{document_id}: hiçbir chunk üretilemedi.")
+        for chunk in document_chunks:
+            existing = chunk_id_owner.get(chunk["chunk_id"])
+            if existing is not None:
+                raise ValueError(
+                    f"chunk_id çakışması: {chunk['chunk_id']} hem "
+                    f"{existing['document_id']} (madde={existing.get('article')}, "
+                    f"fıkra={existing.get('paragraph')}, bent={existing.get('clause')}, "
+                    f"section={existing.get('section')!r}) hem {document_id} "
+                    f"(madde={chunk.get('article')}, fıkra={chunk.get('paragraph')}, "
+                    f"bent={chunk.get('clause')}, section={chunk.get('section')!r}) "
+                    f"içinde üretildi. metin[:120]={chunk['text'][:120]!r}"
+                )
+            chunk_id_owner[chunk["chunk_id"]] = chunk
         chunks.extend(document_chunks)
+        if duplicate_row_count:
+            print(
+                f"  {document_id}: {duplicate_row_count} birebir yinelenen "
+                "parça konsolide edildi.",
+                flush=True,
+            )
         documents.append(
             {
                 "document_id": document_id,
@@ -255,9 +331,9 @@ def build(args: argparse.Namespace) -> dict[str, object]:
                 "source_path": source_path,
                 "source_url": source_url,
                 "source_sha256": source_hash,
-                "source_chunk_count": len(document_chunks),
+                "source_chunk_count": len(document_chunks) + duplicate_row_count,
                 "chunk_count": len(document_chunks),
-                "exact_duplicate_rows_consolidated": 0,
+                "exact_duplicate_rows_consolidated": duplicate_row_count,
                 "text_origin": text_origin,
                 "derived_text_sha256": derived_hash,
                 **({"derived_text_file": derived_file} if derived_file else {}),
@@ -276,15 +352,21 @@ def build(args: argparse.Namespace) -> dict[str, object]:
         "approved_for_competition_use": True,
         "usage_notice": COMPETITION_SNAPSHOT_NOTICE,
         "document_count": len(documents),
-        "source_chunk_count": len(chunks),
+        "source_chunk_count": sum(
+            int(document["source_chunk_count"]) for document in documents
+        ),
         "chunk_count": len(chunks),
-        "exact_duplicate_rows_consolidated": 0,
+        "exact_duplicate_rows_consolidated": sum(
+            int(document["exact_duplicate_rows_consolidated"]) for document in documents
+        ),
         "documents": documents,
         "data": chunks,
     }
     LegislationRepository.validate_competition_snapshot_envelope(corpus)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(corpus, ensure_ascii=False), encoding="utf-8")
+    args.output.write_text(
+        json.dumps(corpus, ensure_ascii=False), encoding="utf-8", newline="\n"
+    )
     return {
         "corpus": str(args.output),
         "document_count": len(documents),

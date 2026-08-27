@@ -1,8 +1,8 @@
 # Şartname Karşılaştırması ve Kalan Eksikler
 
-**Güncelleme tarihi:** 25 Ağustos 2026
+**Güncelleme tarihi:** 25 Ağustos 2026 (bkz. **Bölüm 0** — 27 Ağustos 2026 taze bulgularla güncellendi)
 
-**İncelenen sürüm:** `main@93b3e08`
+**İncelenen sürüm:** `main@93b3e08` (Bölüm 0, `main@6e2f306` üzerinde yeniden doğrulandı)
 
 **Kaynaklar:** `project.md`, `openai.md`, 2026 TYDA Teknik Şartnamesi 1. Senaryo,
 uygulama kodu, testler, veri manifestleri ve kayıtlı kabul raporları.
@@ -11,6 +11,137 @@ Bu belge yalnızca açık kalan işleri içerir. Kod ve testlerle mevcut olduğu
 doğrulanan özellikler iş listesinden çıkarılmıştır. Bir özelliğin kaynak kodda
 bulunması tek başına tamamlanma sayılmaz; kör ölçüm, insan onayı veya teslim
 kanıtı gerekiyorsa ilgili kapı açık tutulur.
+
+## 0. 27 Ağustos 2026 güncellemesi (HEAD@6e2f306)
+
+25 Ağustos'tan bu yana üç yeni commit geldi (`b457fb7` kör değerlendirme +
+teslim envanteri, `0c37b4a` UAB vektör indeksi verisi, `6e2f306` GPU'lu yerel
+UAB retrieval runner). Aşağıdaki bölümler (1-7) büyük ölçüde geçerliliğini
+koruyor; bu bölüm yalnız o tarihten beri **doğrulanan** değişiklikleri
+özetler. Kaynak: şartname PDF'inin tam metin incelemesi + `git show --stat
+93b3e08..HEAD` + tam pytest çalıştırması + canlı `/api/v1/system/readiness`
+sorgusu.
+
+### Kapanan veya belirgin ilerleyen maddeler
+
+- **2.4 (şartname PDF'i) KAPANDI.** Çalışma ağacındaki her iki kök PDF kopyası
+  da artık kanonik `c4e0dc804ea07d2783975cea2f45cf9ab833828181d1837ad64a67617ca17fdd`
+  hash'iyle eşleşiyor; bozuk kopya sorunu kalmamış.
+- **2.3 (veri/dağıtım kapsamı) belirgin ilerledi.** `data/manifests/delivery_policy.json`,
+  `scripts/audit_delivery_inventory.py` ve makinece üretilen
+  `reports/delivery_inventory.json` artık gerçekten var: 75 izlenen dosyanın
+  tamamına (`unresolved: 0`) include/exclude/review_required kararı, sınıf,
+  lisans ve hash atanmış (13 include, 61 exclude, 1 review_required — şartname
+  PDF'inin kendisi). CI, `test-and-package` işinin son adımında bu denetimi
+  zorunlu kılıyor. **Açık kalan:** bu kararların fiilen ayrı bir teslim
+  dalı/paketinde uygulandığının (exclude edilenlerin fiziksel pakette
+  bulunmadığının) ayrıca doğrulanması gerekiyor; audit script'i şu an yalnız
+  "sınıflandırma eksiksiz mi" sorusunu cevaplıyor, "paket temiz mi" sorusunu
+  değil.
+- **3.1 (aktif korpüs) ölçek olarak büyüdü, onay durumu değişmedi.** UAB
+  bakanlık arşivi artık 10.048 parça olarak `uab_ministry_archive_chunks_v1`
+  koleksiyonuna indekslenmiş ve canlı sunucu (`/api/v1/system/readiness`)
+  bunu `"ready": true, "Qdrant hazır: 10048/10048 uyumlu nokta"` diye
+  doğruluyor. Ancak `currentness_verified` ve `legal_reliance_allowed` hâlâ
+  `false`; insan onaylı/hukuken güvenilir parça sayısı hâlâ **0**. Madde 3.1
+  tamamen açık kalmaya devam ediyor, yalnız hacim değişti.
+
+### Yeni P0 bulgu — madde 2.1'in bağımsız kör ölçümü artık var ve SONUÇ ZAYIF
+
+`data/evaluation/blind_documents_v1.json` (20 kayıt, geliştirme
+fixture'larından bilinçli olarak bağımsız yazılmış) ve
+`scripts/evaluate_blind_documents.py` artık gerçekten mevcut — madde 2.1'in
+altyapı açığı kapandı. Ancak `reports/blind_evaluation_v1.json`'daki ilk
+ölçüm sonucu **9/20 (%45) genel başarı**; kategori kırılımı:
+
+| Kategori | Sonuç |
+|---|---|
+| `paraphrase_positive` (asıl "görülmemiş ifade" testi) | **1/7 (%14)** |
+| `no_answer_offtopic` (uydurmama/abstention) | 1/4 |
+| `near_miss_ambiguous` (insan incelemesine bırakma) | 4/5 |
+| `ocr_noise_variant` (gürültüye dayanıklılık) | 3/4 |
+
+**Kök neden:** `ClassificationAgent.LABEL_KEYWORDS` — sınıflandırma ve
+yönlendirme tamamen anahtar-kelime kural motoruna dayanıyor; varsayılan
+BM25/`trusted_synthetic` yolunda hiçbir LLM/semantik katman devrede değil.
+Klasik ifadeler dışına çıkan gerçekçi bir cümle (`"zemin çöküntüsü"` yerine
+`"çukur"`, `"yön gösterme direği"` yerine `"tabela"` gibi) çoğunlukla yanlış
+türe veya genel havuz birimine (`ORKGM-EB-001`) düşüyor. Sistem en azından
+**güvenli tarafta hata yapıyor** (yanlış tahminlerde bile çoğunlukla
+`requires_human_review=true` işaretliyor, mevzuat uydurmuyor), ama şartname
+madde 6.4.1'in "metni anlamlandırarak" ifadesi ve puanlama madde 9
+"Uygulama" (35 puan, "sınıflandırma doğruluğu, yönlendirme başarımı")
+kriteri için bu doğrudan risk. **Kapanış ölçütü güncellemesi:** madde 2.1'in
+"Yapılacaklar" listesi artık "kör set oluştur" değil, "paraphrase
+başarısını %45'ten kabul edilebilir bir eşiğe çıkar" olmalı — ya
+anahtar-kelime listesini gerçekçi eşanlamlılarla genişletmek ya da
+sınıflandırmaya bir LLM/embedding katmanı eklemek gerekiyor.
+
+### Yeni P0 bulgu — CI'ın kendi "core acceptance tests" kapısı şu an KIRMIZI
+
+`.github/workflows/ci.yml`'deki `test-and-package` işinin adı verilen tam
+test listesini yerelde birebir çalıştırdım: **6 test başarısız** —
+`test_extractor.py` (1) ve `test_graph_decision_support.py` (5). Bu, mevcut
+HEAD push edilirse CI'ın kırmızı olacağı ve wheel paketleme/teslim envanteri
+adımlarına hiç ulaşamayacağı anlamına geliyor.
+
+- **Kök neden (graph, 5 test):** `data/synthetic_gold.json` düzenlendi ama
+  kanıt grafının pinlenmiş girdi SHA-256'sı yenilenmedi —
+  `GraphBuildError: Kanıt grafı girdisi SHA-256 ile uyuşmuyor:
+  data\synthetic_gold.json`. Aynı kök neden canlı sunucunun kendi
+  `/api/v1/system/readiness` yanıtında da görünüyor
+  (`"evidence_graph_ready": false`). Ayrıca CI'a dahil olmayan
+  `tests/test_orchestrator_llm_integration.py`'de 5 test daha aynı nedenle
+  başarısız (LLM adım verisi beklenen `DataClassification.SYNTHETIC` yerine
+  daha muhafazakâr `RESTRICTED` dönüyor — sistem güvenli tarafta hata yapıyor,
+  ama sentetik demo yolu bu haliyle kırık). **Tek bir bayat pin, 10'dan
+  fazla testi ve bir canlı API uyarısını aynı anda kırıyor; kapanışı tek
+  komutla (grafı `data/synthetic_gold.json`'ın güncel hash'iyle yeniden
+  üretmek) mümkün olmalı.**
+- **Kök neden (extractor, 1 test):** `test_real_tesseract_scanned_pdf_extracts_sender_end_to_end`
+  gerçek Tesseract çalıştırıyor; bu makinede Tesseract kurulu ama yalnız
+  `eng`+`osd` dil verisi mevcut, **`tur.traineddata` yok**
+  (`tesseract --list-langs` doğrulandı). Türkçe OCR bu geliştirme
+  makinesinde şu an hiç çalışmıyor demektir — şartname 6.4.1 "Evrakı OCR ...
+  okuyabilme" gerekliliği taranmış Türkçe evrak için fiilen test edilemez
+  durumda. Düzeltme ucuz: Tesseract Türkçe dil paketinin kurulması.
+- **CI'a dahil olmayan ama tam çalıştırmada görülen ek başarısızlıklar:**
+  `test_resource_manifest.py` (bir dataset card dosyası yeniden kaydedilmiş,
+  manifest'teki byte sayısı bayatlamış), `test_snapshot_relevance.py`
+  (`competition_snapshot_relevance_v1.json`'ın pinlenmiş corpus hash'i güncel
+  `competition_snapshot.json` ile uyuşmuyor — yani madde 3.3'teki "snapshot
+  alaka seti" regresyon kapısı şu an güncel korpüsü doğrulamıyor),
+  `test_snapshot_corpus.py` (2 — satır/chunk sayısı sabitleri veri
+  değişince bayatlamış), `test_ocr_candidate_ingestion.py` (3 başarısız + 2
+  hata). Bunların hepsi aynı örüntüyü gösteriyor: hızla değişen
+  `data/processed/` çıktıları ile testlere gömülü sabit hash/sayı pinleri
+  senkronize kalmıyor. **Öneri:** veri üreten her script, pin'i de aynı
+  commit'te yeniden üretmeli; CI'a "pin güncel mi" kontrolü eklenebilir.
+
+### Yeni bulgu — committed veride bir katkı sağlayanın yerel yol/kullanıcı adı sızıntısı
+
+`data/processed/stage3_quarantine/{law-2918, law-4925,
+uab-road-expropriation-regulation, uab-road-infrastructure-safety-regulation,
+uab-road-traffic-regulation, uab-road-transport-regulation}.json` (6 dosya,
+`3b82e13` ile commit'lenmiş, hâlâ git'te izleniyor) `source_file`/`source`
+alanlarında şu mutlak Windows yolunu taşıyor:
+`C:\Users\matri\OneDrive\Desktop\testing3\Divani_Ajan\Divani_Ajan\...` — bu
+mevcut kullanıcının (`Ahmet`) değil, muhtemelen bir takım arkadaşının
+makinesi. Etkisi iki yönlü:
+
+1. Bu mutlak yol proje kökü dışında olduğu için, onu proje-köküne göre
+   çözmeye çalışan doğrulama kodu (`karayol_agent.ingestion.snapshot`)
+   `SnapshotBuildError` fırlatıyor — `test_snapshot_relevance.py`
+   başarısızlığının bir parçası bu.
+2. `delivery_inventory.json` bu 6 dosyayı zaten `exclude` olarak işaretlemiş,
+   yani teslim paketine girmeyecek — ama geliştirme deposunun (ve `origin`
+   git geçmişinin) içinde bir katkı sağlayanın yerel klasör adı ve kullanıcı
+   adı kalıcı olarak duruyor; küçük ama gerçek bir bilgi sızıntısı.
+
+**Kapanış:** bu dosyaları üreten alım adımı mutlak yol yerine proje-göreli
+yol yazmalı (`scripts/build_uab_archive_snapshot.py`'deki `_portable()`
+yardımcısı gibi); mevcut 6 dosya proje-göreli yola normalize edilip yeniden
+commit'lenmeli.
 
 ## 1. İnceleme notu
 
