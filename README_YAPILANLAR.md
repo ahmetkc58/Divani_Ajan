@@ -437,3 +437,25 @@ kopyaları, tam 102 sayfalık kılavuz, kanonik yönetmelik kaynağı ve yetkili
 `approve`/`reject`/`needs_replacement` kararı yine zorunludur. Bu yapılana kadar
 `legal_chunks_v1` boş ve fail-closed kalır; yarışma snapshot'ı ayrı uyarıyla
 çalışır.
+# Legal RAG v2 entegrasyonu
+
+Kaggle'da Jina Embeddings v3 ile üretilen 30.972 hiyerarşik leaf vektörü,
+`uab_legal_leaf_v2` adlı Qdrant koleksiyonu olarak uygulamaya bağlandı. Uygulama
+named vector olarak `dense` alanını kullanır; corpus ve Qdrant payload'ları aynı
+fingerprint sözleşmesine bağlanmıştır. Hazır vektörler tekrar embed edilmez.
+
+Backend'i GPU ile başlatmak için:
+
+```powershell
+.\scripts\start_local_uab.ps1 -EmbeddingDevice cuda:0
+```
+
+Frontend ayrı terminalde başlatılır:
+
+```powershell
+python -m http.server 3000 --directory frontend
+```
+
+Arayüz: `http://127.0.0.1:3000`. CPU üzerinde Jina modeli bu 16 GB RAM'li
+geliştirme makinesinde güvenli boş bellek bırakmadığı için manuel test GPU'lu
+ortamda yapılmalıdır.

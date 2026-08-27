@@ -571,6 +571,7 @@ def build_retrieval_runtime(
                 "qdrant_collection",
                 DEFAULT_COLLECTION_NAME,
             ),
+            vector_name=getattr(settings, "qdrant_vector_name", None),
             embedding_model=passage_metadata.model_name,
             embedding_dimension=passage_metadata.dimension,
             embedding_model_revision=passage_metadata.model_revision,

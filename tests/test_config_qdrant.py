@@ -30,6 +30,14 @@ def test_qdrant_server_url_behavior_is_preserved(
     assert configured.qdrant_path is None
 
 
+def test_named_qdrant_vector_is_read_from_environment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("KARAYOL_QDRANT_VECTOR_NAME", "dense")
+
+    assert Settings().qdrant_vector_name == "dense"
+
+
 def test_qdrant_url_and_embedded_path_are_mutually_exclusive(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

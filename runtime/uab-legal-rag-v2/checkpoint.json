@@ -1,0 +1,17 @@
+{
+  "pipeline_version": "2.0.0",
+  "collection_name": "uab_legal_leaf_v2",
+  "leaf_fingerprint": "dd7e865e815fcb9605adba8dd88eaf7828a02d596c5e23d2b525e4a0f0ca7846",
+  "total_leaf_count": 30972,
+  "embedding_model": "jinaai/jina-embeddings-v3",
+  "embedding_model_revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+  "embedding_code_revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+  "devices": [
+    "cuda:0",
+    "cuda:1"
+  ],
+  "status": "completed",
+  "completed_count": 30972,
+  "remaining_count": 0,
+  "updated_at": "2026-08-27T08:06:50.001856+00:00"
+}

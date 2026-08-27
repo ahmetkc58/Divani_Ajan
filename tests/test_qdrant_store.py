@@ -233,6 +233,41 @@ def test_ensure_collection_creates_cosine_1024_schema_and_plan_indexes() -> None
     assert len(client.index_calls) == len(PAYLOAD_INDEXES)
 
 
+def test_named_vector_schema_is_selected_for_upsert_and_query() -> None:
+    client = FakeQdrantClient()
+    chunk = _approved_chunk()
+    store = _bind(_store(client, vector_name="dense"), chunk)
+
+    store.upsert([chunk], [[0.125] * 1024])
+    point = client.upsert_calls[0]["points"][0]
+    assert list(_value(point, "vector")) == ["dense"]
+
+    client.query_results = [
+        SimpleNamespace(score=0.9, payload=store.build_payload(chunk))
+    ]
+    hits = store.dense_search([0.125] * 1024, domain=chunk.domain, limit=1)
+
+    assert client.query_calls[0]["using"] == "dense"
+    assert [hit.chunk.chunk_id for hit in hits] == [chunk.chunk_id]
+
+
+def test_named_vector_schema_requires_explicit_existing_name() -> None:
+    client = FakeQdrantClient()
+    client.collections["legal_chunks_v1"] = SimpleNamespace(
+        config=SimpleNamespace(
+            params=SimpleNamespace(
+                vectors={"dense": SimpleNamespace(size=1024, distance="Cosine")}
+            )
+        ),
+        payload_schema={},
+    )
+
+    with pytest.raises(SchemaMismatch, match="KARAYOL_QDRANT_VECTOR_NAME"):
+        _store(client).ensure_collection()
+    with pytest.raises(SchemaMismatch, match="bulunamadı"):
+        _store(client, vector_name="other").ensure_collection()
+
+
 @pytest.mark.parametrize(
     ("size", "distance", "message"),
     [(768, "Cosine", "vektör boyutu"), (1024, "Dot", "uzaklık metriği")],

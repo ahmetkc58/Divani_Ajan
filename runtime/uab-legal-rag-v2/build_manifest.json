@@ -1,0 +1,44 @@
+{
+  "pipeline_version": "2.0.0",
+  "generated_at": "2026-08-27T08:06:50.127265+00:00",
+  "source_file": "uab_ministry_archive_snapshot.json",
+  "source_sha256": "f498a34e8f39f93849fa63232e899592f422efddce1d42808113564db8c6a1ad",
+  "source_document_count": 501,
+  "processed_document_count": 501,
+  "parent_count": 6234,
+  "leaf_count": 30972,
+  "reference_candidate_count": 1819,
+  "fallback_leaf_count": 1278,
+  "embedding_model": "jinaai/jina-embeddings-v3",
+  "embedding_model_revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+  "embedding_code_revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+  "embedding_dimension": 1024,
+  "embedding_task": "retrieval.passage",
+  "collection_name": "uab_legal_leaf_v2",
+  "qdrant": {
+    "indexed_count": 30972,
+    "qdrant_path": "/kaggle/working/uab_legal_rag_v2/qdrant",
+    "checkpoint": "/kaggle/working/uab_legal_rag_v2/checkpoint.json",
+    "resumed": false
+  },
+  "legal_reliance_allowed": false,
+  "reference_edges_are_verified": false,
+  "artifacts": {
+    "parents": {
+      "file": "parents.jsonl",
+      "sha256": "f9a6f0e32d5d45cf6832be88bf8413c9ecec31cf31deccd1a1f28cf6139d727a"
+    },
+    "leaves": {
+      "file": "leaves.jsonl",
+      "sha256": "43151f08d528b60956d6da21861caa40cf22bcb413c62a27493551a8fbd42e2f"
+    },
+    "reference_edges": {
+      "file": "reference_edges_candidates.jsonl",
+      "sha256": "4dea8dd590f59146d0d181c779827a956d8e73b47d82a495e805b0db7427c3ef"
+    },
+    "bm25_vocabulary": {
+      "file": "bm25_vocabulary.json",
+      "sha256": "c5be1eea7fb8d1f0c91ad46723b0b54da9b4b574917b8869d62b406ca4d28424"
+    }
+  }
+}

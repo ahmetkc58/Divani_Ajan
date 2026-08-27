@@ -117,7 +117,7 @@ class _CompatFilter:
 @dataclass(frozen=True, slots=True)
 class _CompatPointStruct:
     id: str
-    vector: list[float]
+    vector: Any
     payload: dict[str, Any]
 
 
@@ -152,6 +152,7 @@ class QdrantStore:
         timeout: float = 10.0,
         prefer_grpc: bool = False,
         collection_name: str = DEFAULT_COLLECTION_NAME,
+        vector_name: str | None = None,
         embedding_model: str = DEFAULT_EMBEDDING_MODEL,
         embedding_dimension: int = DEFAULT_EMBEDDING_DIMENSION,
         embedding_model_revision: str | None = None,
@@ -163,6 +164,8 @@ class QdrantStore:
     ) -> None:
         if not collection_name.strip():
             raise ValueError("collection_name boş olamaz.")
+        if vector_name is not None and not vector_name.strip():
+            raise ValueError("vector_name boş bir değer olamaz.")
         if embedding_dimension < 1:
             raise ValueError("embedding_dimension pozitif olmalıdır.")
         if not all(
@@ -204,6 +207,7 @@ class QdrantStore:
         self.timeout = timeout
         self.prefer_grpc = prefer_grpc
         self.collection_name = collection_name
+        self.vector_name = vector_name.strip() if vector_name is not None else None
         self.embedding_model = embedding_model
         self.embedding_dimension = embedding_dimension
         self.embedding_model_revision = (
@@ -575,6 +579,9 @@ class QdrantStore:
 
         try:
             if hasattr(client, "query_points"):
+                query_kwargs: dict[str, Any] = {}
+                if self.vector_name is not None:
+                    query_kwargs["using"] = self.vector_name
                 response = client.query_points(
                     collection_name=self.collection_name,
                     query=vector,
@@ -582,14 +589,18 @@ class QdrantStore:
                     limit=limit,
                     with_payload=True,
                     with_vectors=False,
+                    **query_kwargs,
                 )
                 points = self._read_value(response, "points")
                 if points is None:
                     points = response
             elif hasattr(client, "search"):
+                query_vector: Any = vector
+                if self.vector_name is not None:
+                    query_vector = (self.vector_name, vector)
                 points = client.search(
                     collection_name=self.collection_name,
-                    query_vector=vector,
+                    query_vector=query_vector,
                     query_filter=query_filter,
                     limit=limit,
                     with_payload=True,
@@ -696,14 +707,29 @@ class QdrantStore:
                 f"{self.collection_name} koleksiyonunda vektör şeması bulunamadı."
             )
 
-        if isinstance(vectors, Mapping) and not {
+        is_named_schema = isinstance(vectors, Mapping) and not {
             "size",
             "distance",
-        }.issubset(vectors):
-            names = ", ".join(str(name) for name in vectors) or "(boş)"
+        }.issubset(vectors)
+        if is_named_schema:
+            if self.vector_name is None:
+                names = ", ".join(str(name) for name in vectors) or "(boş)"
+                raise SchemaMismatch(
+                    f"{self.collection_name} adlandırılmış vektör şeması kullanıyor; "
+                    f"KARAYOL_QDRANT_VECTOR_NAME ayarlanmalıdır: {names}."
+                )
+            selected = vectors.get(self.vector_name)
+            if selected is None:
+                names = ", ".join(str(name) for name in vectors) or "(boş)"
+                raise SchemaMismatch(
+                    f"{self.collection_name} içinde {self.vector_name!r} adlı vektör "
+                    f"bulunamadı; mevcut: {names}."
+                )
+            vectors = selected
+        elif self.vector_name is not None:
             raise SchemaMismatch(
-                f"{self.collection_name} adlandırılmış/beklenmeyen vektör şeması "
-                f"kullanıyor: {names}."
+                f"{self.collection_name} adsız vektör şeması kullanıyor; "
+                f"vector_name={self.vector_name!r} seçilemez."
             )
 
         size = self._read_value(vectors, "size")
@@ -794,14 +820,16 @@ class QdrantStore:
     def _vector_params(self) -> Any:
         models = self._request_models()
         if models is None:
-            return _CompatVectorParams(
+            params: Any = _CompatVectorParams(
                 size=self.embedding_dimension,
                 distance=DEFAULT_DISTANCE,
             )
-        return models.VectorParams(
-            size=self.embedding_dimension,
-            distance=models.Distance.COSINE,
-        )
+        else:
+            params = models.VectorParams(
+                size=self.embedding_dimension,
+                distance=models.Distance.COSINE,
+            )
+        return {self.vector_name: params} if self.vector_name is not None else params
 
     def _payload_schema_type(self, expected_type: str) -> Any:
         models = self._request_models()
@@ -813,10 +841,13 @@ class QdrantStore:
     def _point_struct(
         self, *, point_id: str, vector: list[float], payload: dict[str, Any]
     ) -> Any:
+        point_vector: Any = (
+            {self.vector_name: vector} if self.vector_name is not None else vector
+        )
         models = self._request_models()
         if models is None:
-            return _CompatPointStruct(id=point_id, vector=vector, payload=payload)
-        return models.PointStruct(id=point_id, vector=vector, payload=payload)
+            return _CompatPointStruct(id=point_id, vector=point_vector, payload=payload)
+        return models.PointStruct(id=point_id, vector=point_vector, payload=payload)
 
     def _active_filter(self, domain: str, binding: CorpusBinding) -> Any:
         values = self._trust_filter_values()

@@ -217,6 +217,9 @@ class Settings:
             or "legal_chunks_v1"
         )
     )
+    qdrant_vector_name: str | None = field(
+        default_factory=lambda: _environment("KARAYOL_QDRANT_VECTOR_NAME")
+    )
     qdrant_timeout_seconds: float = field(
         default_factory=lambda: _environment_float(
             "KARAYOL_QDRANT_TIMEOUT_SECONDS", 10.0
