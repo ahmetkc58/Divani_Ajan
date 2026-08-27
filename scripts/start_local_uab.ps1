@@ -8,6 +8,18 @@ param(
 $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
+$dotenvPath = Join-Path $projectRoot ".env"
+if (Test-Path -LiteralPath $dotenvPath) {
+    Get-Content -LiteralPath $dotenvPath | ForEach-Object {
+        $line = $_.Trim()
+        if ($line -and -not $line.StartsWith("#") -and $line.Contains("=")) {
+            $name, $value = $line.Split("=", 2)
+            [Environment]::SetEnvironmentVariable(
+                $name.Trim(), $value.Trim(), "Process"
+            )
+        }
+    }
+}
 if ([string]::IsNullOrWhiteSpace($PythonPath)) {
     $pythonCandidates = @(
         (Join-Path $projectRoot ".venv\Scripts\python.exe"),
@@ -39,6 +51,7 @@ $env:KARAYOL_SNAPSHOT_RELEVANCE_POLICY = "lexical_overlap"
 $env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY = "true"
 $env:KARAYOL_EMBEDDING_DEVICE = $EmbeddingDevice
 $env:KARAYOL_CORS_ALLOWED_ORIGINS = "http://127.0.0.1:3000,http://localhost:3000"
+$env:KARAYOL_EXTERNAL_RETRIEVAL_ENABLED = "true"
 Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
 
 if ($DisableLlm) {

@@ -141,6 +141,7 @@ class AnalysisAwareTextRetrieverAdapter:
             "domain_resolver",
             "channel_top_n",
             "rrf_k",
+            "federated_readiness",
         ):
             if hasattr(base_retriever, name):
                 setattr(self, name, getattr(base_retriever, name))
@@ -547,6 +548,7 @@ class AnalysisAwareDeterministicReranker:
             "domain_resolver",
             "channel_top_n",
             "rrf_k",
+            "federated_readiness",
         ):
             if hasattr(base_retriever, name):
                 setattr(self, name, getattr(base_retriever, name))

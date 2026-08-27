@@ -225,6 +225,44 @@ class Settings:
             "KARAYOL_QDRANT_TIMEOUT_SECONDS", 10.0
         )
     )
+    external_retrieval_enabled: bool = field(
+        default_factory=lambda: _environment_bool(
+            "KARAYOL_EXTERNAL_RETRIEVAL_ENABLED", False
+        )
+    )
+    external_qdrant_url: str = field(
+        default_factory=lambda: _environment(
+            "EVREN_QDRANT_URL", "https://evren-vektor.ssyz.org.tr"
+        )
+        or "https://evren-vektor.ssyz.org.tr"
+    )
+    external_qdrant_prefix: str | None = field(
+        default_factory=lambda: _environment("EVREN_QDRANT_TEAM_PREFIX")
+    )
+    external_qdrant_api_key: str | None = field(
+        default_factory=lambda: _environment("EVREN_QDRANT_API_KEY"), repr=False
+    )
+    external_qdrant_collection: str = field(
+        default_factory=lambda: _environment(
+            "KARAYOL_EXTERNAL_QDRANT_COLLECTION", "legal_chunks_direct"
+        )
+        or "legal_chunks_direct"
+    )
+    external_corpus_fingerprint: str | None = field(
+        default_factory=lambda: _environment("KARAYOL_EXTERNAL_CORPUS_FINGERPRINT")
+    )
+    external_embedding_base_url: str | None = field(
+        default_factory=lambda: _environment("EVREN_EMBEDDING_BASE_URL")
+    )
+    external_embedding_api_key: str | None = field(
+        default_factory=lambda: _environment("EVREN_LLM_API_KEY"), repr=False
+    )
+    external_embedding_model: str = field(
+        default_factory=lambda: _environment(
+            "EVREN_EMBEDDING_MODEL", "bge-m3-embed"
+        )
+        or "bge-m3-embed"
+    )
     hybrid_candidate_top_k: int = field(
         default_factory=lambda: _environment_int("KARAYOL_HYBRID_CANDIDATE_TOP_K", 20)
     )
@@ -345,6 +383,25 @@ class Settings:
             raise ValueError(
                 "QDRANT_URL ve KARAYOL_QDRANT_PATH aynı anda kullanılamaz."
             )
+        if self.external_retrieval_enabled:
+            missing = [
+                name
+                for name, value in (
+                    ("EVREN_QDRANT_TEAM_PREFIX", self.external_qdrant_prefix),
+                    ("EVREN_QDRANT_API_KEY", self.external_qdrant_api_key),
+                    (
+                        "KARAYOL_EXTERNAL_CORPUS_FINGERPRINT",
+                        self.external_corpus_fingerprint,
+                    ),
+                    ("EVREN_EMBEDDING_BASE_URL", self.external_embedding_base_url),
+                    ("EVREN_LLM_API_KEY", self.external_embedding_api_key),
+                )
+                if not value
+            ]
+            if missing:
+                raise ValueError(
+                    "Dış korpus retrieval yapılandırması eksik: " + ", ".join(missing)
+                )
         if self.qdrant_path is not None and not self.qdrant_path.is_absolute():
             object.__setattr__(
                 self,

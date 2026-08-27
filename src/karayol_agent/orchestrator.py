@@ -41,6 +41,11 @@ from karayol_agent.retrieval.contracts import (
     competition_snapshot_chunk_blockers,
 )
 from karayol_agent.retrieval.hybrid import HybridRetriever
+from karayol_agent.retrieval.federated import (
+    EvrenQueryEmbeddingClient,
+    FederatedAnalysisRetriever,
+    RemoteExternalDenseRetriever,
+)
 from karayol_agent.retrieval.qdrant_store import QdrantUnavailable, SchemaMismatch
 from karayol_agent.retrieval.runtime import (
     ArchiveWideDomainResolver,
@@ -234,6 +239,31 @@ class EvrakOrchestrator:
             rrf_k=self.settings.rrf_k,
         )
         if corpus_mode == CorpusMode.COMPETITION_SNAPSHOT:
+            if self.settings.external_retrieval_enabled:
+                external = RemoteExternalDenseRetriever(
+                    embedding_client=EvrenQueryEmbeddingClient(
+                        base_url=str(self.settings.external_embedding_base_url),
+                        api_key=str(self.settings.external_embedding_api_key),
+                        model=self.settings.external_embedding_model,
+                    ),
+                    qdrant_url=self.settings.external_qdrant_url,
+                    qdrant_prefix=str(self.settings.external_qdrant_prefix),
+                    qdrant_api_key=str(self.settings.external_qdrant_api_key),
+                    corpus_fingerprint=str(
+                        self.settings.external_corpus_fingerprint
+                    ),
+                    collection_name=self.settings.external_qdrant_collection,
+                    timeout=max(self.settings.qdrant_timeout_seconds, 60.0),
+                )
+                base_retriever = FederatedAnalysisRetriever(
+                    base_retriever,
+                    external,
+                    channel_top_n=max(
+                        self.settings.hybrid_candidate_top_k,
+                        self.settings.relevance_candidate_top_k,
+                    ),
+                    rrf_k=self.settings.rrf_k,
+                )
             return self._apply_snapshot_relevance(base_retriever)
         return base_retriever
 
@@ -273,6 +303,22 @@ class EvrakOrchestrator:
                 **disclosure,
                 **decision_disclosure,
             }
+
+        federated_readiness = getattr(
+            self.retriever, "federated_readiness", None
+        )
+        if callable(federated_readiness):
+            try:
+                report = federated_readiness()
+            except (QdrantUnavailable, SchemaMismatch, OSError, ValueError) as exc:
+                return {
+                    "ready": False,
+                    "retrieval_mode": "hybrid_federated",
+                    "detail": str(exc),
+                    **disclosure,
+                    **decision_disclosure,
+                }
+            return {**report, **disclosure, **decision_disclosure}
 
         vector_store = getattr(self.retriever, "vector_store", None)
         if vector_store is None or not hasattr(vector_store, "validate_readiness"):
