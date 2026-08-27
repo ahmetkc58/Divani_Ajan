@@ -6,7 +6,7 @@ import json
 import re
 from collections import Counter
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from hashlib import sha256
 
 from karayol_agent.schemas import LegislationChunk
@@ -26,6 +26,16 @@ class CorpusBinding:
     fingerprint: str
     chunk_ids: tuple[str, ...]
     chunk_fingerprints: tuple[tuple[str, str], ...]
+    # Cached lookup structures built once in __post_init__. ``upsert``/
+    # ``dense_search`` call ``expected_chunk_fingerprint``/``allowed_chunk_ids``
+    # once per chunk; rebuilding a dict/frozenset from ``chunk_fingerprints``/
+    # ``chunk_ids`` on every call made large-corpus indexing effectively O(n^2).
+    _chunk_fingerprint_index: dict[str, str] = field(
+        default_factory=dict, repr=False, compare=False
+    )
+    _allowed_chunk_ids_cache: frozenset[str] = field(
+        default_factory=frozenset, repr=False, compare=False
+    )
 
     def __post_init__(self) -> None:
         normalized_fingerprint = self.fingerprint.strip().lower()
@@ -79,17 +89,21 @@ class CorpusBinding:
             "chunk_fingerprints",
             tuple(normalized_chunk_fingerprints),
         )
+        object.__setattr__(
+            self, "_chunk_fingerprint_index", dict(normalized_chunk_fingerprints)
+        )
+        object.__setattr__(self, "_allowed_chunk_ids_cache", frozenset(normalized_ids))
 
     @property
     def allowed_chunk_ids(self) -> frozenset[str]:
         """Return an immutable local allow-list for query-result validation."""
 
-        return frozenset(self.chunk_ids)
+        return self._allowed_chunk_ids_cache
 
     def expected_chunk_fingerprint(self, chunk_id: str) -> str | None:
         """Return the bound canonical digest for ``chunk_id``, if it exists."""
 
-        return dict(self.chunk_fingerprints).get(chunk_id)
+        return self._chunk_fingerprint_index.get(chunk_id)
 
 
 def canonical_chunk_json(chunk: LegislationChunk) -> str:
