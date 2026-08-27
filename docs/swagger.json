@@ -246,6 +246,58 @@
         }
       }
     },
+    "/api/v1/processes/{document_id}/response-strategy": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Yanıt stratejisi seç",
+        "operationId": "chooseResponseStrategy",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponseStrategyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/processes/{document_id}/approval": {
       "post": {
         "tags": [
@@ -1496,6 +1548,34 @@
               }
             ]
           },
+          "response_strategy_options": {
+            "items": {
+              "$ref": "#/components/schemas/ResponseStrategyOption"
+            },
+            "type": "array",
+            "title": "Response Strategy Options"
+          },
+          "selected_response_strategy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseStrategyOption"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_response_custom_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Response Custom Text"
+          },
           "draft": {
             "anyOf": [
               {
@@ -1561,6 +1641,7 @@
           "eksik_bilgi_bekleniyor",
           "yazi_turu_seciliyor",
           "birim_yonlendiriliyor",
+          "yanit_stratejisi_bekleniyor",
           "taslak_hazirlaniyor",
           "uygunluk_kontrolunde",
           "kullanici_onayi_bekleniyor",
@@ -1568,6 +1649,71 @@
           "hata"
         ],
         "title": "ProcessStatus"
+      },
+      "ResponseStrategyOption": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Option Id"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 600,
+            "minLength": 1,
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "option_id",
+          "label",
+          "description"
+        ],
+        "title": "ResponseStrategyOption",
+        "description": "One candidate reply stance offered to the user before drafting."
+      },
+      "ResponseStrategyRequest": {
+        "properties": {
+          "option_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Option Id"
+          },
+          "custom_text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Text"
+          },
+          "compile_pdf": {
+            "type": "boolean",
+            "title": "Compile Pdf",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "ResponseStrategyRequest"
       },
       "RetrievalChannelContribution": {
         "properties": {

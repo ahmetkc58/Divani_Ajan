@@ -20,6 +20,7 @@ class ProcessStatus(StrEnum):
     WAITING_FOR_INFO = "eksik_bilgi_bekleniyor"
     SELECTING_TEMPLATE = "yazi_turu_seciliyor"
     ROUTING = "birim_yonlendiriliyor"
+    WAITING_FOR_RESPONSE_STRATEGY = "yanit_stratejisi_bekleniyor"
     DRAFTING = "taslak_hazirlaniyor"
     COMPLIANCE = "uygunluk_kontrolunde"
     WAITING_FOR_APPROVAL = "kullanici_onayi_bekleniyor"
@@ -309,6 +310,14 @@ class UnitRecord(BaseModel):
     jurisdictions: list[str] = Field(default_factory=list)
 
 
+class ResponseStrategyOption(BaseModel):
+    """One candidate reply stance offered to the user before drafting."""
+
+    option_id: str = Field(min_length=1, max_length=40)
+    label: str = Field(min_length=1, max_length=160)
+    description: str = Field(min_length=1, max_length=600)
+
+
 class DraftPayload(BaseModel):
     template_id: str
     institution_name: ExtractedField
@@ -382,6 +391,11 @@ class ProcessState(BaseModel):
     verified_references: list[VerifiedReference] = Field(default_factory=list)
     template_decision: TemplateDecision | None = None
     routing: RoutingRecommendation | None = None
+    response_strategy_options: list[ResponseStrategyOption] = Field(
+        default_factory=list
+    )
+    selected_response_strategy: ResponseStrategyOption | None = None
+    selected_response_custom_text: str | None = None
     draft: DraftPayload | None = None
     artifact: ArtifactResult | None = None
     compliance: ComplianceResult | None = None
@@ -409,3 +423,9 @@ class InformationUpdateRequest(BaseModel):
 
 class ApprovalRequest(BaseModel):
     approved_by: str = Field(min_length=2, max_length=120)
+
+
+class ResponseStrategyRequest(BaseModel):
+    option_id: str | None = Field(default=None, max_length=40)
+    custom_text: str | None = Field(default=None, max_length=4000)
+    compile_pdf: bool = False

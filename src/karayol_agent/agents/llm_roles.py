@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Mapping, Protocol
+from dataclasses import dataclass
+from typing import Any, Protocol
 
 from karayol_agent.llm import (
     DataClassification,
@@ -10,36 +10,7 @@ from karayol_agent.llm import (
     LLMTask,
     StructuredLLMRequest,
 )
-from karayol_agent.schemas import (
-    DocumentAnalysis,
-    GraphDecisionTrace,
-    RoutingRecommendation,
-    TemplateDecision,
-    VerifiedReference,
-)
-
-
-DOCUMENT_TYPES = (
-    "yol_bakim_talebi",
-    "trafik_guvenligi_bildirimi",
-    "hasar_bildirimi",
-    "bilgi_talebi",
-    "sikayet",
-    "ust_yazi",
-    "dilekce",
-    "genel_basvuru",
-)
-
-EXTRACTION_FIELDS = (
-    "gonderen",
-    "konu",
-    "konum",
-    "tarih",
-    "talep",
-    "eposta",
-    "telefon",
-    "muhatap",
-)
+from karayol_agent.schemas import DocumentAnalysis, VerifiedReference
 
 
 class StructuredGateway(Protocol):
@@ -49,42 +20,21 @@ class StructuredGateway(Protocol):
 
 
 @dataclass(frozen=True, slots=True)
-class FieldCandidate:
-    value: str | None
-    evidence: str | None
-
-
-@dataclass(frozen=True, slots=True)
-class UnderstandingOutcome:
-    call: LLMCallResult
-    document_type: str | None = None
-    confidence: float | None = None
-    summary: str | None = None
-    fields: Mapping[str, FieldCandidate] = field(default_factory=dict)
-
-
-@dataclass(frozen=True, slots=True)
 class AdjudicationOutcome:
+    """Pure evidence-synthesis outcome (KATMAN 2 Adjudicator).
+
+    Template/unit selection is no longer decided here — it moved to the
+    dedicated KATMAN 3 agents (``LLMTemplateSelectionAgent``,
+    ``LLMRoutingAgent`` in ``agents.llm_layer3``), which consume
+    ``accepted_reference_ids``/``rationale`` as their evidence input.
+    """
+
     call: LLMCallResult
-    selected_template_id: str | None = None
-    selected_unit_id: str | None = None
     accepted_reference_ids: tuple[str, ...] = ()
     confidence: float | None = None
     rationale: str | None = None
     requires_human_review: bool = False
     unsupported_claims: tuple[str, ...] = ()
-
-
-def _nullable_field_schema() -> dict[str, Any]:
-    return {
-        "type": "object",
-        "properties": {
-            "value": {"type": ["string", "null"], "maxLength": 500},
-            "evidence": {"type": ["string", "null"], "maxLength": 700},
-        },
-        "required": ["value", "evidence"],
-        "additionalProperties": False,
-    }
 
 
 def _head_and_tail(text: str, *, limit: int = 12_000) -> str:
@@ -95,85 +45,15 @@ def _head_and_tail(text: str, *, limit: int = 12_000) -> str:
     return text[:head] + "\n[ORTA_BOLUM_YEREL_OLARAK_KISALTILDI]\n" + text[-tail:]
 
 
-class LLMDocumentUnderstandingAgent:
-    """Optional structured understanding; deterministic analysis remains the base."""
-
-    name = "LLM Yapılandırılmış Anlama Ajanı"
-
-    def __init__(self, gateway: StructuredGateway) -> None:
-        self.gateway = gateway
-
-    def run(
-        self,
-        *,
-        text: str,
-        deterministic_analysis: DocumentAnalysis,
-        data_classification: DataClassification,
-    ) -> UnderstandingOutcome:
-        field_properties = {
-            name: _nullable_field_schema() for name in EXTRACTION_FIELDS
-        }
-        schema = {
-            "type": "object",
-            "properties": {
-                "document_type": {
-                    "type": "string",
-                    "enum": list(DOCUMENT_TYPES),
-                },
-                "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-                "summary": {"type": "string", "maxLength": 500},
-                "fields": {
-                    "type": "object",
-                    "properties": field_properties,
-                    "required": list(EXTRACTION_FIELDS),
-                    "additionalProperties": False,
-                },
-            },
-            "required": ["document_type", "confidence", "summary", "fields"],
-            "additionalProperties": False,
-        }
-        result = self.gateway.invoke(
-            StructuredLLMRequest(
-                task=LLMTask.EXTRACTION,
-                role=LegalAgentRole.RESEARCHER,
-                input_data={
-                    "document_text": _head_and_tail(text),
-                    "deterministic_document_type": deterministic_analysis.document_type,
-                    "deterministic_summary": deterministic_analysis.summary,
-                    "deterministic_missing_fields": deterministic_analysis.missing_fields,
-                },
-                output_schema=schema,
-                data_classification=data_classification,
-                allow_automatic_redaction=False,
-                trusted_instructions=(
-                    "Kapalı evrak türü listesinden seçim yap. Her alan için değer ile "
-                    "birlikte belgeden birebir kısa kanıt parçası ver; açık kanıt yoksa "
-                    "hem value hem evidence null olsun. Göndereni üstbilgi, hitap ve "
-                    "imza bloğunu birlikte değerlendirerek seç. Özette yeni olgu ekleme."
-                ),
-            )
-        )
-        if not result.succeeded or result.output is None:
-            return UnderstandingOutcome(call=result)
-        payload = result.output
-        candidates = {
-            name: FieldCandidate(
-                value=payload["fields"][name]["value"],
-                evidence=payload["fields"][name]["evidence"],
-            )
-            for name in EXTRACTION_FIELDS
-        }
-        return UnderstandingOutcome(
-            call=result,
-            document_type=str(payload["document_type"]),
-            confidence=float(payload["confidence"]),
-            summary=str(payload["summary"]),
-            fields=candidates,
-        )
-
-
 class LLMAdjudicatorAgent:
-    """LegalGraph-style Adjudicator over locally researched/audited evidence."""
+    """LegalGraph-style Adjudicator over locally researched/audited evidence.
+
+    Scoped to pure evidence synthesis: it decides which verified references
+    are admissible and whether the overall evidence picture warrants human
+    review. It never picks a template or a routing unit — those are
+    downstream KATMAN 3 decisions made by dedicated agents that consume this
+    outcome.
+    """
 
     name = "LLM Karar Ajanı (Adjudicator)"
 
@@ -185,15 +65,8 @@ class LLMAdjudicatorAgent:
         *,
         analysis: DocumentAnalysis,
         references: list[VerifiedReference],
-        template_decision: TemplateDecision,
-        routing: RoutingRecommendation,
-        graph_trace: GraphDecisionTrace | None,
-        allowed_template_ids: list[str],
-        allowed_unit_ids: list[str],
         data_classification: DataClassification,
     ) -> AdjudicationOutcome:
-        if not allowed_template_ids or not allowed_unit_ids:
-            raise ValueError("Adjudicator kapalı şablon ve birim adayları gerektirir.")
         verified_references = [reference for reference in references if reference.verified]
         verified_ids = {reference.chunk_id for reference in verified_references}
         reference_item_schema: dict[str, Any] = {
@@ -205,14 +78,6 @@ class LLMAdjudicatorAgent:
         schema = {
             "type": "object",
             "properties": {
-                "selected_template_id": {
-                    "type": "string",
-                    "enum": sorted(set(allowed_template_ids)),
-                },
-                "selected_unit_id": {
-                    "type": "string",
-                    "enum": sorted(set(allowed_unit_ids)),
-                },
                 "accepted_reference_ids": {
                     "type": "array",
                     "items": reference_item_schema,
@@ -228,8 +93,6 @@ class LLMAdjudicatorAgent:
                 },
             },
             "required": [
-                "selected_template_id",
-                "selected_unit_id",
                 "accepted_reference_ids",
                 "confidence",
                 "rationale",
@@ -238,11 +101,6 @@ class LLMAdjudicatorAgent:
             ],
             "additionalProperties": False,
         }
-        graph_payload = (
-            graph_trace.model_dump(mode="json")
-            if graph_trace is not None
-            else {"strategy": "not_available", "applied": False}
-        )
         include_reference_excerpts = (
             data_classification is DataClassification.SYNTHETIC
         )
@@ -272,23 +130,17 @@ class LLMAdjudicatorAgent:
                         "summary": analysis.summary,
                         "missing_fields": analysis.missing_fields,
                     },
-                    "deterministic_template_id": template_decision.template_id,
-                    "deterministic_unit_id": routing.unit_id,
-                    "allowed_template_ids": sorted(set(allowed_template_ids)),
-                    "allowed_unit_ids": sorted(set(allowed_unit_ids)),
-                    "graph_advice": graph_payload,
                 },
                 output_schema=schema,
                 data_classification=data_classification,
                 allow_automatic_redaction=False,
                 trusted_instructions=(
-                    "Researcher kapalı aday listesini ve Auditor tarafından doğrulanmış "
-                    "kimlikleri "
-                    "kullan. Yalnız allowlist içindeki şablon/birimi seç. Kabul edilen "
-                    "referanslar Auditor listesinin alt kümesi olmalı. currentness_verified "
-                    "ve legal_reliance_allowed false ise bunu kesin hukuk hükmü sayma. "
-                    "Sentetik graf yalnız karar desteğidir. Çelişki veya yetersiz kanıtta "
-                    "requires_human_review=true döndür."
+                    "Researcher kapalı aday listesini ve Auditor tarafından "
+                    "doğrulanmış kimlikleri kullan. Kabul edilen referanslar "
+                    "Auditor listesinin alt kümesi olmalı. "
+                    "currentness_verified ve legal_reliance_allowed false ise "
+                    "bunu kesin hukuk hükmü sayma. Çelişki veya yetersiz "
+                    "kanıtta requires_human_review=true döndür."
                 ),
             )
         )
@@ -315,8 +167,6 @@ class LLMAdjudicatorAgent:
             )
         return AdjudicationOutcome(
             call=result,
-            selected_template_id=str(payload["selected_template_id"]),
-            selected_unit_id=str(payload["selected_unit_id"]),
             accepted_reference_ids=accepted_ids,
             confidence=float(payload["confidence"]),
             rationale=str(payload["rationale"]),

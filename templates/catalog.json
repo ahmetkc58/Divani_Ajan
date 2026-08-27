@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "note": "LLM3 (şablon seçimi) için kısa metadata kataloğu — ham LaTeX içermez. Her template_id, templates/<id>/template.tex + schema.json ile birebir eşleşir.",
+  "entries": [
+    {
+      "template_id": "ust_yazi_v1",
+      "display_name": "Üst Yazı",
+      "when_to_use": "Kurumun kendi bağlı/alt birimine (kurum içi) resmi bildirim, talimat veya görevlendirme göndermesi gerektiğinde kullanılır (ör. yol bakım talebi, trafik güvenliği bildirimi, hasar bildirimi gibi vatandaş başvurularının ilgili birime iş emri olarak iletilmesi).",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "cevap_yazisi_v1",
+      "display_name": "Cevap Yazısı",
+      "when_to_use": "Bir vatandaşın veya dış başvuru sahibinin dilekçe, şikayet, bilgi talebi veya genel başvurusuna resmi yanıt verilmesi gerektiğinde kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "bilgilendirme_yazisi_v1",
+      "display_name": "Bilgilendirme Yazısı",
+      "when_to_use": "Bir tarafa (kurum içi veya dışı) doğrudan bir talep içermeyen, yalnızca bilgi vermek amacıyla resmi yazışma yapılması gerektiğinde kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "eksik_bilgi_talebi_v1",
+      "display_name": "Eksik Bilgi Talebi",
+      "when_to_use": "Başvuruda zorunlu bilgi veya belgelerden biri ya da birden fazlası eksik olduğunda, başvurunun işleme alınabilmesi için eksiklerin tamamlanmasının istendiği durumlarda kullanılır. Eksik zorunlu alan varken bu şablon dışında bir şablon seçilmemelidir.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    }
+  ]
+}

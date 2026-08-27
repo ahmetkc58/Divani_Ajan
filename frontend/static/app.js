@@ -64,6 +64,7 @@ const statusLabels = {
   eksik_bilgi_bekleniyor: "Eksik bilgi bekleniyor",
   yazi_turu_seciliyor: "Yazı türü seçiliyor",
   birim_yonlendiriliyor: "Birim belirleniyor",
+  yanit_stratejisi_bekleniyor: "Yanıt stratejisi bekleniyor",
   taslak_hazirlaniyor: "Taslak hazırlanıyor",
   uygunluk_kontrolunde: "Uygunluk kontrolünde",
   kullanici_onayi_bekleniyor: "Kullanıcı onayı bekleniyor",
@@ -72,8 +73,13 @@ const statusLabels = {
 };
 
 const llmRoleLabels = {
-  document_understanding: "LLM Yapılandırılmış Anlama Ajanı",
-  adjudicator: "LLM Karar Ajanı (Adjudicator)"
+  llm1_classification: "LLM1 — Sınıflandırma Ajanı",
+  llm2_required_data: "LLM2 — Eksik Veri Ajanı",
+  adjudicator: "LLM Karar Ajanı (Adjudicator)",
+  llm3_template_selection: "LLM3 — Şablon Seçim Ajanı",
+  llm5_routing: "LLM5 — Yönlendirme Ajanı",
+  llm6_response_strategy: "LLM6 — Yanıt Stratejisi Ajanı",
+  llm4_template_fill: "LLM4 — Şablon Doldurma Ajanı"
 };
 
 const llmStatusLabels = {
@@ -381,6 +387,19 @@ function renderNextAction(state) {
     return `<div class="action-card"><h4>Eksik bilgileri tamamlayın</h4><p>${escapeHtml(state.next_step)}</p><form class="field-form" id="missing-information-form">${controls}<div class="field-form-actions"><button class="mini-button is-secondary" id="fill-sample-values" type="button">Örnek değerleri doldur</button><button class="mini-button" type="submit">Bilgileri kaydet ve taslağı yenile</button></div></form></div>`;
   }
 
+  const strategyOptions = state.response_strategy_options || [];
+  if (
+    strategyOptions.length &&
+    !state.selected_response_strategy &&
+    !state.selected_response_custom_text
+  ) {
+    const optionControls = strategyOptions.map((option, index) => {
+      const safeId = escapeHtml(option.option_id);
+      return `<div class="field-control"><label><input type="radio" name="response-strategy-option" value="${safeId}" ${index === 0 ? "checked" : ""} /> <strong>${escapeHtml(option.label)}</strong> — ${escapeHtml(option.description)}</label></div>`;
+    }).join("");
+    return `<div class="action-card"><h4>Yanıt stratejisini seçin</h4><p>${escapeHtml(state.next_step)}</p><form class="field-form" id="response-strategy-form">${optionControls}<div class="field-control"><label for="response-strategy-custom-text">Kendi metniniz (yalnız "kendim yazarım" seçiliyken kullanılır)</label><textarea id="response-strategy-custom-text" rows="3" placeholder="Yanıtın nasıl olması gerektiğini yazın"></textarea></div><div class="field-form-actions"><button class="mini-button" type="submit">Stratejiyi kaydet ve taslağı hazırla</button></div></form></div>`;
+  }
+
   if (state.status === "kullanici_onayi_bekleniyor") {
     return `<div class="action-card is-success"><h4>Taslak onaya hazır</h4><p>Önce Taslak ve Kaynaklar sekmelerini kontrol edin, ardından yetkili kullanıcı adıyla onaylayın.</p><form class="field-form" id="approval-form"><div class="field-control"><label for="approved-by">Onaylayan kişi</label><input id="approved-by" value="Yetkili Demo Kullanıcısı" minlength="2" maxlength="120" required /></div><div class="field-form-actions"><button class="mini-button" type="submit">Taslağı nihai olarak onayla</button></div></form></div>`;
   }
@@ -580,6 +599,9 @@ function bindResultInteractions() {
   });
   missingForm?.addEventListener("submit", handleInformationSubmit);
   document.querySelector("#approval-form")?.addEventListener("submit", handleApprovalSubmit);
+  document
+    .querySelector("#response-strategy-form")
+    ?.addEventListener("submit", handleResponseStrategySubmit);
 }
 
 async function handleInformationSubmit(event) {
@@ -604,6 +626,37 @@ async function handleInformationSubmit(event) {
     showToast(error.message);
     submit.disabled = false;
     submit.textContent = "Bilgileri kaydet ve taslağı yenile";
+  }
+}
+
+async function handleResponseStrategySubmit(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const submit = form.querySelector("button[type='submit']");
+  const selected = form.querySelector("input[name='response-strategy-option']:checked");
+  const optionId = selected ? selected.value : null;
+  const customText = form.querySelector("#response-strategy-custom-text").value.trim();
+  submit.disabled = true;
+  submit.textContent = "Taslak hazırlanıyor…";
+  try {
+    const state = await requestJson(
+      `/api/v1/processes/${encodeURIComponent(currentState.document_id)}/response-strategy`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          option_id: optionId,
+          custom_text: customText || null,
+          compile_pdf: true
+        })
+      }
+    );
+    renderState(state);
+    showToast("Yanıt stratejisi kaydedildi ve taslak hazırlandı.", "success");
+  } catch (error) {
+    showToast(error.message);
+    submit.disabled = false;
+    submit.textContent = "Stratejiyi kaydet ve taslağı hazırla";
   }
 }
 

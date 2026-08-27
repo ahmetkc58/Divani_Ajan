@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
+from dataclasses import replace
 from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
@@ -16,19 +18,49 @@ from karayol_agent.agents import (
     SourceVerificationAgent,
     TemplateSelectionAgent,
 )
+from karayol_agent.agents.layout import LayoutGapDetector
 from karayol_agent.agents.legislation import RankedRetriever
+from karayol_agent.agents.llm_layer2 import (
+    SearchO1AdjudicatorAgent,
+    SearchO1AuditorAgent,
+    SearchO1ResearchAgent,
+)
+from karayol_agent.agents.llm_layer1 import (
+    ClassificationOutcome,
+    DocumentTypeCatalog,
+    LLMClassificationAgent,
+    LLMRequiredDataAgent,
+    RequiredDataOutcome,
+)
+from karayol_agent.agents.llm_layer3 import (
+    CUSTOM_RESPONSE_STRATEGY_OPTION_ID,
+    LLMResponseStrategyAgent,
+    LLMRoutingAgent,
+    LLMTemplateFillAgent,
+    LLMTemplateSelectionAgent,
+    ResponseStrategyProposalOutcome,
+    RoutingOutcome,
+    TemplateCatalog,
+    TemplateFillOutcome,
+    TemplateSelectionOutcome,
+)
 from karayol_agent.agents.llm_roles import (
     AdjudicationOutcome,
     LLMAdjudicatorAgent,
-    LLMDocumentUnderstandingAgent,
     StructuredGateway,
-    UnderstandingOutcome,
 )
 from karayol_agent.config import Settings, settings
-from karayol_agent.documents import DocumentExtractor
+from karayol_agent.documents import DocumentExtractor, OcrWord
 from karayol_agent.graph import EvidenceGraphAdvisor, GraphBuildError
-from karayol_agent.llm import DataClassification, LLMConfig, StructuredLLMGateway
+from karayol_agent.llm import (
+    DataClassification,
+    LLMConfig,
+    LLMProviderName,
+    StructuredLLMGateway,
+)
+from karayol_agent.llm.agentic_gateway import AgenticGatewayError, AgenticToolLLMGateway
 from karayol_agent.latex import LatexRenderer
+from karayol_agent.official_writing_rules import closing_matches_authority_relation
 from karayol_agent.retrieval import (
     AnalysisAwareDeterministicReranker,
     AnalysisAwareTextRetrieverAdapter,
@@ -60,8 +92,10 @@ from karayol_agent.schemas import (
     LLMStepTrace,
     ProcessState,
     ProcessStatus,
+    ResponseStrategyOption,
     RoutingRecommendation,
     TemplateDecision,
+    VerifiedReference,
 )
 from karayol_agent.state_store import FileProcessStore
 from karayol_agent.text_utils import normalize_for_search, normalize_whitespace
@@ -138,7 +172,14 @@ class EvrakOrchestrator:
         self.classifier = ClassificationAgent()
         self.analyzer = ContentAnalysisAgent()
         self.llm_gateway = llm_gateway or StructuredLLMGateway(LLMConfig.from_env())
-        self.llm_understanding = LLMDocumentUnderstandingAgent(self.llm_gateway)
+        self.document_type_catalog = DocumentTypeCatalog.load(
+            app_settings.document_type_catalog_path
+        )
+        self.llm_classifier = LLMClassificationAgent(
+            self.llm_gateway, self.document_type_catalog
+        )
+        self.llm_required_data = LLMRequiredDataAgent(self.llm_gateway)
+        self.layout_gap_detector = LayoutGapDetector()
         self.llm_adjudicator = LLMAdjudicatorAgent(self.llm_gateway)
         self.synthetic_document_fingerprints = self._load_synthetic_fingerprints()
         self.researcher = LegislationResearchAgent(
@@ -149,6 +190,13 @@ class EvrakOrchestrator:
             article_index=build_article_index(
                 document.chunk for document in self.index.documents
             ),
+        )
+        (
+            self.search_o1_researcher,
+            self.search_o1_auditor,
+            self.search_o1_adjudicator,
+        ) = self._build_search_o1_agents(
+            app_settings, caller_supplied_gateway=llm_gateway is not None
         )
         self.graph_advisor: EvidenceGraphAdvisor | None = None
         if app_settings.evidence_graph_enabled:
@@ -169,6 +217,13 @@ class EvrakOrchestrator:
             / "kgm_units_2026-07-16.json"
         )
         self.router = RoutingAgent(organization_units_path)
+        self.template_catalog = TemplateCatalog.load(app_settings.template_catalog_path)
+        self.llm_template_selector = LLMTemplateSelectionAgent(
+            self.llm_gateway, self.template_catalog
+        )
+        self.llm_router = LLMRoutingAgent(self.llm_gateway)
+        self.llm_response_strategy = LLMResponseStrategyAgent(self.llm_gateway)
+        self.llm_template_filler = LLMTemplateFillAgent(self.llm_gateway)
         self.drafter = DraftingAgent()
         self.compliance = ComplianceAgent()
         self.renderer = LatexRenderer(
@@ -177,6 +232,76 @@ class EvrakOrchestrator:
             timeout=app_settings.latex_timeout_seconds,
         )
         self.store = FileProcessStore(app_settings.runtime_dir / "processes")
+
+    def _build_search_o1_agents(
+        self, app_settings: Settings, *, caller_supplied_gateway: bool
+    ) -> tuple[
+        SearchO1ResearchAgent | None,
+        SearchO1AuditorAgent | None,
+        SearchO1AdjudicatorAgent | None,
+    ]:
+        """Build KATMAN 2's Search-o1 agents, or (None, None, None).
+
+        Native tool-calling only works against the OpenAI-compatible wire
+        format, and only makes sense once a real API key is configured. Any
+        other provider (e.g. the local Ollama default used by most tests and
+        offline dev) silently falls back to the existing deterministic
+        Researcher/Auditor + single-shot Adjudicator — no behavior change for
+        those environments.
+
+        Also skipped whenever the caller explicitly injected their own
+        ``llm_gateway`` (e.g. every test's fake/no-network gateway double) —
+        that always means "I am taking full control of LLM behaviour for
+        this orchestrator instance", so a second, independent, real-network
+        gateway must never be spun up on the side just because the fake's
+        ``.config`` happens to duck-type as OpenAI-compatible.
+        """
+
+        if not app_settings.search_o1_enabled or caller_supplied_gateway:
+            return None, None, None
+        base_config = self.llm_gateway.config
+        if (
+            base_config.provider
+            not in {LLMProviderName.OPENAI_COMPATIBLE, LLMProviderName.GROQ}
+            or not base_config.api_key
+        ):
+            return None, None, None
+        try:
+            katman2_config = LLMConfig(
+                provider=base_config.provider,
+                model=app_settings.search_o1_model,
+                api_key=base_config.api_key,
+                base_url=base_config.base_url,
+                timeout_seconds=base_config.timeout_seconds,
+                max_output_tokens=base_config.max_output_tokens,
+                temperature=base_config.temperature,
+                max_input_chars=base_config.max_input_chars,
+                runtime_enabled=base_config.runtime_enabled,
+                allow_restricted_external=base_config.allow_restricted_external,
+            )
+            katman2_gateway = AgenticToolLLMGateway(katman2_config)
+        except (ValueError, AgenticGatewayError):
+            return None, None, None
+        return (
+            SearchO1ResearchAgent(
+                katman2_gateway,
+                self.researcher,
+                self.verifier,
+                max_turns=app_settings.search_o1_researcher_max_turns,
+            ),
+            SearchO1AuditorAgent(
+                katman2_gateway,
+                self.researcher,
+                self.verifier,
+                max_turns=app_settings.search_o1_auditor_max_turns,
+            ),
+            SearchO1AdjudicatorAgent(
+                katman2_gateway,
+                self.researcher,
+                self.verifier,
+                max_turns=app_settings.search_o1_adjudicator_max_turns,
+            ),
+        )
 
     def _build_retriever(self) -> RankedRetriever:
         if self.settings.retrieval_mode.casefold() == "bm25":
@@ -447,8 +572,13 @@ class EvrakOrchestrator:
         }
 
     def process_file(self, path: Path, *, compile_pdf: bool = False) -> ProcessState:
-        text = self.extractor.extract(path)
-        return self.process_text(text, source_name=path.name, compile_pdf=compile_pdf)
+        extracted = self.extractor.extract_with_layout(path)
+        return self.process_text(
+            extracted.text,
+            source_name=path.name,
+            compile_pdf=compile_pdf,
+            layout_words=extracted.words,
+        )
 
     def process_text(
         self,
@@ -456,6 +586,7 @@ class EvrakOrchestrator:
         *,
         source_name: str = "kullanici_metni.txt",
         compile_pdf: bool = False,
+        layout_words: Sequence[OcrWord] = (),
     ) -> ProcessState:
         document_id = self._new_document_id()
         state = ProcessState(
@@ -477,21 +608,41 @@ class EvrakOrchestrator:
             state.analysis = self.analyzer.run(state.raw_text or "", classification)
             data_classification = self._llm_data_classification(state.raw_text or "")
             state.llm_trace = self._new_llm_trace(data_classification)
-            understanding = self.llm_understanding.run(
+
+            classification_outcome = self.llm_classifier.run(
                 text=state.raw_text or "",
-                deterministic_analysis=state.analysis,
+                deterministic_classification=classification,
                 data_classification=data_classification,
             )
             self._record_llm_step(
                 state,
-                role="document_understanding",
-                outcome=understanding.call,
-                confidence=understanding.confidence,
-                candidate_document_type=understanding.document_type,
-                candidate_summary=understanding.summary,
+                role="llm1_classification",
+                outcome=classification_outcome.call,
+                confidence=classification_outcome.confidence,
+                candidate_document_type=classification_outcome.document_type,
                 data_classification=data_classification,
             )
-            self._apply_llm_understanding(state, understanding)
+            self._apply_llm_classification(state, classification_outcome)
+
+            requirement_references = self._requirement_references(state)
+            layout_gap_candidates = self.layout_gap_detector.detect(layout_words)
+            required_data_outcome = self.llm_required_data.run(
+                text=state.raw_text or "",
+                document_type=state.analysis.general_document_type,
+                static_missing_fields=state.analysis.missing_fields,
+                requirement_references=requirement_references,
+                layout_gap_candidates=layout_gap_candidates,
+                data_classification=data_classification,
+            )
+            self._record_llm_step(
+                state,
+                role="llm2_required_data",
+                outcome=required_data_outcome.call,
+                confidence=required_data_outcome.confidence,
+                data_classification=data_classification,
+            )
+            self._apply_llm_required_data(state, required_data_outcome)
+
             self._complete(state, "Evrak sınıflandırıldı ve önemli bilgiler çıkarıldı.")
             return self._continue_pipeline(state, compile_pdf=compile_pdf)
         except Exception as exc:
@@ -566,6 +717,69 @@ class EvrakOrchestrator:
             supplied_fields=state.provided_information,
         )
 
+    def choose_response_strategy(
+        self,
+        document_id: str,
+        *,
+        option_id: str | None = None,
+        custom_text: str | None = None,
+        compile_pdf: bool = False,
+    ) -> ProcessState:
+        state = self._require_state(document_id)
+        if state.status == ProcessStatus.COMPLETED:
+            raise ProcessValidationError(
+                "Tamamlanmış evrak değiştirilemez; değişiklik için yeni bir "
+                "revizyon oluşturulmalıdır."
+            )
+        if not state.response_strategy_options:
+            raise ProcessValidationError(
+                "Süreçte seçilebilir bir yanıt stratejisi bulunmuyor."
+            )
+        clean_option_id = (option_id or "").strip() or None
+        clean_custom_text = (custom_text or "").strip() or None
+        if clean_option_id == CUSTOM_RESPONSE_STRATEGY_OPTION_ID:
+            if not clean_custom_text:
+                raise ProcessValidationError(
+                    "'"
+                    + CUSTOM_RESPONSE_STRATEGY_OPTION_ID
+                    + "' seçeneği için custom_text zorunludur."
+                )
+            state.selected_response_strategy = None
+            state.selected_response_custom_text = clean_custom_text
+        elif clean_option_id:
+            matched = next(
+                (
+                    option
+                    for option in state.response_strategy_options
+                    if option.option_id == clean_option_id
+                ),
+                None,
+            )
+            if matched is None:
+                raise ProcessValidationError(
+                    "Bilinmeyen yanıt stratejisi seçeneği: " + clean_option_id
+                )
+            state.selected_response_strategy = matched
+            state.selected_response_custom_text = None
+        elif clean_custom_text:
+            state.selected_response_strategy = None
+            state.selected_response_custom_text = clean_custom_text
+        else:
+            raise ProcessValidationError(
+                "option_id veya custom_text alanlarından biri sağlanmalıdır."
+            )
+        state.add_event(
+            ProcessStatus.DRAFTING,
+            "Kullanıcı yanıt stratejisini belirledi; taslak yeniden hazırlanıyor.",
+            "Kullanıcı Bilgilendirme Ajanı",
+        )
+        self.store.save(state)
+        return self._continue_pipeline(
+            state,
+            compile_pdf=compile_pdf,
+            supplied_fields=state.provided_information or None,
+        )
+
     def approve(self, document_id: str, approved_by: str) -> ProcessState:
         state = self._require_state(document_id)
         if state.status == ProcessStatus.COMPLETED:
@@ -579,6 +793,14 @@ class EvrakOrchestrator:
             )
         if not state.compliance.passed:
             raise ProcessValidationError("Uygunluk denetimini geçmeyen taslak onaylanamaz.")
+        if (
+            state.response_strategy_options
+            and state.selected_response_strategy is None
+            and not state.selected_response_custom_text
+        ):
+            raise ProcessValidationError(
+                "Yanıt stratejisi seçilmeden taslak onaylanamaz."
+            )
         state.completed_steps.append(f"Taslak {approved_by} tarafından onaylandı.")
         state.pending_actions = []
         state.missing_information = []
@@ -603,15 +825,36 @@ class EvrakOrchestrator:
         supplied_fields: dict[str, str] | None = None,
     ) -> ProcessState:
         assert state.analysis is not None
+        if state.llm_trace is None:
+            state.llm_trace = self._new_llm_trace(
+                self._llm_data_classification(state.raw_text or "")
+            )
+        base_classification = self._llm_data_classification(state.raw_text or "")
+
         self._transition(
             state,
             ProcessStatus.SEARCHING,
             "İlgili mevzuat ve iş akışı kuralları aranıyor.",
             self.researcher.name,
         )
-        retrieval = self.researcher.run_with_diagnostics(state.analysis)
-        state.search_hits = retrieval.hits
-        diagnostics = retrieval.diagnostics
+        if self.search_o1_researcher is not None:
+            research_outcome = self.search_o1_researcher.run(
+                state.analysis, data_classification=base_classification
+            )
+            retrieval_hits = research_outcome.hits
+            retrieval_diagnostics = research_outcome.diagnostics
+            self._record_llm_step(
+                state,
+                role="katman2_researcher_search_o1",
+                outcome=research_outcome.call,
+                data_classification=base_classification,
+            )
+        else:
+            retrieval = self.researcher.run_with_diagnostics(state.analysis)
+            retrieval_hits = retrieval.hits
+            retrieval_diagnostics = retrieval.diagnostics
+        state.search_hits = retrieval_hits
+        diagnostics = retrieval_diagnostics
         if self.retrieval_setup_warning:
             diagnostics = diagnostics.model_copy(
                 update={
@@ -644,7 +887,27 @@ class EvrakOrchestrator:
             "Kaynak adaylarının sorguyla ilişkisi doğrulanıyor.",
             self.verifier.name,
         )
-        state.verified_references = self.verifier.run(state.search_hits, state.analysis)
+        auditor_requires_review = False
+        if self.search_o1_auditor is not None:
+            audit_outcome = self.search_o1_auditor.run(
+                state.search_hits, state.analysis, data_classification=base_classification
+            )
+            state.verified_references = audit_outcome.references
+            auditor_requires_review = audit_outcome.requires_human_review
+            self._record_llm_step(
+                state,
+                role="katman2_auditor_search_o1",
+                outcome=audit_outcome.call,
+                human_review_required=audit_outcome.requires_human_review,
+                data_classification=base_classification,
+            )
+            if audit_outcome.concern_notes:
+                self._complete(
+                    state,
+                    "Search-o1 Auditor ek inceleme notu: " + audit_outcome.concern_notes,
+                )
+        else:
+            state.verified_references = self.verifier.run(state.search_hits, state.analysis)
         verified_count = sum(reference.verified for reference in state.verified_references)
         snapshot_count = sum(
             reference.verified
@@ -668,6 +931,52 @@ class EvrakOrchestrator:
                 "karar izi üretildi; bu iz hukuk kanıtı değildir.",
             )
 
+        adjudication_classification = self._llm_adjudication_data_classification(
+            state
+        )
+
+        self._transition(
+            state,
+            ProcessStatus.VERIFYING,
+            "Yalnız doğrulanmış kanıtlarla kanıt kümesi değerlendiriliyor.",
+            self.llm_adjudicator.name,
+        )
+        if self.search_o1_adjudicator is not None:
+            adjudication = self.search_o1_adjudicator.run(
+                analysis=state.analysis,
+                references=state.verified_references,
+                data_classification=adjudication_classification,
+            )
+        else:
+            adjudication = self.llm_adjudicator.run(
+                analysis=state.analysis,
+                references=state.verified_references,
+                data_classification=adjudication_classification,
+            )
+        if auditor_requires_review:
+            adjudication = replace(adjudication, requires_human_review=True)
+        adjudication_applied = self._apply_llm_evidence_synthesis(state, adjudication)
+        self._record_llm_step(
+            state,
+            role="adjudicator",
+            outcome=adjudication.call,
+            confidence=adjudication.confidence,
+            accepted_reference_ids=list(adjudication.accepted_reference_ids),
+            human_review_required=(
+                adjudication.requires_human_review
+                or bool(adjudication.unsupported_claims)
+                or not adjudication_applied
+            ),
+            decision_applied=adjudication_applied,
+            data_classification=adjudication_classification,
+        )
+        self._complete(
+            state,
+            "Adjudicator kanıt kümesini onayladı."
+            if adjudication_applied
+            else "Adjudicator kararı uygulanmadı; denetlenebilir kanıt sırası korundu.",
+        )
+
         self._transition(
             state,
             ProcessStatus.SELECTING_TEMPLATE,
@@ -676,6 +985,26 @@ class EvrakOrchestrator:
         )
         state.template_decision = self.template_selector.run(
             state.analysis, state.verified_references
+        )
+        template_selection = self.llm_template_selector.run(
+            analysis=state.analysis,
+            deterministic_decision=state.template_decision,
+            verified_references=state.verified_references,
+            allowed_template_ids=self._allowed_template_ids(state),
+            data_classification=adjudication_classification,
+        )
+        template_applied = self._apply_llm_template_selection(state, template_selection)
+        self._record_llm_step(
+            state,
+            role="llm3_template_selection",
+            outcome=template_selection.call,
+            confidence=template_selection.confidence,
+            selected_template_id=template_selection.selected_template_id,
+            human_review_required=(
+                template_selection.requires_human_review or not template_applied
+            ),
+            decision_applied=template_applied,
+            data_classification=adjudication_classification,
         )
         self._complete(
             state,
@@ -690,58 +1019,41 @@ class EvrakOrchestrator:
         )
         state.routing = self.router.run(state.analysis)
         self._apply_graph_guardrails(state)
-        if state.llm_trace is None:
-            state.llm_trace = self._new_llm_trace(
-                self._llm_data_classification(state.raw_text or "")
-            )
-        adjudication_classification = self._llm_adjudication_data_classification(
-            state
-        )
-        self._transition(
-            state,
-            ProcessStatus.ROUTING,
-            "Yalnız doğrulanmış kanıtlarla birim ve şablon kararı değerlendiriliyor.",
-            self.llm_adjudicator.name,
-        )
-        adjudication = self.llm_adjudicator.run(
+        routing_outcome = self.llm_router.run(
             analysis=state.analysis,
-            references=state.verified_references,
-            template_decision=state.template_decision,
-            routing=state.routing,
-            graph_trace=state.graph_decision_trace,
-            allowed_template_ids=self._allowed_template_ids(state),
+            units=self.router.units,
+            deterministic_routing=state.routing,
             allowed_unit_ids=self._allowed_unit_ids(state),
             data_classification=adjudication_classification,
         )
-        adjudication_applied = self._apply_llm_adjudication(state, adjudication)
+        routing_applied = self._apply_llm_routing(state, routing_outcome)
         self._record_llm_step(
             state,
-            role="adjudicator",
-            outcome=adjudication.call,
-            confidence=adjudication.confidence,
-            selected_template_id=adjudication.selected_template_id,
-            selected_unit_id=adjudication.selected_unit_id,
-            accepted_reference_ids=list(adjudication.accepted_reference_ids),
+            role="llm5_routing",
+            outcome=routing_outcome.call,
+            confidence=routing_outcome.confidence,
+            selected_unit_id=routing_outcome.selected_unit_id,
             human_review_required=(
-                adjudication.requires_human_review
-                or bool(adjudication.unsupported_claims)
-                or not adjudication_applied
-                or state.template_decision.user_approval_required
+                routing_outcome.requires_human_review or not routing_applied
             ),
-            decision_applied=adjudication_applied,
+            decision_applied=routing_applied,
             data_classification=adjudication_classification,
         )
-        if adjudication_applied:
-            self._complete(
-                state,
-                "Adjudicator kararı doğrulanmış kanıtlarla uygulandı.",
-            )
-        else:
-            self._complete(
-                state,
-                "Adjudicator kararı uygulanmadı; denetlenebilir temel karar korundu.",
-            )
         self._complete(state, f"Önerilen birim: {state.routing.unit_name}.")
+
+        if not state.analysis.missing_fields and not state.response_strategy_options:
+            strategy_proposal = self.llm_response_strategy.run(
+                analysis=state.analysis,
+                verified_references=state.verified_references,
+                data_classification=adjudication_classification,
+            )
+            self._apply_response_strategy_options(state, strategy_proposal)
+            self._record_llm_step(
+                state,
+                role="llm6_response_strategy",
+                outcome=strategy_proposal.call,
+                data_classification=adjudication_classification,
+            )
 
         self._transition(
             state,
@@ -757,6 +1069,30 @@ class EvrakOrchestrator:
         )
         if supplied_fields:
             self._apply_draft_fields(state, supplied_fields)
+        if (
+            state.selected_response_strategy is not None
+            or state.selected_response_custom_text
+        ):
+            fill_outcome = self.llm_template_filler.run(
+                analysis=state.analysis,
+                template_id=state.template_decision.template_id,
+                template_tex_reference=self._template_tex_reference(
+                    state.template_decision.template_id
+                ),
+                authority_relation=state.draft.authority_relation,
+                verified_references=state.verified_references,
+                response_strategy=state.selected_response_strategy,
+                response_custom_text=state.selected_response_custom_text,
+                data_classification=adjudication_classification,
+            )
+            fill_applied = self._apply_llm_template_fill(state, fill_outcome)
+            self._record_llm_step(
+                state,
+                role="llm4_template_fill",
+                outcome=fill_outcome.call,
+                decision_applied=fill_applied,
+                data_classification=adjudication_classification,
+            )
         state.artifact = self.renderer.render(
             state.document_id, state.draft, compile_pdf=compile_pdf
         )
@@ -979,50 +1315,54 @@ class EvrakOrchestrator:
                 "ağdan önce engellendi."
             )
 
-    def _apply_llm_understanding(
+    def _apply_llm_classification(
         self,
         state: ProcessState,
-        outcome: UnderstandingOutcome,
+        outcome: ClassificationOutcome,
+    ) -> None:
+        if (
+            not outcome.call.succeeded
+            or state.analysis is None
+            or outcome.document_type is None
+            or not outcome.evidence_span
+        ):
+            return
+        normalized_source = normalize_for_search(state.raw_text or "")
+        normalized_evidence = normalize_for_search(outcome.evidence_span)
+        if not normalized_evidence or normalized_evidence not in normalized_source:
+            return
+        # LLM1 yalnız kullanıcıya gösterilen genel evrak türünü (kullanıcının
+        # ileride sağlayacağı gerçek katalogla değişecek) günceller. İç
+        # operasyonel profil (document_type) — REQUIRED_FIELDS/şablon eşlemesi
+        # bunun üzerinden çalıştığı için — deterministik sınıflandırıcının
+        # çıktısı olarak kalır.
+        state.analysis.general_document_type = outcome.document_type
+
+    def _requirement_references(self, state: ProcessState) -> list[VerifiedReference]:
+        """LLM2 için "bu evrak türünde ne gerekir" sorgusuyla ayrı bir tur.
+
+        Ana ``SEARCHING``/``VERIFYING`` aşamalarından bağımsız, aynı
+        Researcher/Auditor makinesini farklı bir sorguyla çalıştırır.
+        """
+
+        assert state.analysis is not None
+        query = (
+            f"{state.analysis.general_document_type} başvurusu için gerekli "
+            "belgeler, zorunlu bilgiler ve ekler"
+        )
+        search = self.researcher.run_with_query(query, state.analysis)
+        return self.verifier.run(search.hits, state.analysis)
+
+    def _apply_llm_required_data(
+        self,
+        state: ProcessState,
+        outcome: RequiredDataOutcome,
     ) -> None:
         if not outcome.call.succeeded or state.analysis is None:
             return
-        source_text = state.raw_text or ""
-        normalized_source = normalize_for_search(source_text)
-        for name, candidate in outcome.fields.items():
-            if not candidate.value or not candidate.evidence:
-                continue
-            normalized_evidence = normalize_for_search(candidate.evidence)
-            normalized_value = normalize_for_search(candidate.value)
-            if (
-                not normalized_evidence
-                or normalized_evidence not in normalized_source
-                or normalized_value not in normalized_evidence
-            ):
-                continue
-            validated_value = self.analyzer.validate_external_candidate(
-                name, candidate.value
-            )
-            if validated_value is None:
-                continue
-            current = state.analysis.fields.get(name)
-            if current is not None and current.value:
-                continue
-            state.analysis.fields[name] = ExtractedField(
-                value=validated_value,
-                status=FieldStatus.INFERRED,
-                source="llm:birebir_metin_kaniti",
-            )
-
-        required = self.analyzer.REQUIRED_FIELDS.get(
-            state.analysis.document_type,
-            self.analyzer.REQUIRED_FIELDS["genel_basvuru"],
-        )
-        state.analysis.missing_fields = [
-            name
-            for name in required
-            if not state.analysis.fields.get(name)
-            or not state.analysis.fields[name].value
-        ]
+        for description in outcome.missing_data_points:
+            if description not in state.analysis.missing_fields:
+                state.analysis.missing_fields.append(description)
 
     def _allowed_template_ids(self, state: ProcessState) -> list[str]:
         assert state.analysis is not None
@@ -1063,33 +1403,18 @@ class EvrakOrchestrator:
         known_units = {unit.unit_id for unit in self.router.units}
         return sorted(candidates & known_units) or [state.routing.unit_id]
 
-    def _apply_llm_adjudication(
+    def _apply_llm_evidence_synthesis(
         self,
         state: ProcessState,
         outcome: AdjudicationOutcome,
     ) -> bool:
-        assert state.template_decision is not None
-        assert state.routing is not None
+        """KATMAN 2 Adjudicator: saf kanıt sentezi, şablon/birim seçmez."""
+
         verified_ids = {
             reference.chunk_id
             for reference in state.verified_references
             if reference.verified
         }
-        graph_trace = state.graph_decision_trace
-        graph_template_supported = (
-            not graph_trace
-            or not graph_trace.applied
-            or not graph_trace.candidate_template_ids
-            or outcome.selected_template_id in graph_trace.candidate_template_ids
-        )
-        graph_unit_supported = (
-            not graph_trace
-            or not graph_trace.applied
-            or not graph_trace.candidate_unit_ids
-            or outcome.selected_unit_id in graph_trace.candidate_unit_ids
-        )
-        allowed_template_ids = set(self._allowed_template_ids(state))
-        allowed_unit_ids = set(self._allowed_unit_ids(state))
         safe_to_apply = (
             outcome.call.succeeded
             and outcome.confidence is not None
@@ -1098,90 +1423,173 @@ class EvrakOrchestrator:
             and not outcome.unsupported_claims
             and bool(outcome.accepted_reference_ids)
             and set(outcome.accepted_reference_ids) <= verified_ids
-            and graph_template_supported
-            and graph_unit_supported
+        )
+        if not safe_to_apply:
+            return False
+        accepted = set(outcome.accepted_reference_ids)
+        state.verified_references.sort(
+            key=lambda reference: (
+                reference.chunk_id not in accepted,
+                -reference.score,
+                reference.chunk_id,
+            )
+        )
+        return True
+
+    def _apply_llm_template_selection(
+        self,
+        state: ProcessState,
+        outcome: TemplateSelectionOutcome,
+    ) -> bool:
+        assert state.template_decision is not None
+        graph_trace = state.graph_decision_trace
+        graph_supported = (
+            not graph_trace
+            or not graph_trace.applied
+            or not graph_trace.candidate_template_ids
+            or outcome.selected_template_id in graph_trace.candidate_template_ids
+        )
+        allowed_template_ids = set(self._allowed_template_ids(state))
+        safe_to_apply = (
+            outcome.call.succeeded
+            and outcome.confidence is not None
+            and outcome.confidence >= self.LLM_ADJUDICATION_MIN_CONFIDENCE
+            and not outcome.requires_human_review
             and outcome.selected_template_id in allowed_template_ids
-            and outcome.selected_unit_id in allowed_unit_ids
+            and graph_supported
         )
         if not safe_to_apply:
             state.template_decision.user_approval_required = True
             state.template_decision.rationale += (
-                " LLM Adjudicator kararı güven/kanıt kapısını geçmedi; "
+                " LLM3 şablon önerisi güven/kanıt kapısını geçmedi; "
                 "deterministik seçim korundu ve insan incelemesi zorunlu kaldı."
             )
+            return False
+        previous = state.template_decision
+        confidence = (
+            outcome.confidence
+            if outcome.confidence is not None
+            else previous.confidence
+        )
+        state.template_decision = TemplateDecision(
+            document_type=self.template_selector._document_type_for(
+                outcome.selected_template_id
+            ),
+            template_id=outcome.selected_template_id,
+            rationale=(
+                previous.rationale
+                + " Yapılandırılmış LLM3 değerlendirmesi: "
+                + (outcome.rationale or "gerekçe sağlanmadı")
+            ),
+            confidence=round(confidence, 2),
+            user_approval_required=(
+                previous.user_approval_required
+                or outcome.requires_human_review
+                or confidence < self.settings.low_confidence_threshold
+            ),
+            alternatives=previous.alternatives,
+        )
+        return True
+
+    def _apply_llm_routing(
+        self,
+        state: ProcessState,
+        outcome: RoutingOutcome,
+    ) -> bool:
+        assert state.routing is not None
+        graph_trace = state.graph_decision_trace
+        graph_supported = (
+            not graph_trace
+            or not graph_trace.applied
+            or not graph_trace.candidate_unit_ids
+            or outcome.selected_unit_id in graph_trace.candidate_unit_ids
+        )
+        allowed_unit_ids = set(self._allowed_unit_ids(state))
+        safe_to_apply = (
+            outcome.call.succeeded
+            and outcome.confidence is not None
+            and outcome.confidence >= self.LLM_ADJUDICATION_MIN_CONFIDENCE
+            and not outcome.requires_human_review
+            and outcome.selected_unit_id in allowed_unit_ids
+            and graph_supported
+        )
+        if not safe_to_apply:
             state.routing.rationale += (
-                " LLM Adjudicator önerisi uygulanmadı; deterministik birim "
+                " LLM5 yönlendirme önerisi uygulanmadı; deterministik birim "
                 "önerisi korundu."
             )
             return False
-        if outcome.selected_template_id in allowed_template_ids:
-            previous_template = state.template_decision
-            adjudication_confidence = (
-                outcome.confidence
-                if outcome.confidence is not None
-                else previous_template.confidence
-            )
-            state.template_decision = TemplateDecision(
-                document_type=self.template_selector._document_type_for(
-                    outcome.selected_template_id
-                ),
-                template_id=outcome.selected_template_id,
-                rationale=(
-                    previous_template.rationale
-                    + " Yapılandırılmış Adjudicator değerlendirmesi: "
+        unit = next(
+            unit
+            for unit in self.router.units
+            if unit.unit_id == outcome.selected_unit_id
+        )
+        previous = state.routing
+        confidence = (
+            outcome.confidence if outcome.confidence is not None else previous.score
+        )
+        state.routing = previous.model_copy(
+            update={
+                "unit_id": unit.unit_id,
+                "unit_name": unit.unit_name,
+                "hierarchy": unit.hierarchy,
+                "rationale": (
+                    previous.rationale
+                    + " Yapılandırılmış LLM5 değerlendirmesi: "
                     + (outcome.rationale or "gerekçe sağlanmadı")
                 ),
-                confidence=round(adjudication_confidence, 2),
-                user_approval_required=(
-                    previous_template.user_approval_required
-                    or outcome.requires_human_review
-                    or bool(outcome.unsupported_claims)
-                    or adjudication_confidence < self.settings.low_confidence_threshold
+                "score": round(confidence, 2),
+            }
+        )
+        return True
+
+    def _apply_response_strategy_options(
+        self,
+        state: ProcessState,
+        outcome: ResponseStrategyProposalOutcome,
+    ) -> None:
+        options = list(outcome.options)
+        options.append(
+            ResponseStrategyOption(
+                option_id=CUSTOM_RESPONSE_STRATEGY_OPTION_ID,
+                label="Kendim yazacağım",
+                description=(
+                    "Sunulan seçeneklerin hiçbiri uygun değilse, yanıtın nasıl "
+                    "olması gerektiğini kendi cümlelerinizle yazabilirsiniz."
                 ),
-                alternatives=previous_template.alternatives,
             )
-        if outcome.selected_unit_id in allowed_unit_ids:
-            unit = next(
-                unit for unit in self.router.units if unit.unit_id == outcome.selected_unit_id
-            )
-            previous_routing = state.routing
-            routing_confidence = (
-                outcome.confidence
-                if outcome.confidence is not None
-                else previous_routing.score
-            )
-            state.routing = previous_routing.model_copy(
-                update={
-                    "unit_id": unit.unit_id,
-                    "unit_name": unit.unit_name,
-                    "hierarchy": unit.hierarchy,
-                    "rationale": (
-                        previous_routing.rationale
-                        + " Yapılandırılmış Adjudicator değerlendirmesi: "
-                        + (outcome.rationale or "gerekçe sağlanmadı")
-                    ),
-                    "score": round(routing_confidence, 2),
-                    "requires_human_review": (
-                        previous_routing.requires_human_review
-                        or outcome.requires_human_review
-                    ),
-                    "routing_status": (
-                        "needs_review"
-                        if previous_routing.requires_human_review
-                        or outcome.requires_human_review
-                        else "proposed"
-                    ),
-                }
-            )
-        if outcome.accepted_reference_ids:
-            accepted = set(outcome.accepted_reference_ids)
-            state.verified_references.sort(
-                key=lambda reference: (
-                    reference.chunk_id not in accepted,
-                    -reference.score,
-                    reference.chunk_id,
-                )
-            )
+        )
+        state.response_strategy_options = options
+
+    def _template_tex_reference(self, template_id: str) -> str:
+        tex_path = self.settings.templates_dir / template_id / "template.tex"
+        try:
+            return tex_path.read_text(encoding="utf-8")
+        except OSError:
+            return ""
+
+    def _apply_llm_template_fill(
+        self,
+        state: ProcessState,
+        outcome: TemplateFillOutcome,
+    ) -> bool:
+        assert state.draft is not None
+        if not outcome.call.succeeded or not outcome.subject or not outcome.paragraphs:
+            return False
+        if outcome.closing is not None and not closing_matches_authority_relation(
+            outcome.closing, state.draft.authority_relation
+        ):
+            return False
+        state.draft.subject = ExtractedField(
+            value=outcome.subject,
+            status=FieldStatus.GENERATED,
+            source="llm4_template_fill",
+        )
+        state.draft.paragraphs = list(outcome.paragraphs)
+        if outcome.closing is not None:
+            state.draft.closing = outcome.closing
+            if state.draft.paragraphs:
+                state.draft.paragraphs[-1] = outcome.closing
         return True
 
     def _graph_advice(self, state: ProcessState) -> GraphDecisionTrace:
@@ -1290,6 +1698,9 @@ class EvrakOrchestrator:
                 "Kullanıcı Bilgilendirme Ajanı",
             )
         elif not state.compliance.passed:
+            # A structurally broken draft must be fixed before asking the user
+            # anything about tone/strategy — that choice would apply to a
+            # draft that can't be sent as-is anyway.
             compliance_errors = state.compliance.errors or [
                 "Uygunluk denetimi başarısız oldu."
             ]
@@ -1305,6 +1716,29 @@ class EvrakOrchestrator:
             state.add_event(
                 ProcessStatus.ERROR,
                 "Taslak uygunluk denetimini geçemedi ve kullanıcı onayına sunulmadı.",
+                "Kullanıcı Bilgilendirme Ajanı",
+            )
+        elif (
+            state.response_strategy_options
+            and state.selected_response_strategy is None
+            and not state.selected_response_custom_text
+        ):
+            option_labels = ", ".join(
+                option.label for option in state.response_strategy_options
+            )
+            state.pending_actions = [
+                "Yanıt stratejisi seçin: " + option_labels,
+                "Seçeneklerden biri uygun değilse kendi metninizi yazabilirsiniz.",
+            ]
+            state.next_step = (
+                "Taslağın nasıl bir yanıt vereceğini belirlemek için bir "
+                "strateji seçiniz veya kendi metninizi giriniz."
+            )
+            state.possible_actions = ["yanit_stratejisi_sec"]
+            state.add_event(
+                ProcessStatus.WAITING_FOR_RESPONSE_STRATEGY,
+                "İçerik eksiksiz; taslak hazırlanmadan önce yanıt stratejisi "
+                "bekleniyor.",
                 "Kullanıcı Bilgilendirme Ajanı",
             )
         else:

@@ -37,6 +37,10 @@ class LegalAgentRole(StrEnum):
     RESEARCHER = "researcher"
     AUDITOR = "auditor"
     ADJUDICATOR = "adjudicator"
+    TEMPLATE_SELECTOR = "template_selector"
+    DRAFTER = "drafter"
+    ROUTER = "router"
+    RESPONSE_ADVISOR = "response_advisor"
 
 
 class DataClassification(StrEnum):

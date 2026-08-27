@@ -62,7 +62,18 @@ class LegislationResearchAgent:
     def run_with_diagnostics(
         self, analysis: DocumentAnalysis
     ) -> LegislationSearchResult:
-        query = self._query_for(analysis)
+        return self.run_with_query(self._query_for(analysis), analysis)
+
+    def run_with_query(
+        self, query: str, analysis: DocumentAnalysis
+    ) -> LegislationSearchResult:
+        """Like ``run_with_diagnostics`` but with an explicit query override.
+
+        Used by callers that need a different search intent (e.g. LLM2's
+        "what is required for this evrak türü" requirement mining) while
+        still resolving domain/analysis-aware filtering from ``analysis``.
+        """
+
         search_for_analysis = getattr(self.retriever, "search_for_analysis", None)
         search_with_diagnostics = getattr(
             self.retriever, "search_with_diagnostics", None

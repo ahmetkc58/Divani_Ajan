@@ -19,6 +19,7 @@ from karayol_agent.schemas import (
     ApprovalRequest,
     InformationUpdateRequest,
     ProcessState,
+    ResponseStrategyRequest,
     TextProcessRequest,
 )
 
@@ -116,14 +117,16 @@ def build_routers(
             with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temporary:
                 temporary.write(content)
                 temporary_path = Path(temporary.name)
-            text = await run_in_threadpool(
-                orchestrator.extractor.extract, temporary_path
+            extracted = await run_in_threadpool(
+                orchestrator.extractor.extract_with_layout, temporary_path
             )
             return await run_in_threadpool(
-                orchestrator.process_text,
-                text,
-                source_name=filename,
-                compile_pdf=compile_pdf,
+                lambda: orchestrator.process_text(
+                    extracted.text,
+                    source_name=filename,
+                    compile_pdf=compile_pdf,
+                    layout_words=extracted.words,
+                )
             )
         except ExtractionError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -161,6 +164,33 @@ def build_routers(
         try:
             return current_orchestrator().provide_information(
                 document_id, request.fields, compile_pdf=request.compile_pdf
+            )
+        except ProcessNotFoundError as exc:
+            raise HTTPException(
+                status_code=404, detail="Evrak süreci bulunamadı."
+            ) from exc
+        except ProcessValidationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @api.post(
+        "/processes/{document_id}/response-strategy",
+        response_model=ProcessState,
+        tags=["processes"],
+        summary="Yanıt stratejisi seç",
+        operation_id="chooseResponseStrategy",
+    )
+    @legacy.post(
+        "/v1/process/{document_id}/response-strategy", response_model=ProcessState
+    )
+    def choose_response_strategy(
+        document_id: str, request: ResponseStrategyRequest
+    ) -> ProcessState:
+        try:
+            return current_orchestrator().choose_response_strategy(
+                document_id,
+                option_id=request.option_id,
+                custom_text=request.custom_text,
+                compile_pdf=request.compile_pdf,
             )
         except ProcessNotFoundError as exc:
             raise HTTPException(

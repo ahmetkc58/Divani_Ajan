@@ -307,6 +307,52 @@ class Settings:
             or PROJECT_ROOT / "data" / "processed" / "competition_snapshot.json"
         )
     )
+    document_type_catalog_path: Path = field(
+        default_factory=lambda: Path(
+            _environment(
+                "KARAYOL_DOCUMENT_TYPE_CATALOG_PATH",
+                str(
+                    PROJECT_ROOT
+                    / "data"
+                    / "document_types"
+                    / "document_type_catalog.json"
+                ),
+            )
+            or PROJECT_ROOT / "data" / "document_types" / "document_type_catalog.json"
+        )
+    )
+    template_catalog_path: Path = field(
+        default_factory=lambda: Path(
+            _environment(
+                "KARAYOL_TEMPLATE_CATALOG_PATH",
+                str(PROJECT_ROOT / "templates" / "catalog.json"),
+            )
+            or PROJECT_ROOT / "templates" / "catalog.json"
+        )
+    )
+    search_o1_enabled: bool = field(
+        default_factory=lambda: _environment_bool("KARAYOL_SEARCH_O1_ENABLED", True)
+    )
+    search_o1_model: str = field(
+        default_factory=lambda: (
+            _environment("KARAYOL_LLM_MODEL_KATMAN2", "llm-large") or "llm-large"
+        )
+    )
+    search_o1_researcher_max_turns: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_SEARCH_O1_RESEARCHER_MAX_TURNS", 3
+        )
+    )
+    search_o1_auditor_max_turns: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_SEARCH_O1_AUDITOR_MAX_TURNS", 2
+        )
+    )
+    search_o1_adjudicator_max_turns: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_SEARCH_O1_ADJUDICATOR_MAX_TURNS", 1
+        )
+    )
 
     def __post_init__(self) -> None:
         normalized_origins: list[str] = []
@@ -426,6 +472,18 @@ class Settings:
                 "evidence_graph_path",
                 self.project_root / self.evidence_graph_path,
             )
+        if not self.document_type_catalog_path.is_absolute():
+            object.__setattr__(
+                self,
+                "document_type_catalog_path",
+                self.project_root / self.document_type_catalog_path,
+            )
+        if not self.template_catalog_path.is_absolute():
+            object.__setattr__(
+                self,
+                "template_catalog_path",
+                self.project_root / self.template_catalog_path,
+            )
         if self.embedding_dimension not in {32, 64, 128, 256, 512, 768, 1024}:
             raise ValueError(
                 "Jina embedding boyutu desteklenen Matryoshka "
@@ -489,6 +547,12 @@ class Settings:
             raise ValueError(
                 "Reranker aday sayısı retrieval top-k değerinden küçük olamaz."
             )
+        if min(
+            self.search_o1_researcher_max_turns,
+            self.search_o1_auditor_max_turns,
+            self.search_o1_adjudicator_max_turns,
+        ) < 1:
+            raise ValueError("Search-o1 tur bütçeleri en az 1 olmalıdır.")
 
     def ensure_runtime_dirs(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)

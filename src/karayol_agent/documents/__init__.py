@@ -1,6 +1,6 @@
 """Belge okuma ve metin çıkarma."""
 
-from .extractor import DocumentExtractor, ExtractionError
+from .extractor import DocumentExtractor, ExtractedDocument, ExtractionError, OcrWord
 
-__all__ = ["DocumentExtractor", "ExtractionError"]
+__all__ = ["DocumentExtractor", "ExtractedDocument", "ExtractionError", "OcrWord"]
 

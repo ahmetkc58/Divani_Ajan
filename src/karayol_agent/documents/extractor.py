@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+from dataclasses import dataclass
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -16,6 +17,92 @@ from karayol_agent.text_utils import normalize_whitespace
 
 class ExtractionError(RuntimeError):
     pass
+
+
+@dataclass(frozen=True, slots=True)
+class OcrWord:
+    """One recognized word's text and page position, in PDF/pixel points."""
+
+    text: str
+    left: float
+    top: float
+    width: float
+    height: float
+    confidence: float | None
+    page_number: int
+
+
+@dataclass(frozen=True, slots=True)
+class ExtractedDocument:
+    """Extracted text plus a best-effort word/position layout overlay.
+
+    ``words`` is empty whenever layout capture isn't applicable (plain text
+    files) or fails for any reason — it is never required for ``text`` to be
+    valid, and callers must treat it as optional enrichment.
+    """
+
+    text: str
+    words: tuple[OcrWord, ...] = ()
+
+
+# Two Tesseract line completions in the wild on this project's Windows
+# checkouts: an ancient 32-bit 3.02 install (no TSV/hOCR support, frequently
+# still first on PATH) and a modern 5.x install. ``shutil.which`` alone is
+# not reliable here, so every caller resolves through ``_resolve_tesseract``
+# instead of using ``shutil.which("tesseract")`` directly.
+_MIN_TESSERACT_MAJOR_VERSION = 4
+_KNOWN_TESSERACT_PATHS = (
+    Path(r"C:\Program Files\Tesseract-OCR\tesseract.exe"),
+    Path(r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"),
+)
+_TESSERACT_VERSION_PATTERN = re.compile(r"tesseract\s+v?(\d+)\.(\d+)(?:\.(\d+))?", re.IGNORECASE)
+
+
+def _tesseract_version(binary: str) -> tuple[int, ...] | None:
+    try:
+        result = subprocess.run(
+            [binary, "--version"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    match = _TESSERACT_VERSION_PATTERN.search(f"{result.stdout}\n{result.stderr}")
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups() if part is not None)
+
+
+def _resolve_tesseract() -> str | None:
+    """Return a usable (>=4.0) Tesseract binary path, preferring PATH order.
+
+    Falls back to known Windows install locations when the first binary on
+    PATH is too old to support TSV output (a real split-install seen on this
+    project's Windows checkouts: an ancient 32-bit 3.02 build ahead of a
+    modern 5.x build on PATH). Deliberately uncached: this runs once per
+    document (not per page), and caching process-wide made the result
+    order-dependent on whatever ``shutil.which``/env state an earlier caller
+    (including other tests in the same process) last observed.
+    """
+
+    candidates: list[Path] = []
+    which_result = shutil.which("tesseract")
+    if which_result:
+        candidates.append(Path(which_result))
+    candidates.extend(path for path in _KNOWN_TESSERACT_PATHS if path.is_file())
+
+    seen: set[str] = set()
+    for candidate in candidates:
+        resolved = str(candidate)
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        version = _tesseract_version(resolved)
+        if version is not None and version[0] >= _MIN_TESSERACT_MAJOR_VERSION:
+            return resolved
+    return which_result
 
 
 class DocumentExtractor:
@@ -110,6 +197,168 @@ class DocumentExtractor:
             )
         return text
 
+    def extract_with_layout(self, path: Path) -> ExtractedDocument:
+        """Return ``extract(path)``'s text plus a best-effort word overlay.
+
+        ``text`` is exactly what ``extract(path)`` would return — same
+        validation, same errors. Word/position capture is a separate,
+        independent pass that never turns an otherwise-successful extraction
+        into a failure: any internal error there just yields ``words=()``.
+        """
+
+        text = self.extract(path)
+        try:
+            words = self._extract_words(path)
+        except Exception:
+            words = ()
+        return ExtractedDocument(text=text, words=words)
+
+    def _extract_words(self, path: Path) -> tuple[OcrWord, ...]:
+        suffix = path.suffix.lower()
+        if suffix in {".txt", ".md"}:
+            return ()
+        try:
+            import pymupdf
+        except ImportError:
+            return ()
+
+        resolved = _resolve_tesseract()
+        words: list[OcrWord] = []
+        with tempfile.TemporaryDirectory(prefix="karayol-layout-ocr-") as temp_dir:
+            if suffix == ".pdf":
+                document = pymupdf.open(stream=path.read_bytes(), filetype="pdf")
+                try:
+                    for page_number, page in enumerate(document, start=1):
+                        native_words = page.get_text("words")
+                        page_text = page.get_text("text").strip()
+                        if native_words and self._has_usable_page_text(page_text):
+                            words.extend(
+                                OcrWord(
+                                    text=str(word_text),
+                                    left=float(x0),
+                                    top=float(y0),
+                                    width=float(x1) - float(x0),
+                                    height=float(y1) - float(y0),
+                                    confidence=None,
+                                    page_number=page_number,
+                                )
+                                for x0, y0, x1, y1, word_text, *_ in native_words
+                            )
+                        elif resolved is not None:
+                            words.extend(
+                                self._ocr_words_for_page(
+                                    page, page_number, temp_dir, resolved, scale=2.0
+                                )
+                            )
+                finally:
+                    document.close()
+            elif resolved is not None:
+                document = pymupdf.open(path)
+                try:
+                    for page_number, page in enumerate(document, start=1):
+                        words.extend(
+                            self._ocr_words_for_page(
+                                page, page_number, temp_dir, resolved, scale=1.0
+                            )
+                        )
+                finally:
+                    document.close()
+        return tuple(words)
+
+    def _ocr_words_for_page(
+        self,
+        page: object,
+        page_number: int,
+        temp_dir: str,
+        tesseract: str,
+        *,
+        scale: float,
+    ) -> list[OcrWord]:
+        import pymupdf
+
+        pixmap = page.get_pixmap(  # type: ignore[attr-defined]
+            matrix=pymupdf.Matrix(scale, scale), alpha=False
+        )
+        if pixmap.width * pixmap.height > self.max_ocr_pixels_per_page:
+            return []
+        image_path = Path(temp_dir) / f"layout-page-{page_number}.png"
+        pixmap.save(image_path)
+        command = self._tesseract_command(
+            tesseract, image_path, "tur+eng", tsv=True
+        )
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=self.ocr_page_timeout_seconds,
+                check=False,
+            )
+        except (subprocess.TimeoutExpired, OSError):
+            return []
+        if result.returncode != 0:
+            return []
+        # Normalize back to PDF-point space so native and OCR-derived words
+        # share one coordinate system regardless of the render scale used.
+        return [
+            OcrWord(
+                text=word.text,
+                left=word.left / scale,
+                top=word.top / scale,
+                width=word.width / scale,
+                height=word.height / scale,
+                confidence=word.confidence,
+                page_number=word.page_number,
+            )
+            for word in self._parse_tesseract_tsv(result.stdout, page_number)
+        ]
+
+    _TSV_WORD_LEVEL = "5"
+
+    @classmethod
+    def _parse_tesseract_tsv(cls, tsv_output: str, page_number: int) -> list[OcrWord]:
+        lines = tsv_output.splitlines()
+        if not lines:
+            return []
+        header = lines[0].split("\t")
+        required = ("level", "left", "top", "width", "height", "conf", "text")
+        try:
+            indices = {name: header.index(name) for name in required}
+        except ValueError:
+            return []
+        words: list[OcrWord] = []
+        for line in lines[1:]:
+            columns = line.split("\t")
+            if len(columns) <= max(indices.values()):
+                continue
+            if columns[indices["level"]] != cls._TSV_WORD_LEVEL:
+                continue
+            text = columns[indices["text"]].strip()
+            if not text:
+                continue
+            try:
+                left = float(columns[indices["left"]])
+                top = float(columns[indices["top"]])
+                width = float(columns[indices["width"]])
+                height = float(columns[indices["height"]])
+                confidence = float(columns[indices["conf"]])
+            except ValueError:
+                continue
+            words.append(
+                OcrWord(
+                    text=text,
+                    left=left,
+                    top=top,
+                    width=width,
+                    height=height,
+                    confidence=confidence if confidence >= 0 else None,
+                    page_number=page_number,
+                )
+            )
+        return words
+
     @staticmethod
     def _validate_file_signature(path: Path, suffix: str) -> None:
         try:
@@ -134,8 +383,8 @@ class DocumentExtractor:
             )
 
     def _extract_image(self, path: Path) -> str:
-        tesseract = shutil.which("tesseract")
-        if not tesseract:
+        tesseract = _resolve_tesseract()
+        if tesseract is None:
             raise ExtractionError("Görsel belge için Tesseract bulunamadı; OCR yapılamadı.")
         try:
             import pymupdf
@@ -170,13 +419,13 @@ class DocumentExtractor:
                     image_path = Path(temp_dir) / f"page-{page_number}.png"
                     pixmap.save(image_path)
                     result = self._run_tesseract(
-                        [tesseract, str(image_path), "stdout", "-l", "tur+eng"],
+                        self._tesseract_command(tesseract, image_path, "tur+eng"),
                         deadline=deadline,
                         page_number=page_number,
                     )
                     if result.returncode != 0 and "tur" in (result.stderr or "").casefold():
                         result = self._run_tesseract(
-                            [tesseract, str(image_path), "stdout", "-l", "eng"],
+                            self._tesseract_command(tesseract, image_path, "eng"),
                             deadline=deadline,
                             page_number=page_number,
                         )
@@ -371,8 +620,8 @@ class DocumentExtractor:
         *,
         page_numbers: set[int] | None,
     ) -> dict[int, str]:
-        tesseract = shutil.which("tesseract")
-        if not tesseract:
+        tesseract = _resolve_tesseract()
+        if tesseract is None:
             raise ExtractionError(
                 "PDF metin katmanı yetersiz ve Tesseract bulunamadı; OCR yapılamadı."
             )
@@ -426,14 +675,18 @@ class DocumentExtractor:
                         raise ExtractionError(
                             f"OCR sayfa {page_number} görüntüye dönüştürülemedi."
                         ) from None
-                    command = [tesseract, str(image_path), "stdout", "-l", "tur+eng"]
+                    command = self._tesseract_command(
+                        tesseract, image_path, "tur+eng"
+                    )
                     result = self._run_tesseract(
                         command, deadline=deadline, page_number=page_number
                     )
                     if result.returncode != 0 and "tur" in (
                         result.stderr or ""
                     ).casefold():
-                        command = [tesseract, str(image_path), "stdout", "-l", "eng"]
+                        command = self._tesseract_command(
+                            tesseract, image_path, "eng"
+                        )
                         result = self._run_tesseract(
                             command,
                             deadline=deadline,
@@ -448,6 +701,26 @@ class DocumentExtractor:
             finally:
                 document.close()
         return extracted
+
+    @staticmethod
+    def _tesseract_command(
+        tesseract: str,
+        image_path: Path,
+        lang: str,
+        *,
+        tsv: bool = False,
+    ) -> list[str]:
+        command = [tesseract, str(image_path), "stdout", "-l", lang]
+        if tsv:
+            # A direct config *variable* rather than the trailing ``tsv``
+            # config *file* — the latter requires locating
+            # ``<tessdata>/configs/tsv`` relative to whatever tessdata
+            # directory Tesseract resolves (TESSDATA_PREFIX or its own
+            # install folder), which is not reliable across split installs
+            # where language data and config files live in different
+            # places. This variable form only needs the language data.
+            command += ["-c", "tessedit_create_tsv=1"]
+        return command
 
     def _run_tesseract(
         self,

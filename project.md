@@ -98,7 +98,7 @@ Proje ancak aşağıdakiler birlikte sağlandığında bitmiş sayılır:
 ## İlgili belgeler
 
 - Ana yarışma planı: `PROJE_PLANI.md`
-- Güncel kapanış planı: `GELISTIRME_PLANI_2026-08-24.md`
+- Güncel kapanış planı: `docs/SARTNAME_EKSIKLERI_UYGULAMA_PLANI.md`
 - Kurulum ve kullanım: `README.md`
 - Ajan davranış sözleşmesi: `openai.md`
 - Değişiklik günlüğü: `docs/DEGISIKLIKLER.md`

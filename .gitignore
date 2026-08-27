@@ -20,6 +20,12 @@ data/processed/
 # Yerel araçlar ve büyük ham arşivler kaynak kod deposuna gönderilmez.
 /AnyDesk.exe
 /*.7z
+/*.rar
 /*.pdf
 /Ulaştırma ve Altyapı Bakanlığı/
 /stdout.txt
+/qdrant_db_tamamlandi/
+
+# Bozuk core.hooksPath/checkout davranışının tekrar tekrar oluşturduğu, gerçek
+# bir git hook olmayan kalıntı dizin.
+/dev/

@@ -29,7 +29,7 @@ def test_completed_process_cannot_be_changed_or_approved_twice(
     document_id = client.post(
         "/v1/process/text", json={"text": text}
     ).json()["document_id"]
-    client.post(
+    info_state = client.post(
         f"/v1/process/{document_id}/information",
         json={
             "fields": {
@@ -38,7 +38,16 @@ def test_completed_process_cannot_be_changed_or_approved_twice(
                 "unvan": "Şube Müdürü",
             }
         },
-    )
+    ).json()
+    if info_state.get("response_strategy_options") and not info_state.get(
+        "selected_response_strategy"
+    ):
+        client.post(
+            f"/v1/process/{document_id}/response-strategy",
+            json={
+                "option_id": info_state["response_strategy_options"][0]["option_id"]
+            },
+        )
     approved = client.post(
         f"/v1/process/{document_id}/approve",
         json={"approved_by": "QA Yetkilisi"},

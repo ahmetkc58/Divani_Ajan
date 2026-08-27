@@ -62,6 +62,12 @@ where = ["src"]
 "share/karayol-agent/data/organization" = [
   "data/organization/kgm_units_2026-07-16.json",
 ]
+"share/karayol-agent/data/document_types" = [
+  "data/document_types/document_type_catalog.json",
+]
+"share/karayol-agent/templates" = [
+  "templates/catalog.json",
+]
 "share/karayol-agent/templates/ust_yazi_v1" = [
   "templates/ust_yazi_v1/metadata.json",
   "templates/ust_yazi_v1/rules.yaml",

@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from karayol_agent.documents import DocumentExtractor, ExtractionError
+from karayol_agent.documents import extractor as extractor_module
 
 
 def _make_blank_pdf(path: Path, *, page_count: int = 1) -> None:
@@ -387,3 +388,132 @@ def test_direct_png_is_ocrd_with_pixel_limits(
     text = DocumentExtractor(max_ocr_pixels_per_page=1_000_000).extract(image_path)
 
     assert "Ayse Yilmaz" in text
+
+
+def test_resolve_tesseract_falls_back_when_path_binary_is_too_old(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    old_binary = tmp_path / "old" / "tesseract.exe"
+    old_binary.parent.mkdir()
+    old_binary.write_bytes(b"")
+    good_binary = tmp_path / "good" / "tesseract.exe"
+    good_binary.parent.mkdir()
+    good_binary.write_bytes(b"")
+
+    def fake_run(command, **_kwargs):
+        binary = command[0]
+        if binary == str(old_binary):
+            stdout = "tesseract 3.02\n leptonica-1.68\n"
+        elif binary == str(good_binary):
+            stdout = "tesseract 5.3.3\n leptonica-1.83.1\n"
+        else:
+            raise AssertionError(f"unexpected binary probed: {binary}")
+        return subprocess.CompletedProcess(
+            args=command, returncode=0, stdout=stdout, stderr=""
+        )
+
+    monkeypatch.setattr(shutil, "which", lambda _name: str(old_binary))
+    monkeypatch.setattr(
+        extractor_module, "_KNOWN_TESSERACT_PATHS", (old_binary, good_binary)
+    )
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    resolved = extractor_module._resolve_tesseract()
+
+    assert resolved == str(good_binary)
+
+
+def test_resolve_tesseract_falls_back_to_which_result_when_nothing_qualifies(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(shutil, "which", lambda _name: "tesseract")
+    monkeypatch.setattr(extractor_module, "_KNOWN_TESSERACT_PATHS", ())
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *_args, **_kwargs: subprocess.CompletedProcess(
+            args=[], returncode=0, stdout="not a version string", stderr=""
+        ),
+    )
+
+    assert extractor_module._resolve_tesseract() == "tesseract"
+
+
+def test_resolve_tesseract_returns_none_when_nothing_is_found(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(shutil, "which", lambda _name: None)
+    monkeypatch.setattr(extractor_module, "_KNOWN_TESSERACT_PATHS", ())
+
+    assert extractor_module._resolve_tesseract() is None
+
+
+def test_parse_tesseract_tsv_extracts_only_word_level_rows() -> None:
+    tsv = (
+        "level\tpage_num\tblock_num\tpar_num\tline_num\tword_num\tleft\ttop\t"
+        "width\theight\tconf\ttext\n"
+        "1\t1\t0\t0\t0\t0\t0\t0\t100\t100\t-1\t\n"
+        "5\t1\t1\t1\t1\t1\t10\t20\t30\t15\t92.5\tGönderen:\n"
+        "5\t1\t1\t1\t1\t2\t45\t20\t20\t15\t88.1\tAyşe\n"
+    )
+
+    words = DocumentExtractor._parse_tesseract_tsv(tsv, page_number=1)
+
+    assert [word.text for word in words] == ["Gönderen:", "Ayşe"]
+    assert words[0].left == 10.0
+    assert words[0].top == 20.0
+    assert words[0].confidence == 92.5
+    assert all(word.page_number == 1 for word in words)
+
+
+def test_parse_tesseract_tsv_returns_empty_for_malformed_header() -> None:
+    assert DocumentExtractor._parse_tesseract_tsv("not\ta\ttsv\theader", 1) == []
+    assert DocumentExtractor._parse_tesseract_tsv("", 1) == []
+
+
+def test_extract_with_layout_captures_native_pdf_word_positions(
+    tmp_path: Path,
+) -> None:
+    import pymupdf
+
+    document = pymupdf.open()
+    page = document.new_page()
+    page.insert_text((72, 72), "Gonderen: Test Kisi", fontsize=12)
+    page.insert_text((72, 100), "Konu: Yol bakim talebi hakkinda", fontsize=12)
+    pdf_path = tmp_path / "native.pdf"
+    document.save(pdf_path)
+    document.close()
+
+    result = DocumentExtractor().extract_with_layout(pdf_path)
+
+    assert "Gonderen" in result.text
+    assert any(word.text == "Gonderen:" for word in result.words)
+    assert all(word.page_number == 1 for word in result.words)
+
+
+def test_extract_with_layout_returns_no_words_for_plain_text(tmp_path: Path) -> None:
+    source = tmp_path / "evrak.txt"
+    source.write_text("Konu: Yol bakım", encoding="utf-8")
+
+    result = DocumentExtractor().extract_with_layout(source)
+
+    assert result.text
+    assert result.words == ()
+
+
+def test_extract_with_layout_never_fails_when_word_capture_errors(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "evrak.txt"
+    source.write_text("Konu: Yol bakım", encoding="utf-8")
+    extractor = DocumentExtractor()
+    monkeypatch.setattr(
+        extractor,
+        "_extract_words",
+        lambda _path: (_ for _ in ()).throw(RuntimeError("boom")),
+    )
+
+    result = extractor.extract_with_layout(source)
+
+    assert result.text
+    assert result.words == ()

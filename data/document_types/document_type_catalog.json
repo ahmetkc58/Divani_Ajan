@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "note": "Yer tutucu katalog: mevcut GENERAL_DOCUMENT_TYPES (document_types.py) tabanlıdır. Kullanıcının sağlayacağı gerçek 6 evrak türü listesiyle bu dosyanın 'entries' alanı değiştirilir; kodda değişiklik gerekmez.",
+  "entries": [
+    {
+      "type_id": "dilekce",
+      "display_name": "Dilekçe",
+      "definition": "Bir kişinin bir kurumdan belirli bir talebini, şikayetini veya bilgisini ilettiği yazılı başvuru.",
+      "example_phrases": ["dilekçe", "dilekçemin", "arz ederim", "talep ediyorum"]
+    },
+    {
+      "type_id": "sikayet",
+      "display_name": "Şikâyet",
+      "definition": "Bir hizmet, kurum veya üçüncü kişiden kaynaklanan mağduriyet ya da rahatsızlığın bildirildiği başvuru.",
+      "example_phrases": ["şikayet", "şikâyet", "mağduriyet", "rahatsızlık"]
+    },
+    {
+      "type_id": "itiraz",
+      "display_name": "İtiraz",
+      "definition": "Daha önce verilmiş bir karara veya işleme karşı yeniden değerlendirme talep eden başvuru.",
+      "example_phrases": ["itiraz", "karara karşı", "kararın yeniden incelenmesi"]
+    },
+    {
+      "type_id": "talep",
+      "display_name": "Talep",
+      "definition": "Bir işlemin yapılmasını veya bir hizmetin sağlanmasını isteyen genel başvuru.",
+      "example_phrases": ["talep ediyorum", "talebim", "yapılmasını istiyorum"]
+    },
+    {
+      "type_id": "izin",
+      "display_name": "İzin Başvurusu",
+      "definition": "Belirli bir faaliyet veya çalışma için resmi izin/müsaade talep eden başvuru.",
+      "example_phrases": ["izin başvurusu", "izin verilmesi", "çalışma izni", "faaliyet izni"]
+    },
+    {
+      "type_id": "belge",
+      "display_name": "Belge/Bilgi Talebi",
+      "definition": "Kurumdan belirli bir belgenin veya kayıtlı bilginin talep edildiği başvuru.",
+      "example_phrases": ["belge talebi", "belge örneği", "bilgi edinme", "kayıtların tarafıma gönderilmesi"]
+    },
+    {
+      "type_id": "bildirim",
+      "display_name": "Bildirim/İhbar",
+      "definition": "Bir olay, tehlike veya durumun kuruma haber verildiği, genellikle harekete geçilmesi beklenen başvuru.",
+      "example_phrases": ["bildiriyorum", "bildirim", "ihbar", "haber veriyorum"]
+    },
+    {
+      "type_id": "ust_yazi",
+      "display_name": "Üst Yazı",
+      "definition": "Bir kurumun kendi bağlı/alt birimine veya başka bir resmi makama gönderdiği resmi yazışma.",
+      "example_phrases": ["ilgi:", "dağıtım", "gereğini rica ederim"]
+    },
+    {
+      "type_id": "genel_basvuru",
+      "display_name": "Genel Başvuru",
+      "definition": "Yukarıdaki türlerden hiçbirine net biçimde uymayan genel amaçlı başvuru.",
+      "example_phrases": []
+    }
+  ]
+}

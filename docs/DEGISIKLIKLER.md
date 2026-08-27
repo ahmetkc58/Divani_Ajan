@@ -4,6 +4,132 @@ Proje tanımı kökteki `project.md`, ajan davranış sözleşmesi kökteki `ope
 dosyasındadır. Bu dosya uygulama değişikliklerini, doğrulamaları ve kalan
 engelleri kaydeder.
 
+## 27 Ağustos 2026 — 3 katmanlı, 6 LLM rollü mimari (Aşama 1)
+
+Onaylı mimari planın (`docs/`de saklanan plan dosyası) Aşama 1 kapsamı
+uygulandı: mevcut tek-parça `LLMDocumentUnderstandingAgent` +
+`LLMAdjudicatorAgent` ikilisi, KATMAN 1/2/3'e ayrıştırılmış 6 ayrı LLM rolüne
+dönüştürüldü.
+
+### KATMAN 1 — `agents/llm_layer1.py` (yeni)
+
+- `LLMClassificationAgent` (LLM1): yapılandırılabilir, kapalı bir evrak türü
+  kataloğundan (`data/document_types/document_type_catalog.json`, yer
+  tutucu içerikle — gerçek 6 tür gelince bu dosya değişecek) RAG destekli
+  seçim yapar; yalnız kaynak metinde birebir geçen kanıt varsa
+  `general_document_type`'ı günceller (iç operasyonel profil dokunulmadan
+  kalır).
+- `LLMRequiredDataAgent` (LLM2): hem mevzuat vektör veritabanından ayrı bir
+  sorguyla ("bu evrak türü için gerekli belgeler/zorunlu bilgiler") gelen
+  doğrulanmış kanıtı, hem de (varsa) OCR yerleşim analizinden gelen boşluk
+  adaylarını kullanarak `missing_data_points` üretir; sonuç
+  `analysis.missing_fields`'e yalnız eklenir, asla çıkarılmaz.
+- `agents/legislation.py`: `LegislationResearchAgent.run_with_query()`
+  eklendi — `run_with_diagnostics()`'in sorgu-türetme adımı ayrıştırılarak
+  LLM2'nin farklı bir sorguyla aynı Researcher/Auditor makinesini
+  kullanabilmesi sağlandı.
+
+### KATMAN 2 — mevcut LegalGraphRAG deseni daraltıldı
+
+- `agents/llm_roles.py`: `LLMAdjudicatorAgent` artık yalnız kanıt sentezi
+  yapar (`accepted_reference_ids`/`confidence`/`rationale`); şablon/birim
+  seçimi çıkarıldı, bu karar KATMAN 3'e taşındı. `LLMDocumentUnderstandingAgent`
+  ve ona özel `DOCUMENT_TYPES`/`EXTRACTION_FIELDS` tamamen kaldırıldı.
+
+### KATMAN 3 — `agents/llm_layer3.py` (yeni)
+
+- `LLMTemplateSelectionAgent` (LLM3): 6 şablonun kısa metadata'sından
+  (`templates/catalog.json`, ham LaTeX değil) seçim yapar.
+- `LLMTemplateFillAgent` (LLM4): seçilen TEK şablonun içerik alanlarını
+  (konu/paragraflar/kapanış) doldurur; kapanış yalnız
+  `ALLOWED_CLOSINGS_BY_RELATION`'daki kapalı listeden seçilebilir, ham LaTeX
+  asla üretmez/döndürmez.
+- `LLMRoutingAgent` (LLM5): organizasyon kataloğunu (`parent_id` hiyerarşisi)
+  bir grafik olarak modele verir, `traversal_path` ile akıl yürütmeyi izlenebilir
+  kılar; girdisi yalnız anonim `kgm_units_2026-07-16.json`, asla
+  `ustyonetimorganizasyonsema.jpg`.
+- `LLMResponseStrategyAgent` (LLM6): taslak hazırlanmadan önce 2-4 yanıt
+  stratejisi seçeneği üretir; "kendim yazarım" serbest-metin seçeneği her
+  zaman orkestratör tarafından koda eklenir, LLM'e bırakılmaz.
+- Yeni `ProcessStatus.WAITING_FOR_RESPONSE_STRATEGY` +
+  `EvrakOrchestrator.choose_response_strategy()` + `POST
+  /api/v1/processes/{document_id}/response-strategy`: içerik alanları
+  tamamsa (bürokratik sayı/imzalayan/unvan alanlarından bağımsız) LLM6
+  devreye girer; seçim yapılana kadar LLM4 çalışmaz.
+
+### OCR koordinat/yerleşim farkındalığı — `documents/extractor.py`, `agents/layout.py` (yeni)
+
+- `DocumentExtractor.extract_with_layout()`: `extract()`'in ürettiği metne
+  dokunmadan, ayrı ve en kötü ihtimalle sessizce boş dönen bir katman olarak
+  kelime/koordinat listesi (`OcrWord`) üretir — native PDF metin katmanında
+  PyMuPDF `get_text("words")`, taranmış sayfalarda Tesseract TSV çıktısı
+  (`-c tessedit_create_tsv=1`) ile.
+- Tesseract ikili dosyası artık sürüm kontrolünden geçirilip (`>=4.0`)
+  gerekirse bilinen kurulum yollarına düşülerek seçiliyor — bu makinede PATH
+  üzerinde önce gelen 3.02 yerine 5.3.3 kullanılmasını sağlayan, düz metin
+  OCR kalitesini de iyileştiren bir yan etkisi var.
+- `LayoutGapDetector`: bilinen alan etiketlerinin (İmza, Tarih, Kaşe/Mühür vb.)
+  civarında içerik bulunamayan alanları LLM2 için aday olarak işaretler;
+  yanlış pozitif kabul edilebilir, LLM son kararı verir.
+
+### Doğrulama
+
+- `tests/test_orchestrator_llm_integration.py`: yeni 6-LLM boru hattına göre
+  tamamen yeniden yazıldı, **16/16 geçti**.
+- Yeni `tests/test_llm_layer1.py` (8), `tests/test_llm_layer3.py` (10),
+  `tests/test_layout_gap_detector.py` (6): **24/24 geçti**.
+- `tests/test_extractor.py`: Tesseract sürüm-tespiti, TSV ayrıştırma ve
+  `extract_with_layout` için yeni testlerle birlikte **37/37 geçti**.
+
+### Kalan (Aşama 2/3, kullanıcı girdisi bekliyor)
+
+- LLM1'in gerçek 6 evrak türü kataloğu, LLM3/LLM4'ün gerçek 6 LaTeX şablonu
+  (kullanıcı sağlayacak).
+- KATMAN 2'nin tam hiyerarşik hukuki grafiği (ilke/kural/olgu) — bilinçli
+  olarak ertelendi.
+
+## 27 Ağustos 2026 — KATMAN 2: Search-o1 (native tool-calling, llm-large)
+
+Kullanıcı isteğiyle KATMAN 2'nin 3 rolüne (Researcher, Auditor, Adjudicator)
+gerçek Search-o1 tekniği eklendi: model kendi kararıyla arama tetikleyip
+sonucu değerlendirerek tekrar arayabiliyor (tur başına bütçe sınırlı).
+
+- `src/karayol_agent/llm/agentic_gateway.py` (yeni): `AgenticToolLLMGateway`
+  — mevcut tek-atımlık `StructuredLLMGateway`'e hiç dokunmadan, yalnız
+  OpenAI-uyumlu (`evren-llmapi`) `tools`/`tool_calls` protokolüyle çok-turlu
+  bir döngü çalıştırır. Aynı `ExternalDataGuard` redaksiyonunu ve
+  `llm/schema.py` doğrulayıcısını yeniden kullanır.
+- `src/karayol_agent/agents/search_tool.py` (yeni): `search_legislation`
+  aracı — mevcut `LegislationResearchAgent.run_with_query` +
+  `SourceVerificationAgent` üzerinden çalışır; modele YALNIZ doğrulanmış
+  kanıtlar gösterilir.
+- `src/karayol_agent/agents/llm_layer2.py` (yeni):
+  `SearchO1ResearchAgent` (deterministik ilk sorgu + en fazla 3 ek tur),
+  `SearchO1AuditorAgent` (deterministik güven-sözleşmesi tabanı DEĞİŞMEDEN
+  kalır; yalnız düşük-güvenli adaylarda en fazla 2 ek çapraz-kontrol turu,
+  yalnız `requires_human_review` ekleyebilir, asla güvensiz kaynağı
+  güvenilire çeviremez), `SearchO1AdjudicatorAgent` (mevcut
+  `AdjudicationOutcome` sözleşmesini aynen kullanır, en fazla 1 ek tur).
+- Model: KATMAN 1/3 `llm-fast` ile kalır; KATMAN 2 için ayrı bir `LLMConfig`
+  ile `llm-large` (`KARAYOL_LLM_MODEL_KATMAN2`, tur bütçeleri
+  `KARAYOL_SEARCH_O1_{RESEARCHER,AUDITOR,ADJUDICATOR}_MAX_TURNS`).
+- Geriye dönük güvenli: sağlayıcı OpenAI-uyumlu değilse, API anahtarı yoksa
+  veya çağıran kendi `llm_gateway`'ini enjekte ettiyse (tüm testlerin sahte
+  gateway'i dahil) Search-o1 tamamen devre dışı kalır, mevcut deterministik
+  + tek-atımlık Adjudicator akışı değişmeden çalışır.
+- **Doğrulama**: gerçek `evren-llmapi`'ye karşı uçtan uca duman testi
+  (`process_text` tam çalıştırma) başarılı — 7/7 LLM adımı (`llm1_classification`
+  ... `katman2_researcher_search_o1`, `katman2_auditor_search_o1`, `adjudicator`
+  ... `llm5_routing`) `success` döndü. Kullanıcı talimatıyla bu katman için
+  otomatik test yazılmadı; mevcut Aşama 1 test paketinin bozulmadığından
+  (sahte-gateway enjeksiyonunda gerçek ağ çağrısı yapılmaması dahil) kod
+  incelemesiyle emin olundu.
+- Bilinen sınırlama: Adjudicator'ın KENDİ arama turunda bulduğu ek kanıtlar,
+  `_apply_llm_evidence_synthesis`'in mevcut `state.verified_references`
+  kontrolüne dahil değildir (yalnız Auditor'ın ürettiği listeyle
+  sınırlıdır) — güvenlik açığı değil, bu ek kanıtların sıralamaya
+  yükseltilmemesi anlamına gelir.
+
 ## 25 Ağustos 2026 — Konu bazlı teknik dokümantasyon
 
 - Yapılan çalışmalar şartname, Ollama, belge/OCR, LaTeX-PDF, REST mimarisi,

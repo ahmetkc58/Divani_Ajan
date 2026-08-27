@@ -100,7 +100,8 @@ def test_manual_ui_exposes_llm_roles_and_outcomes_in_flow_tab(
 ) -> None:
     script = (FRONTEND / "static" / "app.js").read_text(encoding="utf-8")
 
-    assert 'document_understanding: "LLM Yapılandırılmış Anlama Ajanı"' in script
+    assert 'llm1_classification: "LLM1 — Sınıflandırma Ajanı"' in script
+    assert 'llm2_required_data: "LLM2 — Eksik Veri Ajanı"' in script
     assert 'adjudicator: "LLM Karar Ajanı (Adjudicator)"' in script
     assert "LLM orkestrasyon adımları" in script
     assert "llmTrace?.steps || []" in script
@@ -168,9 +169,21 @@ def test_primary_manual_scenario_reaches_approval_and_download(
     )
     assert information_response.status_code == 200
     ready = information_response.json()
-    assert ready["status"] == "kullanici_onayi_bekleniyor"
+    assert ready["status"] == "yanit_stratejisi_bekleniyor"
     assert ready["missing_information"] == []
     assert ready["compliance"]["passed"] is True
+    assert ready["response_strategy_options"]
+
+    strategy_response = client.post(
+        f"/api/v1/processes/{document_id}/response-strategy",
+        json={
+            "option_id": ready["response_strategy_options"][0]["option_id"],
+            "compile_pdf": True,
+        },
+    )
+    assert strategy_response.status_code == 200
+    ready = strategy_response.json()
+    assert ready["status"] == "kullanici_onayi_bekleniyor"
 
     approval_response = client.post(
         f"/api/v1/processes/{document_id}/approval",

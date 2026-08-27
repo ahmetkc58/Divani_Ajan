@@ -169,6 +169,11 @@ def _complete_and_approve(
             "unvan": "Şube Müdürü",
         },
     )
+    if state.response_strategy_options and state.selected_response_strategy is None:
+        state = orchestrator.choose_response_strategy(
+            state.document_id,
+            option_id=state.response_strategy_options[0].option_id,
+        )
     return orchestrator.approve(state.document_id, "Yetkili Test Kullanıcısı")
 
 
@@ -421,6 +426,16 @@ def test_process_never_completes_without_an_explicit_approval_call(
             "imzalayan": "Test Onaylayıcı",
             "unvan": "Şube Müdürü",
         },
+    )
+    assert state.status == ProcessStatus.WAITING_FOR_RESPONSE_STRATEGY
+    assert state.response_strategy_options
+
+    with pytest.raises(ProcessValidationError, match="Yanıt stratejisi seçilmeden"):
+        orchestrator.approve(state.document_id, "Yetkili Test Kullanıcısı")
+
+    state = orchestrator.choose_response_strategy(
+        state.document_id,
+        option_id=state.response_strategy_options[0].option_id,
     )
     assert state.status == ProcessStatus.WAITING_FOR_APPROVAL
     assert "onayla" in state.possible_actions

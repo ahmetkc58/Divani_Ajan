@@ -49,6 +49,14 @@ def test_complete_multi_agent_flow_and_approval(tmp_path: Path) -> None:
             "unvan": "Şube Müdürü",
         },
     )
+    # Content fields were already complete, so LLM6 now proposes a response
+    # strategy before the draft can be presented for approval.
+    assert state.status == ProcessStatus.WAITING_FOR_RESPONSE_STRATEGY
+    assert state.response_strategy_options
+
+    state = orchestrator.choose_response_strategy(
+        state.document_id, option_id=state.response_strategy_options[0].option_id
+    )
     assert state.status == ProcessStatus.WAITING_FOR_APPROVAL
     assert state.draft is not None
     assert state.draft.missing_fields == []
@@ -96,6 +104,12 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
     assert state.missing_information == []
     assert state.template_decision is not None
     assert state.template_decision.template_id == "ust_yazi_v1"
+    assert state.status == ProcessStatus.WAITING_FOR_RESPONSE_STRATEGY
+    assert state.response_strategy_options
+
+    state = orchestrator.choose_response_strategy(
+        state.document_id, option_id=state.response_strategy_options[0].option_id
+    )
     assert state.status == ProcessStatus.WAITING_FOR_APPROVAL
     assert state.draft is not None
     assert state.draft.missing_fields == []

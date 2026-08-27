@@ -7,7 +7,7 @@
     "mode": "competition_snapshot",
     "path": "data/processed/competition_snapshot.json",
     "fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
-    "file_sha256": "305b1d8575969545414a5fb976a7a63a9e5cdbd8849921064b7e211f23e86576"
+    "file_sha256": "885132c8a4fdd27521cda6fbeb44caccbe94490722128f6f57f065ff01421756"
   },
   "k": 5,
   "binary_relevance_min_grade": 2,

@@ -304,7 +304,10 @@ def test_orchestrator_persists_hybrid_diagnostics_and_dense_evidence(
     state = orchestrator.process_file(ROOT / "examples" / "yol_bakim_talebi.txt")
     restored = orchestrator.get(state.document_id)
 
-    assert fake_retriever.calls == 1
+    # 2, not 1: the main SEARCHING-stage query plus LLM2's independent
+    # "what's required for this evrak türü" requirement-mining query, both
+    # against the same underlying retriever.
+    assert fake_retriever.calls == 2
     assert restored.retrieval_diagnostics is not None
     assert restored.retrieval_diagnostics.mode == "hybrid"
     assert restored.retrieval_diagnostics.dense_status == "used"
