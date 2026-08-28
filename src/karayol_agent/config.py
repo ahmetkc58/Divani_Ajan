@@ -30,6 +30,26 @@ def _default_project_root() -> Path:
 _configured_project_root = os.getenv("KARAYOL_PROJECT_ROOT", "").strip()
 PROJECT_ROOT = Path(_configured_project_root or _default_project_root()).resolve()
 
+
+def _load_dotenv_if_present(env_path: Path) -> None:
+    if not env_path.is_file():
+        return
+    try:
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            key = key.strip()
+            val = val.strip().strip("\"'")
+            if key and key not in os.environ:
+                os.environ[key] = val
+    except Exception:
+        pass
+
+
+_load_dotenv_if_present(PROJECT_ROOT / ".env")
+
 JINA_RERANKER_V2_REVISION = "9cfeff2df7d40d1b78e75e5e9cebec92a99813c9"
 
 

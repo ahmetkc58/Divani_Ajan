@@ -47,7 +47,15 @@ class UrllibHTTPTransport:
             method="POST",
         )
         try:
-            opener = urllib.request.build_opener(_NoRedirectHandler())
+            handlers: list[urllib.request.BaseHandler] = [_NoRedirectHandler()]
+            try:
+                import certifi
+                import ssl
+                ssl_context = ssl.create_default_context(cafile=certifi.where())
+                handlers.append(urllib.request.HTTPSHandler(context=ssl_context))
+            except Exception:
+                pass
+            opener = urllib.request.build_opener(*handlers)
             with opener.open(outgoing, timeout=request.timeout_seconds) as response:
                 body = self._bounded_read(response)
                 return HTTPResponse(status_code=response.status, body=body)

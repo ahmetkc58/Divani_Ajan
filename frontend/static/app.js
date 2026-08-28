@@ -287,7 +287,13 @@ function renderDraft(draft) {
 
 function renderLlmDecisionAudit(step) {
   if (!step) return "";
-  const checks = (step.decision_checks || []).map(c => `<li>${escapeHtml(c)}</li>`).join("");
+  const checks = (step.decision_checks || []).map(c => {
+    if (typeof c === 'string') return `<li>${escapeHtml(c)}</li>`;
+    const mark = c.passed === true ? "✓" : c.passed === false ? "✗" : "•";
+    const name = c.name || "";
+    const detail = c.detail ? ` — ${c.detail}` : "";
+    return `<li><b>${mark} ${escapeHtml(name)}</b>${escapeHtml(detail)}</li>`;
+  }).join("");
   const findings = (step.findings || []).map(f => `
     <div style="margin-top:4px;padding:4px 6px;background:rgba(255,255,255,0.06);border-radius:4px;font-size:9.5px;">
       <b>Skor: %${Math.round((f.confidence || f.legal_support_score || 0) * 100)}</b> · 
@@ -792,7 +798,7 @@ const ORGANIZATIONAL_UNITS = [
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-ISLETME-KOI", name: "KÖİ Bakım İşletme ve Sistem Şube Müdürlüğü", hierarchy: "KGM > İşletmeler Dairesi > Şube Müdürlüğü", desc: "Kamu-Özel İşbirliği (KÖİ / Yap-İşlet-Devret) kapsamındaki otoyol projelerinin denetim ve işletmesi.", tags: ["KÖİ", "Yap-İşlet-Devret", "Otoyol Denetimi"] },
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-ETUT-YOL", name: "Yol Etüt ve Proje Şube Müdürlüğü", hierarchy: "KGM > Etüt, Proje ve Çevre Dairesi > Şube Müdürlüğü", desc: "Yeni devlet ve il yolları etüt ve güzergâh projeleri, kavşak geometrik tasarımları.", tags: ["Yol Etüt", "Güzergah Projesi", "Kavşak Tasarımı"] },
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-ETUT-CEVRE", name: "Çevre Şube Müdürlüğü", hierarchy: "KGM > Etüt, Proje ve Çevre Dairesi > Şube Müdürlüğü", desc: "Karayolu projelerinin Çevresel Etki Değerlendirmesi (ÇED), gürültü bariyerleri ve ağaçlandırma.", tags: ["ÇED", "Gürültü Bariyeri", "Çevre Yönetimi"] },
-  { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-ARGE-JEO", name: "Jeolojik Hizmetler ve Heyelan Şube Müdürlüğü", hierarchy: "KGM > Araştırma ve Geliştirme (AR-GE) Dairesi > Şube Müdürlüğü", desc: "Heyelan, şev stabilitesi, kaya düşmesi incelemeleri ve geoteknik koruma projeleri.", tags: ["Heyelan", "Şev Stabilitesi", "Kaya Düşmesi", "Geoteknik"] },
+  { category: "subeler", catLabel: "KGM ARGE JEO", code: "KGM-ARGE-JEO", name: "Jeolojik Hizmetler ve Heyelan Şube Müdürlüğü", hierarchy: "KGM > Araştırma ve Geliştirme (AR-GE) Dairesi > Şube Müdürlüğü", desc: "Heyelan, şev stabilitesi, kaya düşmesi incelemeleri ve geoteknik koruma projeleri.", tags: ["Heyelan", "Şev Stabilitesi", "Kaya Düşmesi", "Geoteknik"] },
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-ARGE-LAB", name: "Malzeme Laboratuvarı Şube Müdürlüğü", hierarchy: "KGM > Araştırma ve Geliştirme (AR-GE) Dairesi > Şube Müdürlüğü", desc: "Asfalt, beton, agrega ve yol yapım malzemelerinin standart testleri ve laboratuvar analizleri.", tags: ["Laboratuvar", "Numune Testi", "Beton", "Bitüm/Asfalt"] },
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-STR-DOKUMAN", name: "İstatistik ve Dokümantasyon Şube Müdürlüğü", hierarchy: "KGM > Strateji Geliştirme Dairesi > Şube Müdürlüğü", desc: "Kurumsal veri, yıllık karayolu istatistikleri, arşiv ve resmî bilgi edinme başvuruları.", tags: ["Bilgi Edinme", "İstatistik", "Dokümantasyon", "Arşiv"] },
   { category: "subeler", catLabel: "KGM Merkez & Şubeler", code: "KGM-BT-YAZILIM", name: "Yazılım Geliştirme Şube Müdürlüğü", hierarchy: "KGM > Bilgi Teknolojileri Dairesi > Şube Müdürlüğü", desc: "Kurumsal evrak yönetim sistemleri (EBYS), harita/CBS portalları ve yapay zekâ entegrasyonları.", tags: ["EBYS", "Yazılım", "Entegrasyon", "Portallar"] },
