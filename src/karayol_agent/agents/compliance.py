@@ -172,6 +172,11 @@ class ComplianceAgent:
             if reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
         ]
         if snapshot_references:
+            if COMPETITION_SNAPSHOT_NOTICE not in draft.paragraphs:
+                errors.append(
+                    "Yarışma veri kümesi kaynakları kullanıldığı halde zorunlu "
+                    "güncellik/yürürlük uyarısı taslakta bulunmuyor."
+                )
             if any(
                 reference.currentness_verified
                 or reference.legal_reliance_allowed

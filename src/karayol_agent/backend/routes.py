@@ -72,8 +72,8 @@ def build_routers(
         operation_id="getSystemReadiness",
     )
     @legacy.get("/ready")
-    def readiness(response: Response) -> dict[str, object]:
-        report = current_orchestrator().readiness()
+    async def readiness(response: Response) -> dict[str, object]:
+        report = await run_in_threadpool(current_orchestrator().readiness)
         if report["ready"] is not True:
             response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         return {"status": "ready" if report["ready"] else "not_ready", **report}

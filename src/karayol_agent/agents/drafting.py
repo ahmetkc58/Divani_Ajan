@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from karayol_agent.retrieval.contracts import (
+    COMPETITION_SNAPSHOT_NOTICE,
+    CorpusMode,
+)
 from karayol_agent.schemas import (
     DocumentAnalysis,
     DraftPayload,
@@ -114,6 +118,11 @@ class DraftingAgent:
                 f"İşlemin sürdürülebilmesi için şu bilgilerin tamamlanması gerekmektedir: {missing}.",
                 "Eksik bilgilerin iletilmesinin ardından başvurunuz yeniden değerlendirilecektir.",
             ]
+            if any(
+                reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+                for reference in references
+            ):
+                paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
             paragraphs.append(closing)
             return paragraphs
 
@@ -121,6 +130,11 @@ class DraftingAgent:
             f"İlgili başvuruda belirtilen husus incelenmiştir: {request_text}",
             f"Başvurunun görev ve sorumluluk alanı bakımından {routing.unit_name} tarafından değerlendirilmesi uygun görülmüştür.",
         ]
+        if any(
+            reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
+            for reference in references
+        ):
+            paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
         paragraphs.append(closing)
         return paragraphs
 

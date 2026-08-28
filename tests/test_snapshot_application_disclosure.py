@@ -338,7 +338,75 @@ def test_snapshot_bm25_mode_keeps_relevance_gate_without_qdrant(
         "Çukura girince jantım kırıldı; tazminat ve değer kaybı istiyorum."
     )
     assert negative.search_hits == []
-    assert negative.verified_references == []
+    # The content-based legislation relevance gate correctly abstains (no
+    # main-channel/snapshot hits for this off-topic compensation claim).
+    # The curated requirement-rule layer (RequirementRuleRepository) is an
+    # orthogonal, structural (document-type-matched, not content-matched)
+    # source of always-applicable procedural references — e.g. the base
+    # Dilekçe Kanunu fields (ad-soyad, imza, adres, konu) — so it may still
+    # legitimately contribute verified references here without reflecting
+    # any content-relevance judgement about the compensation claim itself.
+    assert negative.verified_references
+    assert all(
+        reference.source_kind == "curated_requirement_rule"
+        for reference in negative.verified_references
+    )
     assert negative.retrieval_diagnostics is not None
     assert negative.retrieval_diagnostics.relevance_query_supported is False
     assert negative.retrieval_diagnostics.relevance_abstained is True
+
+
+def test_curated_requirement_reference_does_not_flip_main_channel_abstention(
+    tmp_path: Path,
+) -> None:
+    """A document type that matches a curated requirement rule (structural,
+    field-completeness) must not cause the *content-based* legislation
+    relevance gate to accept an off-topic query. The two channels are
+    orthogonal: curated references are matched by document type/subtype
+    alone (see RequirementRule.matches), never by content relevance to the
+    citizen's specific complaint."""
+
+    app_settings = Settings(
+        project_root=ROOT,
+        data_dir=ROOT / "data",
+        templates_dir=ROOT / "templates",
+        output_dir=tmp_path / "output",
+        runtime_dir=tmp_path / "runtime",
+        retrieval_mode="bm25",
+        corpus_mode=CorpusMode.COMPETITION_SNAPSHOT.value,
+        competition_snapshot_path=(
+            ROOT / "data" / "processed" / "competition_snapshot.json"
+        ),
+    )
+    orchestrator = EvrakOrchestrator(app_settings)
+
+    # A vehicle-damage compensation claim: genuinely off-topic relative to
+    # the road-maintenance-focused snapshot relevance profiles, but still a
+    # "talep"-shaped petition, so the base Dilekçe Kanunu field-completeness
+    # rules (ad-soyad, imza, adres, konu) structurally apply to it.
+    state = orchestrator.process_text(
+        "Konu: Yol bakım ve asfalt çukuru\n"
+        "Çukura girince jantım kırıldı; tazminat ve değer kaybı istiyorum."
+    )
+
+    # Main content-based channel: correctly abstains, no fabricated
+    # legislation hit/citation for this off-topic claim.
+    assert state.search_hits == []
+    assert state.retrieval_diagnostics is not None
+    assert state.retrieval_diagnostics.relevance_abstained is True
+    assert not any(
+        reference.source_kind != "curated_requirement_rule"
+        for reference in state.verified_references
+    )
+
+    # Curated (structural, document-type-matched) channel: still
+    # legitimately present, clearly tagged as its own orthogonal source
+    # kind, and distinct from the abstained content-relevance channel.
+    curated = [
+        reference
+        for reference in state.verified_references
+        if reference.source_kind == "curated_requirement_rule"
+    ]
+    assert curated
+    assert all(reference.verified is True for reference in curated)
+    assert all(reference.relevance_profile == "curated_requirement_rule" for reference in curated)

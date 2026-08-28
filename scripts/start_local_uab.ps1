@@ -1,7 +1,10 @@
 param(
     [string]$PythonPath = "",
     [ValidatePattern('^(cpu|cuda|cuda:\d+)$')]
-    [string]$EmbeddingDevice = "cuda:0",
+    [string]$EmbeddingDevice = "cpu",
+    [ValidateSet("bm25", "hybrid")]
+    [string]$RetrievalMode = "bm25",
+    [switch]$EnableExternalRetrieval,
     [switch]$DisableLlm
 )
 
@@ -40,7 +43,7 @@ if ([version]$pythonVersion -lt [version]"3.11") {
 }
 
 $env:PYTHONPATH = Join-Path $projectRoot "src"
-$env:KARAYOL_RETRIEVAL_MODE = "hybrid"
+$env:KARAYOL_RETRIEVAL_MODE = $RetrievalMode
 $env:KARAYOL_CORPUS_MODE = "competition_snapshot"
 $env:KARAYOL_COMPETITION_SNAPSHOT_PATH = "data/processed/uab_legal_rag_v2_snapshot.json"
 $env:KARAYOL_QDRANT_PATH = "runtime/uab-legal-rag-v2/qdrant"
@@ -51,7 +54,36 @@ $env:KARAYOL_SNAPSHOT_RELEVANCE_POLICY = "lexical_overlap"
 $env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY = "true"
 $env:KARAYOL_EMBEDDING_DEVICE = $EmbeddingDevice
 $env:KARAYOL_CORS_ALLOWED_ORIGINS = "http://127.0.0.1:3000,http://localhost:3000"
-$env:KARAYOL_EXTERNAL_RETRIEVAL_ENABLED = "true"
+$externalRequiredVariables = @(
+    "EVREN_QDRANT_TEAM_PREFIX",
+    "EVREN_QDRANT_API_KEY",
+    "KARAYOL_EXTERNAL_CORPUS_FINGERPRINT",
+    "EVREN_EMBEDDING_BASE_URL",
+    "EVREN_LLM_API_KEY"
+)
+$missingExternalVariables = @(
+    $externalRequiredVariables | Where-Object {
+        [string]::IsNullOrWhiteSpace(
+            [Environment]::GetEnvironmentVariable($_, "Process")
+        )
+    }
+)
+if ($EnableExternalRetrieval -and $missingExternalVariables.Count -gt 0) {
+    throw (
+        "Dis korpus retrieval yapilandirmasi eksik: " +
+        ($missingExternalVariables -join ", ")
+    )
+}
+$externalRetrievalReady = $missingExternalVariables.Count -eq 0
+$env:KARAYOL_EXTERNAL_RETRIEVAL_ENABLED = if (
+    $EnableExternalRetrieval -or $externalRetrievalReady
+) { "true" } else { "false" }
+if (-not $externalRetrievalReady) {
+    Write-Warning (
+        "EVREN ayarlari eksik; yalniz yerel UAB korpusu kullanilacak. " +
+        "Dis korpus icin eksik degerleri tamamlayip -EnableExternalRetrieval kullanin."
+    )
+}
 Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
 
 if ($DisableLlm) {

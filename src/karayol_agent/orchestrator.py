@@ -826,7 +826,15 @@ class EvrakOrchestrator:
             "İlgili mevzuat ve iş akışı kuralları aranıyor.",
             self.researcher.name,
         )
-        retrieval = self.researcher.run_requirements_with_diagnostics(state.analysis)
+        # Plain content-relevance search: type-specific writing/signature/
+        # mandatory-field rules are handled separately and structurally by
+        # `self.requirement_rules` (data/legal_requirements/catalog.json)
+        # below, matched by document type rather than injected search terms.
+        # Using `run_requirements_with_diagnostics` here would blend generic
+        # writing-format terms into the query for any "ust_yazi"/"dilekce"
+        # document, letting unrelated writing-rule chunks leak into the
+        # fabrication-safety-gated citation channel for off-topic input.
+        retrieval = self.researcher.run_with_diagnostics(state.analysis)
         state.search_hits = retrieval.hits
         diagnostics = retrieval.diagnostics
         if self.retrieval_setup_warning:
@@ -911,6 +919,9 @@ class EvrakOrchestrator:
         state.template_decision = self.template_selector.run(
             state.analysis, state.verified_references
         )
+        state.template_decision.alternatives = self._template_alternatives(
+            state, state.template_decision.template_id
+        )
         self._complete(
             state,
             f"{state.template_decision.document_type} yazı türü seçildi.",
@@ -958,6 +969,9 @@ class EvrakOrchestrator:
             state.template_decision = self.template_selector.run(
                 state.analysis,
                 state.verified_references,
+            )
+            state.template_decision.alternatives = self._template_alternatives(
+                state, state.template_decision.template_id
             )
         adjudication_checks = self._adjudication_decision_checks(
             state, adjudication
@@ -1185,7 +1199,9 @@ class EvrakOrchestrator:
             ),
             confidence=round(outcome.confidence, 2),
             user_approval_required=previous.user_approval_required,
-            alternatives=previous.alternatives,
+            alternatives=self._template_alternatives(
+                state, outcome.selected_template_id
+            ),
         )
         return True
 
@@ -1800,6 +1816,38 @@ class EvrakOrchestrator:
         ]
         return classification_grounded, checks
 
+    def _template_alternatives(
+        self, state: ProcessState, selected_template_id: str
+    ) -> list[dict[str, str]]:
+        """Nihai seçimle aynı kapalı adaylık havuzundan, seçilmeyen şablonları
+        listeler. Yalnız `_allowed_template_ids` ile aynı bilinen/graf sınırını
+        kullanır; bu nedenle burada "değerlendirildi" denen hiçbir şablon,
+        sistemin gerçekte seçemeyeceği bir şablon değildir."""
+
+        known_templates = {
+            *self.template_selector.DOCUMENT_TO_TEMPLATE.values(),
+            "eksik_bilgi_talebi_v1",
+        }
+        candidates = known_templates - {selected_template_id}
+        if state.graph_decision_trace and state.graph_decision_trace.applied:
+            graph_candidates = set(state.graph_decision_trace.candidate_template_ids)
+            if graph_candidates:
+                candidates &= graph_candidates
+        alternatives: list[dict[str, str]] = []
+        for template_id in sorted(candidates):
+            entry = self.template_catalog.get(template_id)
+            if entry is None:
+                continue
+            alternatives.append(
+                {
+                    "template_id": entry.template_id,
+                    "display_name": entry.display_name,
+                    "when_to_use": entry.when_to_use,
+                    "status": "considered_not_selected",
+                }
+            )
+        return alternatives
+
     def _allowed_template_ids(self, state: ProcessState) -> list[str]:
         assert state.analysis is not None
         assert state.template_decision is not None
@@ -2156,7 +2204,9 @@ class EvrakOrchestrator:
                     or bool(outcome.unsupported_claims)
                     or adjudication_confidence < self.settings.low_confidence_threshold
                 ),
-                alternatives=previous_template.alternatives,
+                alternatives=self._template_alternatives(
+                    state, outcome.selected_template_id
+                ),
             )
         if outcome.selected_unit_id in allowed_unit_ids:
             unit = next(

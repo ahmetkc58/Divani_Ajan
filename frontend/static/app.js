@@ -398,13 +398,17 @@ function renderOverview(state) {
     ? "İnsan incelemesi gerekli"
     : "Otomatik öneri hazır";
   const routingEvidence = (routing.evidence || []).map((item) => escapeHtml(item)).join(" · ");
+  const templateAlternatives = template.alternatives || [];
+  const templateAlternativesText = templateAlternatives
+    .map((item) => escapeHtml(item.display_name || item.template_id))
+    .join(", ");
 
   return `
     ${scenarioExpectation(state)}
     <div class="overview-grid">
       <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.general_document_type || analysis.document_type))}</strong><small>Konu/işlem profili: ${escapeHtml(typeLabel(analysis.document_type))} · Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
       <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")} · ${escapeHtml(routingReview)}</small></div>
-      <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong></div>
+      <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong>${templateAlternativesText ? `<small>Değerlendirilen diğer seçenekler: ${templateAlternativesText} (seçilmedi)</small>` : ""}</div>
       <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
       <div class="info-card"><span>LLM orkestrasyonu</span><strong>${escapeHtml(llmLabel)}</strong><small>${escapeHtml(llmStatus)}</small></div>
       <div class="info-card"><span>Kanıt grafı</span><strong>${escapeHtml(graphLabel)}</strong><small>${escapeHtml(graph.graph_id || graph.strategy || "Graf yok")}</small></div>

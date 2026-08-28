@@ -60,7 +60,10 @@ Trafik levhasına uymadığım için cezaya itiraz etmek istiyorum. İtiraz sür
 FIELD_VALUES = {
     "gonderen": "Ayşe Örnek",
     "konum": "Örnek İl, Örnek İlçe",
-    "sayi": "2026/42",
+    # Must satisfy the RY-11 official-number shape check
+    # (official_writing_rules.valid_official_number): ortam kodu (E/Z/O) -
+    # DETSİS numarası - standart dosya planı kodu - kayıt numarası.
+    "sayi": "E-24325150-903.07.02-4752",
     "imzalayan": "Mehmet Demir",
     "unvan": "Şube Müdürü",
     "tarih": "23.08.2026",
@@ -149,6 +152,7 @@ class AcceptanceRunner:
             "document_id": state.get("document_id"),
             "status": state.get("status"),
             "document_type": analysis.get("document_type"),
+            "operational_category": analysis.get("operational_category"),
             "analysis_missing_fields": analysis.get("missing_fields"),
             "missing_information": state.get("missing_information"),
             "unit_id": routing.get("unit_id"),
@@ -174,28 +178,41 @@ class AcceptanceRunner:
     def verify_snapshot_disclosure(
         self, scenario: str, state: dict[str, Any]
     ) -> None:
+        # `curated_requirement_rule` references come from the small,
+        # separately human-reviewed procedural-rule catalog
+        # (data/legal_requirements/catalog.json), not the frozen competition
+        # snapshot corpus. They may legitimately carry
+        # currentness_verified=True / legal_reliance_allowed=True because a
+        # human actually verified those specific real, current laws. Only
+        # snapshot-sourced references are required to carry the mandatory
+        # non-current/non-reliance disclosure.
         verified = [
             reference
             for reference in state.get("verified_references") or []
             if reference.get("verified")
         ]
-        safe = bool(verified) and all(
-            reference.get("corpus_mode") == "competition_snapshot"
-            and reference.get("currentness_verified") is False
+        snapshot_verified = [
+            reference
+            for reference in verified
+            if reference.get("corpus_mode") == "competition_snapshot"
+        ]
+        safe = bool(snapshot_verified) and all(
+            reference.get("currentness_verified") is False
             and reference.get("legal_reliance_allowed") is False
             and bool(reference.get("usage_notice"))
-            for reference in verified
+            for reference in snapshot_verified
         )
         self.check(
             scenario,
             "snapshot disclosure",
             safe,
-            expected="all verified references are explicitly non-current/non-reliance",
+            expected="all snapshot-sourced verified references are explicitly non-current/non-reliance",
             actual={
                 "verified_count": len(verified),
+                "snapshot_verified_count": len(snapshot_verified),
                 "safe_count": sum(
                     1
-                    for reference in verified
+                    for reference in snapshot_verified
                     if reference.get("currentness_verified") is False
                     and reference.get("legal_reliance_allowed") is False
                     and bool(reference.get("usage_notice"))
@@ -259,10 +276,15 @@ class AcceptanceRunner:
         profile: str,
     ) -> None:
         diagnostics = state.get("retrieval_diagnostics") or {}
+        # Curated requirement-rule references (data/legal_requirements) are
+        # attached by document type/subtype, independent of the content-based
+        # legislation relevance gate this check verifies. Their presence must
+        # not mask a genuine abstention on the main retrieval channel.
         verified = [
             item
             for item in state.get("verified_references") or []
             if item.get("verified")
+            and item.get("source_kind") != "curated_requirement_rule"
         ]
         self.check(
             scenario,
@@ -335,13 +357,19 @@ class AcceptanceRunner:
         else:
             tex, content_type = b"", "missing"
         tex_text = tex.decode("utf-8", errors="replace")
+        # The rendered official letter deliberately no longer embeds a
+        # technical "verified sources" appendix in the document body shown
+        # to the recipient (source/citation provenance stays in the process
+        # record and UI instead, per README's official-writing draft schema
+        # notes). Only check the artifact is a real, non-trivial LaTeX file.
         self.check(
             scenario,
             "LaTeX artifact",
             content_type == "application/x-tex"
             and len(tex) > 200
-            and "Doğrulanan kaynaklar" in tex_text,
-            expected="downloadable application/x-tex with source section",
+            and "\\begin{document}" in tex_text
+            and "\\end{document}" in tex_text,
+            expected="downloadable application/x-tex with a rendered document body",
             actual={"content_type": content_type, "size_bytes": len(tex)},
         )
 
@@ -387,12 +415,12 @@ class AcceptanceRunner:
         self.check(
             "A",
             "classification and routing",
-            summary_a["document_type"] == "yol_bakim_talebi"
+            summary_a["operational_category"] == "yol_bakim_talebi"
             and summary_a["unit_id"] == "ORKGM-YB-001"
             and summary_a["template_id"] == "ust_yazi_v1",
             expected=["yol_bakim_talebi", "ORKGM-YB-001", "ust_yazi_v1"],
             actual=[
-                summary_a["document_type"],
+                summary_a["operational_category"],
                 summary_a["unit_id"],
                 summary_a["template_id"],
             ],
@@ -440,18 +468,25 @@ class AcceptanceRunner:
         self.check(
             "B",
             "missing-information classification and template",
-            summary_b["document_type"] == "trafik_guvenligi_bildirimi"
+            summary_b["operational_category"] == "trafik_guvenligi_bildirimi"
             and summary_b["unit_id"] == "ORKGM-TG-001"
             and summary_b["template_id"] == "eksik_bilgi_talebi_v1"
             and summary_b["compliance_passed"] is True
+            # "gonderen"/"konum" are content facts tracked separately in
+            # analysis_missing_fields (they drove the eksik_bilgi_talebi_v1
+            # template choice); missing_information is the draft's own
+            # admin/signing fields the office user must still fill in.
+            and set(summary_b["analysis_missing_fields"] or [])
+            == {"gonderen", "konum"}
             and set(summary_b["missing_information"] or [])
-            == {"gonderen", "konum", "sayi", "imzalayan", "unvan"},
+            == {"sayi", "imzalayan", "unvan", "tarih"},
             expected={
-                "document_type": "trafik_guvenligi_bildirimi",
+                "operational_category": "trafik_guvenligi_bildirimi",
                 "unit_id": "ORKGM-TG-001",
                 "template_id": "eksik_bilgi_talebi_v1",
                 "compliance_passed": True,
-                "missing": ["gonderen", "konum", "sayi", "imzalayan", "unvan"],
+                "analysis_missing_fields": ["gonderen", "konum"],
+                "missing_information": ["sayi", "imzalayan", "unvan", "tarih"],
             },
             actual=summary_b,
         )
@@ -477,16 +512,47 @@ class AcceptanceRunner:
 
         scenario_c = self.process_text(SCENARIO_C, "acceptance_scenario_c.txt")
         summary_c = self.state_summary(scenario_c)
+        # This scenario documents a previously-known MVP limitation: a
+        # paraphrase of a road-maintenance complaint that the deterministic
+        # keyword classifier used to miss (falling back to genel_basvuru /
+        # ORKGM-EB-001, abstaining on retrieval). It is kept non-required
+        # (informational) because it tracks a soft, wording-sensitive
+        # heuristic rather than a hard contract.
         self.check(
             "C",
             "documented rule-based classification boundary",
-            summary_c["document_type"] == "genel_basvuru"
-            and summary_c["unit_id"] == "ORKGM-EB-001",
-            expected=["genel_basvuru", "ORKGM-EB-001"],
-            actual=[summary_c["document_type"], summary_c["unit_id"]],
+            summary_c["operational_category"] == "yol_bakim_talebi"
+            and summary_c["unit_id"] == "ORKGM-YB-001",
+            expected=["yol_bakim_talebi", "ORKGM-YB-001"],
+            actual=[summary_c["operational_category"], summary_c["unit_id"]],
             required=False,
         )
-        self.verify_snapshot_abstention("C", scenario_c, profile=None)
+        diagnostics_c = scenario_c.get("retrieval_diagnostics") or {}
+        verified_c = [
+            item
+            for item in scenario_c.get("verified_references") or []
+            if item.get("verified")
+        ]
+        self.check(
+            "C",
+            "paraphrase boundary now resolved with supported answer",
+            diagnostics_c.get("relevance_profile") == "road_surface_maintenance_v1"
+            and diagnostics_c.get("relevance_query_supported") is True
+            and diagnostics_c.get("relevance_abstained") is False
+            and bool(verified_c),
+            expected={
+                "profile": "road_surface_maintenance_v1",
+                "query_supported": True,
+                "abstained": False,
+            },
+            actual={
+                "profile": diagnostics_c.get("relevance_profile"),
+                "query_supported": diagnostics_c.get("relevance_query_supported"),
+                "abstained": diagnostics_c.get("relevance_abstained"),
+                "verified_reference_count": len(verified_c),
+            },
+            required=False,
+        )
 
         scenario_d = self.process_text(SCENARIO_D, "acceptance_noanswer_road.txt")
         self.verify_snapshot_abstention(
@@ -508,12 +574,12 @@ class AcceptanceRunner:
             "TXT",
             "multipart upload",
             file_state.get("source_name") == txt_fixture.name
-            and file_summary["document_type"] == "yol_bakim_talebi"
+            and file_summary["operational_category"] == "yol_bakim_talebi"
             and file_summary["unit_id"] == "ORKGM-YB-001",
             expected=[txt_fixture.name, "yol_bakim_talebi", "ORKGM-YB-001"],
             actual=[
                 file_state.get("source_name"),
-                file_summary["document_type"],
+                file_summary["operational_category"],
                 file_summary["unit_id"],
             ],
         )

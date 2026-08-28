@@ -126,6 +126,46 @@ def test_natural_person_name_rule_is_not_applied_to_a_company_application() -> N
     assert "3071-M4-IMZA" in {rule.rule_id for rule in rules}
 
 
+def test_curated_reference_flags_are_copied_from_their_catalog_source() -> None:
+    """Katman B context: curated references are a small, human-reviewed set,
+    so ``currentness_verified``/``legal_reliance_allowed`` must reflect each
+    rule's own ``RequirementSource`` exactly — not a blanket True/True, and
+    not the bulk ``competition_snapshot`` corpus's blanket False/False."""
+
+    repository = _repository()
+
+    # SRC-3071 (Dilekçe Kanunu): currentness_verified True AND
+    # legal_reliance_allowed True.
+    petition_rules = repository.select(
+        _analysis(general_type="talep", operational_type="yol_bakim_talebi")
+    )
+    petition_references = repository.verified_references(petition_rules)
+    assert petition_references
+    assert all(reference.source_kind == "curated_requirement_rule" for reference in petition_references)
+    assert all(reference.currentness_verified is True for reference in petition_references)
+    assert all(reference.legal_reliance_allowed is True for reference in petition_references)
+
+    # SRC-KGM-SIKAYET-FORMU: currentness_verified True but
+    # legal_reliance_allowed False (a form/field rule, not a legal-basis
+    # source) — the repository must not silently upgrade this to True.
+    form_rules = [
+        rule
+        for rule in repository.select(
+            _analysis(
+                general_type="sikayet",
+                subtype="Şikâyet / Talep Formu",
+                text="Türkiye Acil Yol Rehabilitasyonu ve Yeniden Yapım Projesi",
+            )
+        )
+        if rule.source_id == "SRC-KGM-SIKAYET-FORMU"
+    ]
+    assert form_rules
+    form_references = repository.verified_references(form_rules)
+    assert all(reference.source_kind == "curated_requirement_rule" for reference in form_references)
+    assert all(reference.currentness_verified is True for reference in form_references)
+    assert all(reference.legal_reliance_allowed is False for reference in form_references)
+
+
 def test_rules_become_closed_verified_llm2_candidates() -> None:
     repository = _repository()
     rules = repository.select(_analysis(general_type="ust_yazi"))

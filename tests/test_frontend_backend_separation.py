@@ -1,4 +1,5 @@
 import json
+import inspect
 from pathlib import Path
 
 import pytest
@@ -40,6 +41,21 @@ def test_backend_is_api_only_and_openapi_exposes_canonical_routes(
     assert "/api/v1/processes/{document_id}/approval" in schema["paths"]
     assert "/health" not in schema["paths"]
     assert "/v1/process/text" not in schema["paths"]
+
+
+def test_readiness_offloads_large_local_qdrant_validation() -> None:
+    routes = list(api_module.app.routes)
+    for included in api_module.app.routes:
+        router = getattr(included, "original_router", None)
+        if router is not None:
+            routes.extend(router.routes)
+    route = next(
+        route
+        for route in routes
+        if getattr(route, "path", None) == "/api/v1/system/readiness"
+    )
+
+    assert inspect.iscoroutinefunction(route.endpoint)
 
 
 def test_backend_allows_configured_frontend_origin_only(

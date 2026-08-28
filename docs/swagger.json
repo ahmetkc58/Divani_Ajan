@@ -99,6 +99,51 @@
         }
       }
     },
+    "/api/v1/processes/text/start": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Metin evrakını canlı izlenebilir biçimde başlat",
+        "operationId": "startTextDocument",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextProcessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Starttextdocument"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/processes/file": {
       "post": {
         "tags": [
@@ -135,6 +180,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/file/start": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Dosya evrakını canlı izlenebilir biçimde başlat",
+        "operationId": "startFileDocument",
+        "parameters": [
+          {
+            "name": "compile_pdf",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Compile Pdf"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_startFileDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Startfiledocument"
                 }
               }
             }
@@ -246,6 +348,58 @@
         }
       }
     },
+    "/api/v1/processes/{document_id}/response-strategy": {
+      "post": {
+        "tags": [
+          "processes"
+        ],
+        "summary": "Katman 3 yanıt stratejisini seç",
+        "operationId": "chooseResponseStrategy",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponseStrategyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/processes/{document_id}/approval": {
       "post": {
         "tags": [
@@ -284,6 +438,94 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/artifacts/{target}/tex": {
+      "get": {
+        "tags": [
+          "artifacts"
+        ],
+        "summary": "Katman 3 LaTeX taslağını indir",
+        "operationId": "downloadLayer3LatexArtifact",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Target"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/processes/{document_id}/artifacts/{target}/pdf": {
+      "get": {
+        "tags": [
+          "artifacts"
+        ],
+        "summary": "Katman 3 PDF taslağını indir",
+        "operationId": "downloadLayer3PdfArtifact",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "target",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Target"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -455,6 +697,20 @@
         ],
         "title": "ArtifactResult"
       },
+      "Body_startFileDocument": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_startFileDocument"
+      },
       "Body_uploadDocument": {
         "properties": {
           "file": {
@@ -567,7 +823,7 @@
           "general_document_type": {
             "type": "string",
             "title": "General Document Type",
-            "default": "genel_basvuru"
+            "default": "dilekce"
           },
           "document_subtype": {
             "anyOf": [
@@ -1707,6 +1963,45 @@
         ],
         "title": "Layer1Requirement"
       },
+      "Layer3DraftOutput": {
+        "properties": {
+          "target": {
+            "type": "string",
+            "enum": [
+              "citizen",
+              "internal_unit"
+            ],
+            "title": "Target"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "draft": {
+            "$ref": "#/components/schemas/DraftPayload"
+          },
+          "artifact": {
+            "$ref": "#/components/schemas/ArtifactResult"
+          },
+          "compliance": {
+            "$ref": "#/components/schemas/ComplianceResult"
+          }
+        },
+        "type": "object",
+        "required": [
+          "target",
+          "label",
+          "template_id",
+          "draft",
+          "artifact",
+          "compliance"
+        ],
+        "title": "Layer3DraftOutput"
+      },
       "LegislationChunk": {
         "properties": {
           "chunk_id": {
@@ -2026,6 +2321,18 @@
               }
             ]
           },
+          "layer2_assessment": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layer2 Assessment"
+          },
           "search_hits": {
             "items": {
               "$ref": "#/components/schemas/SearchHit"
@@ -2089,6 +2396,57 @@
                 "type": "null"
               }
             ]
+          },
+          "response_strategy_options": {
+            "items": {
+              "$ref": "#/components/schemas/ResponseStrategyOption"
+            },
+            "type": "array",
+            "title": "Response Strategy Options"
+          },
+          "selected_delivery_target": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "citizen",
+                  "internal_unit",
+                  "both"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Delivery Target"
+          },
+          "selected_response_strategy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseStrategyOption"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_response_custom_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Response Custom Text"
+          },
+          "layer3_outputs": {
+            "items": {
+              "$ref": "#/components/schemas/Layer3DraftOutput"
+            },
+            "type": "array",
+            "title": "Layer3 Outputs"
           },
           "draft": {
             "anyOf": [
@@ -2155,6 +2513,7 @@
           "eksik_bilgi_bekleniyor",
           "yazi_turu_seciliyor",
           "birim_yonlendiriliyor",
+          "yanit_stratejisi_bekleniyor",
           "taslak_hazirlaniyor",
           "uygunluk_kontrolunde",
           "kullanici_onayi_bekleniyor",
@@ -2162,6 +2521,88 @@
           "hata"
         ],
         "title": "ProcessStatus"
+      },
+      "ResponseStrategyOption": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Option Id"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 600,
+            "minLength": 1,
+            "title": "Description"
+          },
+          "reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reference Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "option_id",
+          "label",
+          "description"
+        ],
+        "title": "ResponseStrategyOption",
+        "description": "Taslak yazılmadan önce kullanıcıya sunulan kaynak-bağlı yanıt duruşu."
+      },
+      "ResponseStrategyRequest": {
+        "properties": {
+          "option_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Option Id"
+          },
+          "custom_text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Text"
+          },
+          "delivery_target": {
+            "type": "string",
+            "enum": [
+              "citizen",
+              "internal_unit",
+              "both"
+            ],
+            "title": "Delivery Target",
+            "default": "citizen"
+          },
+          "compile_pdf": {
+            "type": "boolean",
+            "title": "Compile Pdf",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "ResponseStrategyRequest"
       },
       "RetrievalChannelContribution": {
         "properties": {

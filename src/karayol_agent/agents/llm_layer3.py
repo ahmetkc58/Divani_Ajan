@@ -64,6 +64,9 @@ class TemplateCatalog:
         self.entries = tuple(entries)
         self._by_id = {entry.template_id: entry for entry in self.entries}
 
+    def get(self, template_id: str) -> TemplateCatalogEntry | None:
+        return self._by_id.get(template_id)
+
     @classmethod
     def load(cls, path: Path) -> "TemplateCatalog":
         payload = json.loads(path.read_text(encoding="utf-8"))

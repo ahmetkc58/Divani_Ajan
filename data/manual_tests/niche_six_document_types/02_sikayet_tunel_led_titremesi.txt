@@ -1,0 +1,31 @@
+SENTETIK TEST VERISI - GERCEK KISI, SIRKET, ARAC VE OLAY DEGILDIR
+
+ŞİKÂYET
+
+T.C. KARAYOLLARI GENEL MUDURLUGUNE
+
+Konu: Sentetik-3 Tuneli girisindeki LED seritlerin titremesi ve gorus guvenligi
+
+24.08.2026 tarihinde saat 05.40 civarinda Sentetik-3 Tunelinin dogu portalina
+yagisli havada yaklasirken, giris bolgesindeki beyaz LED aydinlatma armaturlarinin
+duzenli araliklarla yanip sondugunu gordum. Isik titremesi yaklasik iki yuz metre
+boyunca devam etti ve islak yol yuzeyindeki yansimayla birlikte serit sinirlarini
+secme guclugu yaratti. Ayni anda degisken mesaj isaretinde hiz siniri ile bakim
+uyarisi donusumlu ve cok kisa surelerle gosteriliyordu.
+
+Tunel icinde ilk acil durum cebine kadar olan bolum diger kesimlerden belirgin
+sekilde karanlikti. Giris luminans gecisinin surucunun goz uyumuna elverisli
+olmadigini, armaturlarda muhtemel surucu devresi arizasi bulundugunu ve mesaj
+panosundaki gosterim suresinin okunabilir olmadigini dusunuyorum. Olay anina ait
+arac kamerasi kaydinin zaman damgasi ve konum bilgisi basvuru ekinde sunulmustur.
+
+Bu şikayet kapsamında tunelin aydinlatma otomasyon kayitlarinin, armaturlarin titreme
+frekansi ve luminans olcumlerinin, degisken mesaj isareti senaryosunun ve bakim
+ariza kayitlarinin incelenmesini; trafik guvenligini etkileyen sorunlarin
+giderilmesini ve inceleme sonucunun tarafıma bildirilmesini istiyorum.
+
+Basvuran: Selma Ilgaz
+Adres: Yesilova Mahallesi, Ornek Sokak No: 8, Bolu
+Iletisim: selma.ilgaz@example.test
+Tarih: 28.08.2026
+Imza: .......................

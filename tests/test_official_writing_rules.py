@@ -1,20 +1,29 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from karayol_agent.agents.compliance import ComplianceAgent
+from karayol_agent.config import Settings
 from karayol_agent.official_writing_rules import (
     REGULATION_ID,
     closing_matches_authority_relation,
     valid_official_date,
     valid_official_number,
 )
+from karayol_agent.orchestrator import EvrakOrchestrator
 from karayol_agent.schemas import (
     DraftPayload,
     ExtractedField,
     FieldStatus,
+    ProcessState,
+    ProcessStatus,
     TemplateDecision,
 )
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _field(value: str | None) -> ExtractedField:
@@ -128,3 +137,67 @@ def test_unjustified_minimum_body_length_is_not_a_compliance_rule() -> None:
 
     assert result.passed
     assert not any("çok kısa" in error for error in result.errors)
+
+
+# --- RY-11 (DETSİS/standard file plan "sayı" format) regression coverage ---
+#
+# Today's commit tightened RY-11 so that a plain value like "2026/42" is
+# rejected; only the DETSİS/standard-file-plan shape
+# (ortam kodu-DETSİS-standart dosya planı-kayıt numarası, e.g.
+# "E-67915368-903.07.02-4752") is accepted. This is treated as an intentional
+# stricter rule (see task context), so these tests lock in both sides of the
+# boundary plus the "graceful block, not a crash" behaviour when it fires.
+
+
+def test_valid_detsis_formatted_number_passes_with_no_ry11_finding() -> None:
+    result = ComplianceAgent().run(
+        _draft(number=_field("E-67915368-903.07.02-4752")),
+        _decision(),
+    )
+
+    assert result.passed is True
+    assert "RY-11" in result.applied_rule_ids
+    assert not any(error.startswith("[RY-11]") for error in result.errors)
+    assert not any(warning.startswith("[RY-11]") for warning in result.warnings)
+
+
+def test_invalid_official_number_blocks_finalization_gracefully_not_a_crash(
+    tmp_path: Path,
+) -> None:
+    """RY-11 rejection must leave the process in a controlled, actionable
+    state via ``EvrakOrchestrator._finalize_user_message`` — never an
+    unhandled exception and never a silent/approved completion."""
+
+    orchestrator = EvrakOrchestrator(
+        Settings(
+            project_root=ROOT,
+            data_dir=ROOT / "data",
+            templates_dir=ROOT / "templates",
+            output_dir=tmp_path / "output",
+            runtime_dir=tmp_path / "runtime",
+        )
+    )
+    decision = _decision()
+    invalid_draft = _draft(number=_field("2026/42"))
+    invalid_compliance = ComplianceAgent().run(invalid_draft, decision)
+    assert invalid_compliance.passed is False
+    assert any(
+        error.startswith("[RY-11]")
+        and "E-67915368-903.07.02-4752" in error
+        for error in invalid_compliance.errors
+    )
+
+    state = ProcessState(
+        document_id="EVR-TEST-RY11",
+        draft=invalid_draft,
+        compliance=invalid_compliance,
+    )
+
+    # Must not raise.
+    orchestrator._finalize_user_message(state)
+
+    assert state.status == ProcessStatus.ERROR
+    assert state.possible_actions == ["taslagi_duzenle", "reddet"]
+    assert state.pending_actions
+    assert any("RY-11" in action for action in state.pending_actions)
+    assert state.next_step

@@ -108,6 +108,48 @@ class FakeSuccessfulGateway:
             }
             for name, candidate in self.understanding_fields.items():
                 output["fields"][name] = candidate
+        elif request.task is LLMTask.TEMPLATE_SELECTION:
+            # Katman 3 / LLM3: kapalı şablon kataloğundan seçim. Sentetik
+            # sabitlerle (selected_template_id) tutarlı, deterministik kararla
+            # aynı yönde tek bir öneri döndürür.
+            output = {
+                "selected_template_id": self.selected_template_id,
+                "confidence": self.adjudication_confidence,
+                "rationale": "Katman 3 şablon değerlendirmesi deterministik seçimle tutarlı.",
+                "requires_human_review": self.requires_human_review,
+            }
+        elif request.task is LLMTask.ROUTING:
+            # Katman 3 / LLM5: kapalı organizasyon grafından birim seçimi.
+            output = {
+                "selected_unit_id": self.selected_unit_id,
+                "traversal_path": [],
+                "confidence": self.adjudication_confidence,
+                "rationale": "Katman 3 organizasyon grafı değerlendirmesi deterministik seçimle tutarlı.",
+                "requires_human_review": self.requires_human_review,
+            }
+        elif request.task is LLMTask.SUMMARY:
+            # Katman 3 / LLM6: yanıt stratejisi önerileri. Şemadaki
+            # reference_ids enum'unu (yalnız doğrulanmış/curated kaynaklardan
+            # türetilir) kullanarak iki geçerli seçenek üretir.
+            reference_enum = request.output_schema["properties"]["options"][
+                "items"
+            ]["properties"]["reference_ids"]["items"]["enum"]
+            output = {
+                "options": [
+                    {
+                        "option_id": "secenek_1",
+                        "label": "Doğrulanmış kaynaklara dayalı yanıt",
+                        "description": "Doğrulanmış kaynaklara dayanan resmî yanıt önerisi.",
+                        "reference_ids": reference_enum[:1],
+                    },
+                    {
+                        "option_id": "secenek_2",
+                        "label": "Alternatif doğrulanmış yanıt",
+                        "description": "Aynı doğrulanmış kaynaklara dayanan alternatif üslup.",
+                        "reference_ids": reference_enum[:1],
+                    },
+                ]
+            }
         else:
             assert request.task is LLMTask.ADJUDICATION
             catalog = request.input_data.get("requirement_catalog", [])
@@ -224,6 +266,18 @@ def _settings(tmp_path: Path) -> Settings:
     )
 
 
+def _step(state, role: str):
+    """Locate one llm_trace step by its stable `role`, not by list position.
+
+    Since today's commit appends Layer 3 (llm3_template_selection,
+    llm5_routing, llm6_response_strategy) steps after the adjudicator step,
+    `steps[-1]` no longer reliably points at the adjudicator's own step.
+    Tests that assert on the adjudicator's decision must look it up by role.
+    """
+
+    return next(step for step in state.llm_trace.steps if step.role == role)
+
+
 def test_synthetic_fixture_runs_structured_llm_and_graph_adjudication(
     tmp_path: Path,
 ) -> None:
@@ -236,6 +290,9 @@ def test_synthetic_fixture_runs_structured_llm_and_graph_adjudication(
     assert [request.task for request in gateway.requests] == [
         LLMTask.EXTRACTION,
         LLMTask.ADJUDICATION,
+        LLMTask.TEMPLATE_SELECTION,
+        LLMTask.ROUTING,
+        LLMTask.SUMMARY,
     ]
     assert gateway.requests[0].input_data["rag_candidates"]
     assert gateway.requests[0].input_data["document_type_candidates"]
@@ -264,20 +321,24 @@ def test_synthetic_fixture_runs_structured_llm_and_graph_adjudication(
     assert state.llm_trace is not None
     assert state.llm_trace.used is True
     assert state.llm_trace.deterministic_fallback_used is True
-    assert [step.status for step in state.llm_trace.steps] == ["success", "success"]
-    assert state.llm_trace.steps[-1].decision_applied is True
+    # Layer 3 (llm3_template_selection, llm5_routing, llm6_response_strategy)
+    # steps are appended after the adjudicator step, so there are now 5 steps
+    # in total rather than 2.
+    assert [step.status for step in state.llm_trace.steps] == ["success"] * 5
+    adjudicator_step = _step(state, "adjudicator")
+    assert adjudicator_step.decision_applied is True
     assert state.llm_trace.steps[0].decision_applied is False
     assert state.llm_trace.steps[0].decision_summary is not None
     assert state.llm_trace.steps[0].decision_checks
     assert state.llm_trace.steps[0].findings[0].kind == "classification"
     assert state.llm_trace.steps[0].findings[0].confidence == 0.93
-    assert state.llm_trace.steps[-1].decision_summary is not None
-    assert state.llm_trace.steps[-1].decision_checks
+    assert adjudicator_step.decision_summary is not None
+    assert adjudicator_step.decision_checks
     assert any(
         finding.kind == "requirement"
         and finding.confidence == 0.93
         and finding.legal_reference_ids == ["SENT-KRY-001"]
-        for finding in state.llm_trace.steps[-1].findings
+        for finding in adjudicator_step.findings
     )
     assert state.layer1_audit is not None
     assert state.layer1_audit.requirements[0].field == "gonderen"
@@ -364,8 +425,9 @@ def test_adjudicator_does_not_mutate_decisions_when_review_is_required(
     assert state.routing is not None
     assert "uygulanmadı" in state.routing.rationale
     assert state.llm_trace is not None
-    assert state.llm_trace.steps[-1].human_review_required is True
-    assert state.llm_trace.steps[-1].decision_applied is False
+    adjudicator_step = _step(state, "adjudicator")
+    assert adjudicator_step.human_review_required is True
+    assert adjudicator_step.decision_applied is False
     assert state.llm_trace.deterministic_fallback_used is True
 
 
@@ -405,11 +467,18 @@ def test_adjudicator_repairs_invalid_requirement_grounding_once(
         LLMTask.EXTRACTION,
         LLMTask.ADJUDICATION,
         LLMTask.ADJUDICATION,
+        LLMTask.TEMPLATE_SELECTION,
+        LLMTask.ROUTING,
+        LLMTask.SUMMARY,
     ]
-    repair_request = gateway.requests[-1]
+    adjudication_requests = [
+        request for request in gateway.requests if request.task is LLMTask.ADJUDICATION
+    ]
+    assert len(adjudication_requests) == 2
+    repair_request = adjudication_requests[-1]
     assert repair_request.input_data["repair_context"]["server_validation_errors"]
     assert state.llm_trace is not None
-    step = state.llm_trace.steps[-1]
+    step = _step(state, "adjudicator")
     assert step.repair_attempted is True
     assert step.repair_succeeded is True
     assert step.repair_status == "success"
@@ -467,8 +536,9 @@ def test_below_threshold_adjudication_is_traced_as_local_fallback(
     assert state.llm_trace is not None
     assert state.llm_trace.used is True
     assert state.llm_trace.deterministic_fallback_used is True
-    assert state.llm_trace.steps[-1].decision_applied is False
-    assert state.llm_trace.steps[-1].human_review_required is True
+    adjudicator_step = _step(state, "adjudicator")
+    assert adjudicator_step.decision_applied is False
+    assert adjudicator_step.human_review_required is True
     assert state.template_decision is not None
     assert state.template_decision.user_approval_required is True
 
@@ -580,8 +650,9 @@ def test_unknown_adjudicator_reference_forces_review(tmp_path: Path) -> None:
     assert state.template_decision is not None
     assert state.template_decision.user_approval_required is True
     assert state.llm_trace is not None
-    assert state.llm_trace.steps[-1].human_review_required is True
-    assert state.llm_trace.steps[-1].accepted_reference_ids == []
+    adjudicator_step = _step(state, "adjudicator")
+    assert adjudicator_step.human_review_required is True
+    assert adjudicator_step.accepted_reference_ids == []
     assert state.routing is not None
     assert "uygulanmadı" in state.routing.rationale
 
@@ -679,16 +750,23 @@ def test_trusted_ui_fixture_enables_llm_without_trusting_arbitrary_text(
 
     state = orchestrator.process_text(demo_text)
 
+    # EXTRACTION is always evaluated against the raw text (SYNTHETIC here);
+    # ADJUDICATION and the Layer 3 calls (TEMPLATE_SELECTION, ROUTING,
+    # SUMMARY) that follow it all share the attested-fixture PUBLIC
+    # classification.
     assert [request.data_classification for request in gateway.requests] == [
         DataClassification.SYNTHETIC,
+        DataClassification.PUBLIC,
+        DataClassification.PUBLIC,
+        DataClassification.PUBLIC,
         DataClassification.PUBLIC,
     ]
     assert state.llm_trace is not None
     assert state.llm_trace.enabled is True
     assert state.llm_trace.used is True
-    assert [step.status for step in state.llm_trace.steps] == ["success", "success"]
+    assert [step.status for step in state.llm_trace.steps] == ["success"] * 5
     assert all(step.network_attempted for step in state.llm_trace.steps)
-    assert state.llm_trace.steps[-1].decision_applied is True
+    assert _step(state, "adjudicator").decision_applied is True
     assert state.llm_trace.deterministic_fallback_used is True
 
     arbitrary_text = demo_text + "\nBu satır kullanıcı tarafından eklendi."
