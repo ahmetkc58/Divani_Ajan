@@ -1,0 +1,693 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-26T05:41:30.321553+00:00",
+  "policy": {
+    "path": "data\\manifests\\delivery_policy.json",
+    "sha256": "69ec2cb00e7c9c34f7dcd1ca55978986bcf8f2eef8f6e5f90471a00dfdabf7b3"
+  },
+  "summary": {
+    "tracked_in_scope": 75,
+    "include": 13,
+    "exclude": 61,
+    "review_required": 1,
+    "unresolved": 0
+  },
+  "unresolved_paths": [],
+  "items": [
+    {
+      "path": "2026_TYDA_SARTNAME_Birinci_Senaryo_TR_1_A8mT1 (1).pdf",
+      "bytes": 1744856,
+      "sha256": "c4e0dc804ea07d2783975cea2f45cf9ab833828181d1837ad64a67617ca17fdd",
+      "data_class": "organizer_document",
+      "decision": "review_required",
+      "license": "organizer_terms",
+      "reason": "Teslimde bulunması kullanıcı/düzenleyici kararı ve sağlam kopya doğrulaması gerektirir."
+    },
+    {
+      "path": "data/evaluation/competition_snapshot_relevance_v1.json",
+      "bytes": 9773,
+      "sha256": "ebf3e727aa2a7f13180e9f8b0d183e191a7132e63119adfb13bdce119576d0d4",
+      "data_class": "synthetic_evaluation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Sentetik değerlendirme girdisi ve etiketleri."
+    },
+    {
+      "path": "data/manifests/core_legislation_manifest.json",
+      "bytes": 14108,
+      "sha256": "72608ad281682c5ad078496debc9d262bf49887b737b6cb89e41cf04650b5ac5",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "path": "data/manifests/core_legislation_manifest_review.csv",
+      "bytes": 4362,
+      "sha256": "ec1462fa7c2d96c1cef1a3dd6c8684f7a3122b84ba4032ab008cf5868c7a4743",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "path": "data/manifests/core_legislation_sources.json",
+      "bytes": 10772,
+      "sha256": "a15471274a7c67d4b3c049facd6f70d9d545f0767064d06f17115ddc644d5fdb",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "path": "data/manifests/delivery_policy.json",
+      "bytes": 4264,
+      "sha256": "69ec2cb00e7c9c34f7dcd1ca55978986bcf8f2eef8f6e5f90471a00dfdabf7b3",
+      "data_class": "delivery_metadata",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Teslim kapsamını belirleyen makinece okunabilir politika."
+    },
+    {
+      "path": "data/manifests/uab_legislation_manifest.json",
+      "bytes": 793316,
+      "sha256": "2b7d4853d14bb7dbd2be19bcdc709efa18fd222bc9c007a4ef56f9afe755b9d0",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "path": "data/manifests/uab_legislation_manifest_review.csv",
+      "bytes": 255411,
+      "sha256": "f07ee44ea8a03ea1397d685679608f49bfc6e7abcd247e7393dfaabc94424600",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "path": "data/organization/kgm_units_2026-07-16.json",
+      "bytes": 34279,
+      "sha256": "1cd7b92efb1cae97fbc6f1e54c0849412acf6da11a155b51ee498a9db085bc0c",
+      "data_class": "public_structure_synthetic_profiles",
+      "decision": "include",
+      "license": "public organizational facts plus Apache-2.0 project profiles",
+      "reason": "Personel adı içermeyen organizasyon yapısı ve uzman onayı bekleyen sentetik görev profilleri."
+    },
+    {
+      "path": "data/processed/competition_snapshot.json",
+      "bytes": 4562507,
+      "sha256": "885132c8a4fdd27521cda6fbeb44caccbe94490722128f6f57f065ff01421756",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/ocr_review/full_ocr/official-writing-regulation.ocr-candidate.txt",
+      "bytes": 77243,
+      "sha256": "a690287724c078e77649449de7862b622b5bb855ba6752d2bfae0afc2afdf349",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/ocr_review/official-writing-guide.ocr-candidate.txt",
+      "bytes": 33960,
+      "sha256": "aadc4edc4f929302be0ecd1d8e7255bcdcca8f425e1c1f2fc910b977d649b62a",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/ocr_review/official-writing-regulation.ocr-candidate.txt",
+      "bytes": 68180,
+      "sha256": "1ba1d76708e426ab48ffefa565cc662e71631fa874c20f0d2b5b75ac59b22398",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/law-2918.json",
+      "bytes": 872913,
+      "sha256": "4ab003933acb046414c6502817a8cfbc49c61a84c656b3d8840cc9315823214a",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/law-4925.json",
+      "bytes": 143957,
+      "sha256": "ba624d8a4d4d3e4c2e4238bbc9c6c240273af6eda97431c80ab025026d2e37f2",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/official-writing-guide.json",
+      "bytes": 67601,
+      "sha256": "e94b9e610d9608224b39c93d7f5a244a50ec2896bfc77ee1f5ff8dcb552f7b52",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/official-writing-regulation.json",
+      "bytes": 280051,
+      "sha256": "c50e45c23a5d851c759dabc1a19312b933f2cb82aec47ecb67c449951babd825",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/uab-road-expropriation-regulation.json",
+      "bytes": 104041,
+      "sha256": "966717186fb7a50239355fedda80a38ff6c3932d797f4b7d3d89251a0c3237c2",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/uab-road-infrastructure-safety-regulation.json",
+      "bytes": 85376,
+      "sha256": "959dc5f80d4f214bafaa36d375861bb0d9aa8e5aad77bcc1329e835ecc1b6737",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/uab-road-traffic-regulation.json",
+      "bytes": 1736692,
+      "sha256": "d9649577ddab8e9f92551415c7a05d8f97d8908b1ab965e28b8811c020e1e634",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/processed/stage3_quarantine/uab-road-transport-regulation.json",
+      "bytes": 1437404,
+      "sha256": "96f9e00922bec8ebb3f5031e46813fba4e3570e80b46c7f16087c9c6bbea1e55",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "path": "data/synthetic_gold.json",
+      "bytes": 29280,
+      "sha256": "98dfb84b15cb244ca44f2d4ddb91710730b7b4cc4f2363a50910fdfe63579989",
+      "data_class": "synthetic",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "path": "data/synthetic_legislation.json",
+      "bytes": 4096,
+      "sha256": "5de0c3d41e40836ed471b762d9e10660f7ecf95565bc98c9498a638090f0dbe0",
+      "data_class": "synthetic",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "path": "data/synthetic_ui_fixtures.json",
+      "bytes": 1481,
+      "sha256": "30e982e4b25b82be88c1c2526323d17adfa595db91de6ec518c40ed463dba15d",
+      "data_class": "synthetic",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "path": "data/synthetic_units.json",
+      "bytes": 2766,
+      "sha256": "e729ee2a86a7c8a4168b063d2ef3ce01d50ebed5ff94c7cb345b4da8c6ff4e2a",
+      "data_class": "synthetic",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "path": "mevzuat-1.pdf",
+      "bytes": 13689739,
+      "sha256": "aabd2d739037fff061f348c4a1f239afac5e1a58241fe041f15728775d6ccab9",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kök dizindeki resmî/kamusal PDF için yeniden dağıtım izni doğrulanmadı."
+    },
+    {
+      "path": "mevzuat-kılavuz.pdf",
+      "bytes": 7599373,
+      "sha256": "0716b0e39b62fadf8d9ded7b20f6be3660199eea397f417e127b81775ca129e1",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kök dizindeki resmî/kamusal PDF için yeniden dağıtım izni doğrulanmadı."
+    },
+    {
+      "path": "resources/README.md",
+      "bytes": 2423,
+      "sha256": "072a50c6ec0a2c68974d380a3965b05c61944e1f27eccecf9387284f1b281b0b",
+      "data_class": "documentation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kaynak kullanım ve üretim açıklaması."
+    },
+    {
+      "path": "resources/dataset_cards/TR-DocVQA-Synth_README.md",
+      "bytes": 16089,
+      "sha256": "611bc9075778aefb5fcf3319b135913a261a86c51a8552c97ed68d66d5806845",
+      "data_class": "dataset_documentation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Veri kaynağı, üretim yöntemi ve sınırlarını açıklayan veri kartı."
+    },
+    {
+      "path": "resources/dataset_cards/TR-DocVQA-Synth_dataset_card.md",
+      "bytes": 15556,
+      "sha256": "2a66934bff84254ff3bcfc3c469439a28cbc0b66101ea2a3740a5e46faf72fd3",
+      "data_class": "dataset_documentation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Veri kaynağı, üretim yöntemi ve sınırlarını açıklayan veri kartı."
+    },
+    {
+      "path": "resources/manifests/sources.json",
+      "bytes": 7967,
+      "sha256": "3421d1a87c5391c49dbf9cfe56d93355f31bc843806b5daf7b49f2c9c8cd15d0",
+      "data_class": "provenance_metadata",
+      "decision": "include",
+      "license": "Apache-2.0 project metadata",
+      "reason": "Kaynak URL, sürüm ve hash izi; asıl üçüncü taraf içeriği değildir."
+    },
+    {
+      "path": "resources/official/ssdp_v4_2024.pdf",
+      "bytes": 1103422,
+      "sha256": "91522bba34504909a369e1e9d4b76a550f89b51f716919556a97a997e7bda79c",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamuya açık olsa da yeniden dağıtım hakkı ayrıca doğrulanmadı."
+    },
+    {
+      "path": "resources/official/standart_dosya_plani_rehberi_v1.1.pdf",
+      "bytes": 28979326,
+      "sha256": "475f5d370550dddbb2615800a52c8f100a4bfecff3801c005852d5832a0bd8cd",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamuya açık olsa da yeniden dağıtım hakkı ayrıca doğrulanmadı."
+    },
+    {
+      "path": "resources/tool_licenses/augraphy_LICENSE.txt",
+      "bytes": 1091,
+      "sha256": "7794cd68e7ffb0c21e6335e29c35ebda5188d20f11552c5647a65f86a6a0f565",
+      "data_class": "third_party_license_text",
+      "decision": "include",
+      "license": "redistributable_license_notice",
+      "reason": "Kullanılan açık kaynak aracın korunması gereken lisans bildirimi."
+    },
+    {
+      "path": "resources/tool_licenses/trdg_LICENSE.txt",
+      "bytes": 1092,
+      "sha256": "64037643a960009d7550a70610ac744761dbaddbefffe20af944aeba82f3c671",
+      "data_class": "third_party_license_text",
+      "decision": "include",
+      "license": "redistributable_license_notice",
+      "reason": "Kullanılan açık kaynak aracın korunması gereken lisans bildirimi."
+    },
+    {
+      "path": "runtime/processes/EVR-20260824-63F3CF06.json",
+      "bytes": 43154,
+      "sha256": "77ff7954fd7330b59833abf07b80a7aaf78154fce0683a71115bd5f0b09640a9",
+      "data_class": "generated_runtime_artifact",
+      "decision": "exclude",
+      "license": "not_applicable",
+      "reason": "Süreç kaydı veya yeniden üretilebilir Qdrant çalışma verisi."
+    },
+    {
+      "path": "runtime/qdrant-competition-snapshot/collection/competition_snapshot_chunks_v1/storage.sqlite",
+      "bytes": 32768000,
+      "sha256": "20029867b2d00bcd501d32aeb3deea64f49f21fd94237957373aafc2568428b2",
+      "data_class": "generated_runtime_artifact",
+      "decision": "exclude",
+      "license": "not_applicable",
+      "reason": "Süreç kaydı veya yeniden üretilebilir Qdrant çalışma verisi."
+    },
+    {
+      "path": "runtime/qdrant-competition-snapshot/meta.json",
+      "bytes": 564,
+      "sha256": "a93ef4fe252afc3c61e3fa85e4f7e3917c779a2c376c6019dad43514a162ee61",
+      "data_class": "generated_runtime_artifact",
+      "decision": "exclude",
+      "license": "not_applicable",
+      "reason": "Süreç kaydı veya yeniden üretilebilir Qdrant çalışma verisi."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/README.md",
+      "bytes": 2373,
+      "sha256": "51d7170a8969434e2169c8ea56ac0d8624f786235ee25ff4219329fe96a83cff",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/README.md",
+      "bytes": 1352,
+      "sha256": "e4d8927fc4579519307dddbdefcd531f88c6be75720c15a22bfb7828a689f416",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/belgeler.csv",
+      "bytes": 41857,
+      "sha256": "a59d8c268b877b58837578348c6b9e8f7f0c6c2b1f135c71bffeb7daeba76835",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/belgeler.json",
+      "bytes": 104559,
+      "sha256": "c3b844c83483d138684f40846de95542a27651cde00c6c208caff00d5ad9799d",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/belgeler_raw.json",
+      "bytes": 76363,
+      "sha256": "7eb6b0357f05eaf06e720ca5f173191b596bc7d9b180cf95ba7da38327ae42c0",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/hizmetler.csv",
+      "bytes": 172747,
+      "sha256": "c98b381854af406cdcbbc5c985dab169156e95085656a15056f9fa9e4b94583a",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/hizmetler.json",
+      "bytes": 233911,
+      "sha256": "dc8aa93b25db9cb6628c4fa5d088627da3fc96ef78bd9db7a779e683dd92e3ce",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/hizmetler_raw.json",
+      "bytes": 165739,
+      "sha256": "215a036b910a499cd1216fc6884a0ba612d2120d3ab21df31d37f367f7aec197",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/karayolu_belgeleri.json",
+      "bytes": 3220,
+      "sha256": "5c35b9e2aecc6547fd1e262d456bb5342e9078170b78b1fa7d78100f38127017",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/karayolu_hizmetleri.json",
+      "bytes": 45936,
+      "sha256": "82bf91f2ef01d5f09c52a2e152eeb2458402ffe9bcc9ca51fd9d92ee9df52efa",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/karayolu_mevzuatlari.json",
+      "bytes": 32849,
+      "sha256": "807394bac7819e85675ed189658e6678ec88aacef481048db7604749b0a61260",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/kunye_header_raw.json",
+      "bytes": 137168,
+      "sha256": "65d434ce90f6cc686ff7d1c70754ef442b12eed454dbf52ccc041155309b4ba0",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/kunye_raw.json",
+      "bytes": 1176,
+      "sha256": "af30a050a6acd3576efb58d0dc6800c33faf30ebc4d4c138fb2f8a15595d59a5",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/kurum_kunyesi_temiz.json",
+      "bytes": 1410,
+      "sha256": "935c9082345379285f52d8a83b0537af24a55bfac80f9800ff1ee7998063e26b",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/mevzuatlar.csv",
+      "bytes": 367644,
+      "sha256": "488e531c71089be31a066daf78713d0fdf0fdb8b2a0c56f9c5cebb1296a84a3b",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/mevzuatlar.json",
+      "bytes": 465885,
+      "sha256": "a8760930f795c9d19465dad7a963f9f61cfb494c21d6cf89680d011c576dd7eb",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/mevzuatlar_raw.json",
+      "bytes": 379033,
+      "sha256": "099f6a61c89686ea54f16bc914ed49bf3f2740d20f5b07ebee3b3ec4c6877173",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/normalize_detsis.py",
+      "bytes": 5985,
+      "sha256": "5210f75ad89b0de9289ac2ae35ef46bda1f1cdf0935e69cb6afd57edc6898176",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis/ozet.json",
+      "bytes": 356,
+      "sha256": "409430621d7512e0a23768c8d5d14ee7ba404f51b0508d54aa2fce69b0543dae",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis_24325150.html",
+      "bytes": 37352,
+      "sha256": "15c61cd0482faac2a9dc0e60b4b8a825ac778ba30e9ce872ade83acee5800c96",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis_24325150_metadata.json",
+      "bytes": 1657,
+      "sha256": "8b7ed3322c87b52a6b6e5b2726f8281c798fb02de80bbeb60d2a268f9fdad995",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis_birim_page.js",
+      "bytes": 475,
+      "sha256": "369f13a75b04233ca7d1dbd5c85d1674c28c1755c311faa94ee47c3df8337166",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/detsis_chunk_618.js",
+      "bytes": 434690,
+      "sha256": "9e467750473a643bb4ca4510aa70e572fbc0a2d240dff05bdeb7829e4e8cba33",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/extract_sources.py",
+      "bytes": 5259,
+      "sha256": "d5170c460ae32c71dc154aa7c84dad128d45cc870c39c11fd32cd629ca038a03",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_karayolu_mevzuat_page4.csv",
+      "bytes": 2389,
+      "sha256": "6f2abedea8a60dc3a15761bd644190ae90aa6d636ade9d1ba51b7c246d0ae539",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_karayolu_mevzuat_page4.html",
+      "bytes": 82431,
+      "sha256": "eda1c42f9e6cb61ccad63ed13082965c6905c34a87939f4fd5b07605c1c4f1b0",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_karayolu_mevzuat_page4.json",
+      "bytes": 4575,
+      "sha256": "9fc6449c31cc3ed08b72f38bf3ad0f54e1e3975a9cecb4779b9060a8b207de73",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/01_uab_mevzuat.pdf",
+      "bytes": 42165,
+      "sha256": "6318e04b71eaf295b66c76fc27c206bdf849c7922f7dec64d22b69a1d7aa7d75",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/02_uab_mevzuat.pdf",
+      "bytes": 73547,
+      "sha256": "e568cf3da8af77e6ab58c21df6badd1992423c29a0e5f60f0810209e8b7376c2",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf",
+      "bytes": 43901,
+      "sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/04_uab_mevzuat.pdf",
+      "bytes": 26916,
+      "sha256": "196c47162c0455ea0b4a0494f0f3566b0885f45fa705d6cedc37a0703dac1841",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf",
+      "bytes": 1678165,
+      "sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf",
+      "bytes": 1188796,
+      "sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/07_uab_mevzuat.pdf",
+      "bytes": 391477,
+      "sha256": "e117603dd4fa383ec8844902b79d90fdd84abb4a766ca613cb30a4e438bfba96",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/08_uab_mevzuat.pdf",
+      "bytes": 1175538,
+      "sha256": "13b6d0dec53030f70bcc2c78eb2ded5215fa0f9ef185e63feba45a1eb5af9feb",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/09_uab_mevzuat.pdf",
+      "bytes": 2069508,
+      "sha256": "cb666b8ce0026a8e8a69dbf39563e34783e3642fcfa34cc3c8f31350e70243cd",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "path": "veri_kaynaklari/karayolu/uab_pdf/10_uab_mevzuat.pdf",
+      "bytes": 467330,
+      "sha256": "59d77dc266e438f609bb8cfc96f03a2662249e731b4ee3e9695c766396f2e79c",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    }
+  ]
+}

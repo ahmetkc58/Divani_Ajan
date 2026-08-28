@@ -1,0 +1,22 @@
+{
+  "chunk_count": 2603,
+  "indexed_count": 2603,
+  "batch_count": 326,
+  "collection_name": "competition_snapshot_chunks_v1",
+  "embedding_model": "jinaai/jina-embeddings-v3",
+  "embedding_dimension": 1024,
+  "embedding_model_revision": "ab036b023d30b4d1138c4c3bfa9f0c445ab455d6",
+  "embedding_code_revision": "bd55a5ec8e6c0fb1d6c26efb4b6a4a74ce8a88d3",
+  "embedding_device": "cuda:0",
+  "embedding_task": "retrieval.passage",
+  "index_version": "1.0",
+  "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+  "corpus_mode": "competition_snapshot",
+  "currentness_verified": false,
+  "legal_reliance_allowed": false,
+  "usage_notice": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+  "corpus": "data/processed/competition_snapshot.json",
+  "storage_mode": "embedded_local",
+  "qdrant_path": "runtime/qdrant-competition-snapshot",
+  "qdrant_url": null
+}

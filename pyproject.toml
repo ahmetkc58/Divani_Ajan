@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "karayol-evrak-agent"
+version = "0.1.0"
+description = "Karayolu evrakları için kaynak doğrulamalı çok ajanlı analiz ve resmî yazı taslaklama MVP'si"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "Apache-2.0" }
+authors = [{ name = "TEKNOFEST 2026 Takımı" }]
+dependencies = [
+  "fastapi>=0.110,<1",
+  "httpx>=0.27,<1",
+  "uvicorn>=0.27,<1",
+  "pydantic>=2.6,<3",
+  "jinja2>=3.1,<4",
+  "pypdf>=5,<7",
+  "pymupdf>=1.24,<2",
+  "reportlab>=4,<6",
+  "python-multipart>=0.0.9,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4,<9"]
+rag = [
+  "einops>=0.7,<1",
+  "numpy>=1.26,<2",
+  "qdrant-client>=1.10,<2",
+  "sentence-transformers>=5.4,<6",
+  # Jina v3 remote-code currently depends on Transformers 4.x internals
+  # (`all_tied_weights_keys` is incompatible with Transformers 5.x).
+  "transformers>=4.48,<5",
+]
+ocr = [
+  "easyocr==1.7.2",
+  "numpy>=1.26,<2",
+  "opencv-python-headless>=4.11,<5",
+  "scikit-image>=0.26,<0.27",
+  "tifffile>=2025.6.11,<2026.8.23",
+  "torch>=2.13,<2.14",
+  "torchvision>=0.28,<0.29",
+]
+
+[project.scripts]
+karayol-agent = "karayol_agent.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/karayol-agent/data" = [
+  "data/synthetic_gold.json",
+  "data/synthetic_legislation.json",
+  "data/synthetic_ui_fixtures.json",
+  "data/synthetic_units.json",
+]
+"share/karayol-agent/data/organization" = [
+  "data/organization/kgm_units_2026-07-16.json",
+]
+"share/karayol-agent/data/legal_requirements" = [
+  "data/legal_requirements/catalog.json",
+  "data/legal_requirements/README.md",
+]
+"share/karayol-agent/templates" = [
+  "templates/catalog.json",
+]
+"share/karayol-agent/templates/ust_yazi_v1" = [
+  "templates/ust_yazi_v1/metadata.json",
+  "templates/ust_yazi_v1/rules.yaml",
+  "templates/ust_yazi_v1/schema.json",
+  "templates/ust_yazi_v1/template.tex",
+]
+"share/karayol-agent/templates/cevap_yazisi_v1" = [
+  "templates/cevap_yazisi_v1/metadata.json",
+  "templates/cevap_yazisi_v1/rules.yaml",
+  "templates/cevap_yazisi_v1/schema.json",
+  "templates/cevap_yazisi_v1/template.tex",
+]
+"share/karayol-agent/templates/bilgilendirme_yazisi_v1" = [
+  "templates/bilgilendirme_yazisi_v1/metadata.json",
+  "templates/bilgilendirme_yazisi_v1/rules.yaml",
+  "templates/bilgilendirme_yazisi_v1/schema.json",
+  "templates/bilgilendirme_yazisi_v1/template.tex",
+]
+"share/karayol-agent/templates/eksik_bilgi_talebi_v1" = [
+  "templates/eksik_bilgi_talebi_v1/metadata.json",
+  "templates/eksik_bilgi_talebi_v1/rules.yaml",
+  "templates/eksik_bilgi_talebi_v1/schema.json",
+  "templates/eksik_bilgi_talebi_v1/template.tex",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

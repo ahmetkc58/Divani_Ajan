@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-24T16:37:55.693313+00:00",
+  "variant": "baseline_before_query_relevance_v1_gpu",
+  "production_legal_evidence": false,
+  "dataset": {
+    "path": "data\\evaluation\\competition_snapshot_relevance_v1.json",
+    "sha256": "11d56f2c02197652d111e3e041dab91bd8b52efa60bc0e32f4ed547c5c79b8e8",
+    "name": "competition_snapshot_query_relevance",
+    "version": "2026-08-24.1"
+  },
+  "corpus": {
+    "mode": "competition_snapshot",
+    "path": "data/processed/competition_snapshot.json",
+    "fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "file_sha256": "305b1d8575969545414a5fb976a7a63a9e5cdbd8849921064b7e211f23e86576"
+  },
+  "runtime": {
+    "base_url": "http://127.0.0.1:8010",
+    "retrieval_mode": "hybrid",
+    "collection": "competition_snapshot_chunks_v1",
+    "corpus_fingerprint": "ce0725cabadde785adadd49ba4ab2d7096e3b47a13f32c7ec5d1c442d88aa06b",
+    "embedding_model": "jinaai/jina-embeddings-v3",
+    "embedding_dimension": 1024,
+    "currentness_verified": false,
+    "legal_reliance_allowed": false
+  },
+  "aggregate": {
+    "precision_at_returned": 0.2,
+    "precision_at_k": 0.2,
+    "recall_at_k": 0.2,
+    "family_recall_at_k": 0.125,
+    "reciprocal_rank": 0.5,
+    "ndcg_at_k": 0.3119938046076297,
+    "hard_negative_count_at_k": 3.0
+  },
+  "query_count": 2,
+  "results": [
+    {
+      "query_id": "ROAD-MAINT-01",
+      "profile": "road_surface_maintenance_v1",
+      "document_id": "EVR-20260824-A146524D",
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_abstain": false,
+      "actual_abstain": false,
+      "ranked_chunk_ids": [
+        "MEV-C863A805478FFC53",
+        "MEV-56214B1A9589A5DA",
+        "MEV-9DFE7B7E895F4F01",
+        "MEV-A3D9C53A8E200047",
+        "MEV-311383AB24A5855D"
+      ],
+      "verified_chunk_ids": [
+        "MEV-C863A805478FFC53",
+        "MEV-56214B1A9589A5DA",
+        "MEV-9DFE7B7E895F4F01",
+        "MEV-A3D9C53A8E200047",
+        "MEV-311383AB24A5855D"
+      ],
+      "ranked_results": [
+        {
+          "rank": 1,
+          "chunk_id": "MEV-C863A805478FFC53",
+          "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+          "article": "Madde 7",
+          "text": "Onarım çalışması yürütülen ve yol kullanıcılarının güvenliğini tehdit eden karayolu kesimlerinde uygun işaretlerin gerekli yerlere yerleştirilmesi, işaretlerin gündüz ve gece görülebilecek özellikte ve güvenli mesafelerde olması sağlanır.",
+          "retrieval_score": 0.029551337359792925,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "MEV-56214B1A9589A5DA",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 17",
+          "text": "Karayollarında her iki taraftan sınır çizgisine elli metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç bakım, onarım ve satım işyerleri ve benzeri trafik güvenliğini etkileyecek yapı ve tesisler için, o karayolunun yapım ve bakımı ile sorumlu kuruluştan izin alınması zorunludur. Verilen izinler, ilgili valiliğe bildirilir. İzinsiz yapılan bu gibi tesislerin yapımı ve işletilmesi yetkililerce durdurulacağı gibi, yönetmelikteki şartlar yerine getirilmeden işletme izni verilmez ve bağlantı yolu, her türlü gider sorumlulara ait olmak üzere yolun yapım ve bakımı ile ilgili kuruluşca ortadan kaldırılır. (Değişik: 21/5/1997-4262/4 md.) Bu madde hükümlerine uymayanlar 72 000 000 lira para cezası ile cezalandırılırlar. Belediye sınırları içinde bulunan karayolu kenarındaki yapı ve tesisler:",
+          "retrieval_score": 0.028371628371628373,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "MEV-9DFE7B7E895F4F01",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 26",
+          "text": "(Değişik birinci fıkra:RG-1/9/2010-27689) Karayollarında her iki taraftan sınır çizgisine 50 metre mesafe içinde bağlantıyı sağlayacak geçiş yolları yönünden; akaryakıt, servis, dolum ve muayene istasyonları, umuma açık park yeri ve garaj, terminal, fabrika, işhanı, çarşı, pazar yeri, eğlence yerleri, turistik yapı ve tesisler, inşaat malzemesi ocak ve harmanları, maden ve petrol tesisleri, araç bakım, onarım ve satım işyerleri ve benzeri trafik güvenliğini etkileyecek yapı ve tesisler için, o karayolunun yapımı, bakımı, işletilmesi ile ilgili kuruluştan izin alınması zorunludur. Verilen izinler, ilgili valiliğe bildirilir. (Değişik üçüncü fıkra:RG-1/9/2010-27689) İzinsiz yapılan bu gibi tesislerin yapımı ve işletilmesi yetkililerce durdurulacağı gibi, tesislerle ilgili yönetmelikteki şartlar yerine getirilmeden işletme izni verilmez ve bağlantı yolu, her türlü gider sorumlulara ait olmak üzere yolun yapımı, bakımı, işletilmesi ile ilgili kuruluşça ortadan kaldırılır. Belediye Sınırları İçinde Bulunan Karayolu Kenarındaki Yapı ve Tesisler",
+          "retrieval_score": 0.027745885954841176,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "MEV-A3D9C53A8E200047",
+          "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+          "article": "Madde 8",
+          "text": "Karayolu güvenlik teftişleri, yol ağının karayolu altyapısı güvenliği açısından incelenmesini ve yol çalışmalarının trafik akışının güvenliği üzerindeki olası etkilerinin belirlenmesine yönelik çalışmaları kapsar.",
+          "retrieval_score": 0.01639344262295082,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 5,
+          "chunk_id": "MEV-311383AB24A5855D",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 153",
+          "text": "c) Araç bakım, onarım, servis istasyonu, garaj ve otopark sahip veya sorumluları; 1) Tesislerine; bakım, onarım için muhafaza veya parkedilmek üzere bırakılan motorlu araçlardan, bir kaza geçirdiği belli olan veya üzerinde suç belirtisi bulunanları gecikmeden zabıtaya bildirmek, 2) Bunları bir deftere (Ek:38) işlemek, Zorundadırlar. Trafik Kazalarına El Konulması",
+          "retrieval_score": 0.016129032258064516,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        }
+      ],
+      "retrieval_diagnostics": {
+        "mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "warning": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "dense_error_type": null,
+        "lexical_candidate_count": 20,
+        "dense_candidate_count": 20,
+        "fused_candidate_count": 37,
+        "channel_top_n": 20,
+        "rrf_k": 60
+      },
+      "metrics": {
+        "returned_count": 5,
+        "strict_relevant_returned": 0,
+        "precision_at_returned": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "family_recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "ndcg_at_k": 0.06506563404025809,
+        "hard_negative_count_at_k": 3,
+        "grades_by_rank": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "first_relevant_rank": null
+      }
+    },
+    {
+      "query_id": "DAMAGED-SIGN-01",
+      "profile": "traffic_sign_damage_v1",
+      "document_id": "EVR-20260824-79D4CFE2",
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_abstain": false,
+      "actual_abstain": false,
+      "ranked_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-097A621442A40371",
+        "MEV-9C1D2E3C962F54A1",
+        "MEV-031D0A3918F5F30E",
+        "MEV-B4102E4DDE97752F"
+      ],
+      "verified_chunk_ids": [
+        "MEV-F3938057B283C03C",
+        "MEV-097A621442A40371",
+        "MEV-9C1D2E3C962F54A1",
+        "MEV-031D0A3918F5F30E",
+        "MEV-B4102E4DDE97752F"
+      ],
+      "ranked_results": [
+        {
+          "rank": 1,
+          "chunk_id": "MEV-F3938057B283C03C",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 21",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini; 1) Üzerine yazı yazarak, çizerek, kırarak, delerek, sökerek veya başka şekillerde bozmak, 2) Yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. (Değişik ikinci fıkra:RG-1/9/2010-27689) Yaratılan tehlike ve engeller trafik zabıtası veya gerektiğinde genel zabıta ile iş birliği yapılmak suretiyle yolun yapımı, bakımı, işletilmesinden sorumlu kuruluşlar tarafından ortadan kaldırılır, bozukluk ve eksiklikler derhal giderilir. Zarar karşılıkları ve masraflar sorumlulara ödetilir. (Değişik üçüncü fıkra:RG-1/9/2010-27689) Işıklı trafik işaret cihazları, trafik işaret levhaları, kenar taşları, oto korkuluk ve benzeri yol ve trafik güvenliği elemanlarına zarar veren kişilerin yetkililerce tespiti halinde bu durumun, yolun yapımı, bakımı, işletilmesi ile ilgili kuruluşa bildirilmesi zorunludur. Karayolu Sınırı İçinde veya Dışındaki Levhalar, Işıklar, İşaretleme ve Benzerleri",
+          "retrieval_score": 0.031099324975891997,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "MEV-097A621442A40371",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 81",
+          "text": "e) Sürücüsü, mal sahibi veya ilgili kişilerin bulunmadığı sırada araç, eşya veya yüklere zarar veren sürücüler, zarar verdikleri araç, eşya veya mülkün sahibini veya ilgili kişileri bulmak, ilgilileri bulamadıkları takdirde durumu tespit etmek ve zarar verilen şey üzerine yazılı bilgi bırakmak, ilgili zabıtaya en kısa zamanda bilgi vermek, Zorundadırlar. 46 2/1/2017 tarihli ve 680 sayılı KHK’nin 58 inci maddesi ile bu bentte yer alan “trafik belgesi” ibaresi “tescil belgesi” şeklinde değiştirilmiş, daha sonra bu hüküm 1/2/2018 tarihli ve 7072 sayılı Kanunun 57 nci maddesiyle aynen kabul edilerek kanunlaşmıştır. Yalnız maddi hasar meydana gelen kazalarda, kazaya dahil kişilerin tümü, yetkili ve görevli kişinin gelmesine lüzum görmezlerse, bunu aralarında yazılı olarak saptamak suretiyle kaza yerinden ayrılabilirler. (Değişik: 21/5/1997-4262/4 md.) Anlaşma hali dışında maddi hasarlı, ölümlü veya yaralanmalı trafik kazalarında, zabıtanın iznini almadan zaruret dışında olay yerinden ayrılan veya birinci fıkranın",
+          "retrieval_score": 0.028484848484848488,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "MEV-9C1D2E3C962F54A1",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 178",
+          "text": "a) Okul geçidi görevlisi olma şartları ve seçilme esasları 1) İlk ve orta dereceli okullarda istekli öğretmenler, veliler ile 12 yaşını doldurmuş öğrenciler okul geçidi görevlisi olabilirler. 2) Okul geçidi görevlisi olma şartlarını haiz olan öğretmenler ile öğrenciler bu isteklerini mensup olduğu okul müdürlüklerine, veliler ise, il emniyet müdürlüklerine yazılı olarak bildirirler. 3) Okul müdürlüklerince tespit edilen adayların müracaatları bağlı oldukları il milli eğitim müdürlükleri kanalıyla il emniyet müdürlüğüne bildirilir. 4) Müracaatta bulunan adaylar, il emniyet müdürlüğünün koordinatörlüğünde şehiriçi trafik denetleme şube müdürü, bölge trafik şube müdürü ile milli eğitim müdürlüğünün tayin edeceği iki eğitim uzmanından oluşan komisyonca seçilirler. Seçim sırasında, adayların trafik hizmetlerine olan yakınlığı ile yetenek ve kabiliyetlerine bilhassa özen gösterilir. 5) Okul geçidi görevlisi olması uygun görülen adaylar, her iki kuruluşun uygun göreceği yer ve zamanda trafik zabıtasınca pratik ve uygulamalı eğitimden geçirilirler. Eğitim sırasında trafik kuralları, trafik işaret, levha ve cihazları, trafiğin sevk ve idaresinde dikkat edilecek usul ve esaslar, taşıtların durdurulması ve yönlendirilmesi sırasında can ve mal güvenliği açısından dikkat edilecek emniyet tedbirleri ile yayaların taşıtlara, taşıtların ise yayalara karşı geçiş önceliği hakkının nasıl ve ne şartlar altında kullanılabileceği konuları öğretilir. Uygulamalı eğitim sırasında geçit görevlisinin vereceği işaret ve yön tayini esasları, görevlinin okul önlerinde veya geçitlerde kendi can güvenliğinin korunması amacıyla bulunabileceği yer ve noktalar yetkili bir memurun gözetiminde uygulamalı olarak yaptırılır.",
+          "retrieval_score": 0.01639344262295082,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "MEV-031D0A3918F5F30E",
+          "title": "Karayolları Trafik Yönetmeliği",
+          "article": "Madde 156",
+          "text": "(a) bendi gereğince trafik zabıtası ve genel zabıtanın görevli personeli yetkilidir. Tutanaklar en az iki görevli tarafından düzenlenir. Hafif yaralanmalı veya hasarlı kazalarda tek görevli tarafından rapor şeklinde de düzenlenebilir. Ancak, Türk Silahlı Kuvvetlerine ait araçların karıştığı trafik kazalarında bir askeri temsilcinin bulundurulması mecburidir. 3) Tutanak düzenleyenler, tutanakta taraflar için kusur oranı belirtmeksizin sadece kazanın oluşumunda kimin hangi trafik kuralını ihlal ettiğini belirtirler. 4) Karayolu üzerinde ölüm veya yaralanma ile sonuçlanıp, olay yerindeki iz ve delillerin tespit ve değerlendirilmesi sonucunda trafik kazası olduğu anlaşılan durumlarda; kazaya karışan taraf veya unsurlardan birinin, birkaçının ya da tamamının olay yerinden ayrılmış olması halinde de trafik kazası tespit tutanağı düzenlenir. 5) Önceden meydana gelmiş veya olay yerinden kaldırılmış araçların karıştığı ve yalnız maddi hasarla sonuçlanan kazalar için trafik zabıtası ve genel kollukça hasar tespitine dair kazaya karışanlara verilmek üzere tutanak veya rapor düzenlenmez. Bu durumlarda hasar tespitleri ilgililerin sigortalarına veya yetkili mahkemelere başvurmaları suretiyle yapılır. Ancak; Can, mal ve trafik güvenliğini etkileyen veya yolun trafiğe kapandığı maddi hasarlı trafik kazalarında, kazaya karışanların kazanın oluşuna göre iz ve delilleri işaretleyerek, mümkün olduğu takdirde olay yerinin fotoğraflarını çekerek araçlarını en yakın ve uygun yerlere çekmeleri, Karayolu üzerinde birden fazla sayıda aracın karıştığı sadece maddi hasarla sonuçlanan ve tarafların bu Yönetmelik çerçevesinde Maddi Hasarlı Trafik Kazası Tespit Tutanağı düzenlemediği trafik kazalarında;",
+          "retrieval_score": 0.016129032258064516,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        },
+        {
+          "rank": 5,
+          "chunk_id": "MEV-B4102E4DDE97752F",
+          "title": "2918 Sayılı Karayolları Trafik Kanunu",
+          "article": "Madde 14",
+          "text": "b) Karayolu yapısını, trafik işaretlerini ve karayoluna ait diğer yapı ve güvenlik tesislerini, üzerlerine yazı yazarak, çizerek veya başka şekillerde bozmak, yerlerini değiştirmek veya ortadan kaldırmak, Yasaktır. Meydana gelen tehlike ve engeller, ilgili kuruluşlar ve zabıtaca ortadan kaldırılır, bozukluk ve eksiklikler yolun yapım ve bakımından sorumlu kuruluşca derhal giderilir, zarar karşılıkları ve masrafları sorumlulara ödetilir. (Değişik: 21/5/1997-4262/4 md.) Bu madde hükmüne uymayanlara 7 200 000 lira para cezası verilir. Trafik işaretleri:",
+          "retrieval_score": 0.016129032258064516,
+          "relevance_score": null,
+          "relevance_accepted": null,
+          "relevance_reasons": []
+        }
+      ],
+      "retrieval_diagnostics": {
+        "mode": "hybrid",
+        "dense_status": "used",
+        "fallback_used": false,
+        "warning": "Bu sonuç yalnızca projeyle birlikte sabitlenmiş yarışma veri kümesine dayanır; mevzuatın güncelliği/yürürlüğü doğrulanmamıştır ve güncel hukuki görüş değildir.",
+        "dense_error_type": null,
+        "lexical_candidate_count": 20,
+        "dense_candidate_count": 20,
+        "fused_candidate_count": 38,
+        "channel_top_n": 20,
+        "rrf_k": 60
+      },
+      "metrics": {
+        "returned_count": 5,
+        "strict_relevant_returned": 2,
+        "precision_at_returned": 0.4,
+        "precision_at_k": 0.4,
+        "recall_at_k": 0.4,
+        "family_recall_at_k": 0.25,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 0.5589219751750013,
+        "hard_negative_count_at_k": 3,
+        "grades_by_rank": [
+          3,
+          0,
+          0,
+          0,
+          3
+        ],
+        "first_relevant_rank": 1
+      }
+    }
+  ],
+  "limitations": [
+    "Etiketler yalnız sabit yarışma snapshot'ında metinsel sorgu alakası içindir.",
+    "Hukuki güncellik, yürürlük, yetki, olayın somut uygulanabilirliği veya hukuk görüşü doğrulanmaz.",
+    "Retrieval değerlendirmesi context_text ve text alanlarını; kullanıcıya gösterilecek atıf ise kendi text alanını dikkate alır."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "source_url": "https://detsis.gov.tr/birim/24325150/24325150/2026-08-23",
+  "retrieved_at": "2026-08-23T20:50:49.023809+03:00",
+  "requested_detsis_id": "24325150",
+  "requested_unit_id": "24325150",
+  "requested_snapshot_date": "2026-08-23",
+  "page_title": "Devlet Teşkilatı Merkezi Kayıt Sistemi",
+  "data_status": "downloaded_and_verified",
+  "verified_fields": {
+    "birimAdi": "Ulaştırma ve Altyapı Bakanlığı",
+    "detsisNo": "24325150",
+    "kategori": "BAKANLIK",
+    "statu": "Bakanlık"
+  },
+  "public_endpoints_discovered": {
+    "services": "https://yetkiliapi.detsis.gov.tr/api/backoffice/unauthorizedintegration/kunye/hizmetler",
+    "legislation": "https://yetkiliapi.detsis.gov.tr/api/backoffice/unauthorizedintegration/kunye/mevzuatlar",
+    "documents": "https://yetkiliapi.detsis.gov.tr/api/backoffice/unauthorizedintegration/kunye/belgeler",
+    "unit_profile": "https://yetkiliapi.detsis.gov.tr/api/backoffice/unauthorizedaccessdata/birimkunye"
+  },
+  "api_attempt": {
+    "result": "success_with_browser_headers_and_accept_version_v1",
+    "attempted_sections": [
+      "services",
+      "legislation",
+      "unit_profile"
+    ]
+  },
+  "notes": [
+    "DETSİS sayfası verileri istemci tarafında API üzerinden yüklemektedir.",
+    "İndirilen HTML veri yüklenmeden önce boş alanlar içermektedir.",
+    "Accept-Version: v1 ve sayfanın kullandığı Origin/Referer başlıklarıyla API yanıtı alınmıştır.",
+    "585 belge, 566 hizmet ve 501 mevzuat kaydı ham ve temiz biçimde saklanmıştır.",
+    "24325150 KGM değil, Ulaştırma ve Altyapı Bakanlığı ana kurum kaydıdır."
+  ]
+}

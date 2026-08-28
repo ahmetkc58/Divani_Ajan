@@ -1,0 +1,4413 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-08-24T03:58:07.623480Z",
+  "retrieval_mode": "bm25",
+  "dataset_name": "Sentetik Karayolu Evrak Gold Değerlendirme Seti",
+  "dataset_version": "1.0.0",
+  "total_records": 48,
+  "successful_records": 48,
+  "metrics": {
+    "classification_accuracy": {
+      "value": 0.8333,
+      "numerator": 40,
+      "denominator": 48
+    },
+    "routing_top1_accuracy": {
+      "value": 0.8542,
+      "numerator": 41,
+      "denominator": 48
+    },
+    "routing_top3_accuracy": {
+      "value": 0.9375,
+      "numerator": 45,
+      "denominator": 48
+    },
+    "missing_fields_exact_match": {
+      "value": 1.0,
+      "numerator": 48,
+      "denominator": 48
+    },
+    "template_accuracy": {
+      "value": 0.9375,
+      "numerator": 45,
+      "denominator": 48
+    },
+    "retrieval_recall_at_5": {
+      "value": 0.8056,
+      "numerator": 29,
+      "denominator": 36
+    }
+  },
+  "slices": {
+    "standard": {
+      "classification_accuracy": {
+        "value": 1.0,
+        "numerator": 40,
+        "denominator": 40
+      },
+      "routing_top1_accuracy": {
+        "value": 1.0,
+        "numerator": 40,
+        "denominator": 40
+      },
+      "routing_top3_accuracy": {
+        "value": 1.0,
+        "numerator": 40,
+        "denominator": 40
+      },
+      "missing_fields_exact_match": {
+        "value": 1.0,
+        "numerator": 40,
+        "denominator": 40
+      },
+      "template_accuracy": {
+        "value": 1.0,
+        "numerator": 40,
+        "denominator": 40
+      },
+      "retrieval_recall_at_5": {
+        "value": 1.0,
+        "numerator": 28,
+        "denominator": 28
+      }
+    },
+    "challenge_paraphrase": {
+      "classification_accuracy": {
+        "value": 0.0,
+        "numerator": 0,
+        "denominator": 8
+      },
+      "routing_top1_accuracy": {
+        "value": 0.125,
+        "numerator": 1,
+        "denominator": 8
+      },
+      "routing_top3_accuracy": {
+        "value": 0.625,
+        "numerator": 5,
+        "denominator": 8
+      },
+      "missing_fields_exact_match": {
+        "value": 1.0,
+        "numerator": 8,
+        "denominator": 8
+      },
+      "template_accuracy": {
+        "value": 0.625,
+        "numerator": 5,
+        "denominator": 8
+      },
+      "retrieval_recall_at_5": {
+        "value": 0.125,
+        "numerator": 1,
+        "denominator": 8
+      }
+    },
+    "challenge_no_answer": {
+      "legal_evidence_abstention_rate": {
+        "value": 0.0,
+        "numerator": 0,
+        "denominator": 0
+      }
+    }
+  },
+  "missing_field_precision": 1.0,
+  "missing_field_recall": 1.0,
+  "missing_field_f1": 1.0,
+  "retrieval_mrr": 0.8056,
+  "classification_confusion": {
+    "bilgi_talebi": {
+      "bilgi_talebi": 6,
+      "dilekce": 1,
+      "genel_basvuru": 1
+    },
+    "dilekce": {
+      "dilekce": 6
+    },
+    "hasar_bildirimi": {
+      "genel_basvuru": 2,
+      "hasar_bildirimi": 6
+    },
+    "sikayet": {
+      "sikayet": 6
+    },
+    "trafik_guvenligi_bildirimi": {
+      "genel_basvuru": 2,
+      "trafik_guvenligi_bildirimi": 6
+    },
+    "ust_yazi": {
+      "ust_yazi": 4
+    },
+    "yol_bakim_talebi": {
+      "genel_basvuru": 2,
+      "yol_bakim_talebi": 6
+    }
+  },
+  "results": [
+    {
+      "record_id": "BAKIM-01",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-TG-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 12.602062,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "asfalt",
+            "bakım",
+            "çukur",
+            "onarım",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.341039,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-02",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 10.9996,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "bakım",
+            "çukur",
+            "onarım",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.341039,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-03",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-TG-001"
+      ],
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 9.397139,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "bakım",
+            "onarım",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.341039,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-04",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 6.903061,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "asfalt",
+            "onarım"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-05",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-TG-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 10.9996,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "çukur",
+            "bakım",
+            "onarım",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.341039,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-06",
+      "tags": [
+        "sentetik",
+        "bakim"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "yol_bakim_talebi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 9.397139,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "bakım",
+            "onarım",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.341039,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BAKIM-07",
+      "tags": [
+        "sentetik",
+        "bakim",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": false,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": false,
+      "verified_reference_count": 0,
+      "legal_evidence_abstained": true,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 0,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 0,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": []
+    },
+    {
+      "record_id": "BAKIM-08",
+      "tags": [
+        "sentetik",
+        "bakim",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "yol_bakim_talebi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": false,
+      "missing_fields_exact": true,
+      "template_correct": false,
+      "retrieval_hit": false,
+      "verified_reference_count": 0,
+      "legal_evidence_abstained": true,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 0,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 0,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": []
+    },
+    {
+      "record_id": "TRAFIK-01",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-003",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 8.19914,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "güvenliği",
+            "levha"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-003",
+          "score": 2.781341,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-02",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-YB-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-001",
+        "SENT-RY-002",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 8.19914,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "güvenliği",
+            "bariyer"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 4.096539,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.228421,
+          "fusion_method": null,
+          "matched_terms": [
+            "eksik"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-03",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 8.19914,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "sinyalizasyon",
+            "güvenliği"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-04",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 1,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 1,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 5.817236,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "güvenliği"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-05",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-003",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 12.962948,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "levha",
+            "kaza",
+            "riski",
+            "güvenliği"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-003",
+          "score": 2.781341,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-06",
+      "tags": [
+        "sentetik",
+        "trafik"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "trafik_guvenligi_bildirimi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 5.817236,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik",
+            "güvenliği"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-07",
+      "tags": [
+        "sentetik",
+        "trafik",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004"
+      ],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": false,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": false,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 1,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 1,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "yönlendirme"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "TRAFIK-08",
+      "tags": [
+        "sentetik",
+        "trafik",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "trafik_guvenligi_bildirimi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-TG-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": false,
+      "retrieval_hit": false,
+      "verified_reference_count": 0,
+      "legal_evidence_abstained": true,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 0,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 0,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": []
+    },
+    {
+      "record_id": "HASAR-01",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-YB-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-KRY-001",
+        "SENT-RY-002",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 8.492625,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "heyelan",
+            "hasarı",
+            "acil"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 4.096539,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "gerekli"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-02",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-TG-001",
+        "ORKGM-YB-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-RY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 6.827935,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "istinat",
+            "acil"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "gerekli"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-03",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-TG-001",
+        "ORKGM-YB-001"
+      ],
+      "expected_missing_fields": [
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-RY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 9.209839,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "köprü",
+            "çökme",
+            "acil"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "gerekli"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-04",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-YB-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 6.827935,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "sel",
+            "hasarı"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.98308,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-05",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-TG-001",
+        "ORKGM-YB-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "actual_missing_fields": [
+        "gonderen",
+        "konum"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-KRY-002",
+        "SENT-RY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 5,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 5,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 6.827935,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "heyelan",
+            "acil"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-002",
+          "score": 2.381904,
+          "fusion_method": null,
+          "matched_terms": [
+            "riski"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "gerekli"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 5,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-06",
+      "tags": [
+        "sentetik",
+        "hasar"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "hasar_bildirimi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-BE-001",
+        "ORKGM-EB-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "ust_yazi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-RY-002",
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 8.492625,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "köprü",
+            "hasarı",
+            "acil"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "gerekli"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.670519,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "HASAR-07",
+      "tags": [
+        "sentetik",
+        "hasar",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": false,
+      "verified_reference_count": 0,
+      "legal_evidence_abstained": true,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 0,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 0,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": []
+    },
+    {
+      "record_id": "HASAR-08",
+      "tags": [
+        "sentetik",
+        "hasar",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "hasar_bildirimi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-YB-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "ust_yazi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": false,
+      "retrieval_hit": false,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 1,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 1,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.98308,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-01",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-YB-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 6.974188,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "ilgili",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 4.096539,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep",
+            "bakım"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.913765,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-02",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-AF-001",
+        "ORKGM-EB-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-RY-002",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 6.974188,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "ilgili",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.913765,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-03",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-AF-001",
+        "ORKGM-EB-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-RY-002",
+        "SENT-KRY-003",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 6.974188,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "ilgili",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.913765,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-003",
+          "score": 2.381904,
+          "fusion_method": null,
+          "matched_terms": [
+            "köprü"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-04",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-RY-002",
+        "SENT-KRY-001",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 5,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 5,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 5.883344,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "kapsamı",
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 5.600286,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "başvurunun"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-001",
+          "score": 3.779637,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu",
+            "yol"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 5,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-05",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-RY-002",
+        "SENT-KRY-002",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 6.974188,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "ilgili",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.913765,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 2.781341,
+          "fusion_method": null,
+          "matched_terms": [
+            "trafik"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.113459,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-06",
+      "tags": [
+        "sentetik",
+        "bilgi"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "bilgi_talebi",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-YB-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001",
+        "SENT-RY-002"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 6.974188,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi",
+            "ilgili",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 4.096539,
+          "fusion_method": null,
+          "matched_terms": [
+            "talep",
+            "bakım"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 3.913765,
+          "fusion_method": null,
+          "matched_terms": [
+            "bilgi",
+            "talebi"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-07",
+      "tags": [
+        "sentetik",
+        "bilgi",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-BE-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-BE-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001",
+        "SENT-RY-002",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": false,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 3,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 5,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 5,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 3.438064,
+          "fusion_method": null,
+          "matched_terms": [
+            "kapsamı",
+            "karayolu",
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.406869,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu",
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-RY-002",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvurunun"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 5,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "BILGI-08",
+      "tags": [
+        "sentetik",
+        "bilgi",
+        "challenge_paraphrase"
+      ],
+      "expected_document_type": "bilgi_talebi",
+      "actual_document_type": "genel_basvuru",
+      "expected_unit_id": "ORKGM-BE-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001"
+      ],
+      "classification_correct": false,
+      "routing_top1_correct": false,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": false,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 1,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 1,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.98308,
+          "fusion_method": null,
+          "matched_terms": [
+            "yol"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-01",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-02",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-03",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-04",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-05",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "SIKAYET-06",
+      "tags": [
+        "sentetik",
+        "sikayet"
+      ],
+      "expected_document_type": "sikayet",
+      "actual_document_type": "sikayet",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-TG-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004",
+        "SENT-KRY-002",
+        "SENT-KRY-003"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 4,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 4,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 4,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 0.796557,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 0.579676,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-002",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 4,
+          "chunk_id": "SENT-KRY-003",
+          "score": 0.572172,
+          "fusion_method": null,
+          "matched_terms": [
+            "karayolu"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-01",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 2.842386,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.723771,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-02",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen"
+      ],
+      "actual_missing_fields": [
+        "gonderen"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 2.842386,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.723771,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-03",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.610312,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.171867,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-04",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 2.842386,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.723771,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-05",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "cevap_yazisi_v1",
+      "actual_template_id": "cevap_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-004",
+        "SENT-KRY-001"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-004",
+          "score": 2.842386,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-001",
+          "score": 2.723771,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru",
+            "talep"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "DILEKCE-06",
+      "tags": [
+        "sentetik",
+        "dilekce"
+      ],
+      "expected_document_type": "dilekce",
+      "actual_document_type": "dilekce",
+      "expected_unit_id": "ORKGM-EB-001",
+      "actual_unit_id": "ORKGM-EB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-EB-001",
+        "ORKGM-BE-001",
+        "ORKGM-AF-001"
+      ],
+      "expected_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "actual_missing_fields": [
+        "gonderen",
+        "talep"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": null,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 1.610312,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.171867,
+          "fusion_method": null,
+          "matched_terms": [
+            "başvuru"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "USTYAZI-01",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ],
+      "expected_document_type": "ust_yazi",
+      "actual_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "actual_template_id": "bilgilendirme_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 7.568622,
+          "fusion_method": null,
+          "matched_terms": [
+            "asfalt",
+            "bakım",
+            "yol"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "ilgili"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "USTYAZI-02",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ],
+      "expected_document_type": "ust_yazi",
+      "actual_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-TG-001",
+      "actual_unit_id": "ORKGM-TG-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-TG-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "actual_template_id": "bilgilendirme_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-002",
+        "SENT-KRY-003",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 3,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 3,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-002",
+          "score": 8.19914,
+          "fusion_method": null,
+          "matched_terms": [
+            "bariyer",
+            "trafik",
+            "güvenliği"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-003",
+          "score": 2.781341,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 3,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "ilgili"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "USTYAZI-03",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ],
+      "expected_document_type": "ust_yazi",
+      "actual_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-AF-001",
+      "actual_unit_id": "ORKGM-AF-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-AF-001",
+        "ORKGM-BE-001",
+        "ORKGM-EB-001"
+      ],
+      "expected_missing_fields": [],
+      "actual_missing_fields": [],
+      "expected_template_id": "bilgilendirme_yazisi_v1",
+      "actual_template_id": "bilgilendirme_yazisi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-003",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 1,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-003",
+          "score": 6.827935,
+          "fusion_method": null,
+          "matched_terms": [
+            "hasar",
+            "heyelan",
+            "hasarı"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "ilgili"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    },
+    {
+      "record_id": "USTYAZI-04",
+      "tags": [
+        "sentetik",
+        "ust_yazi"
+      ],
+      "expected_document_type": "ust_yazi",
+      "actual_document_type": "ust_yazi",
+      "expected_unit_id": "ORKGM-YB-001",
+      "actual_unit_id": "ORKGM-YB-001",
+      "actual_top3_unit_ids": [
+        "ORKGM-YB-001",
+        "ORKGM-AF-001",
+        "ORKGM-BE-001"
+      ],
+      "expected_missing_fields": [
+        "tarih"
+      ],
+      "actual_missing_fields": [
+        "tarih"
+      ],
+      "expected_template_id": "eksik_bilgi_talebi_v1",
+      "actual_template_id": "eksik_bilgi_talebi_v1",
+      "retrieved_chunk_ids": [
+        "SENT-KRY-001",
+        "SENT-KRY-004"
+      ],
+      "classification_correct": true,
+      "routing_top1_correct": true,
+      "routing_top3_correct": true,
+      "missing_fields_exact": true,
+      "template_correct": true,
+      "retrieval_hit": true,
+      "verified_reference_count": 2,
+      "legal_evidence_abstained": false,
+      "retrieval_mode": "bm25",
+      "retrieval_diagnostics": {
+        "mode": "bm25",
+        "dense_status": "not_requested",
+        "fallback_used": false,
+        "warning": null,
+        "dense_error_type": null,
+        "lexical_candidate_count": 2,
+        "dense_candidate_count": 0,
+        "fused_candidate_count": 2,
+        "channel_top_n": null,
+        "rrf_k": null
+      },
+      "retrieval_channel_trace": [
+        {
+          "rank": 1,
+          "chunk_id": "SENT-KRY-001",
+          "score": 3.91998,
+          "fusion_method": null,
+          "matched_terms": [
+            "asfalt",
+            "onarım"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        },
+        {
+          "rank": 2,
+          "chunk_id": "SENT-KRY-004",
+          "score": 1.686521,
+          "fusion_method": null,
+          "matched_terms": [
+            "ilgili"
+          ],
+          "channels": [
+            "lexical"
+          ],
+          "channel_contributions": []
+        }
+      ]
+    }
+  ]
+}

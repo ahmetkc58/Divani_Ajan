@@ -1,0 +1,379 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-08-23T23:34:42.690382Z",
+  "source_records": "data/manifests/core_legislation_sources.json",
+  "archive_root": ".",
+  "policy": "Otomatik sınıflandırma yalnızca aday üretir. İnsan kapsam ve yürürlük doğrulaması olmadan hiçbir kayıt aktif RAG koleksiyonuna alınmaz.",
+  "summary": {
+    "source_record_count": 8,
+    "manifest_record_count": 8,
+    "matched_pdf_count": 8,
+    "missing_pdf_count": 0,
+    "duplicate_pdf_count": 0,
+    "unmatched_archive_pdf_count": 0,
+    "candidate_for_active_rag_count": 8,
+    "approved_for_active_rag_count": 0,
+    "review_required_count": 8,
+    "out_of_scope_count": 0,
+    "ocr_required_count": 2,
+    "text_read_error_count": 0,
+    "text_not_inspected_count": 0,
+    "domain_counts": {
+      "kgm_infrastructure": 4,
+      "official_writing": 2,
+      "road_transport": 2
+    }
+  },
+  "data": [
+    {
+      "legislation_id": 2201991082,
+      "document_id": "law-2918",
+      "title": "2918 Sayılı Karayolları Trafik Kanunu",
+      "document_type": "kanun",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/ht0cb5st/karayollari-trafik-kanunu.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/06_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "kgm_infrastructure",
+      "secondary_domains": [],
+      "subdomain": "traffic_safety",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "d4ed00b767b7b8024e16f8d96f6308774d2ec3a740da9cc02e9bce0d339b020a",
+      "source_bytes": 1188796,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 234843,
+        "page_count": 90,
+        "average_characters_per_page": 2609.37,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 1256867999,
+      "document_id": "law-4925",
+      "title": "4925 Sayılı Karayolu Taşıma Kanunu",
+      "document_type": "kanun",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/gbabqkkn/karayolu-taşima-kanunu.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/07_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "road_transport",
+      "secondary_domains": [],
+      "subdomain": "transport_operations",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "e117603dd4fa383ec8844902b79d90fdd84abb4a766ca613cb30a4e438bfba96",
+      "source_bytes": 391477,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 33373,
+        "page_count": 14,
+        "average_characters_per_page": 2383.79,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 2053470426,
+      "document_id": "official-writing-guide",
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik Kılavuzu",
+      "document_type": "kilavuz",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": null,
+      "local_pdfs": [
+        "mevzuat-kılavuz.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "official_writing",
+      "secondary_domains": [],
+      "subdomain": "formal_correspondence",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "0716b0e39b62fadf8d9ded7b20f6be3660199eea397f417e127b81775ca129e1",
+      "source_bytes": 7599373,
+      "text_layer_status": "ocr_required",
+      "text_quality": {
+        "character_count": 0,
+        "page_count": 26,
+        "average_characters_per_page": 0.0,
+        "readable_page_ratio": 0.0,
+        "quality": "yetersiz",
+        "requires_ocr": true,
+        "reasons": [
+          "Sayfa başına çıkarılan karakter sayısı çok düşük.",
+          "Okunabilir metin bulunan sayfa oranı yetersiz."
+        ]
+      },
+      "ocr_required": true,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 4826957269,
+      "document_id": "official-writing-regulation",
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": null,
+      "local_pdfs": [
+        "mevzuat-1.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "official_writing",
+      "secondary_domains": [],
+      "subdomain": "formal_correspondence",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "aabd2d739037fff061f348c4a1f239afac5e1a58241fe041f15728775d6ccab9",
+      "source_bytes": 13689739,
+      "text_layer_status": "ocr_required",
+      "text_quality": {
+        "character_count": 6934,
+        "page_count": 49,
+        "average_characters_per_page": 141.51,
+        "readable_page_ratio": 0.592,
+        "quality": "yetersiz",
+        "requires_ocr": true,
+        "reasons": [
+          "Sayfa başına çıkarılan karakter sayısı çok düşük.",
+          "Okunabilir metin bulunan sayfa oranı yetersiz."
+        ]
+      },
+      "ocr_required": true,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 3663719909,
+      "document_id": "uab-road-expropriation-regulation",
+      "title": "Karayolu Yapımı Amaçlı Kamulaştırmalarda Hazine Taşınmazlarının Trampası Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/iejpzo3a/karayolu-yapimi-amaçli-kamulaştirmalarda-hazine-taşinmazlarinin-trampasi-hakkinda-yoenetmelik.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/01_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "kgm_infrastructure",
+      "secondary_domains": [],
+      "subdomain": "expropriation",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "6318e04b71eaf295b66c76fc27c206bdf849c7922f7dec64d22b69a1d7aa7d75",
+      "source_bytes": 42165,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 12617,
+        "page_count": 3,
+        "average_characters_per_page": 4205.67,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 2915464714,
+      "document_id": "uab-road-infrastructure-safety-regulation",
+      "title": "Karayolu Altyapısı Güvenlik Yönetimi Hakkında Yönetmelik",
+      "document_type": "yonetmelik",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/lczj5l4z/karayolu-altyapisi-guevenlik-yoenetimi-hakkinda-yoenetmelik.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/03_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "kgm_infrastructure",
+      "secondary_domains": [],
+      "subdomain": "traffic_safety",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "f24b6a1d16ec4ce279108e4da9b47acffb85d2550242b6c3c65a59c129564347",
+      "source_bytes": 43901,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 12255,
+        "page_count": 3,
+        "average_characters_per_page": 4085.0,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 2265614591,
+      "document_id": "uab-road-traffic-regulation",
+      "title": "Karayolları Trafik Yönetmeliği",
+      "document_type": "yonetmelik",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/aqgbh4kp/karayollari-trafik-yoenetmeliği.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/05_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "kgm_infrastructure",
+      "secondary_domains": [],
+      "subdomain": "traffic_safety",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "7addf9f0fbf804335eb8368d7672d74ee48c21f3f2612ce6d73ed76934972d53",
+      "source_bytes": 1678165,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 419300,
+        "page_count": 114,
+        "average_characters_per_page": 3678.07,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    },
+    {
+      "legislation_id": 4999151388,
+      "document_id": "uab-road-transport-regulation",
+      "title": "Karayolu Taşıma Yönetmeliği",
+      "document_type": "yonetmelik",
+      "regulation_number": null,
+      "official_gazette_number": null,
+      "official_gazette_date": null,
+      "source_url": "https://www.uab.gov.tr/media/potlbwur/karayolu-taşima-yoenetmeliği.pdf",
+      "local_pdfs": [
+        "veri_kaynaklari/karayolu/uab_pdf/08_uab_mevzuat.pdf"
+      ],
+      "pdf_match_status": "matched",
+      "domain": "road_transport",
+      "secondary_domains": [],
+      "subdomain": "transport_operations",
+      "classification_confidence": 1.0,
+      "classification_reasons": [
+        "Depodaki çekirdek kaynak envanterinden alındı; insan kapsam ve yürürlük doğrulaması gereklidir."
+      ],
+      "scope_status": "review_required",
+      "candidate_for_active_rag": true,
+      "review_status": "needs_human_review",
+      "validity_status": "needs_verification",
+      "approved_for_active_rag": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "review_notes": null,
+      "source_sha256": "13b6d0dec53030f70bcc2c78eb2ded5215fa0f9ef185e63feba45a1eb5af9feb",
+      "source_bytes": 1175538,
+      "text_layer_status": "available",
+      "text_quality": {
+        "character_count": 229205,
+        "page_count": 54,
+        "average_characters_per_page": 4244.54,
+        "readable_page_ratio": 1.0,
+        "quality": "uygun",
+        "requires_ocr": false,
+        "reasons": []
+      },
+      "ocr_required": false,
+      "text_inspection_error": null
+    }
+  ]
+}

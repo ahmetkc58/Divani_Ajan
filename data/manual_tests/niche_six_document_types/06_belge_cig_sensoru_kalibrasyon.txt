@@ -1,0 +1,34 @@
+SENTETIK TEST VERISI - GERCEK KISI, SIRKET, ISTASYON VE OLAY DEGILDIR
+
+BILGI VE BELGE TALEBI
+
+T.C. KARAYOLLARI GENEL MUDURLUGU
+12. BOLGE MUDURLUGUNE
+
+Konu: Cig galerisi kar yuk sensorlerinin kalibrasyon ve alarm kayitlari
+
+Sentetik Devlet Yolunun 47+250 kilometresindeki cig galerisinde 2025-2026 kis
+doneminde kar ortusu yukunu izleyen uc adet gerinim sensoru ve bir meteoroloji
+istasyonu kullanilmistir. 17.02.2026 tarihinde yolun tedbir amaciyla kapatildigi
+duyurulmus, ancak kapatma kararinda hangi sensor esiginin asildigi veya manuel
+gozlem yapilip yapilmadigi aciklanmamistir. Arastirmamiz, yalniz anonim teknik
+isletme verileriyle sinirlidir.
+
+4982 sayili Bilgi Edinme Hakki Kanunu kapsaminda; sensorlerin son kalibrasyon
+sertifikalarinin, 16-18.02.2026 tarihli saatlik kar yuku ve sicaklik kayitlarinin,
+alarm esiklerinin tanimlandigi teknik prosedurun, otomasyon sisteminin olay
+gunlugunun ve yol kapatma-acma kararlarina esas saha kontrol formlarinin dijital
+orneklerini talep ediyoruz. Personel adi, iletisim bilgisi, arac plakasi ve
+guvenlik acisindan sakincali erisim bilgileri karartilabilir.
+
+Belgelerin mevcut elektronik formatinda iletilmesini; bir bolumu aciklanamiyorsa
+ayrilabilir kisimlarin paylasilmasini ve ret gerekcesi ile basvuru yollarinin
+tarafimiza bildirilmesini istiyoruz.
+
+Basvuran: Kuzey Altyapi Guvenligi Arastirma Ltd. Sti.
+Yetkili: Asli Deren
+Adres: Teknoloji Gelistirme Bolgesi No: 6, Erzurum
+E-posta: bilgi@example.test
+Tarih: 28.08.2026
+Imza: .......................
+

@@ -1,0 +1,84 @@
+{
+  "dataset_name": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+  "usage": "Yalnızca prototip ve demo",
+  "data": [
+    {
+      "chunk_id": "SENT-KRY-001",
+      "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+      "section": "Yol bakım başvuruları",
+      "article": "Kural 1",
+      "text": "Yol bakım ve onarım başvurularında yolun açık konumu, gözlenen bozulmanın türü, başvuru tarihi ve talep açıkça belirtilir. Başvuru yol yapım ve bakım birimine yönlendirilir.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["karayolu", "yol bakım", "asfalt", "çukur", "onarım", "konum"]
+    },
+    {
+      "chunk_id": "SENT-KRY-002",
+      "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+      "section": "Trafik güvenliği bildirimleri",
+      "article": "Kural 2",
+      "text": "Levha, bariyer, sinyalizasyon, görüş güvenliği veya kaza riski bildirimleri trafik güvenliği birimince değerlendirilir. Olay yeri ve riskin niteliği zorunlu alanlardır.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["trafik güvenliği", "levha", "bariyer", "sinyalizasyon", "kaza riski"]
+    },
+    {
+      "chunk_id": "SENT-KRY-003",
+      "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+      "section": "Hasar ve afet bildirimleri",
+      "article": "Kural 3",
+      "text": "Heyelan, sel, çökme, köprü veya istinat yapısı hasarı içeren bildirimler acil değerlendirmeye alınır. Konum, hasar türü ve erişilebilir iletişim bilgisi kaydedilir.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["hasar", "heyelan", "sel", "çökme", "köprü", "istinat"]
+    },
+    {
+      "chunk_id": "SENT-KRY-004",
+      "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+      "section": "Bilgi talepleri",
+      "article": "Kural 4",
+      "text": "Bilgi talebi başvurularında başvuran, talep konusu ve istenen bilginin kapsamı belirlenir. Talep ilgili uzman birime yönlendirilir ve cevap yazısı taslağı hazırlanır.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["bilgi talebi", "başvuru", "cevap yazısı", "yönlendirme"]
+    },
+    {
+      "chunk_id": "SENT-RY-001",
+      "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+      "section": "Zorunlu alanlar",
+      "article": "Kural 1",
+      "text": "Resmî yazı taslağında kurum adı, sayı, tarih, konu, muhatap, gövde ve imza alanları bulunur. Kaynakta bulunmayan kritik alanlar uydurulmaz ve doldurulacak alan olarak işaretlenir.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["resmî yazı", "sayı", "tarih", "konu", "muhatap", "imza"]
+    },
+    {
+      "chunk_id": "SENT-RY-002",
+      "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+      "section": "Eksik bilgi",
+      "article": "Kural 2",
+      "text": "Başvurunun işlenmesi için gerekli bilgi bulunmadığında esas cevap taslağı yerine eksik bilgi talebi hazırlanır. Eksik alanlar kullanıcıya açık biçimde bildirilir.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["eksik bilgi", "eksik alan", "bilgi talebi", "kullanıcı"]
+    },
+    {
+      "chunk_id": "SENT-RY-003",
+      "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+      "section": "Kaynak izlenebilirliği",
+      "article": "Kural 3",
+      "text": "Taslakta kullanılan mevzuat veya kurum içi kural; kaynak adı, madde ya da kural numarası ve varsa sayfa bilgisiyle izlenebilir biçimde kaydedilir.",
+      "source": "data/synthetic_legislation.json",
+      "page": null,
+      "status": "sentetik_demo_kurali",
+      "tags": ["mevzuat", "kaynak", "madde", "sayfa", "atıf", "izlenebilirlik"]
+    }
+  ]
+}
+

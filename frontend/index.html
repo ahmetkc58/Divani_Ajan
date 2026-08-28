@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Divan-ı Ajan — Resmî Karar Destek ve Evrak Masası. Serbest metinden 2646 SK Resmî Yazışma Yönetmeliğine tam uyumlu evrak taslağı hazırlayın." />
+    <!-- YolYaz — Evrak Test Masası · Paraphrase sınır testi -->
+    <title>Divan-ı Ajan — Resmî Karar Destek ve Evrak Masası</title>
+    <link rel="stylesheet" href="./static/app.css?v=20260828_1" />
+    <script src="./config.js?v=20260828_1"></script>
+    <script src="./static/app.js?v=20260828_1" defer></script>
+  </head>
+  <body>
+    <aside class="utility-panel" id="utility-panel" aria-label="Divan-ı Ajan ayarları ve yardım">
+      <button class="utility-close" id="utility-close" type="button" aria-label="Paneli kapat">×</button>
+      <div class="utility-logo"><span>🏛️</span><strong>DİVAN-I AJAN</strong></div>
+      <p class="utility-caption">RESMÎ KARAR VE EVRAK MASASI</p>
+      <nav class="utility-nav" aria-label="Divan-ı Ajan bölümleri">
+        <a href="#test-workspace">⌂ Çalışma Alanı</a>
+        <a href="#documents">▣ Evraklarım</a>
+        <a href="#tasks">☑ Görevler</a>
+        <a href="#legislation">▤ Mevzuat Kütüphanesi</a>
+        <a href="#units">♧ Birim Rehberi</a>
+        <a href="#templates">▧ Şablonlar</a>
+        <a href="#reports">▣ Raporlar &amp; Analizler</a>
+        <hr/>
+        <a href="#settings" id="settings-link">⚙ Ayarlar</a>
+        <a href="#help" id="help-link">? Yardım Merkezi</a>
+      </nav>
+      <div class="utility-section" id="help">
+        <h3>Divan-ı Ajan nasıl çalışır?</h3>
+        <p>Durumunuzu doğal dille anlatın. Sistem metni analiz eder, belge türünü seçer ve mevzuat kaynaklarını tarayarak PDF taslağı hazırlar.</p>
+      </div>
+      <div class="utility-section" id="settings">
+        <h3>Metin boyutu</h3>
+        <div class="zoom-controls">
+          <button type="button" data-zoom="down" aria-label="Metni küçült">A−</button>
+          <span id="zoom-label">100%</span>
+          <button type="button" data-zoom="up" aria-label="Metni büyüt">A+</button>
+        </div>
+      </div>
+      <div class="utility-foot">DİVAN-I AJAN v1.0<br/><span>Güvenli · Yerel · İzlenebilir</span></div>
+    </aside>
+    <button class="utility-open" id="utility-open" type="button" aria-label="Divan-ı Ajan panelini aç">🏛️</button>
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand" href="./" aria-label="Divan-ı Ajan ana sayfa">
+          <span class="brand-mark">🏛️</span>
+          <div class="brand-text">
+            <strong>DİVAN-I AJAN</strong>
+            <small>Resmî Karar Destek &amp; Evrak Masası</small>
+          </div>
+        </a>
+      </div>
+      <nav class="topbar-nav" aria-label="Hızlı Menü">
+        <a href="#test-workspace" class="is-active">⌂ Çalışma Masası</a>
+        <a href="#legislation">▤ Mevzuat Ağacı</a>
+        <a href="#units">♧ Teşkilat Rehberi</a>
+        <a href="#templates">▧ Şablonlar</a>
+        <a href="#reports">▣ Analitik Raporlar</a>
+      </nav>
+      <div class="top-actions">
+        <span class="environment-badge" id="environment-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Yerel Güvenli Ortam</span>
+        </span>
+        <span class="health-pill" id="health-pill" role="status" aria-live="polite">
+          <i class="status-dot"></i>
+          <span id="health-label">Bağlantı kontrol ediliyor</span>
+        </span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-main">
+          <div class="hero-pretitle">
+            <span class="emblem">🏛️</span>
+            <span>DİVAN-I AJAN · RESMÎ KARAR DESTEK SİSTEMİ</span>
+          </div>
+          <h1 id="page-title">Doğal dille anlatın.<br /><em>Resmî evraka dönüştürelim.</em></h1>
+          <p class="hero-sublead">Vatandaşın serbest başvurusunu; kamu teşkilat yapısı, Standart Dosya Planı (SAS) ve Resmî Yazışma Yönetmeliği standartlarına tam sadık, imzaya hazır evrak taslağına dönüştürür.</p>
+        </div>
+        <div class="hero-copy">
+          <div class="panel-header">
+            <div>
+              <p class="panel-label">KURUMSAL KARAR DESTEĞİ</p>
+              <h2 class="panel-title">Neden Divan-ı Ajan?</h2>
+            </div>
+            <span class="panel-badge">TEKNOFEST 2026</span>
+          </div>
+          <div class="hero-features">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4"/><path d="M5 21V10.85"/><path d="M19 21V10.85"/><path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/></svg>
+              </div>
+              <div class="feature-body">
+                <strong>Hatasız Birim Yönlendirme</strong>
+                <small>SAS ve Standart Dosya Planı ile başvuruyu anında doğru birimle buluşturur.</small>
+              </div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div class="feature-body">
+                <strong>İmzaya Hazır Resmî Belge</strong>
+                <small>2646 SK Yönetmeliği ve makam hiyerarşisine tam uyumlu, anında vektörel PDF taslağı.</small>
+              </div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <div class="feature-body">
+                <strong>Sıfır Halüsinasyon Güvencesi</strong>
+                <small>Yürürlükteki mevzuatta kanıtı bulunmayan hiçbir bilgiyi üretmeyerek yasal riski sıfırlar.</small>
+              </div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="feature-body">
+                <strong>%100 Kurumsal Gizlilik</strong>
+                <small>Kişisel verileri korur; tüm modelleri kurum altyapısında, yerel ve güvenle çalıştırır.</small>
+              </div>
+            </div>
+          </div>
+          <div class="hero-impact">
+            <div class="impact-item">
+              <div class="impact-dot dot-gold"></div>
+              <span>⚡ <b>10 Kat Hızlı</b> Süreç</span>
+            </div>
+            <div class="impact-item">
+              <div class="impact-dot dot-emerald"></div>
+              <span>⚖️ <b>2646 SK</b> Tam Uyum</span>
+            </div>
+            <div class="impact-item">
+              <div class="impact-dot dot-blue"></div>
+              <span>🔒 <b>%100 Yerel</b> Güvenlik</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workbench" id="test-workspace" aria-label="Evrak hazırlama alanı">
+        <section class="composer card" aria-labelledby="input-title">
+          <div class="section-title">
+            <span class="number">01</span>
+            <div>
+              <p>BAŞLANGIÇ</p>
+              <h2 id="input-title">Derdinizi anlatın</h2>
+            </div>
+            <span class="character-count" id="character-count">0 karakter</span>
+          </div>
+          <form id="process-form">
+            <label class="sr-only" for="document-text">Durumunuzu anlatın</label>
+            <textarea id="document-text" name="document-text" placeholder="Örneğin: Mahallemizdeki yol uzun süredir bozuk. Araçlar zarar görüyor ve özellikle yağmurda geçiş tehlikeli hâle geliyor. İncelenmesini ve gerekli çalışmanın yapılmasını istiyorum."></textarea>
+            <div class="upload-inline">
+              <label for="document-file">▧ Dosya ekle</label>
+              <input id="document-file" type="file" accept=".txt,.md,.pdf,.png,.jpg,.jpeg,.tif,.tiff" />
+              <span id="selected-file">İsterseniz PDF, DOCX, TXT veya görsel yükleyin.</span>
+            </div>
+            <div class="hint-row">
+              <span>✦ İsterseniz konum, tarih veya iletişim bilgisini de ekleyebilirsiniz.</span>
+              <span>Bilmediğiniz alanlar boş kalabilir.</span>
+            </div>
+            <div class="composer-footer">
+              <button class="text-button" id="reset-button" type="button">Temizle</button>
+              <button class="primary-button" id="process-button" type="submit">
+                <span>Taslak oluştur</span>
+                <b>→</b>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="agent-panel card" aria-labelledby="agent-title" aria-live="polite">
+          <div class="section-title">
+            <span class="number agent-number">02</span>
+            <div>
+              <p>CANLI İŞLEM AKIŞI</p>
+              <h2 id="agent-title">Ajanlar hazır</h2>
+            </div>
+            <span class="agent-state" id="agent-state">BEKLİYOR</span>
+          </div>
+          <p class="agent-intro" id="agent-intro">Metninizi gönderdiğinizde hangi adımların uygulandığını burada takip edebilirsiniz.</p>
+          <ol class="agent-stream" id="agent-stream">
+            <li class="agent-step is-idle">
+              <span>1</span>
+              <div>
+                <strong>1. Evrak Alımı &amp; Metin Anlama</strong>
+                <small>Başvuran, konu, konum, tarih ve niyet ayrıştırılır.</small>
+              </div>
+            </li>
+            <li class="agent-step is-idle">
+              <span>2</span>
+              <div>
+                <strong>2. Belge Türü &amp; Sınıflandırma</strong>
+                <small>Dilekçe, şikâyet, bilgi talebi, yol bakım vb. belirlenir.</small>
+              </div>
+            </li>
+            <li class="agent-step is-idle">
+              <span>3</span>
+              <div>
+                <strong>3. Mevzuat RAG &amp; Kanıt Arama</strong>
+                <small>2646 SK Yönetmeliği ve KGM mevzuatı taranır.</small>
+              </div>
+            </li>
+            <li class="agent-step is-idle">
+              <span>4</span>
+              <div>
+                <strong>4. Birim Yönlendirme &amp; SAS</strong>
+                <small>KGM teşkilat hiyerarşisi ve dosya planı eşleştirilir.</small>
+              </div>
+            </li>
+            <li class="agent-step is-idle">
+              <span>5</span>
+              <div>
+                <strong>5. Şablon &amp; Yanıt Stratejisi</strong>
+                <small>Resmî yazı şablonu ve kurumsal yaklaşım seçilir.</small>
+              </div>
+            </li>
+            <li class="agent-step is-idle">
+              <span>6</span>
+              <div>
+                <strong>6. Uygunluk Denetimi &amp; PDF</strong>
+                <small>Eksiklikler taranır, imzaya hazır PDF derlenir.</small>
+              </div>
+            </li>
+          </ol>
+          <div class="privacy-note">
+            <span>⌁</span>
+            <p>Bu panel, kararların kısa ve anlaşılır özetini gösterir; hassas düşünce zincirini değil.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="result-zone" id="result-panel" aria-live="polite">
+        <div class="empty-result" id="empty-state">
+          <span>↗</span>
+          <div>
+            <p>SONUÇ ALANI</p>
+            <h2>Belgeniz burada şekillenecek.</h2>
+            <small>Belge türü, PDF taslağı ve tamamlanması gereken alanlar tek yerde görünür.</small>
+          </div>
+        </div>
+        <div class="result-content" id="result-content" hidden></div>
+      </section>
+
+      <section class="resource-view" id="resource-view" hidden aria-live="polite"></section>
+
+      <section class="reports-view" id="reports" hidden aria-labelledby="reports-title">
+        <div class="reports-heading">
+          <div>
+            <p class="eyebrow">DİVAN-I AJAN · SÜREÇ TAKİBİ &amp; ANALİTİK</p>
+            <h2 id="reports-title">Evrak akışınızın resmi</h2>
+            <p>İşleme alınan evrakların tür, durum ve mevzuat eşleşmelerini tek bakışta izleyin.</p>
+          </div>
+          <button class="text-button" id="reports-back" type="button">← Çalışma alanına dön</button>
+        </div>
+        <div class="analytics-kpis">
+          <article>
+            <span>TOPLAM EVRAK</span>
+            <strong id="report-total">1.248</strong>
+            <small>Bu ay işlenen</small>
+          </article>
+          <article>
+            <span>ORT. İŞLEM SÜRESİ</span>
+            <strong>2dk 34sn</strong>
+            <small>Geçen aya göre %12 hızlı</small>
+          </article>
+          <article>
+            <span>MEVZUAT EŞLEŞMESİ</span>
+            <strong>%92</strong>
+            <small>Kaynak doğrulaması geçen</small>
+          </article>
+          <article>
+            <span>PDF TASLAĞI</span>
+            <strong>%86</strong>
+            <small>Eksiksiz oluşturulan</small>
+          </article>
+        </div>
+        <div class="analytics-grid">
+          <article class="chart-card wide-chart">
+            <header>
+              <div>
+                <h3>Evrak türü dağılımı</h3>
+                <small>Son 30 gün · otomatik sınıflandırma</small>
+              </div>
+              <span class="chart-legend"><i class="legend-blue"></i>Talep <i class="legend-purple"></i>Şikâyet <i class="legend-coral"></i>Bildirim</span>
+            </header>
+            <div class="bar-chart">
+              <div><b>Talep</b><i style="height:82%"></i><small>512</small></div>
+              <div><b>Şikâyet</b><i style="height:59%"></i><small>368</small></div>
+              <div><b>Bildirim</b><i style="height:44%"></i><small>274</small></div>
+              <div><b>Dilekçe</b><i style="height:25%"></i><small>94</small></div>
+            </div>
+          </article>
+          <article class="chart-card">
+            <header>
+              <div>
+                <h3>İşlem durumu</h3>
+                <small>Güncel dağılım</small>
+              </div>
+            </header>
+            <div class="donut-chart">
+              <div>
+                <strong>%74</strong>
+                <small>Tamamlandı</small>
+              </div>
+            </div>
+            <ul class="chart-list">
+              <li><i class="legend-blue"></i>Tamamlandı <b>924</b></li>
+              <li><i class="legend-purple"></i>Eksik bilgi <b>218</b></li>
+              <li><i class="legend-coral"></i>İncelemede <b>106</b></li>
+            </ul>
+          </article>
+          <article class="chart-card">
+            <header>
+              <div>
+                <h3>Ajan süreç süresi</h3>
+                <small>Ortalama · saniye</small>
+              </div>
+            </header>
+            <div class="line-chart">
+              <svg viewBox="0 0 340 130" role="img" aria-label="Ajan işlem süreleri çizgi grafiği">
+                <path d="M8 104 C45 84 53 94 79 72 S121 81 145 57 S185 69 207 43 S248 56 270 34 S310 47 332 18" fill="none" stroke="#236c88" stroke-width="4" stroke-linecap="round"/>
+                <path d="M8 104 C45 84 53 94 79 72 S121 81 145 57 S185 69 207 43 S248 56 270 34 S310 47 332 18 L332 125 L8 125Z" fill="rgba(35,108,136,.1)"/>
+              </svg>
+              <div class="line-labels">
+                <span>Metin</span><span>Sınıflandırma</span><span>Mevzuat</span><span>PDF</span>
+              </div>
+            </div>
+          </article>
+          <article class="chart-card">
+            <header>
+              <div>
+                <h3>Eksik alanlar</h3>
+                <small>Kullanıcıdan beklenen bilgiler</small>
+              </div>
+            </header>
+            <div class="missing-bars">
+              <p><span>İmza</span><b style="width:78%"></b><em>218</em></p>
+              <p><span>Konum</span><b style="width:52%"></b><em>144</em></p>
+              <p><span>Başvuran</span><b style="width:36%"></b><em>96</em></p>
+              <p><span>Tarih</span><b style="width:24%"></b><em>64</em></p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Divan-ı Ajan · Yerel kamu evrak asistanı</span>
+      <span>Resmî teslimden önce taslağı kontrol edin.</span>
+    </footer>
+    <div class="toast" id="toast" role="alert" hidden></div>
+  </body>
+</html>

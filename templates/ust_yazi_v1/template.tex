@@ -1,0 +1,49 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[turkish]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\geometry{top=1.5cm,bottom=1.5cm,left=2.5cm,right=1.5cm}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{6pt}
+\pagestyle{empty}
+\begin{document}
+\begin{center}
+{\bfseries <<institution_name>>}
+\end{center}
+\noindent Sayı: <<number>> \hfill Tarih: <<date>>\\
+\noindent Konu: <<subject>>
+<% if interest %>
+\par\noindent İlgi: <<interest>>
+<% endif %>
+\vspace{6mm}
+\begin{center}\bfseries <<recipient>>\end{center}
+<<paragraphs>>
+\vspace{10mm}
+\begin{flushright}
+<<signer>>\\
+<<signer_title>>
+\end{flushright}
+<% if attachments %>
+\noindent\textbf{Ekler}
+\begin{enumerate}[leftmargin=*]
+<<attachments>>
+\end{enumerate}
+<% endif %>
+<% if distribution %>
+\noindent\textbf{Dağıtım}
+\begin{itemize}[leftmargin=*]
+<<distribution>>
+\end{itemize}
+<% endif %>
+<% if contact_information %>
+\noindent\textbf{İletişim:} <<contact_information>>\par
+<% endif %>
+<% if initials %>
+\noindent\textbf{Paraf/Koordinasyon:} <<initials>>\par
+<% endif %>
+<% if electronic_signature %>
+\noindent\textbf{Elektronik imza:} <<electronic_signature>>\par
+<% endif %>
+\end{document}

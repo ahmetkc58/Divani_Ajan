@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+.env
+dist/
+build/
+*.egg-info/
+*.log
+.gstack/
+runtime/
+output/
+tmp/
+data/processed/
+
+# Yerel araçlar ve büyük ham arşivler kaynak kod deposuna gönderilmez.
+/AnyDesk.exe
+/*.7z
+/*.pdf
+/Ulaştırma ve Altyapı Bakanlığı/
+/stdout.txt
+/qdrant_db_tamamlandi/
+/reports/qdrant_team05_upload_checkpoint.json

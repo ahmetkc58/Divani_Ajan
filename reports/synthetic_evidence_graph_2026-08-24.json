@@ -1,0 +1,1101 @@
+{
+  "schema_version": "1.1",
+  "graph_id": "benchmark_synthetic_evidence_graph_v1",
+  "generated_at": "2026-08-25T07:42:48.059709Z",
+  "usage": "Yalnız dondurulmuş sentetik test verisi; kamu mevzuatı veya üretim hukuk kanıtı değildir.",
+  "benchmark_only": true,
+  "production_legal_evidence": false,
+  "inputs": [
+    {
+      "role": "gold_dataset",
+      "path": "data/synthetic_gold.json",
+      "sha256": "90d1206c4e150e6e3ba779c0e404005fcd258c96a960e02c2565913f2c8905e5",
+      "dataset_name": "Sentetik Karayolu Evrak Gold Değerlendirme Seti",
+      "version": "1.0.0"
+    },
+    {
+      "role": "legislation",
+      "path": "data/synthetic_legislation.json",
+      "sha256": "5de0c3d41e40836ed471b762d9e10660f7ecf95565bc98c9498a638090f0dbe0",
+      "dataset_name": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+      "version": null
+    },
+    {
+      "role": "units",
+      "path": "data/synthetic_units.json",
+      "sha256": "e729ee2a86a7c8a4168b063d2ef3ce01d50ebed5ff94c7cb345b4da8c6ff4e2a",
+      "dataset_name": "DETSİS esinli sentetik karayolu birimleri",
+      "version": null
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "document_type:bilgi_talebi",
+      "node_type": "EvrakTuru",
+      "label": "bilgi_talebi",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BILGI-01",
+        "BILGI-02",
+        "BILGI-03",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-06",
+        "BILGI-07",
+        "BILGI-08"
+      ]
+    },
+    {
+      "node_id": "document_type:dilekce",
+      "node_type": "EvrakTuru",
+      "label": "dilekce",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "DILEKCE-01",
+        "DILEKCE-02",
+        "DILEKCE-03",
+        "DILEKCE-04",
+        "DILEKCE-05",
+        "DILEKCE-06"
+      ]
+    },
+    {
+      "node_id": "document_type:hasar_bildirimi",
+      "node_type": "EvrakTuru",
+      "label": "hasar_bildirimi",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "HASAR-01",
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-06",
+        "HASAR-07",
+        "HASAR-08"
+      ]
+    },
+    {
+      "node_id": "document_type:sikayet",
+      "node_type": "EvrakTuru",
+      "label": "sikayet",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "SIKAYET-01",
+        "SIKAYET-02",
+        "SIKAYET-03",
+        "SIKAYET-04",
+        "SIKAYET-05",
+        "SIKAYET-06"
+      ]
+    },
+    {
+      "node_id": "document_type:trafik_guvenligi_bildirimi",
+      "node_type": "EvrakTuru",
+      "label": "trafik_guvenligi_bildirimi",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "TRAFIK-01",
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-06",
+        "TRAFIK-07",
+        "TRAFIK-08"
+      ]
+    },
+    {
+      "node_id": "document_type:ust_yazi",
+      "node_type": "EvrakTuru",
+      "label": "ust_yazi",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "USTYAZI-01",
+        "USTYAZI-02",
+        "USTYAZI-03",
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "node_id": "document_type:yol_bakim_talebi",
+      "node_type": "EvrakTuru",
+      "label": "yol_bakim_talebi",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-01",
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-06",
+        "BAKIM-07",
+        "BAKIM-08"
+      ]
+    },
+    {
+      "node_id": "field:gonderen",
+      "node_type": "ZorunluAlan",
+      "label": "gonderen",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-02",
+        "BAKIM-05",
+        "BILGI-02",
+        "BILGI-05",
+        "DILEKCE-02",
+        "DILEKCE-06",
+        "HASAR-02",
+        "HASAR-05",
+        "SIKAYET-02",
+        "SIKAYET-05",
+        "TRAFIK-02",
+        "TRAFIK-05"
+      ]
+    },
+    {
+      "node_id": "field:konum",
+      "node_type": "ZorunluAlan",
+      "label": "konum",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-03",
+        "BAKIM-05",
+        "HASAR-03",
+        "HASAR-05",
+        "TRAFIK-03",
+        "TRAFIK-05"
+      ]
+    },
+    {
+      "node_id": "field:talep",
+      "node_type": "ZorunluAlan",
+      "label": "talep",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-04",
+        "BAKIM-07",
+        "BILGI-04",
+        "BILGI-07",
+        "DILEKCE-03",
+        "DILEKCE-06",
+        "HASAR-04",
+        "HASAR-07",
+        "SIKAYET-03",
+        "SIKAYET-05",
+        "TRAFIK-04",
+        "TRAFIK-07"
+      ]
+    },
+    {
+      "node_id": "field:tarih",
+      "node_type": "ZorunluAlan",
+      "label": "tarih",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-KRY-001",
+      "node_type": "MevzuatKurali",
+      "label": "Yol bakım başvuruları",
+      "description": "Yol bakım ve onarım başvurularında yolun açık konumu, gözlenen bozulmanın türü, başvuru tarihi ve talep açıkça belirtilir. Başvuru yol yapım ve bakım birimine yönlendirilir.",
+      "properties": {
+        "chunk_id": "SENT-KRY-001",
+        "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+        "article": "Kural 1",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-KRY-001"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-KRY-002",
+      "node_type": "MevzuatKurali",
+      "label": "Trafik güvenliği bildirimleri",
+      "description": "Levha, bariyer, sinyalizasyon, görüş güvenliği veya kaza riski bildirimleri trafik güvenliği birimince değerlendirilir. Olay yeri ve riskin niteliği zorunlu alanlardır.",
+      "properties": {
+        "chunk_id": "SENT-KRY-002",
+        "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+        "article": "Kural 2",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-KRY-002"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-KRY-003",
+      "node_type": "MevzuatKurali",
+      "label": "Hasar ve afet bildirimleri",
+      "description": "Heyelan, sel, çökme, köprü veya istinat yapısı hasarı içeren bildirimler acil değerlendirmeye alınır. Konum, hasar türü ve erişilebilir iletişim bilgisi kaydedilir.",
+      "properties": {
+        "chunk_id": "SENT-KRY-003",
+        "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+        "article": "Kural 3",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-KRY-003"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-KRY-004",
+      "node_type": "MevzuatKurali",
+      "label": "Bilgi talepleri",
+      "description": "Bilgi talebi başvurularında başvuran, talep konusu ve istenen bilginin kapsamı belirlenir. Talep ilgili uzman birime yönlendirilir ve cevap yazısı taslağı hazırlanır.",
+      "properties": {
+        "chunk_id": "SENT-KRY-004",
+        "title": "Sentetik Karayolu Evrak İş Akışı Kuralları",
+        "article": "Kural 4",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-KRY-004"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-RY-001",
+      "node_type": "MevzuatKurali",
+      "label": "Zorunlu alanlar",
+      "description": "Resmî yazı taslağında kurum adı, sayı, tarih, konu, muhatap, gövde ve imza alanları bulunur. Kaynakta bulunmayan kritik alanlar uydurulmaz ve doldurulacak alan olarak işaretlenir.",
+      "properties": {
+        "chunk_id": "SENT-RY-001",
+        "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+        "article": "Kural 1",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-RY-001"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-RY-002",
+      "node_type": "MevzuatKurali",
+      "label": "Eksik bilgi",
+      "description": "Başvurunun işlenmesi için gerekli bilgi bulunmadığında esas cevap taslağı yerine eksik bilgi talebi hazırlanır. Eksik alanlar kullanıcıya açık biçimde bildirilir.",
+      "properties": {
+        "chunk_id": "SENT-RY-002",
+        "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+        "article": "Kural 2",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-RY-002"
+      ]
+    },
+    {
+      "node_id": "rule:SENT-RY-003",
+      "node_type": "MevzuatKurali",
+      "label": "Kaynak izlenebilirliği",
+      "description": "Taslakta kullanılan mevzuat veya kurum içi kural; kaynak adı, madde ya da kural numarası ve varsa sayfa bilgisiyle izlenebilir biçimde kaydedilir.",
+      "properties": {
+        "chunk_id": "SENT-RY-003",
+        "title": "Sentetik Resmî Yazışma Taslak Kuralları",
+        "article": "Kural 3",
+        "status": "sentetik_demo_kurali"
+      },
+      "provenance_ids": [
+        "SENT-RY-003"
+      ]
+    },
+    {
+      "node_id": "template:bilgilendirme_yazisi_v1",
+      "node_type": "YaziSablonu",
+      "label": "bilgilendirme_yazisi_v1",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "USTYAZI-01",
+        "USTYAZI-02",
+        "USTYAZI-03"
+      ]
+    },
+    {
+      "node_id": "template:cevap_yazisi_v1",
+      "node_type": "YaziSablonu",
+      "label": "cevap_yazisi_v1",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BILGI-01",
+        "BILGI-03",
+        "BILGI-06",
+        "BILGI-08",
+        "DILEKCE-01",
+        "DILEKCE-04",
+        "DILEKCE-05",
+        "SIKAYET-01",
+        "SIKAYET-04",
+        "SIKAYET-06"
+      ]
+    },
+    {
+      "node_id": "template:eksik_bilgi_talebi_v1",
+      "node_type": "YaziSablonu",
+      "label": "eksik_bilgi_talebi_v1",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-07",
+        "BILGI-02",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-07",
+        "DILEKCE-02",
+        "DILEKCE-03",
+        "DILEKCE-06",
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-07",
+        "SIKAYET-02",
+        "SIKAYET-03",
+        "SIKAYET-05",
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-07",
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "node_id": "template:ust_yazi_v1",
+      "node_type": "YaziSablonu",
+      "label": "ust_yazi_v1",
+      "description": null,
+      "properties": {},
+      "provenance_ids": [
+        "BAKIM-01",
+        "BAKIM-06",
+        "BAKIM-08",
+        "HASAR-01",
+        "HASAR-06",
+        "HASAR-08",
+        "TRAFIK-01",
+        "TRAFIK-06",
+        "TRAFIK-08"
+      ]
+    },
+    {
+      "node_id": "unit:ORKGM-AF-001",
+      "node_type": "Birim",
+      "label": "Örnek Acil Müdahale ve Sanat Yapıları Şube Müdürlüğü",
+      "description": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Acil Müdahale ve Sanat Yapıları Şube Müdürlüğü",
+      "properties": {
+        "unit_id": "ORKGM-AF-001",
+        "responsibilities": [
+          "Heyelan ve sel müdahalesi",
+          "Köprü ve istinat yapısı hasarları",
+          "Acil yol güvenliği"
+        ]
+      },
+      "provenance_ids": [
+        "ORKGM-AF-001"
+      ]
+    },
+    {
+      "node_id": "unit:ORKGM-BE-001",
+      "node_type": "Birim",
+      "label": "Örnek Bilgi Edinme Birimi",
+      "description": "Örnek Karayolu Genel Müdürlüğü > Strateji Geliştirme Dairesi > Bilgi Edinme Birimi",
+      "properties": {
+        "unit_id": "ORKGM-BE-001",
+        "responsibilities": [
+          "Bilgi taleplerinin değerlendirilmesi",
+          "Başvuru sahiplerine cevap hazırlanması"
+        ]
+      },
+      "provenance_ids": [
+        "ORKGM-BE-001"
+      ]
+    },
+    {
+      "node_id": "unit:ORKGM-EB-001",
+      "node_type": "Birim",
+      "label": "Örnek Genel Evrak ve Başvuru Birimi",
+      "description": "Örnek Karayolu Genel Müdürlüğü > Destek Hizmetleri Dairesi > Genel Evrak ve Başvuru Birimi",
+      "properties": {
+        "unit_id": "ORKGM-EB-001",
+        "responsibilities": [
+          "Genel başvuruların alınması",
+          "Görev alanı belirlenemeyen evrakların ön incelemesi"
+        ]
+      },
+      "provenance_ids": [
+        "ORKGM-EB-001"
+      ]
+    },
+    {
+      "node_id": "unit:ORKGM-TG-001",
+      "node_type": "Birim",
+      "label": "Örnek Trafik Güvenliği Şube Müdürlüğü",
+      "description": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Trafik Güvenliği Şube Müdürlüğü",
+      "properties": {
+        "unit_id": "ORKGM-TG-001",
+        "responsibilities": [
+          "Trafik işaretleri",
+          "Bariyer ve sinyalizasyon",
+          "Karayolu trafik güvenliği incelemeleri"
+        ]
+      },
+      "provenance_ids": [
+        "ORKGM-TG-001"
+      ]
+    },
+    {
+      "node_id": "unit:ORKGM-YB-001",
+      "node_type": "Birim",
+      "label": "Örnek Yol Yapım ve Bakım Şube Müdürlüğü",
+      "description": "Örnek Karayolu Genel Müdürlüğü > Örnek Bölge Müdürlüğü > Yol Yapım ve Bakım Şube Müdürlüğü",
+      "properties": {
+        "unit_id": "ORKGM-YB-001",
+        "responsibilities": [
+          "Yol bakım ve onarım",
+          "Asfalt ve kaplama bozuklukları",
+          "Çukur ve yol yüzeyi çalışmaları"
+        ]
+      },
+      "provenance_ids": [
+        "ORKGM-YB-001"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "document_type:bilgi_talebi|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:bilgi_talebi",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "BILGI-02",
+        "BILGI-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:bilgi_talebi|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:bilgi_talebi",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "BILGI-04",
+        "BILGI-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:bilgi_talebi|SUPPORTS_TEMPLATE|template:cevap_yazisi_v1",
+      "source_id": "document_type:bilgi_talebi",
+      "target_id": "template:cevap_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BILGI-01",
+        "BILGI-03",
+        "BILGI-06",
+        "BILGI-08"
+      ]
+    },
+    {
+      "edge_id": "document_type:bilgi_talebi|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:bilgi_talebi",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BILGI-02",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:dilekce|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:dilekce",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "DILEKCE-02",
+        "DILEKCE-06"
+      ]
+    },
+    {
+      "edge_id": "document_type:dilekce|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:dilekce",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "DILEKCE-03",
+        "DILEKCE-06"
+      ]
+    },
+    {
+      "edge_id": "document_type:dilekce|SUPPORTS_TEMPLATE|template:cevap_yazisi_v1",
+      "source_id": "document_type:dilekce",
+      "target_id": "template:cevap_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "DILEKCE-01",
+        "DILEKCE-04",
+        "DILEKCE-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:dilekce|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:dilekce",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "DILEKCE-02",
+        "DILEKCE-03",
+        "DILEKCE-06"
+      ]
+    },
+    {
+      "edge_id": "document_type:hasar_bildirimi|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:hasar_bildirimi",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "HASAR-02",
+        "HASAR-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:hasar_bildirimi|REQUIRES_FIELD|field:konum",
+      "source_id": "document_type:hasar_bildirimi",
+      "target_id": "field:konum",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "HASAR-03",
+        "HASAR-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:hasar_bildirimi|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:hasar_bildirimi",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "HASAR-04",
+        "HASAR-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:hasar_bildirimi|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:hasar_bildirimi",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:hasar_bildirimi|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "document_type:hasar_bildirimi",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "HASAR-01",
+        "HASAR-06",
+        "HASAR-08"
+      ]
+    },
+    {
+      "edge_id": "document_type:sikayet|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:sikayet",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "SIKAYET-02",
+        "SIKAYET-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:sikayet|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:sikayet",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "SIKAYET-03",
+        "SIKAYET-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:sikayet|SUPPORTS_TEMPLATE|template:cevap_yazisi_v1",
+      "source_id": "document_type:sikayet",
+      "target_id": "template:cevap_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "SIKAYET-01",
+        "SIKAYET-04",
+        "SIKAYET-06"
+      ]
+    },
+    {
+      "edge_id": "document_type:sikayet|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:sikayet",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "SIKAYET-02",
+        "SIKAYET-03",
+        "SIKAYET-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:trafik_guvenligi_bildirimi|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:trafik_guvenligi_bildirimi",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "TRAFIK-02",
+        "TRAFIK-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:trafik_guvenligi_bildirimi|REQUIRES_FIELD|field:konum",
+      "source_id": "document_type:trafik_guvenligi_bildirimi",
+      "target_id": "field:konum",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "TRAFIK-03",
+        "TRAFIK-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:trafik_guvenligi_bildirimi|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:trafik_guvenligi_bildirimi",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "TRAFIK-04",
+        "TRAFIK-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:trafik_guvenligi_bildirimi|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:trafik_guvenligi_bildirimi",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:trafik_guvenligi_bildirimi|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "document_type:trafik_guvenligi_bildirimi",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "TRAFIK-01",
+        "TRAFIK-06",
+        "TRAFIK-08"
+      ]
+    },
+    {
+      "edge_id": "document_type:ust_yazi|REQUIRES_FIELD|field:tarih",
+      "source_id": "document_type:ust_yazi",
+      "target_id": "field:tarih",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "edge_id": "document_type:ust_yazi|SUPPORTS_TEMPLATE|template:bilgilendirme_yazisi_v1",
+      "source_id": "document_type:ust_yazi",
+      "target_id": "template:bilgilendirme_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "USTYAZI-01",
+        "USTYAZI-02",
+        "USTYAZI-03"
+      ]
+    },
+    {
+      "edge_id": "document_type:ust_yazi|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:ust_yazi",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "edge_id": "document_type:yol_bakim_talebi|REQUIRES_FIELD|field:gonderen",
+      "source_id": "document_type:yol_bakim_talebi",
+      "target_id": "field:gonderen",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "BAKIM-02",
+        "BAKIM-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:yol_bakim_talebi|REQUIRES_FIELD|field:konum",
+      "source_id": "document_type:yol_bakim_talebi",
+      "target_id": "field:konum",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "BAKIM-03",
+        "BAKIM-05"
+      ]
+    },
+    {
+      "edge_id": "document_type:yol_bakim_talebi|REQUIRES_FIELD|field:talep",
+      "source_id": "document_type:yol_bakim_talebi",
+      "target_id": "field:talep",
+      "relation": "REQUIRES_FIELD",
+      "evidence_record_ids": [
+        "BAKIM-04",
+        "BAKIM-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:yol_bakim_talebi|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "document_type:yol_bakim_talebi",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-07"
+      ]
+    },
+    {
+      "edge_id": "document_type:yol_bakim_talebi|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "document_type:yol_bakim_talebi",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BAKIM-01",
+        "BAKIM-06",
+        "BAKIM-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|APPLIES_TO|document_type:ust_yazi",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "document_type:ust_yazi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "USTYAZI-01",
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|APPLIES_TO|document_type:yol_bakim_talebi",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "document_type:yol_bakim_talebi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "BAKIM-01",
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-06",
+        "BAKIM-07",
+        "BAKIM-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|SUPPORTS_TEMPLATE|template:bilgilendirme_yazisi_v1",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "template:bilgilendirme_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "USTYAZI-01"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-07",
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BAKIM-01",
+        "BAKIM-06",
+        "BAKIM-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-001|ASSIGNED_TO|unit:ORKGM-YB-001",
+      "source_id": "rule:SENT-KRY-001",
+      "target_id": "unit:ORKGM-YB-001",
+      "relation": "ASSIGNED_TO",
+      "evidence_record_ids": [
+        "BAKIM-01",
+        "BAKIM-02",
+        "BAKIM-03",
+        "BAKIM-04",
+        "BAKIM-05",
+        "BAKIM-06",
+        "BAKIM-07",
+        "BAKIM-08",
+        "USTYAZI-01",
+        "USTYAZI-04"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|APPLIES_TO|document_type:trafik_guvenligi_bildirimi",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "document_type:trafik_guvenligi_bildirimi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "TRAFIK-01",
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-06",
+        "TRAFIK-07",
+        "TRAFIK-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|APPLIES_TO|document_type:ust_yazi",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "document_type:ust_yazi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "USTYAZI-02"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|SUPPORTS_TEMPLATE|template:bilgilendirme_yazisi_v1",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "template:bilgilendirme_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "USTYAZI-02"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-07"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "TRAFIK-01",
+        "TRAFIK-06",
+        "TRAFIK-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-002|ASSIGNED_TO|unit:ORKGM-TG-001",
+      "source_id": "rule:SENT-KRY-002",
+      "target_id": "unit:ORKGM-TG-001",
+      "relation": "ASSIGNED_TO",
+      "evidence_record_ids": [
+        "TRAFIK-01",
+        "TRAFIK-02",
+        "TRAFIK-03",
+        "TRAFIK-04",
+        "TRAFIK-05",
+        "TRAFIK-06",
+        "TRAFIK-07",
+        "TRAFIK-08",
+        "USTYAZI-02"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|APPLIES_TO|document_type:hasar_bildirimi",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "document_type:hasar_bildirimi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "HASAR-01",
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-06",
+        "HASAR-07",
+        "HASAR-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|APPLIES_TO|document_type:ust_yazi",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "document_type:ust_yazi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "USTYAZI-03"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|SUPPORTS_TEMPLATE|template:bilgilendirme_yazisi_v1",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "template:bilgilendirme_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "USTYAZI-03"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-07"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|SUPPORTS_TEMPLATE|template:ust_yazi_v1",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "template:ust_yazi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "HASAR-01",
+        "HASAR-06",
+        "HASAR-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-003|ASSIGNED_TO|unit:ORKGM-AF-001",
+      "source_id": "rule:SENT-KRY-003",
+      "target_id": "unit:ORKGM-AF-001",
+      "relation": "ASSIGNED_TO",
+      "evidence_record_ids": [
+        "HASAR-01",
+        "HASAR-02",
+        "HASAR-03",
+        "HASAR-04",
+        "HASAR-05",
+        "HASAR-06",
+        "HASAR-07",
+        "HASAR-08",
+        "USTYAZI-03"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-004|APPLIES_TO|document_type:bilgi_talebi",
+      "source_id": "rule:SENT-KRY-004",
+      "target_id": "document_type:bilgi_talebi",
+      "relation": "APPLIES_TO",
+      "evidence_record_ids": [
+        "BILGI-01",
+        "BILGI-02",
+        "BILGI-03",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-06",
+        "BILGI-07",
+        "BILGI-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-004|SUPPORTS_TEMPLATE|template:cevap_yazisi_v1",
+      "source_id": "rule:SENT-KRY-004",
+      "target_id": "template:cevap_yazisi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BILGI-01",
+        "BILGI-03",
+        "BILGI-06",
+        "BILGI-08"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-004|SUPPORTS_TEMPLATE|template:eksik_bilgi_talebi_v1",
+      "source_id": "rule:SENT-KRY-004",
+      "target_id": "template:eksik_bilgi_talebi_v1",
+      "relation": "SUPPORTS_TEMPLATE",
+      "evidence_record_ids": [
+        "BILGI-02",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-07"
+      ]
+    },
+    {
+      "edge_id": "rule:SENT-KRY-004|ASSIGNED_TO|unit:ORKGM-BE-001",
+      "source_id": "rule:SENT-KRY-004",
+      "target_id": "unit:ORKGM-BE-001",
+      "relation": "ASSIGNED_TO",
+      "evidence_record_ids": [
+        "BILGI-01",
+        "BILGI-02",
+        "BILGI-03",
+        "BILGI-04",
+        "BILGI-05",
+        "BILGI-06",
+        "BILGI-07",
+        "BILGI-08"
+      ]
+    }
+  ],
+  "node_counts": {
+    "Birim": 5,
+    "EvrakTuru": 7,
+    "MevzuatKurali": 7,
+    "YaziSablonu": 4,
+    "ZorunluAlan": 4
+  },
+  "edge_counts": {
+    "APPLIES_TO": 7,
+    "ASSIGNED_TO": 4,
+    "REQUIRES_FIELD": 16,
+    "SUPPORTS_TEMPLATE": 25
+  }
+}

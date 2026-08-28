@@ -1,0 +1,4 @@
+{
+  "template_id": "eksik_bilgi_talebi_v1",
+  "required": ["institution_name", "date", "number", "subject", "recipient", "paragraphs", "signer", "signer_title", "interest", "attachments", "distribution", "contact_information", "initials", "electronic_signature", "document_metadata", "authority_relation", "closing", "references"]
+}

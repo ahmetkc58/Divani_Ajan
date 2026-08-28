@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "scope": [
+    "data/**",
+    "resources/**",
+    "runtime/**",
+    "veri_kaynaklari/**",
+    "*.pdf"
+  ],
+  "rules": [
+    {
+      "pattern": "data/synthetic_*.json",
+      "data_class": "synthetic",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kurgu yarışma/demo verisi; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "pattern": "data/synthetic_documents/**",
+      "data_class": "synthetic_documents",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Proje tarafından üretilen kurgu evraklar ve makinece okunabilir manifest; gerçek kurum veya kişi kaydı içermez."
+    },
+    {
+      "pattern": "data/evaluation/**",
+      "data_class": "synthetic_evaluation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Sentetik değerlendirme girdisi ve etiketleri."
+    },
+    {
+      "pattern": "data/organization/**",
+      "data_class": "public_structure_synthetic_profiles",
+      "decision": "include",
+      "license": "public organizational facts plus Apache-2.0 project profiles",
+      "reason": "Personel adı içermeyen organizasyon yapısı ve uzman onayı bekleyen sentetik görev profilleri."
+    },
+    {
+      "pattern": "data/manifests/delivery_policy.json",
+      "data_class": "delivery_metadata",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Teslim kapsamını belirleyen makinece okunabilir politika."
+    },
+    {
+      "pattern": "data/manifests/*",
+      "data_class": "public_source_metadata",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Gerçek kamu kaynağından türetilmiş kayıtlar; yeniden dağıtım ve insan onayı kapanmadı."
+    },
+    {
+      "pattern": "data/processed/**",
+      "data_class": "derived_public_or_runtime_data",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamu kaynağından türetilmiş OCR/korpüs çıktısı veya yeniden üretilebilir çalışma artifact'ı."
+    },
+    {
+      "pattern": "resources/README.md",
+      "data_class": "documentation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Kaynak kullanım ve üretim açıklaması."
+    },
+    {
+      "pattern": "resources/dataset_cards/**",
+      "data_class": "dataset_documentation",
+      "decision": "include",
+      "license": "Apache-2.0 project artifact",
+      "reason": "Veri kaynağı, üretim yöntemi ve sınırlarını açıklayan veri kartı."
+    },
+    {
+      "pattern": "resources/tool_licenses/**",
+      "data_class": "third_party_license_text",
+      "decision": "include",
+      "license": "redistributable_license_notice",
+      "reason": "Kullanılan açık kaynak aracın korunması gereken lisans bildirimi."
+    },
+    {
+      "pattern": "resources/manifests/**",
+      "data_class": "provenance_metadata",
+      "decision": "include",
+      "license": "Apache-2.0 project metadata",
+      "reason": "Kaynak URL, sürüm ve hash izi; asıl üçüncü taraf içeriği değildir."
+    },
+    {
+      "pattern": "resources/official/**",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kamuya açık olsa da yeniden dağıtım hakkı ayrıca doğrulanmadı."
+    },
+    {
+      "pattern": "runtime/**",
+      "data_class": "generated_runtime_artifact",
+      "decision": "exclude",
+      "license": "not_applicable",
+      "reason": "Süreç kaydı veya yeniden üretilebilir Qdrant çalışma verisi."
+    },
+    {
+      "pattern": "veri_kaynaklari/**",
+      "data_class": "real_public_service_archive",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "DETSİS/UAB gerçek kurum, hizmet, belge ve mevzuat arşivi yarışma kurgu verisi değildir."
+    },
+    {
+      "pattern": "2026_TYDA_SARTNAME_*.pdf",
+      "data_class": "organizer_document",
+      "decision": "review_required",
+      "license": "organizer_terms",
+      "reason": "Teslimde bulunması kullanıcı/düzenleyici kararı ve sağlam kopya doğrulaması gerektirir."
+    },
+    {
+      "pattern": "*.pdf",
+      "data_class": "third_party_public_document",
+      "decision": "exclude",
+      "license": "redistribution_not_verified",
+      "reason": "Kök dizindeki resmî/kamusal PDF için yeniden dağıtım izni doğrulanmadı."
+    }
+  ]
+}
