@@ -255,29 +255,52 @@ function finishAgentProgress(state) {
   });
 }
 
-function draftValue(value) {
-  if (!value) return "[DOLDURULACAK]";
-  return value.value || value || "[DOLDURULACAK]";
+function draftValue(value, fallback = "[DOLDURULACAK]") {
+  if (!value) return fallback;
+  return value.value || value || fallback;
 }
 
-function renderDraft(draft) {
-  if (!draft) return `<p>Taslak oluşturulamadı.</p>`;
+function renderDraft(draft, state) {
+  const hasParagraphs = draft && draft.paragraphs && draft.paragraphs.length > 0;
+  
+  // If waiting for response strategy and draft is empty
+  if (!draft || !hasParagraphs) {
+    if (state?.response_strategy_options?.length && !state?.selected_response_strategy) {
+      return `
+        <article class="pdf-sheet" style="text-align:center;padding:45px 24px;">
+          <div style="display:inline-grid;place-items:center;width:56px;height:56px;background:#eef6f8;color:#1c6882;border-radius:16px;font-size:26px;margin-bottom:14px;">📝</div>
+          <h3 style="margin:0 0 8px;font:600 18px Georgia,serif;color:#102733;">Katman 3 — Yanıt Stratejisi Belirleyin</h3>
+          <p style="margin:0 auto 16px;max-width:460px;color:#5c747e;font-size:12px;line-height:1.65;">
+            Evrak analiz edildi ve sorumlu birim <b>${escapeHtml(state?.routing?.unit_name || 'KGM')}</b> olarak belirlendi.
+            <br/>Kurumun vereceği resmî cevabın içeriğini oluşturmak için lütfen <b>sağdaki panelden bir Yanıt Stratejisi seçin</b> veya özel talimat girin.
+          </p>
+          <div style="display:inline-block;padding:8px 16px;background:#fdf5e6;color:#8f651b;border:1px solid #f0dcab;border-radius:8px;font-size:11px;font-weight:700;">
+            👉 Sağ taraftaki "Yanıt Stratejisi Belirleyin" panelinden seçiminizi yapabilirsiniz.
+          </div>
+        </article>
+      `;
+    }
+    if (!draft) return `<p>Taslak oluşturulamadı.</p>`;
+  }
+
+  const institution = draftValue(draft.institution_name, "T.C. ULAŞTIRMA VE ALTYAPI BAKANLIĞI\nKARAYOLLARI GENEL MÜDÜRLÜĞÜ");
   const paragraphs = (draft.paragraphs || []).map((item) => `<p>${escapeHtml(typeof item === 'string' ? item : item?.text || item?.value || '')}</p>`).join("");
   const annexes = (draft.annexes || []).map(a => `<li>${escapeHtml(a)}</li>`).join("");
   const distribution = (draft.distribution || []).map(d => `<li>${escapeHtml(d)}</li>`).join("");
+
   return `
     <article class="pdf-sheet">
-      <header>${escapeHtml(draftValue(draft.institution_name))}</header>
+      <header style="white-space:pre-line;">${escapeHtml(institution)}</header>
       <div class="meta">
-        <span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span>
-        <span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span>
+        <span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number, "E-XXXXXXXX-XXX.XX-XXXX"))}</span>
+        <span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date, new Date().toLocaleDateString('tr-TR')))}</span>
       </div>
-      <div><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</div>
-      <p class="recipient">${escapeHtml(draftValue(draft.recipient))}</p>
-      ${paragraphs}
+      <div><b>Konu:</b> ${escapeHtml(draftValue(draft.subject, "Başvuru ve İnceleme"))}</div>
+      <p class="recipient">${escapeHtml(draftValue(draft.recipient, state?.routing?.unit_name || "İlgili Makama"))}</p>
+      ${paragraphs || "<p>Resmî yanıt metni hazırlanıyor...</p>"}
       <div class="signature-space">
-        ${escapeHtml(draftValue(draft.signer))}<br/>
-        <small>${escapeHtml(draftValue(draft.signer_title))}</small>
+        ${escapeHtml(draftValue(draft.signer, "[İmzalayan Yetkili]"))}<br/>
+        <small>${escapeHtml(draftValue(draft.signer_title, "Şube Müdürü / Yetkili"))}</small>
       </div>
       ${annexes ? `<div style="margin-top:14px;font-size:9.5px;"><b>Ek:</b><ul>${annexes}</ul></div>` : ""}
       ${distribution ? `<div style="margin-top:8px;font-size:9.5px;"><b>Dağıtım:</b><ul>${distribution}</ul></div>` : ""}
@@ -443,22 +466,25 @@ function renderState(state) {
   let strategySectionHtml = "";
   if (strategyOptions.length && !state.selected_response_strategy && state.status !== "tamamlandi") {
     strategySectionHtml = `
-      <div class="action-card" style="margin-top:16px;padding:16px;background:#f7fafb;border:1px solid #c9dcdc;border-radius:12px;">
-        <h4 style="margin:0 0 6px;font:600 14px Georgia,serif;color:#102733;">Katman 3 — Yanıt Stratejisi Belirleyin</h4>
-        <p style="margin:0 0 12px;font-size:11px;color:#5c747e;">Bu evraka verilecek yanıtın kurumsal yaklaşımını seçin:</p>
+      <div class="action-card" style="margin-top:16px;padding:18px;background:#f3f8fa;border:2px solid #b2d5e0;border-radius:14px;box-shadow:0 4px 14px rgba(27,55,61,0.06);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:18px;">👉</span>
+          <h4 style="margin:0;font:700 15px Georgia,serif;color:#102733;">Katman 3 — Yanıt Stratejisi Belirleyin</h4>
+        </div>
+        <p style="margin:0 0 12px;font-size:11.5px;color:#45606a;line-height:1.5;">Bu evraka verilecek resmî cevabın kurumsal yaklaşımını seçerek taslağı ve PDF'i anında oluşturun:</p>
         <div class="strategy-options">
           ${strategyOptions.map(opt => `
-            <div class="strategy-card" data-option-id="${escapeHtml(opt.option_id)}">
-              <strong>${escapeHtml(opt.title || opt.option_id)} ${opt.recommended ? `<span class="unit-tag" style="background:#eaf6f2;color:#1a7458;margin-left:4px;">Önerilen</span>` : ""}</strong>
-              <p>${escapeHtml(opt.description || "")}</p>
+            <div class="strategy-card ${opt.option_id === 'custom' ? '' : (strategyOptions[0] === opt ? 'is-selected' : '')}" data-option-id="${escapeHtml(opt.option_id)}" style="cursor:pointer;">
+              <strong>${escapeHtml(opt.label || opt.title || opt.option_id)} ${opt.option_id !== 'custom' ? `<span class="unit-tag" style="background:#eaf6f2;color:#1a7458;margin-left:4px;">Seçenek</span>` : ""}</strong>
+              <p style="margin:4px 0 0;font-size:10.5px;color:#556e78;">${escapeHtml(opt.description || "")}</p>
             </div>
           `).join("")}
         </div>
-        <div class="custom-strategy-box">
+        <div class="custom-strategy-box" style="margin-top:10px;">
           <label style="display:block;font-size:11px;font-weight:700;color:#5c747e;margin-bottom:4px;">Veya özel yanıt talimatı girin:</label>
-          <textarea id="custom-strategy-text" placeholder="Örn: Başvuru konusu yolun yatırım programına alındığını ve 2026 2. çeyrekte başlayacağını belirtin..."></textarea>
-          <div class="btn-row">
-            <button class="mini-button" id="submit-strategy-btn" type="button">Stratejiyi Uygula ve Taslağı Güncelle</button>
+          <textarea id="custom-strategy-text" placeholder="Örn: Başvuru konusu levhanın 1. Bölge Yol Bakım ekiplerine iletildiğini ve onarımın 2 iş günü içinde tamamlanacağını belirtin..."></textarea>
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="mini-button" id="submit-strategy-btn" type="button" style="width:100%;min-height:40px;font-size:11.5px;background:#174a5c;">✓ Seçilen Stratejiyle Taslağı ve PDF'i Oluştur</button>
           </div>
         </div>
       </div>
@@ -467,7 +493,7 @@ function renderState(state) {
 
   // Missing Information Form (Outgoing letter metadata)
   let missingFormHtml = "";
-  if (missing.length) {
+  if (missing.length && state.status !== "yanit_stratejisi_bekleniyor") {
     const fieldsHtml = missing.map(name => `
       <label style="display:grid;gap:4px;color:var(--muted);font-size:10.5px;font-weight:700;">
         ${escapeHtml(fieldLabels[name] || name)}
@@ -503,7 +529,7 @@ function renderState(state) {
         </div>
       </div>
     `;
-  } else if (!missing.length) {
+  } else if (!missing.length && state.status !== "yanit_stratejisi_bekleniyor") {
     approvalHtml = `
       <div style="margin-top:16px;padding:16px;background:#eef8f4;border:1px solid #bfe7d5;border-radius:12px;">
         <h4 style="margin:0 0 6px;font:600 14px Georgia,serif;color:#1a6d53;">Taslak Resmîleşmeye Hazır</h4>
@@ -545,11 +571,11 @@ function renderState(state) {
         ${draftTabsHtml}
         
         <div id="active-draft-container">
-          ${renderDraft(activeDraft)}
+          ${renderDraft(activeDraft, state)}
         </div>
 
         <div style="display:flex;gap:10px;align-items:center;margin-top:16px;">
-          ${pdfUrl ? `<a class="mini-button pdf-link" href="${pdfUrl}" download>PDF indir</a>` : `<span style="font-size:11px;color:#8a9fa6;">PDF derlemesi bekleniyor</span>`}
+          ${pdfUrl ? `<a class="mini-button pdf-link" href="${pdfUrl}" download>PDF indir</a>` : `<span style="font-size:11px;color:#8a9fa6;">${state.status === 'yanit_stratejisi_bekleniyor' ? 'Yanıt stratejisi seçildikten sonra PDF derlenecektir' : 'PDF derlemesi bekleniyor'}</span>`}
           ${texUrl ? `<a class="mini-button is-secondary tex-link" href="${texUrl}" download>LaTeX (.tex) indir</a>` : ""}
         </div>
 
@@ -597,7 +623,7 @@ function renderState(state) {
       }
       const btn = $("#submit-strategy-btn");
       btn.disabled = true;
-      btn.textContent = "Strateji uygulanıyor…";
+      btn.textContent = "Strateji uygulanıyor ve PDF derleniyor…";
       try {
         const updatedState = await requestJson(`/api/v1/processes/${encodeURIComponent(currentState.document_id)}/response-strategy`, {
           method: "POST",
@@ -608,12 +634,13 @@ function renderState(state) {
             compile_pdf: true
           })
         });
+        finishAgentProgress(updatedState);
         renderState(updatedState);
-        showToast("Yanıt stratejisi uygulandı.", true);
+        showToast("Yanıt stratejisi uygulandı, taslak ve PDF oluşturuldu.", true);
       } catch (error) {
         showToast(error.message);
         btn.disabled = false;
-        btn.textContent = "Stratejiyi Uygula ve Taslağı Güncelle";
+        btn.textContent = "✓ Seçilen Stratejiyle Taslağı ve PDF'i Oluştur";
       }
     });
 
