@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
         ("Yol bakım çalışmasının yapılmasını talep ediyorum.", "talep"),
         ("Planlanan çalışma için gerekli iznin verilmesini istiyorum.", "izin"),
         ("Bilgi ve belge örneğinin tarafıma verilmesini istiyorum.", "belge"),
-        ("Hasarlı trafik levhasını bildiriyorum.", "bildirim"),
-        ("İlgi: 2026/1\nDağıtım: İlgili birimler\nGereğini rica ederim.", "ust_yazi"),
+        ("Hasarlı trafik levhasını bildiriyorum.", "sikayet"),
+        ("İlgi: 2026/1\nDağıtım: İlgili birimler\nGereğini rica ederim.", "dilekce"),
     ],
 )
 def test_classifier_exposes_broad_document_type(
@@ -35,6 +35,17 @@ def test_classifier_exposes_broad_document_type(
 
     assert result.general_document_type == expected_type
     assert result.general_document_type in GENERAL_DOCUMENT_TYPES
+
+
+def test_competition_document_type_set_is_exactly_six_closed_labels() -> None:
+    assert GENERAL_DOCUMENT_TYPES == {
+        "dilekce",
+        "sikayet",
+        "itiraz",
+        "talep",
+        "izin",
+        "belge",
+    }
 
 
 def test_synthetic_document_manifest_is_balanced_and_general() -> None:

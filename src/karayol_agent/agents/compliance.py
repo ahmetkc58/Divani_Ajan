@@ -9,6 +9,7 @@ from karayol_agent.official_writing_rules import (
     REGULATION_ID,
     RULES,
     closing_matches_authority_relation,
+    is_official_number_placeholder,
     valid_official_date,
     valid_official_number,
 )
@@ -73,6 +74,13 @@ class ComplianceAgent:
             apply("RY-12")
         if not draft.number.value:
             warning("RY-11", "Belge sayısı EBYS tarafından tamamlanmalıdır.")
+        elif is_official_number_placeholder(draft.number.value):
+            warning(
+                "RY-11",
+                "Ulaştırma ve Altyapı Bakanlığı DETSİS numarası yerleştirildi; "
+                "standart dosya planı kodu ve EBYS kayıt numarası yetkili "
+                "kurumsal sistem tarafından tamamlanmalıdır.",
+            )
         elif not valid_official_number(draft.number.value):
             error(
                 "RY-11",
@@ -164,11 +172,6 @@ class ComplianceAgent:
             if reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
         ]
         if snapshot_references:
-            if COMPETITION_SNAPSHOT_NOTICE not in draft.paragraphs:
-                errors.append(
-                    "Yarışma veri kümesi kaynakları kullanıldığı halde zorunlu "
-                    "güncellik/yürürlük uyarısı taslakta bulunmuyor."
-                )
             if any(
                 reference.currentness_verified
                 or reference.legal_reliance_allowed

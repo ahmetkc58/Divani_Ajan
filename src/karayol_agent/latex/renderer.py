@@ -114,7 +114,9 @@ class LatexRenderer:
             escape_latex(paragraph) + r"\par" for paragraph in draft.paragraphs
         )
         return {
-            "institution_name": escape_latex(draft.institution_name.value),
+            "institution_name": LatexRenderer._render_header(
+                draft.institution_name.value
+            ),
             "date": escape_latex(draft.date.value),
             "number": escape_latex(draft.number.value),
             "subject": escape_latex(draft.subject.value),
@@ -143,6 +145,13 @@ class LatexRenderer:
     @staticmethod
     def _render_lines(values: list[str]) -> str:
         return r" \\ ".join(escape_latex(value) for value in values)
+
+    @staticmethod
+    def _render_header(value: str | None) -> str:
+        lines = [line.strip() for line in (value or "").splitlines() if line.strip()]
+        if not lines:
+            return "[DOLDURULACAK]"
+        return r" \\ ".join(escape_latex(line) for line in lines)
 
     @staticmethod
     def _render_portable_pdf(
@@ -219,15 +228,8 @@ class LatexRenderer:
         def markup_paragraph(value: str, style: ParagraphStyle) -> Paragraph:
             return Paragraph(value, style)
 
-        template_titles = {
-            "ust_yazi_v1": "ÜST YAZI TASLAĞI",
-            "cevap_yazisi_v1": "CEVAP YAZISI TASLAĞI",
-            "bilgilendirme_yazisi_v1": "BİLGİLENDİRME YAZISI TASLAĞI",
-            "eksik_bilgi_talebi_v1": "EKSİK BİLGİ TALEBİ TASLAĞI",
-        }
         story: list[object] = [
             paragraph(draft.institution_name.value, title_style),
-            paragraph(template_titles[draft.template_id], title_style),
             Table(
                 [[
                     paragraph(f"Sayı: {draft.number.value or '[DOLDURULACAK]'}"),
@@ -285,11 +287,11 @@ class LatexRenderer:
         document = SimpleDocTemplate(
             str(pdf_path),
             pagesize=A4,
-            rightMargin=20 * mm,
-            leftMargin=20 * mm,
-            topMargin=20 * mm,
-            bottomMargin=18 * mm,
-            title=template_titles[draft.template_id],
+            rightMargin=15 * mm,
+            leftMargin=25 * mm,
+            topMargin=15 * mm,
+            bottomMargin=15 * mm,
+            title=draft.subject.value or "Resmî yazı",
             author=draft.institution_name.value or "Karayolu Evrak Ajanı",
         )
         document.build(story)

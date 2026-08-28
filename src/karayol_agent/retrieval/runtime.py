@@ -179,7 +179,9 @@ class AnalysisDomainResolver:
                 evidence=(f"analysis.domain={explicit}",),
             )
 
-        document_type = _string_value(_read_value(analysis, "document_type"))
+        document_type = _string_value(
+            _read_value(analysis, "operational_category")
+        ) or _string_value(_read_value(analysis, "document_type"))
         query_text = build_analysis_query(analysis)
         normalized = normalize_for_search(query_text)
         scores = {domain: 0 for domain in ACTIVE_RETRIEVAL_DOMAINS}
@@ -438,6 +440,11 @@ def build_analysis_query(
     document_type = _string_value(_read_value(analysis, "document_type"))
     if document_type:
         parts.append(document_type.replace("_", " "))
+    operational_category = _string_value(
+        _read_value(analysis, "operational_category")
+    )
+    if operational_category:
+        parts.append(operational_category.replace("_", " "))
     summary = _string_value(_read_value(analysis, "summary"))
     if summary:
         parts.append(summary)

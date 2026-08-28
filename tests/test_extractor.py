@@ -28,6 +28,27 @@ def test_text_extractor_preserves_labeled_lines(tmp_path: Path) -> None:
     assert "\n\nTalep" in text
 
 
+def test_pdf_layout_contains_normalized_trusted_coordinates(tmp_path: Path) -> None:
+    import pymupdf
+
+    source = tmp_path / "koordinatli.pdf"
+    document = pymupdf.open()
+    page = document.new_page(width=600, height=800)
+    page.insert_text((60, 100), "Tarih: 24.08.2026", fontsize=12)
+    page.insert_text((60, 140), "Konu: Yol bakim talebi", fontsize=12)
+    document.save(source)
+    document.close()
+
+    text, layout = DocumentExtractor().extract_with_layout(source)
+
+    assert "24.08.2026" in text
+    assert layout.coordinate_system == "normalized_page"
+    assert layout.lines
+    assert all(line.bbox is not None for line in layout.lines)
+    assert all(0 <= line.bbox.x0 <= line.bbox.x1 <= 1 for line in layout.lines if line.bbox)
+    assert all(0 <= line.bbox.y0 <= line.bbox.y1 <= 1 for line in layout.lines if line.bbox)
+
+
 def test_text_extractor_rejects_oversized_text_instead_of_truncating(
     tmp_path: Path,
 ) -> None:

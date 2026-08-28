@@ -1,9 +1,5 @@
 from __future__ import annotations
 
-from karayol_agent.retrieval.contracts import (
-    COMPETITION_SNAPSHOT_NOTICE,
-    CorpusMode,
-)
 from karayol_agent.schemas import (
     DocumentAnalysis,
     DraftPayload,
@@ -13,12 +9,22 @@ from karayol_agent.schemas import (
     TemplateDecision,
     VerifiedReference,
 )
+from karayol_agent.official_writing_rules import (
+    UAB_DETSIS_NUMBER,
+    UAB_OFFICIAL_NUMBER_PLACEHOLDER,
+)
 
 
 class DraftingAgent:
     name = "Taslak Oluşturma Ajanı"
 
-    def __init__(self, institution_name: str = "Örnek Karayolu Genel Müdürlüğü") -> None:
+    def __init__(
+        self,
+        institution_name: str = (
+            "T.C. ULAŞTIRMA VE ALTYAPI BAKANLIĞI\n"
+            "KARAYOLLARI GENEL MÜDÜRLÜĞÜ"
+        ),
+    ) -> None:
         self.institution_name = institution_name
 
     def run(
@@ -33,9 +39,10 @@ class DraftingAgent:
         paragraphs = self._paragraphs(
             analysis, decision, routing, verified_references, closing
         )
-        missing = list(
-            dict.fromkeys([*analysis.missing_fields, "sayi", "imzalayan", "unvan"])
-        )
+        # Gelen evraktaki eksikler Katman 1 bulgusu olarak raporlanır; kullanıcı
+        # girdisiyle evrakın kendisi değiştirilmez. Burada yalnız üretilecek resmî
+        # yazının kurumsal üstveri/imza alanları kullanıcı girdisi bekler.
+        missing = ["sayi", "imzalayan", "unvan"]
         if not analysis.fields.get("tarih") or not analysis.fields["tarih"].value:
             missing.append("tarih")
         contact_information = [
@@ -51,7 +58,11 @@ class DraftingAgent:
                 source="sentetik_demo_kurumu",
             ),
             date=self._copy_or_missing(analysis, "tarih"),
-            number=ExtractedField(value=None, status=FieldStatus.USER_REQUIRED),
+            number=ExtractedField(
+                value=UAB_OFFICIAL_NUMBER_PLACEHOLDER,
+                status=FieldStatus.USER_REQUIRED,
+                source="uab_detsis_dogrulandi_sdp_ve_ebys_bekleniyor",
+            ),
             subject=self._copy_or_missing(analysis, "konu"),
             recipient=ExtractedField(
                 value=routing.unit_name,
@@ -67,6 +78,11 @@ class DraftingAgent:
                 "data_class": "sentetik_demo",
                 "routing_unit_id": routing.unit_id,
                 "official_writing_rules": "2646-RG-2020-31151",
+                "detsis_number": UAB_DETSIS_NUMBER,
+                "official_number_status": "placeholder_sdp_and_ebys_required",
+                "detsis_source": (
+                    "veri_kaynaklari/karayolu/detsis/README.md"
+                ),
             },
             authority_relation=authority_relation,
             closing=closing,
@@ -98,11 +114,6 @@ class DraftingAgent:
                 f"İşlemin sürdürülebilmesi için şu bilgilerin tamamlanması gerekmektedir: {missing}.",
                 "Eksik bilgilerin iletilmesinin ardından başvurunuz yeniden değerlendirilecektir.",
             ]
-            if any(
-                reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
-                for reference in references
-            ):
-                paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
             paragraphs.append(closing)
             return paragraphs
 
@@ -110,11 +121,6 @@ class DraftingAgent:
             f"İlgili başvuruda belirtilen husus incelenmiştir: {request_text}",
             f"Başvurunun görev ve sorumluluk alanı bakımından {routing.unit_name} tarafından değerlendirilmesi uygun görülmüştür.",
         ]
-        if any(
-            reference.corpus_mode == CorpusMode.COMPETITION_SNAPSHOT.value
-            for reference in references
-        ):
-            paragraphs.append(COMPETITION_SNAPSHOT_NOTICE)
         paragraphs.append(closing)
         return paragraphs
 

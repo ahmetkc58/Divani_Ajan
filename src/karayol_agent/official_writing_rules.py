@@ -10,6 +10,12 @@ REGULATION_TITLE = (
 )
 REGULATION_URL = "https://www.resmigazete.gov.tr/eskiler/2020/06/20200610.pdf"
 
+# Geçici demo değeri: yalnız Bakanlığın doğrulanmış ana DETSİS numarası doludur.
+# Standart dosya planı ve EBYS kayıt numarası yetkili kurumsal sistemden gelene
+# kadar bu değer nihai/geçerli resmî sayı sayılmaz.
+UAB_DETSIS_NUMBER = "24325150"
+UAB_OFFICIAL_NUMBER_PLACEHOLDER = f"E-{UAB_DETSIS_NUMBER}-XXX-XXX"
+
 
 @dataclass(frozen=True)
 class OfficialWritingRule:
@@ -136,6 +142,12 @@ def valid_official_number(value: str) -> bool:
             flags=re.IGNORECASE,
         )
     )
+
+
+def is_official_number_placeholder(value: str) -> bool:
+    """Return true only for the explicit, non-final UAB demo placeholder."""
+
+    return value.strip().upper() == UAB_OFFICIAL_NUMBER_PLACEHOLDER
 
 
 ALLOWED_CLOSINGS_BY_RELATION = {

@@ -179,7 +179,9 @@ def resolve_relevance_profile(
 ) -> str | None:
     """Resolve only intents backed by the reviewed snapshot relevance set."""
 
-    document_type = _string_value(_read_value(analysis, "document_type"))
+    document_type = _string_value(
+        _read_value(analysis, "operational_category")
+    ) or _string_value(_read_value(analysis, "document_type"))
     analysis_text = _analysis_text(analysis)
     if document_type == "yol_bakim_talebi":
         return ROAD_SURFACE_PROFILE

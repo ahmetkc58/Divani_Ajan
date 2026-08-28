@@ -3,32 +3,28 @@ from __future__ import annotations
 from karayol_agent.text_utils import normalize_for_search
 
 
-GENERAL_DOCUMENT_TYPES = frozenset(
-    {
-        "dilekce",
-        "sikayet",
-        "itiraz",
-        "talep",
-        "izin",
-        "belge",
-        "bildirim",
-        "ust_yazi",
-        "genel_basvuru",
-    }
+COMPETITION_DOCUMENT_TYPES = (
+    "dilekce",
+    "sikayet",
+    "itiraz",
+    "talep",
+    "izin",
+    "belge",
 )
+GENERAL_DOCUMENT_TYPES = frozenset(COMPETITION_DOCUMENT_TYPES)
 
 # Eski ayrıntılı etiketler evrak türü değil, çalışma zamanı konu/niyet
 # profilleridir. Bu eşleme mevcut yönlendirme ve RAG davranışını korurken
 # kullanıcıya genel bir evrak türü sunar.
 OPERATIONAL_PROFILE_TO_GENERAL_TYPE = {
     "yol_bakim_talebi": "talep",
-    "trafik_guvenligi_bildirimi": "bildirim",
-    "hasar_bildirimi": "bildirim",
+    "trafik_guvenligi_bildirimi": "sikayet",
+    "hasar_bildirimi": "sikayet",
     "bilgi_talebi": "belge",
     "sikayet": "sikayet",
-    "ust_yazi": "ust_yazi",
+    "ust_yazi": "dilekce",
     "dilekce": "dilekce",
-    "genel_basvuru": "genel_basvuru",
+    "genel_basvuru": "dilekce",
 }
 
 _TYPE_PHRASES: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -75,10 +71,7 @@ _TYPE_PHRASES: tuple[tuple[str, tuple[str, ...]], ...] = (
         ),
     ),
     ("dilekce", ("dilekçe", "dilekçemin")),
-    (
-        "bildirim",
-        ("bildiriyorum", "bildirim", "ihbar", "haber veriyorum"),
-    ),
+    ("sikayet", ("bildiriyorum", "bildirim", "ihbar", "haber veriyorum")),
     (
         "talep",
         ("talep ediyorum", "talebim", "yapılmasını istiyorum", "başvuru"),
@@ -93,18 +86,17 @@ def general_document_type_for(
     """Return one broad document type without losing the operational profile."""
 
     normalized = normalize_for_search(text)
-    if operational_profile == "ust_yazi":
-        return "ust_yazi"
     for document_type, phrases in _TYPE_PHRASES:
         if any(normalize_for_search(phrase) in normalized for phrase in phrases):
             return document_type
     return OPERATIONAL_PROFILE_TO_GENERAL_TYPE.get(
         operational_profile,
-        "genel_basvuru",
+        "dilekce",
     )
 
 
 __all__ = [
+    "COMPETITION_DOCUMENT_TYPES",
     "GENERAL_DOCUMENT_TYPES",
     "OPERATIONAL_PROFILE_TO_GENERAL_TYPE",
     "general_document_type_for",

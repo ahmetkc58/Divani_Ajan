@@ -23,3 +23,5 @@ data/processed/
 /*.pdf
 /Ulaştırma ve Altyapı Bakanlığı/
 /stdout.txt
+/qdrant_db_tamamlandi/
+/reports/qdrant_team05_upload_checkpoint.json

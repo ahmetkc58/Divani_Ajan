@@ -288,6 +288,10 @@ class ContentAnalysisAgent:
         "bilgi_talebi": ("gonderen", "konu", "talep"),
         "sikayet": ("gonderen", "konu", "talep"),
         "dilekce": ("gonderen", "konu", "talep"),
+        "itiraz": ("gonderen", "konu", "talep"),
+        "talep": ("gonderen", "konu", "talep"),
+        "izin": ("gonderen", "konu", "talep"),
+        "belge": ("gonderen", "konu", "talep"),
         "ust_yazi": ("gonderen", "konu", "tarih"),
         "genel_basvuru": ("gonderen", "konu", "talep"),
     }

@@ -143,6 +143,40 @@ class Settings:
             "KARAYOL_EVIDENCE_GRAPH_ENABLED", True
         )
     )
+    layer2_enabled: bool = field(
+        default_factory=lambda: _environment_bool("KARAYOL_LAYER2_ENABLED", False)
+    )
+    layer2_llm_model: str = field(
+        default_factory=lambda: _environment("KARAYOL_LAYER2_LLM_MODEL", "llm-large")
+        or "llm-large"
+    )
+    layer2_max_search_rounds: int = field(
+        default_factory=lambda: _environment_int(
+            "KARAYOL_LAYER2_MAX_SEARCH_ROUNDS", 4
+        )
+    )
+    layer3_enabled: bool = field(
+        default_factory=lambda: _environment_bool("KARAYOL_LAYER3_ENABLED", True)
+    )
+    layer3_llm_model: str = field(
+        default_factory=lambda: _environment("KARAYOL_LAYER3_LLM_MODEL", "llm-fast")
+        or "llm-fast"
+    )
+    layer3_reasoning_llm_model: str = field(
+        default_factory=lambda: _environment(
+            "KARAYOL_LAYER3_REASONING_LLM_MODEL", "llm-large"
+        )
+        or "llm-large"
+    )
+    template_catalog_path: Path = field(
+        default_factory=lambda: Path(
+            _environment(
+                "KARAYOL_TEMPLATE_CATALOG_PATH",
+                str(PROJECT_ROOT / "templates" / "catalog.json"),
+            )
+            or PROJECT_ROOT / "templates" / "catalog.json"
+        )
+    )
     evidence_graph_path: Path = field(
         default_factory=lambda: Path(
             _environment(
@@ -228,6 +262,11 @@ class Settings:
     external_retrieval_enabled: bool = field(
         default_factory=lambda: _environment_bool(
             "KARAYOL_EXTERNAL_RETRIEVAL_ENABLED", False
+        )
+    )
+    external_llm_redacted_input_enabled: bool = field(
+        default_factory=lambda: _environment_bool(
+            "KARAYOL_EXTERNAL_LLM_REDACTED_INPUT_ENABLED", False
         )
     )
     external_qdrant_url: str = field(
@@ -370,6 +409,10 @@ class Settings:
             "snapshot_relevance_policy",
             relevance_policy,
         )
+        if not 1 <= self.layer2_max_search_rounds <= 4:
+            raise ValueError(
+                "KARAYOL_LAYER2_MAX_SEARCH_ROUNDS 1 ile 4 arasında olmalıdır."
+            )
         if (
             corpus_mode == "competition_snapshot"
             and self.qdrant_collection == "legal_chunks_v1"
@@ -425,6 +468,12 @@ class Settings:
                 self,
                 "evidence_graph_path",
                 self.project_root / self.evidence_graph_path,
+            )
+        if not self.template_catalog_path.is_absolute():
+            object.__setattr__(
+                self,
+                "template_catalog_path",
+                self.project_root / self.template_catalog_path,
             )
         if self.embedding_dimension not in {32, 64, 128, 256, 512, 768, 1024}:
             raise ValueError(

@@ -311,6 +311,11 @@ class OpenAICompatibleProvider:
             else "max_tokens"
         )
         payload[token_field] = self.config.max_output_tokens
+        if self.config.provider is LLMProviderName.OPENAI_COMPATIBLE:
+            # EVREN's Qwen chat template can otherwise spend the entire token
+            # budget in a hidden reasoning block and return empty content.
+            # The competition documentation recommends keeping thinking off.
+            payload["chat_template_kwargs"] = {"enable_thinking": False}
         response = self.transport.send(
             HTTPRequest(
                 url=f"{self.base_url}/chat/completions",

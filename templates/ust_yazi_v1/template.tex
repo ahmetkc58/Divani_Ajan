@@ -4,21 +4,20 @@
 \usepackage[turkish]{babel}
 \usepackage{geometry}
 \usepackage{enumitem}
-\geometry{top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm}
+\geometry{top=1.5cm,bottom=1.5cm,left=2.5cm,right=1.5cm}
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{6pt}
-\pagestyle{plain}
+\pagestyle{empty}
 \begin{document}
 \begin{center}
-{\bfseries <<institution_name>>\\}
-{\bfseries ÜST YAZI TASLAĞI}
+{\bfseries <<institution_name>>}
 \end{center}
 \noindent Sayı: <<number>> \hfill Tarih: <<date>>\\
 \noindent Konu: <<subject>>
 <% if interest %>
 \par\noindent İlgi: <<interest>>
 <% endif %>
-\vspace{8mm}
+\vspace{6mm}
 \begin{center}\bfseries <<recipient>>\end{center}
 <<paragraphs>>
 \vspace{10mm}

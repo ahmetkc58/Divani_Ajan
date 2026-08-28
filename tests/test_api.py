@@ -46,8 +46,20 @@ def test_health_and_text_process(monkeypatch, tmp_path: Path) -> None:
     )
     assert response.status_code == 200
     payload = response.json()
-    assert payload["analysis"]["document_type"] == "yol_bakim_talebi"
+    assert payload["analysis"]["document_type"] == "talep"
+    assert payload["analysis"]["operational_category"] == "yol_bakim_talebi"
     assert payload["routing"]["unit_id"] == "ORKGM-YB-001"
+
+    started = client.post(
+        "/api/v1/processes/text/start",
+        json={"text": text, "source_name": "canli-api-ornek.txt"},
+    )
+    assert started.status_code == 202
+    live_payload = client.get(
+        f"/api/v1/processes/{started.json()['document_id']}"
+    ).json()
+    assert live_payload["events"]
+    assert live_payload["source_name"] == "canli-api-ornek.txt"
 
 
 def test_hybrid_readiness_fails_when_active_corpus_is_missing(

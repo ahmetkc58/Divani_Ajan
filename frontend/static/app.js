@@ -64,6 +64,7 @@ const statusLabels = {
   eksik_bilgi_bekleniyor: "Eksik bilgi bekleniyor",
   yazi_turu_seciliyor: "Yazı türü seçiliyor",
   birim_yonlendiriliyor: "Birim belirleniyor",
+  yanit_stratejisi_bekleniyor: "Yanıt stratejisi bekleniyor",
   taslak_hazirlaniyor: "Taslak hazırlanıyor",
   uygunluk_kontrolunde: "Uygunluk kontrolünde",
   kullanici_onayi_bekleniyor: "Kullanıcı onayı bekleniyor",
@@ -73,7 +74,11 @@ const statusLabels = {
 
 const llmRoleLabels = {
   document_understanding: "LLM Yapılandırılmış Anlama Ajanı",
-  adjudicator: "LLM Karar Ajanı (Adjudicator)"
+  adjudicator: "LLM Karar Ajanı (Adjudicator)",
+  llm3_template_selection: "LLM3 — Şablon Seçim Ajanı",
+  llm4_template_fill: "LLM4 — Şablon Doldurma Ajanı",
+  llm5_routing: "LLM5 — Birim Yönlendirme Ajanı",
+  llm6_response_strategy: "LLM6 — Yanıt Stratejisi Ajanı"
 };
 
 const llmStatusLabels = {
@@ -196,7 +201,7 @@ function safePercent(value) {
 
 function safeArtifactUrl(url) {
   const value = String(url || "");
-  return /^\/api\/v1\/processes\/EVR-\d{8}-[A-F0-9]{8}\/artifacts\/(?:tex|pdf)$/.test(value)
+  return /^\/api\/v1\/processes\/EVR-\d{8}-[A-F0-9]{8}\/artifacts\/(?:(?:citizen|internal_unit|default)\/)?(?:tex|pdf)$/.test(value)
     ? apiUrl(value)
     : null;
 }
@@ -305,6 +310,50 @@ function renderLoading() {
   setGuideStep(2);
 }
 
+const terminalProcessStatuses = new Set([
+  "eksik_bilgi_bekleniyor",
+  "yanit_stratejisi_bekleniyor",
+  "kullanici_onayi_bekleniyor",
+  "tamamlandi",
+  "hata"
+]);
+
+function renderLiveProgress(state) {
+  const events = (state.events || []).slice(-12);
+  const rows = events.map((event, index) => `
+    <li class="${index === events.length - 1 ? "is-current" : "is-complete"}">
+      <span>${index === events.length - 1 ? "…" : "✓"}</span>
+      <div><strong>${escapeHtml(event.agent || "Ajan")}</strong><small>${escapeHtml(event.message || event.status || "İşleniyor")}</small></div>
+    </li>`).join("");
+  emptyState.hidden = true;
+  resultContent.hidden = false;
+  resultContent.innerHTML = `
+    <div class="loading-state live-agent-state" role="status" aria-live="polite">
+      <span class="loading-orbit" aria-hidden="true"></span>
+      <h3>Ajan zinciri çalışıyor</h3>
+      <p>${escapeHtml(state.source_name || "Evrak")} · ${escapeHtml(state.current_stage || state.status || "başlatıldı")}</p>
+      <ol class="live-agent-list">${rows || "<li class=\"is-current\"><span>…</span><div><strong>Sistem</strong><small>İşlem başlatılıyor.</small></div></li>"}</ol>
+    </div>`;
+  setGuideStep(2);
+}
+
+function wait(milliseconds) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function pollProcess(documentId) {
+  const deadline = Date.now() + 30 * 60 * 1000;
+  while (Date.now() < deadline) {
+    const state = await requestJson(`/api/v1/processes/${encodeURIComponent(documentId)}`, {
+      headers: { "Accept": "application/json" }
+    });
+    if (terminalProcessStatuses.has(state.status)) return state;
+    renderLiveProgress(state);
+    await wait(700);
+  }
+  throw new Error("Canlı işlem 30 dakika içinde tamamlanmadı.");
+}
+
 function scenarioExpectation(state) {
   if (inputMode === "file") return "";
   const scenario = scenarios[activeScenario];
@@ -355,7 +404,7 @@ function renderOverview(state) {
     <div class="overview-grid">
       <div class="info-card"><span>Evrak türü</span><strong>${escapeHtml(typeLabel(analysis.general_document_type || analysis.document_type))}</strong><small>Konu/işlem profili: ${escapeHtml(typeLabel(analysis.document_type))} · Güven: %${confidence}</small><div class="score-line"><i style="width:${confidence}%"></i></div></div>
       <div class="info-card"><span>Önerilen birim</span><strong>${escapeHtml(routing.unit_name || "—")}</strong><small>${escapeHtml(routing.unit_id || "")} · ${escapeHtml(routingReview)}</small></div>
-      <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong><small>${escapeHtml(template.template_id || "")}</small></div>
+      <div class="info-card"><span>Resmî yazı türü</span><strong>${escapeHtml(typeLabel(template.document_type))}</strong></div>
       <div class="info-card"><span>Uygunluk</span><strong>%${complianceScore} · ${compliance.passed ? "Geçti" : "Kaldı"}</strong><small>${verifiedCount} doğrulanmış kaynak</small><div class="score-line"><i style="width:${complianceScore}%"></i></div></div>
       <div class="info-card"><span>LLM orkestrasyonu</span><strong>${escapeHtml(llmLabel)}</strong><small>${escapeHtml(llmStatus)}</small></div>
       <div class="info-card"><span>Kanıt grafı</span><strong>${escapeHtml(graphLabel)}</strong><small>${escapeHtml(graph.graph_id || graph.strategy || "Graf yok")}</small></div>
@@ -372,14 +421,43 @@ function renderNextAction(state) {
     return `<div class="completed-banner"><span class="completed-mark">✓</span><h4>Evrak süreci tamamlandı</h4><p>Taslak onaylandı. Çıktıyı Taslak sekmesinden indirebilirsiniz.</p></div>`;
   }
 
-  const missing = state.missing_information || [];
+  const cards = [];
+  const incomingMissing = state.analysis?.missing_fields || [];
+  if (incomingMissing.length) {
+    const items = incomingMissing.map((name) => `<li>${escapeHtml(fieldLabel(name))}</li>`).join("");
+    cards.push(`<div class="action-card"><h4>Gelen evrakta tespit edilen eksikler</h4><p>Bu alanlar bilgi amaçlı bildirilir; sistem gelen evrakı kullanıcı girdisiyle değiştirmez.</p><ul>${items}</ul></div>`);
+  }
+
+  const missing = (state.missing_information || []).filter((name) => !incomingMissing.includes(name));
   if (missing.length) {
     const controls = missing.map((name, index) => {
       const safeName = escapeHtml(name);
-      return `<div class="field-control"><label for="missing-field-${index}">${escapeHtml(fieldLabel(name))}</label><input id="missing-field-${index}" data-field="${safeName}" value="" placeholder="${escapeHtml(suggestedValues[name] || "Bilgiyi girin")}" autocomplete="off" required /></div>`;
+      const currentDraftValue = name === "sayi" ? (state.draft?.number?.value || "") : "";
+      return `<div class="field-control"><label for="missing-field-${index}">${escapeHtml(fieldLabel(name))}</label><input id="missing-field-${index}" data-field="${safeName}" value="${escapeHtml(currentDraftValue)}" placeholder="${escapeHtml(suggestedValues[name] || "Bilgiyi girin")}" autocomplete="off" required />${name === "sayi" && currentDraftValue.includes("XXX") ? `<small>DETSİS kodu hazırdır; XXX alanlarını kurumun dosya planı ve EBYS kayıt numarasıyla değiştirin.</small>` : ""}</div>`;
     }).join("");
-    return `<div class="action-card"><h4>Eksik bilgileri tamamlayın</h4><p>${escapeHtml(state.next_step)}</p><form class="field-form" id="missing-information-form">${controls}<div class="field-form-actions"><button class="mini-button is-secondary" id="fill-sample-values" type="button">Örnek değerleri doldur</button><button class="mini-button" type="submit">Bilgileri kaydet ve taslağı yenile</button></div></form></div>`;
+    cards.push(`<div class="action-card"><h4>Gönderilecek resmî yazının bilgileri</h4><p>Bunlar gelen evraka eklenmez; yalnız kurumun oluşturacağı yazıda kullanılır.</p><form class="field-form" id="missing-information-form">${controls}<div class="field-form-actions"><button class="mini-button is-secondary" id="fill-sample-values" type="button">Örnek değerleri doldur</button><button class="mini-button" type="submit">Yazı bilgilerini kaydet</button></div></form></div>`);
   }
+
+  const strategyOptions = state.response_strategy_options || [];
+  if (
+    strategyOptions.length &&
+    !state.selected_response_strategy &&
+    !state.selected_response_custom_text
+  ) {
+    const controls = strategyOptions.map((option, index) => {
+      const references = (option.reference_ids || []).join(", ");
+      return `<div class="field-control"><label><input type="radio" name="response-strategy-option" value="${escapeHtml(option.option_id)}" ${index === 0 ? "checked" : ""} /> <strong>${escapeHtml(option.label)}</strong> — ${escapeHtml(option.description)}</label>${references ? `<small>Kaynaklar: ${escapeHtml(references)}</small>` : ""}</div>`;
+    }).join("");
+    const targetControls = `
+      <div class="field-control"><strong>Taslak nereye gönderilecek?</strong>
+        <label><input type="radio" name="delivery-target" value="citizen" checked /> Vatandaşa / dış başvuru sahibine cevap</label>
+        <label><input type="radio" name="delivery-target" value="internal_unit" /> Alt birime havale / üst yazı</label>
+        <label><input type="radio" name="delivery-target" value="both" /> İkisini de ayrı LaTeX ve PDF olarak hazırla</label>
+      </div>`;
+    cards.push(`<div class="action-card"><h4>Katman 3 — gönderim ve yanıt stratejisi</h4><p>Yazının kime gönderileceğini ve içerik yaklaşımını seçin.</p><form class="field-form" id="response-strategy-form">${targetControls}${controls}<div class="field-control"><label for="response-strategy-custom-text">Kendi talimatınız</label><textarea id="response-strategy-custom-text" rows="3" maxlength="4000" placeholder="Yalnız kendi stratejinizi seçtiyseniz nasıl yanıt verilmesini istediğinizi yazın"></textarea></div><div class="field-form-actions"><button class="mini-button" type="submit">Seçimleri kaydet ve LaTeX taslaklarını oluştur</button></div></form></div>`);
+  }
+
+  if (cards.length) return cards.join("");
 
   if (state.status === "kullanici_onayi_bekleniyor") {
     return `<div class="action-card is-success"><h4>Taslak onaya hazır</h4><p>Önce Taslak ve Kaynaklar sekmelerini kontrol edin, ardından yetkili kullanıcı adıyla onaylayın.</p><form class="field-form" id="approval-form"><div class="field-control"><label for="approved-by">Onaylayan kişi</label><input id="approved-by" value="Yetkili Demo Kullanıcısı" minlength="2" maxlength="120" required /></div><div class="field-form-actions"><button class="mini-button" type="submit">Taslağı nihai olarak onayla</button></div></form></div>`;
@@ -461,18 +539,59 @@ function renderReferences(state) {
   }).join("");
 }
 
+function renderLayer2(state) {
+  const layer = state.layer2_assessment;
+  if (!layer) {
+    return `<div class="empty-state"><h3>Katman 2 sonucu yok</h3><p>İçerik değerlendirmesi bu işlem için çalıştırılmadı.</p></div>`;
+  }
+  const layerStatusLabels = {
+    completed: "Tamamlandı", abstained: "Kaynak yetersiz — çekimser",
+    disabled: "Devre dışı", failed: "Başarısız", applicable: "Uygulanabilir",
+    conditional: "Koşullu uygulanabilir", contextual_only: "Yalnız bağlamsal",
+    uncertain: "Uygulanabilirlik belirsiz"
+  };
+  const relationshipLabels = {
+    supports: "Talebi destekliyor", limits: "Talebi sınırlıyor",
+    defines_procedure: "Usulü belirliyor", creates_obligation: "Yükümlülük doğuruyor",
+    prohibits: "Yasaklıyor", unclear: "Hukuki ilişki belirsiz"
+  };
+  const riskLabels = { low: "Düşük risk", medium: "Orta risk", high: "Yüksek risk", uncertain: "Risk belirsiz" };
+  const findings = (layer.findings || []).map((finding) => {
+    const evidence = (finding.document_evidence_ids || []).join(", ") || "Belge kanıtı yok";
+    const sourceTrail = (finding.equivalent_reference_ids || [finding.legal_reference_id]).filter(Boolean).join(", ");
+    return `<article class="llm-finding is-informational"><div><strong>${escapeHtml(finding.issue || "Hukuki mesele")}</strong><span>${escapeHtml(layerStatusLabels[finding.applicability] || finding.applicability)}</span></div><p><strong>Evraktaki iddia/talep:</strong> ${escapeHtml(finding.document_statement || "")}</p><blockquote><strong>Kaynak alıntısı:</strong> ${escapeHtml(finding.legal_quote || "")}</blockquote><p><strong>Hukuki bağlam değerlendirmesi:</strong> ${escapeHtml(finding.legal_assessment || "")}</p><p><strong>Pratik etki:</strong> ${escapeHtml(finding.practical_effect || "")}</p><small>Kaynak metnine dayalı · ${escapeHtml(relationshipLabels[finding.legal_relationship] || finding.legal_relationship || "")} · ${escapeHtml(riskLabels[finding.risk_level] || finding.risk_level || "")} · ${escapeHtml(finding.legal_title || "")}${finding.legal_article ? ` · ${escapeHtml(finding.legal_article)}` : ""} · Kaynak izi: ${escapeHtml(sourceTrail)} · Evrak satırı: ${escapeHtml(evidence)} · Güven: %${safePercent(finding.confidence)}</small><div class="score-line"><i style="width:${safePercent(finding.confidence)}%"></i></div></article>`;
+  }).join("");
+  const tools = (layer.tool_trace || []).map((trace) => `<li><strong>Tur ${trace.round} · ${escapeHtml(trace.executed_tool)}</strong><small>${escapeHtml(trace.query || trace.note || "Araç çağrısı tamamlandı")} · Kaynak: ${(trace.returned_reference_ids || []).length} · Satır: ${(trace.returned_line_ids || []).length}</small></li>`).join("");
+  const agents = (layer.agent_trace || []).map((trace) => `<li><strong>${escapeHtml(trace.role)} · ${escapeHtml(trace.status)}</strong><small>${escapeHtml(trace.model || layer.model)}${trace.failure_code ? ` · ${escapeHtml(trace.failure_code)}` : ""}${trace.note ? ` · ${escapeHtml(trace.note)}` : ""}</small></li>`).join("");
+  const warnings = (layer.validation_warnings || []).map((warning) => `<li>${escapeHtml(warning)}</li>`).join("");
+  return `<div class="overview-grid"><div class="info-card"><span>Katman 2 durumu</span><strong>${escapeHtml(layerStatusLabels[layer.status] || layer.status)}</strong><small>${escapeHtml(layer.model || "llm-large")} · Yalnız kaynak: ${layer.source_only_policy_applied ? "evet" : "hayır"}</small></div><div class="info-card"><span>İnsan incelemesi</span><strong>${layer.requires_human_review ? "Gerekli" : "Gerekli değil"}</strong><small>${escapeHtml(layer.document_type || "")} · ${escapeHtml(layer.operational_category || "")}</small></div><div class="info-card wide"><span>İçerik değerlendirmesi</span><strong>${escapeHtml(layer.summary || "Özet yok")}</strong></div></div>${findings ? `<div class="llm-audit-block"><strong>Kaynağa bağlı içerik bulguları</strong><div class="llm-findings">${findings}</div></div>` : `<div class="empty-state"><h3>Doğrulanmış bulgu yok</h3><p>Model önbilgisi kullanılmadı; yeterli ve uygulanabilir kaynak bulunamadığında sistem çekimser kaldı.</p></div>`}${warnings ? `<div class="llm-audit-block"><strong>Doğrulama uyarıları</strong><ul>${warnings}</ul></div>` : ""}${tools ? `<div class="llm-audit-block"><strong>Search-o1 araç izi</strong><ul class="llm-check-list">${tools}</ul></div>` : ""}${agents ? `<div class="llm-audit-block"><strong>Ajan izi</strong><ul class="llm-check-list">${agents}</ul></div>` : ""}`;
+}
+
 function draftValue(field) {
   return field?.value || "[DOLDURULACAK]";
 }
 
+function isInternalDraftNotice(paragraph) {
+  const value = String(paragraph || "").toLocaleLowerCase("tr-TR");
+  return value.includes("yarışma veri kümesine dayanır")
+    || value.includes("mevzuatın güncelliği/yürürlüğü doğrulanmamıştır")
+    || value.includes("hukuki dayanak: kullanılamaz");
+}
+
 function renderDraft(state) {
-  const draft = state.draft;
-  if (!draft) return `<div class="empty-state"><h3>Taslak bulunmuyor</h3><p>Henüz bir resmî yazı taslağı oluşturulmadı.</p></div>`;
-  const pdfUrl = safeArtifactUrl(state.artifact?.pdf_download_url);
-  const paragraphs = (draft.paragraphs || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
-  return `
-    <div class="artifact-actions">${pdfUrl ? `<a class="download-link" href="${pdfUrl}" download>↓ PDF taslağını indir</a>` : `<span class="download-link is-disabled">PDF hazırlanamadı</span>`}</div>
-    <article class="draft-sheet"><div class="draft-letterhead"><strong>${escapeHtml(draftValue(draft.institution_name))}</strong></div><div class="draft-meta"><span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span><span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span><span><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</span><span><b>Şablon:</b> ${escapeHtml(draft.template_id)}</span></div><div class="draft-recipient">${escapeHtml(draftValue(draft.recipient))}</div>${paragraphs}<div class="draft-signature"><strong>${escapeHtml(draftValue(draft.signer))}</strong><br />${escapeHtml(draftValue(draft.signer_title))}</div></article>`;
+  const outputs = (state.layer3_outputs || []).length
+    ? state.layer3_outputs
+    : state.draft
+      ? [{ label: "Resmî yazı taslağı", draft: state.draft, artifact: state.artifact, compliance: state.compliance }]
+      : [];
+  if (!outputs.length) return `<div class="empty-state"><h3>Taslak bulunmuyor</h3><p>Henüz bir resmî yazı taslağı oluşturulmadı.</p></div>`;
+  return outputs.map((output) => {
+    const draft = output.draft;
+    const pdfUrl = safeArtifactUrl(output.artifact?.pdf_download_url);
+    const texUrl = safeArtifactUrl(output.artifact?.tex_download_url);
+    const paragraphs = (draft.paragraphs || []).filter((paragraph) => !isInternalDraftNotice(paragraph)).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+    return `<section class="layer3-draft-output"><h3>${escapeHtml(output.label || "Resmî yazı")}</h3><div class="artifact-actions">${texUrl ? `<a class="download-link" href="${texUrl}" download>↓ LaTeX (.tex) indir</a>` : ""}${pdfUrl ? `<a class="download-link" href="${pdfUrl}" download>↓ PDF indir</a>` : `<span class="download-link is-disabled">PDF hazırlanamadı</span>`}<span class="download-link is-disabled">Uygunluk: %${safePercent(output.compliance?.score)}</span></div><article class="draft-sheet"><div class="draft-letterhead"><strong>${escapeHtml(draftValue(draft.institution_name))}</strong></div><div class="draft-meta"><span><b>Sayı:</b> ${escapeHtml(draftValue(draft.number))}</span><span><b>Tarih:</b> ${escapeHtml(draftValue(draft.date))}</span><span><b>Konu:</b> ${escapeHtml(draftValue(draft.subject))}</span></div><div class="draft-recipient">${escapeHtml(draftValue(draft.recipient))}</div>${paragraphs}<div class="draft-signature"><strong>${escapeHtml(draftValue(draft.signer))}</strong><br />${escapeHtml(draftValue(draft.signer_title))}</div></article></section>`;
+  }).join("");
 }
 
 function llmStepDescription(step) {
@@ -497,6 +616,60 @@ function llmStepDescription(step) {
   return details.join(" ");
 }
 
+function renderLlmDecisionAudit(step) {
+  const summary = step.decision_summary
+    ? `<div class="llm-decision-summary"><strong>Karar özeti</strong><p>${escapeHtml(step.decision_summary)}</p></div>`
+    : "";
+  const checks = (step.decision_checks || []).map((check) => {
+    const hasScore = check.observed_score !== null && check.observed_score !== undefined;
+    const hasThreshold = check.required_score !== null && check.required_score !== undefined;
+    const score = hasScore ? Number(check.observed_score) : NaN;
+    const threshold = hasThreshold ? Number(check.required_score) : NaN;
+    const scoreText = Number.isFinite(score)
+      ? ` · Skor: %${safePercent(score)}${Number.isFinite(threshold) ? ` / Eşik: %${safePercent(threshold)}` : ""}`
+      : "";
+    return `<li class="${check.passed ? "is-passed" : "is-failed"}"><span>${check.passed ? "✓" : "!"}</span><div><strong>${escapeHtml(check.name)}</strong><small>${escapeHtml(check.detail || "")}${escapeHtml(scoreText)}</small></div></li>`;
+  }).join("");
+  const checksBlock = checks
+    ? `<div class="llm-audit-block"><strong>Sunucu karar kapıları</strong><ul class="llm-check-list">${checks}</ul></div>`
+    : "";
+  const repairBlock = step.repair_attempted
+    ? `<div class="llm-repair ${step.repair_succeeded ? "is-success" : "is-warning"}"><strong>Kanıt düzeltme turu: ${step.repair_succeeded ? "başarılı" : "tamamlanamadı"}</strong><small>${escapeHtml(step.repair_detail || (step.repair_succeeded ? `Sağlayıcı durumu: ${step.repair_status || "başarılı"}` : `Sağlayıcı durumu: ${step.repair_status || "bilinmiyor"}; doğrulama hataları sürdü.`))}</small></div>`
+    : "";
+  const scoreBasisLabels = {
+    agent_overall_confidence: "Ajan genel güveni",
+    finding_confidence: "Bulgu güveni",
+    server_validation: "Sunucu doğrulaması"
+  };
+  const findingStatusLabels = {
+    accepted: "Kabul edildi",
+    rejected: "Reddedildi",
+    informational: "Bilgilendirme"
+  };
+  const findings = (step.findings || []).map((finding) => {
+    const hasScore = finding.confidence !== null && finding.confidence !== undefined;
+    const score = hasScore ? Number(finding.confidence) : NaN;
+    const scoreText = Number.isFinite(score) ? `%${safePercent(score)}` : "Skor yok";
+    const evidence = [
+      ...(finding.document_evidence_ids || []).map((id) => `Satır: ${id}`),
+      ...(finding.legal_reference_ids || []).map((id) => `Kaynak: ${id}`)
+    ];
+    const serverScores = [
+      finding.legal_support_score !== null && finding.legal_support_score !== undefined ? `Mevzuat desteği: %${safePercent(finding.legal_support_score)}` : "",
+      finding.document_presence_score !== null && finding.document_presence_score !== undefined ? `Belgede bulunma: %${safePercent(finding.document_presence_score)}` : "",
+      finding.coordinate_confidence !== null && finding.coordinate_confidence !== undefined ? `Koordinat güveni: %${safePercent(finding.coordinate_confidence)}` : ""
+    ].filter(Boolean);
+    const legalQuote = finding.legal_evidence
+      ? `<blockquote><strong>Mevzuat kanıtı:</strong> ${escapeHtml(finding.legal_evidence)}</blockquote>`
+      : "";
+    return `<article class="llm-finding is-${escapeHtml(finding.status || "informational")}"><div><strong>${escapeHtml(finding.label || finding.kind || "Bulgu")}</strong><span>${escapeHtml(findingStatusLabels[finding.status] || finding.status || "")}</span></div><p>${escapeHtml(finding.finding || "")}</p>${legalQuote}<small>${escapeHtml(scoreText)} · ${escapeHtml(scoreBasisLabels[finding.score_basis] || finding.score_basis || "Skor kaynağı belirtilmedi")}${serverScores.length ? ` · ${escapeHtml(serverScores.join(" · "))}` : ""}${evidence.length ? ` · ${escapeHtml(evidence.join(" · "))}` : ""}</small><div class="score-line"><i style="width:${Number.isFinite(score) ? safePercent(score) : 0}%"></i></div></article>`;
+  }).join("");
+  const findingsBlock = findings
+    ? `<div class="llm-audit-block"><strong>Skorlu bulgular</strong><div class="llm-findings">${findings}</div></div>`
+    : "";
+  return `${summary}${repairBlock}${checksBlock}${findingsBlock}`;
+}
+
 function renderLlmTimeline(llmTrace) {
   const steps = llmTrace?.steps || [];
   if (!steps.length) return "";
@@ -517,7 +690,7 @@ function renderLlmTimeline(llmTrace) {
       step.failure_code ? `Hata kodu: ${step.failure_code}${step.retryable ? " (yeniden denenebilir)" : ""}` : "",
       step.redacted ? `Maskeleme: ${step.redaction_count || 0} alan` : ""
     ].filter(Boolean).join(" · ");
-    return `<div class="timeline-item"><span class="timeline-dot" aria-hidden="true"></span><div><strong>${escapeHtml(role)} · ${escapeHtml(status)}</strong><p>${escapeHtml(llmStepDescription(step))}</p><small>${escapeHtml(metadata)}</small></div></div>`;
+    return `<div class="timeline-item"><span class="timeline-dot" aria-hidden="true"></span><div><strong>${escapeHtml(role)} · ${escapeHtml(status)}</strong><p>${escapeHtml(llmStepDescription(step))}</p><small>${escapeHtml(metadata)}</small>${renderLlmDecisionAudit(step)}</div></div>`;
   }).join("");
   return `<section class="timeline-group" aria-label="LLM orkestrasyon adımları"><h4>LLM orkestrasyon adımları</h4><div class="timeline">${items}</div></section>`;
 }
@@ -541,8 +714,8 @@ function renderState(state) {
   resultContent.hidden = false;
   resultContent.innerHTML = `
     <div class="result-headline"><div><span class="result-label">${escapeHtml(statusLabels[state.status] || state.status)}</span><h3>${escapeHtml(typeLabel(state.analysis?.general_document_type || state.analysis?.document_type))}</h3><p>${escapeHtml(state.next_step || "Sonucu inceleyin.")}</p></div><button class="document-id" id="copy-document-id" type="button" title="Evrak kimliğini kopyala">${escapeHtml(state.document_id)} ⧉</button></div>
-    <nav class="result-tabs" role="tablist" aria-label="Sonuç bölümleri"><button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-result-tab="overview">Genel</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="fields">Alanlar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="sources">Kaynaklar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="draft">Taslak</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="timeline">Akış</button></nav>
-    <section class="tab-panel" data-tab-panel="overview">${renderOverview(state)}</section><section class="tab-panel" data-tab-panel="fields" hidden>${renderFields(state)}</section><section class="tab-panel" data-tab-panel="sources" hidden>${renderReferences(state)}</section><section class="tab-panel" data-tab-panel="draft" hidden>${renderDraft(state)}</section><section class="tab-panel" data-tab-panel="timeline" hidden>${renderTimeline(state)}</section>`;
+    <nav class="result-tabs" role="tablist" aria-label="Sonuç bölümleri"><button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-result-tab="overview">Genel</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="fields">Alanlar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="sources">Kaynaklar</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="layer2">Katman 2</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="draft">Taslak</button><button class="result-tab" type="button" role="tab" aria-selected="false" data-result-tab="timeline">Akış</button></nav>
+    <section class="tab-panel" data-tab-panel="overview">${renderOverview(state)}</section><section class="tab-panel" data-tab-panel="fields" hidden>${renderFields(state)}</section><section class="tab-panel" data-tab-panel="sources" hidden>${renderReferences(state)}</section><section class="tab-panel" data-tab-panel="layer2" hidden>${renderLayer2(state)}</section><section class="tab-panel" data-tab-panel="draft" hidden>${renderDraft(state)}</section><section class="tab-panel" data-tab-panel="timeline" hidden>${renderTimeline(state)}</section>`;
 
   bindResultInteractions();
   if (state.status === "tamamlandi") setGuideStep(4, true);
@@ -580,6 +753,7 @@ function bindResultInteractions() {
   });
   missingForm?.addEventListener("submit", handleInformationSubmit);
   document.querySelector("#approval-form")?.addEventListener("submit", handleApprovalSubmit);
+  document.querySelector("#response-strategy-form")?.addEventListener("submit", handleResponseStrategySubmit);
 }
 
 async function handleInformationSubmit(event) {
@@ -625,6 +799,39 @@ async function handleApprovalSubmit(event) {
     showToast(error.message);
     submit.disabled = false;
     submit.textContent = "Taslağı nihai olarak onayla";
+  }
+}
+
+async function handleResponseStrategySubmit(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const submit = form.querySelector("button[type='submit']");
+  const selected = form.querySelector("input[name='response-strategy-option']:checked");
+  const optionId = selected ? selected.value : null;
+  const target = form.querySelector("input[name='delivery-target']:checked")?.value || "citizen";
+  const customText = form.querySelector("#response-strategy-custom-text").value.trim();
+  submit.disabled = true;
+  submit.textContent = "Kaynak-bağlı taslak hazırlanıyor…";
+  try {
+    const state = await requestJson(
+      `/api/v1/processes/${encodeURIComponent(currentState.document_id)}/response-strategy`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          option_id: optionId,
+          custom_text: customText || null,
+          delivery_target: target,
+          compile_pdf: true
+        })
+      }
+    );
+    renderState(state);
+    showToast("Yanıt stratejisi kaydedildi ve Katman 3 taslağı oluşturuldu.", "success");
+  } catch (error) {
+    showToast(error.message);
+    submit.disabled = false;
+    submit.textContent = "Stratejiyi seç ve taslağı oluştur";
   }
 }
 
@@ -714,13 +921,15 @@ processForm.addEventListener("submit", async (event) => {
     if (inputMode === "file") {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      state = await requestJson("/api/v1/processes/file?compile_pdf=true", { method: "POST", body: formData });
+      const started = await requestJson("/api/v1/processes/file/start?compile_pdf=true", { method: "POST", body: formData });
+      state = await pollProcess(started.document_id);
     } else {
-      state = await requestJson("/api/v1/processes/text", {
+      const started = await requestJson("/api/v1/processes/text/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textArea.value.trim(), source_name: `${activeScenario}-arayuz-senaryosu.txt`, compile_pdf: true })
       });
+      state = await pollProcess(started.document_id);
     }
     renderState(state);
   } catch (error) {

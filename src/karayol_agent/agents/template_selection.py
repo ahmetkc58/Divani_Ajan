@@ -7,14 +7,12 @@ class TemplateSelectionAgent:
     name = "Yazı Türü ve Şablon Seçimi Ajanı"
 
     DOCUMENT_TO_TEMPLATE = {
-        "bilgi_talebi": "cevap_yazisi_v1",
+        "belge": "cevap_yazisi_v1",
         "dilekce": "cevap_yazisi_v1",
         "sikayet": "cevap_yazisi_v1",
-        "yol_bakim_talebi": "ust_yazi_v1",
-        "trafik_guvenligi_bildirimi": "ust_yazi_v1",
-        "hasar_bildirimi": "ust_yazi_v1",
-        "ust_yazi": "bilgilendirme_yazisi_v1",
-        "genel_basvuru": "cevap_yazisi_v1",
+        "itiraz": "cevap_yazisi_v1",
+        "talep": "ust_yazi_v1",
+        "izin": "ust_yazi_v1",
     }
 
     def __init__(self, low_confidence_threshold: float = 0.60) -> None:
@@ -69,4 +67,3 @@ class TemplateSelectionAgent:
     @staticmethod
     def _document_type_for(template_id: str) -> str:
         return template_id.removesuffix("_v1")
-

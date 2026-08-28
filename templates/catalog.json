@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "note": "Katman 3 şablon seçimi için kapalı metadata kataloğu; ham LaTeX içermez.",
+  "entries": [
+    {
+      "template_id": "ust_yazi_v1",
+      "display_name": "Üst Yazı",
+      "when_to_use": "Kurumun bağlı veya alt birimine resmî bildirim, talimat ya da görevlendirme göndermesi gerektiğinde kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "cevap_yazisi_v1",
+      "display_name": "Cevap Yazısı",
+      "when_to_use": "Vatandaşın veya dış başvuru sahibinin dilekçe, şikâyet, bilgi talebi ya da genel başvurusuna resmî yanıt verilirken kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "bilgilendirme_yazisi_v1",
+      "display_name": "Bilgilendirme Yazısı",
+      "when_to_use": "Doğrudan talep içermeyen, yalnız bilgi vermeyi amaçlayan resmî yazışmalarda kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    },
+    {
+      "template_id": "eksik_bilgi_talebi_v1",
+      "display_name": "Eksik Bilgi Talebi",
+      "when_to_use": "Başvurunun işleme alınması için zorunlu bilgi veya belgelerin tamamlanması gerektiğinde kullanılır.",
+      "required_fields_summary": ["subject", "paragraphs", "recipient", "closing", "references"]
+    }
+  ]
+}

@@ -62,6 +62,36 @@ class LegislationResearchAgent:
         self, analysis: DocumentAnalysis
     ) -> LegislationSearchResult:
         query = self._query_for(analysis)
+        return self._search(query, analysis)
+
+    def run_requirements_with_diagnostics(
+        self, analysis: DocumentAnalysis
+    ) -> LegislationSearchResult:
+        """Retrieve type-specific writing, signature and mandatory-field rules."""
+
+        base_query = self._query_for(analysis)
+        type_rule_terms = {
+            "ust_yazi": (
+                "resmi yazışma zorunlu alanlar şekil şartları tarih sayı konu "
+                "muhatap imza ek dağıtım"
+            ),
+            "dilekce": "dilekçe zorunlu unsurlar tarih imza başvuran makam",
+        }.get(analysis.general_document_type)
+        query = f"{base_query} {type_rule_terms}" if type_rule_terms else base_query
+        return self._search(query, analysis)
+
+    def search_query_with_diagnostics(
+        self, query: str, analysis: DocumentAnalysis
+    ) -> LegislationSearchResult:
+        """Run a caller-supplied, analysis-scoped query for bounded agentic search."""
+
+        return self._search(query, analysis)
+
+    def _search(
+        self,
+        query: str,
+        analysis: DocumentAnalysis,
+    ) -> LegislationSearchResult:
         search_for_analysis = getattr(self.retriever, "search_for_analysis", None)
         search_with_diagnostics = getattr(
             self.retriever, "search_with_diagnostics", None

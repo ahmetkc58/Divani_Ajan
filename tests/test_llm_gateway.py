@@ -391,6 +391,8 @@ def test_openai_compatible_provider_uses_configured_https_endpoint() -> None:
 
     assert result.succeeded
     assert transport.requests[0].url == "https://llm.example.org/v1/chat/completions"
+    payload = json.loads(transport.requests[0].body)
+    assert payload["chat_template_kwargs"] == {"enable_thinking": False}
 
 
 def test_ollama_provider_uses_local_native_chat_without_api_key() -> None:

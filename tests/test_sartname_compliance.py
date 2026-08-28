@@ -34,14 +34,12 @@ ROOT = Path(__file__).resolve().parents[1]
 # eşleşir; burada tekrar yazılmasının amacı, kod tarafı sessizce
 # genişletildiğinde bu testin de güncellenmesini zorunlu kılmaktır.
 CLOSED_DOCUMENT_TYPES = {
-    "yol_bakim_talebi",
-    "trafik_guvenligi_bildirimi",
-    "hasar_bildirimi",
-    "bilgi_talebi",
-    "sikayet",
-    "ust_yazi",
     "dilekce",
-    "genel_basvuru",
+    "sikayet",
+    "itiraz",
+    "talep",
+    "izin",
+    "belge",
 }
 
 # --- Bu dosyaya özgü, geliştirme fixture'larından bağımsız kurgu evraklar ---
@@ -180,12 +178,12 @@ def _complete_and_approve(
 @pytest.mark.parametrize(
     ("text", "expected_type"),
     [
-        pytest.param(HASAR_BILDIRIMI_TEXT, "hasar_bildirimi", id="hasar_bildirimi"),
-        pytest.param(BILGI_TALEBI_TEXT, "bilgi_talebi", id="bilgi_talebi"),
+        pytest.param(HASAR_BILDIRIMI_TEXT, "sikayet", id="hasar_bildirimi"),
+        pytest.param(BILGI_TALEBI_TEXT, "belge", id="bilgi_talebi"),
         pytest.param(SIKAYET_TEXT, "sikayet", id="sikayet"),
         pytest.param(DILEKCE_TEXT, "dilekce", id="dilekce"),
-        pytest.param(UST_YAZI_TEXT, "ust_yazi", id="ust_yazi"),
-        pytest.param(IRRELEVANT_NO_ANSWER_TEXT, "genel_basvuru", id="genel_basvuru"),
+        pytest.param(UST_YAZI_TEXT, "dilekce", id="ust_yazi"),
+        pytest.param(IRRELEVANT_NO_ANSWER_TEXT, "dilekce", id="genel_basvuru"),
     ],
 )
 def test_document_type_is_selected_from_the_closed_label_set(
@@ -303,7 +301,7 @@ def test_low_confidence_classification_is_disclosed_not_hidden(
     ("text", "expected_unit_id", "expected_template_id"),
     [
         pytest.param(
-            HASAR_BILDIRIMI_TEXT, "ORKGM-AF-001", "ust_yazi_v1", id="hasar_bildirimi"
+            HASAR_BILDIRIMI_TEXT, "ORKGM-AF-001", "cevap_yazisi_v1", id="hasar_bildirimi"
         ),
         pytest.param(
             BILGI_TALEBI_TEXT, "ORKGM-BE-001", "cevap_yazisi_v1", id="bilgi_talebi"
@@ -312,7 +310,7 @@ def test_low_confidence_classification_is_disclosed_not_hidden(
             DILEKCE_TEXT, "KGM-YOLYAP-YAPIM", "cevap_yazisi_v1", id="dilekce"
         ),
         pytest.param(
-            UST_YAZI_TEXT, "KGM-PROG-MEV", "bilgilendirme_yazisi_v1", id="ust_yazi"
+            UST_YAZI_TEXT, "KGM-PROG-MEV", "cevap_yazisi_v1", id="ust_yazi"
         ),
     ],
 )
@@ -378,8 +376,8 @@ def test_official_closing_matches_authority_relation(
 
     internal = orchestrator.process_text(HASAR_BILDIRIMI_TEXT)
     assert internal.draft is not None
-    assert internal.draft.authority_relation == "subordinate_internal"
-    assert internal.draft.closing == "Gereğini rica ederim."
+    assert internal.draft.authority_relation == "citizen_or_external"
+    assert internal.draft.closing == "Bilgilerinize sunulur."
 
     external = orchestrator.process_text(BILGI_TALEBI_TEXT)
     assert external.draft is not None
@@ -502,7 +500,7 @@ def test_untrusted_document_text_is_treated_as_data_not_as_instructions(
     state = orchestrator.process_text(PROMPT_INJECTION_TEXT)
 
     assert state.analysis is not None
-    assert state.analysis.document_type == "yol_bakim_talebi"
+    assert state.analysis.document_type == "talep"
     assert state.routing is not None
     assert state.routing.unit_id == "ORKGM-YB-001"
     # Enjeksiyon ifadesi yürütülmez; yalnız 'konu' alanının düz metni olarak korunur.

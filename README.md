@@ -1,5 +1,10 @@
 # Karayolu Evrak Akıllı Ajan Sistemi
 
+Üç katmanlı ajan mimarisinin görevleri, iki vektör korpusunun kullanımı ve yeni
+bir arayüzün REST API'ye nasıl bağlanacağı için
+[`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
+belgesine bakın.
+
 Bu depo, `PROJE_PLANI.md` içindeki TEKNOFEST 2026 projesinin çalışan MVP
 uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
 

@@ -20,6 +20,7 @@ class ProcessStatus(StrEnum):
     WAITING_FOR_INFO = "eksik_bilgi_bekleniyor"
     SELECTING_TEMPLATE = "yazi_turu_seciliyor"
     ROUTING = "birim_yonlendiriliyor"
+    WAITING_FOR_RESPONSE_STRATEGY = "yanit_stratejisi_bekleniyor"
     DRAFTING = "taslak_hazirlaniyor"
     COMPLIANCE = "uygunluk_kontrolunde"
     WAITING_FOR_APPROVAL = "kullanici_onayi_bekleniyor"
@@ -41,17 +42,19 @@ class ExtractedField(BaseModel):
 
 
 class ClassificationResult(BaseModel):
-    # ``document_type`` geriye uyumlu çalışma zamanı konu/niyet profilidir.
-    # Kullanıcıya gösterilecek geniş evrak sınıfı ``general_document_type``tır.
+    # İki alan da yarışma sözleşmesindeki kapalı altılı evrak türünü taşır.
+    # İnce konu/niyet ayrımı ``DocumentAnalysis.operational_category`` alanındadır.
     document_type: str
-    general_document_type: str = "genel_basvuru"
+    general_document_type: str = "dilekce"
     confidence: float = Field(ge=0, le=1)
     matched_keywords: list[str] = Field(default_factory=list)
 
 
 class DocumentAnalysis(BaseModel):
     document_type: str
-    general_document_type: str = "genel_basvuru"
+    general_document_type: str = "dilekce"
+    document_subtype: str | None = None
+    operational_category: str | None = None
     confidence: float = Field(ge=0, le=1)
     summary: str
     # Retrieval safety checks need evidence from the submitted document, not
@@ -60,6 +63,61 @@ class DocumentAnalysis(BaseModel):
     fields: dict[str, ExtractedField]
     missing_fields: list[str] = Field(default_factory=list)
     keywords: list[str] = Field(default_factory=list)
+    important_facts: list[str] = Field(default_factory=list)
+    classification_reference_ids: list[str] = Field(default_factory=list)
+
+
+class BoundingBox(BaseModel):
+    """Normalized page coordinates produced by a trusted local extractor."""
+
+    x0: float = Field(ge=0, le=1)
+    y0: float = Field(ge=0, le=1)
+    x1: float = Field(ge=0, le=1)
+    y1: float = Field(ge=0, le=1)
+
+
+class DocumentLine(BaseModel):
+    line_id: str
+    page: int = Field(ge=1)
+    text: str
+    bbox: BoundingBox | None = None
+    confidence: float | None = Field(default=None, ge=0, le=1)
+    source: Literal["text_layer", "ocr", "plain_text"] = "plain_text"
+
+
+class DocumentLayout(BaseModel):
+    """Coordinate-aware document text. LLMs may cite IDs but never set bboxes."""
+
+    lines: list[DocumentLine] = Field(default_factory=list)
+    page_count: int = Field(default=1, ge=1)
+    coordinate_system: Literal["normalized_page", "unavailable"] = "unavailable"
+
+
+class Layer1Requirement(BaseModel):
+    field: str
+    requirement: str
+    status: Literal["present", "missing", "ambiguous", "not_applicable"]
+    document_evidence_ids: list[str] = Field(default_factory=list)
+    legal_reference_ids: list[str] = Field(default_factory=list)
+    legal_evidence: str | None = Field(default=None, max_length=500)
+    confidence: float = Field(ge=0, le=1)
+    legal_support_score: float | None = Field(default=None, ge=0, le=1)
+    document_presence_score: float | None = Field(default=None, ge=0, le=1)
+    coordinate_confidence: float | None = Field(default=None, ge=0, le=1)
+
+
+class Layer1Audit(BaseModel):
+    """RAG-grounded result of the second Layer-1 LLM."""
+
+    document_type: str
+    operational_category: str | None = None
+    requirements: list[Layer1Requirement] = Field(default_factory=list)
+    missing_fields: list[str] = Field(default_factory=list)
+    format_violations: list[str] = Field(default_factory=list)
+    important_results: list[str] = Field(default_factory=list)
+    accepted_reference_ids: list[str] = Field(default_factory=list)
+    validation_warnings: list[str] = Field(default_factory=list)
+    requires_human_review: bool = False
 
 
 class LegislationChunk(BaseModel):
@@ -213,6 +271,50 @@ class LLMStepTrace(BaseModel):
     accepted_reference_ids: list[str] = Field(default_factory=list)
     human_review_required: bool = False
     decision_applied: bool | None = None
+    decision_summary: str | None = Field(default=None, max_length=1200)
+    decision_checks: list["LLMDecisionCheck"] = Field(default_factory=list)
+    findings: list["LLMFindingTrace"] = Field(default_factory=list)
+    repair_attempted: bool = False
+    repair_succeeded: bool = False
+    repair_status: str | None = None
+    repair_detail: str | None = Field(default=None, max_length=500)
+
+
+class LLMDecisionCheck(BaseModel):
+    """One explicit server-side gate used to accept or reject an LLM proposal."""
+
+    name: str = Field(max_length=120)
+    passed: bool
+    detail: str = Field(max_length=500)
+    observed_score: float | None = Field(default=None, ge=0, le=1)
+    required_score: float | None = Field(default=None, ge=0, le=1)
+
+
+class LLMFindingTrace(BaseModel):
+    """Auditable finding summary; never a hidden chain-of-thought transcript."""
+
+    kind: Literal[
+        "classification",
+        "fact",
+        "requirement",
+        "result",
+        "validation_warning",
+    ]
+    label: str = Field(max_length=160)
+    finding: str = Field(max_length=700)
+    confidence: float | None = Field(default=None, ge=0, le=1)
+    score_basis: Literal[
+        "agent_overall_confidence",
+        "finding_confidence",
+        "server_validation",
+    ]
+    status: Literal["accepted", "rejected", "informational"]
+    document_evidence_ids: list[str] = Field(default_factory=list)
+    legal_reference_ids: list[str] = Field(default_factory=list)
+    legal_evidence: str | None = Field(default=None, max_length=500)
+    legal_support_score: float | None = Field(default=None, ge=0, le=1)
+    document_presence_score: float | None = Field(default=None, ge=0, le=1)
+    coordinate_confidence: float | None = Field(default=None, ge=0, le=1)
 
 
 class LLMRunTrace(BaseModel):
@@ -309,6 +411,15 @@ class UnitRecord(BaseModel):
     jurisdictions: list[str] = Field(default_factory=list)
 
 
+class ResponseStrategyOption(BaseModel):
+    """Taslak yazılmadan önce kullanıcıya sunulan kaynak-bağlı yanıt duruşu."""
+
+    option_id: str = Field(min_length=1, max_length=40)
+    label: str = Field(min_length=1, max_length=160)
+    description: str = Field(min_length=1, max_length=600)
+    reference_ids: list[str] = Field(default_factory=list)
+
+
 class DraftPayload(BaseModel):
     template_id: str
     institution_name: ExtractedField
@@ -355,6 +466,15 @@ class ComplianceResult(BaseModel):
     rule_source_id: str | None = None
 
 
+class Layer3DraftOutput(BaseModel):
+    target: Literal["citizen", "internal_unit"]
+    label: str
+    template_id: str
+    draft: DraftPayload
+    artifact: ArtifactResult
+    compliance: ComplianceResult
+
+
 class ProcessEvent(BaseModel):
     status: ProcessStatus
     message: str
@@ -374,7 +494,12 @@ class ProcessState(BaseModel):
     provided_information: dict[str, str] = Field(default_factory=dict)
     source_name: str | None = None
     raw_text: str | None = None
+    document_layout: DocumentLayout | None = None
     analysis: DocumentAnalysis | None = None
+    layer1_audit: Layer1Audit | None = None
+    # Katman-2 kendi kapalı sözleşmesini bağımsız modülde doğrular. API modeli
+    # burada yalnız serileştirilmiş, geriye uyumlu sonucu taşır.
+    layer2_assessment: dict[str, Any] | None = None
     search_hits: list[SearchHit] = Field(default_factory=list)
     retrieval_diagnostics: RetrievalDiagnostics | None = None
     graph_decision_trace: GraphDecisionTrace | None = None
@@ -382,6 +507,13 @@ class ProcessState(BaseModel):
     verified_references: list[VerifiedReference] = Field(default_factory=list)
     template_decision: TemplateDecision | None = None
     routing: RoutingRecommendation | None = None
+    response_strategy_options: list[ResponseStrategyOption] = Field(
+        default_factory=list
+    )
+    selected_delivery_target: Literal["citizen", "internal_unit", "both"] | None = None
+    selected_response_strategy: ResponseStrategyOption | None = None
+    selected_response_custom_text: str | None = None
+    layer3_outputs: list[Layer3DraftOutput] = Field(default_factory=list)
     draft: DraftPayload | None = None
     artifact: ArtifactResult | None = None
     compliance: ComplianceResult | None = None
@@ -409,3 +541,10 @@ class InformationUpdateRequest(BaseModel):
 
 class ApprovalRequest(BaseModel):
     approved_by: str = Field(min_length=2, max_length=120)
+
+
+class ResponseStrategyRequest(BaseModel):
+    option_id: str | None = Field(default=None, max_length=40)
+    custom_text: str | None = Field(default=None, max_length=4000)
+    delivery_target: Literal["citizen", "internal_unit", "both"] = "citizen"
+    compile_pdf: bool = False

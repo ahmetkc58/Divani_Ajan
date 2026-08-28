@@ -469,6 +469,43 @@
         ],
         "title": "Body_uploadDocument"
       },
+      "BoundingBox": {
+        "properties": {
+          "x0": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "X0"
+          },
+          "y0": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Y0"
+          },
+          "x1": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "X1"
+          },
+          "y1": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Y1"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BoundingBox",
+        "description": "Normalized page coordinates produced by a trusted local extractor."
+      },
       "ComplianceResult": {
         "properties": {
           "passed": {
@@ -532,6 +569,28 @@
             "title": "General Document Type",
             "default": "genel_basvuru"
           },
+          "document_subtype": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Subtype"
+          },
+          "operational_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operational Category"
+          },
           "confidence": {
             "type": "number",
             "maximum": 1.0,
@@ -573,6 +632,20 @@
             },
             "type": "array",
             "title": "Keywords"
+          },
+          "important_facts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Important Facts"
+          },
+          "classification_reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Classification Reference Ids"
           }
         },
         "type": "object",
@@ -583,6 +656,92 @@
           "fields"
         ],
         "title": "DocumentAnalysis"
+      },
+      "DocumentLayout": {
+        "properties": {
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentLine"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "page_count": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Page Count",
+            "default": 1
+          },
+          "coordinate_system": {
+            "type": "string",
+            "enum": [
+              "normalized_page",
+              "unavailable"
+            ],
+            "title": "Coordinate System",
+            "default": "unavailable"
+          }
+        },
+        "type": "object",
+        "title": "DocumentLayout",
+        "description": "Coordinate-aware document text. LLMs may cite IDs but never set bboxes."
+      },
+      "DocumentLine": {
+        "properties": {
+          "line_id": {
+            "type": "string",
+            "title": "Line Id"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Page"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "bbox": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BoundingBox"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "text_layer",
+              "ocr",
+              "plain_text"
+            ],
+            "title": "Source",
+            "default": "plain_text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "line_id",
+          "page",
+          "text"
+        ],
+        "title": "DocumentLine"
       },
       "DraftPayload": {
         "properties": {
@@ -870,6 +1029,189 @@
         ],
         "title": "InformationUpdateRequest"
       },
+      "LLMDecisionCheck": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 120,
+            "title": "Name"
+          },
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "detail": {
+            "type": "string",
+            "maxLength": 500,
+            "title": "Detail"
+          },
+          "observed_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed Score"
+          },
+          "required_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "passed",
+          "detail"
+        ],
+        "title": "LLMDecisionCheck",
+        "description": "One explicit server-side gate used to accept or reject an LLM proposal."
+      },
+      "LLMFindingTrace": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "classification",
+              "fact",
+              "requirement",
+              "result",
+              "validation_warning"
+            ],
+            "title": "Kind"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "title": "Label"
+          },
+          "finding": {
+            "type": "string",
+            "maxLength": 700,
+            "title": "Finding"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "score_basis": {
+            "type": "string",
+            "enum": [
+              "agent_overall_confidence",
+              "finding_confidence",
+              "server_validation"
+            ],
+            "title": "Score Basis"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "rejected",
+              "informational"
+            ],
+            "title": "Status"
+          },
+          "document_evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Document Evidence Ids"
+          },
+          "legal_reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Legal Reference Ids"
+          },
+          "legal_evidence": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Evidence"
+          },
+          "legal_support_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Support Score"
+          },
+          "document_presence_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Presence Score"
+          },
+          "coordinate_confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "label",
+          "finding",
+          "score_basis",
+          "status"
+        ],
+        "title": "LLMFindingTrace",
+        "description": "Auditable finding summary; never a hidden chain-of-thought transcript."
+      },
       "LLMRunTrace": {
         "properties": {
           "mode": {
@@ -1123,6 +1465,65 @@
               }
             ],
             "title": "Decision Applied"
+          },
+          "decision_summary": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Summary"
+          },
+          "decision_checks": {
+            "items": {
+              "$ref": "#/components/schemas/LLMDecisionCheck"
+            },
+            "type": "array",
+            "title": "Decision Checks"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/LLMFindingTrace"
+            },
+            "type": "array",
+            "title": "Findings"
+          },
+          "repair_attempted": {
+            "type": "boolean",
+            "title": "Repair Attempted",
+            "default": false
+          },
+          "repair_succeeded": {
+            "type": "boolean",
+            "title": "Repair Succeeded",
+            "default": false
+          },
+          "repair_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Repair Status"
+          },
+          "repair_detail": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Repair Detail"
           }
         },
         "type": "object",
@@ -1132,6 +1533,179 @@
         ],
         "title": "LLMStepTrace",
         "description": "Persistable outcome of a guarded LLM role invocation."
+      },
+      "Layer1Audit": {
+        "properties": {
+          "document_type": {
+            "type": "string",
+            "title": "Document Type"
+          },
+          "operational_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operational Category"
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/Layer1Requirement"
+            },
+            "type": "array",
+            "title": "Requirements"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          },
+          "format_violations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Format Violations"
+          },
+          "important_results": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Important Results"
+          },
+          "accepted_reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Accepted Reference Ids"
+          },
+          "validation_warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Validation Warnings"
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "title": "Requires Human Review",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_type"
+        ],
+        "title": "Layer1Audit",
+        "description": "RAG-grounded result of the second Layer-1 LLM."
+      },
+      "Layer1Requirement": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "requirement": {
+            "type": "string",
+            "title": "Requirement"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "present",
+              "missing",
+              "ambiguous",
+              "not_applicable"
+            ],
+            "title": "Status"
+          },
+          "document_evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Document Evidence Ids"
+          },
+          "legal_reference_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Legal Reference Ids"
+          },
+          "legal_evidence": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Evidence"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "legal_support_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Support Score"
+          },
+          "document_presence_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Presence Score"
+          },
+          "coordinate_confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "requirement",
+          "status",
+          "confidence"
+        ],
+        "title": "Layer1Requirement"
       },
       "LegislationChunk": {
         "properties": {
@@ -1422,10 +1996,30 @@
             ],
             "title": "Raw Text"
           },
+          "document_layout": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentLayout"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "analysis": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/DocumentAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "layer1_audit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Layer1Audit"
               },
               {
                 "type": "null"

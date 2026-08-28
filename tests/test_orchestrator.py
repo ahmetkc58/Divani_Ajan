@@ -27,7 +27,7 @@ def test_complete_multi_agent_flow_and_approval(tmp_path: Path) -> None:
 
     assert state.status == ProcessStatus.WAITING_FOR_INFO
     assert state.analysis is not None
-    assert state.analysis.document_type == "yol_bakim_talebi"
+    assert state.analysis.document_type == "talep"
     assert state.analysis.fields["gonderen"].value == "Ayşe Yılmaz"
     assert state.analysis.fields["konu"].value == "D-100 bağlantı yolundaki asfalt bozulması"
     assert state.analysis.fields["konum"].value == (
@@ -64,7 +64,7 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
     state = orchestrator.process_file(ROOT / "examples" / "eksik_trafik_bildirimi.txt")
 
     assert state.analysis is not None
-    assert state.analysis.document_type == "trafik_guvenligi_bildirimi"
+    assert state.analysis.document_type == "talep"
     assert state.analysis.missing_fields == ["gonderen", "konum"]
     assert state.routing is not None
     assert state.routing.unit_id == "ORKGM-TG-001"
@@ -72,8 +72,6 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
     assert state.template_decision.template_id == "eksik_bilgi_talebi_v1"
     assert state.status == ProcessStatus.WAITING_FOR_INFO
     assert state.missing_information == [
-        "gonderen",
-        "konum",
         "sayi",
         "imzalayan",
         "unvan",
@@ -83,8 +81,6 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
     state = orchestrator.provide_information(
         state.document_id,
         {
-            "gonderen": "Deniz Örnek",
-            "konum": "Örnek İlçe, çevre yolu kavşağı",
             "sayi": "E-67915368-903.07.02-77",
             "imzalayan": "Mert Demir",
             "unvan": "Şube Müdürü",
@@ -92,10 +88,10 @@ def test_missing_source_fields_selects_information_request(tmp_path: Path) -> No
         },
     )
 
-    assert state.analysis.missing_fields == []
+    assert state.analysis.missing_fields == ["gonderen", "konum"]
     assert state.missing_information == []
     assert state.template_decision is not None
-    assert state.template_decision.template_id == "ust_yazi_v1"
+    assert state.template_decision.template_id == "eksik_bilgi_talebi_v1"
     assert state.status == ProcessStatus.WAITING_FOR_APPROVAL
     assert state.draft is not None
     assert state.draft.missing_fields == []

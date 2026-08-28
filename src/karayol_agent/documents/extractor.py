@@ -11,6 +11,8 @@ from pathlib import Path
 from pypdf import PdfReader
 
 from karayol_agent.documents.text_normalization import normalize_document_text
+from karayol_agent.documents.layout import file_layout
+from karayol_agent.schemas import DocumentLayout
 from karayol_agent.text_utils import normalize_whitespace
 
 
@@ -109,6 +111,12 @@ class DocumentExtractor:
                 "sessiz kesme yapılmadı."
             )
         return text
+
+    def extract_with_layout(self, path: Path) -> tuple[str, DocumentLayout]:
+        """Extract text plus trusted line/page coordinates for evidence binding."""
+
+        text = self.extract(path)
+        return text, file_layout(path, text)
 
     @staticmethod
     def _validate_file_signature(path: Path, suffix: str) -> None:

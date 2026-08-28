@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "SRC-3071",
+      "title": "3071 sayılı Dilekçe Hakkının Kullanılmasına Dair Kanun",
+      "authority": "Türkiye Büyük Millet Meclisi / Mevzuat Bilgi Sistemi",
+      "source_url": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.3071.pdf",
+      "document_number": "3071",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": true
+    },
+    {
+      "source_id": "SRC-4982-UYGULAMA",
+      "title": "Bilgi Edinme Hakkı Kanununun Uygulanmasına İlişkin Esas ve Usuller Hakkında Yönetmelik",
+      "authority": "Karayolları Genel Müdürlüğü",
+      "source_url": "https://www.kgm.gov.tr/Sayfalar/KGM/SiteTr/Root/BilgiEdinme/BilgiEdinmeKanunUygulama.aspx",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": true
+    },
+    {
+      "source_id": "SRC-RY-2646",
+      "title": "Resmî Yazışmalarda Uygulanacak Usul ve Esaslar Hakkında Yönetmelik",
+      "authority": "Cumhurbaşkanlığı",
+      "source_url": "https://dhmi.gov.tr/Lists/KanunveYonetmelikler/Attachments/146/Resmi-Yazismalarda-Uygulanacak-Usul-ve-Esaslar-Hakkinda-Yonetmelik.pdf",
+      "document_number": "2646",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": true
+    },
+    {
+      "source_id": "SRC-CIMER-5690",
+      "title": "Cumhurbaşkanlığı İletişim Merkezi Yönetmeliği",
+      "authority": "Cumhurbaşkanlığı",
+      "source_url": "https://cdniys.tarimorman.gov.tr/api/File/GetGaleriFile/513/DosyaGaleri/9184/cimeryonetmeligi.pdf",
+      "document_number": "5690",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": true
+    },
+    {
+      "source_id": "SRC-KGM-SIKAYET-FORMU",
+      "title": "Türkiye Acil Yol Rehabilitasyonu ve Yeniden Yapım Projesi Şikâyet/Talep Formu",
+      "authority": "Karayolları Genel Müdürlüğü",
+      "source_url": "https://www.kgm.gov.tr/SiteCollectionDocuments/%C5%9Eik%C3%A2yet%20-Talep%20Formu.pdf",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": false,
+      "source_kind": "official_form"
+    },
+    {
+      "source_id": "SRC-KGM-GECIS-YOLU",
+      "title": "Karayolları Kenarında Yapılacak ve Açılacak Tesisler Hakkında Yönetmelik",
+      "authority": "Karayolları Genel Müdürlüğü",
+      "source_url": "https://www.kgm.gov.tr/sitecollectiondocuments/kgmdocuments/trafik/kanunyonetmelik/karayolutesis.pdf",
+      "reviewed_on": "2026-08-27",
+      "currentness_verified": true,
+      "legal_reliance_allowed": true
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "3071-M4-AD-SOYAD",
+      "source_id": "SRC-3071",
+      "article": "Madde 4",
+      "field": "gonderen",
+      "requirement": "Dilekçe sahibinin adı ve soyadı bulunmalıdır.",
+      "legal_evidence": "Dilekçelerde, dilekçe sahibinin adı-soyadı ve imzası ile iş veya ikametgâh adresinin bulunması gerekir.",
+      "general_document_types": ["dilekce", "sikayet", "talep", "genel_basvuru"],
+      "excluded_terms": ["anonim şirket", "limited şirket", "a.ş.", "a.s.", "ltd. şti."]
+    },
+    {
+      "rule_id": "3071-M4-IMZA",
+      "source_id": "SRC-3071",
+      "article": "Madde 4",
+      "field": "imza",
+      "requirement": "Dilekçe sahibi tarafından atılmış imza bulunmalıdır.",
+      "legal_evidence": "Dilekçelerde, dilekçe sahibinin adı-soyadı ve imzası ile iş veya ikametgâh adresinin bulunması gerekir.",
+      "general_document_types": ["dilekce", "sikayet", "talep", "genel_basvuru"],
+      "expected_position": "Belgenin son bölümündeki imza alanı"
+    },
+    {
+      "rule_id": "3071-M4-ADRES",
+      "source_id": "SRC-3071",
+      "article": "Madde 4",
+      "field": "adres",
+      "requirement": "Dilekçe sahibinin iş veya ikametgâh adresi bulunmalıdır.",
+      "legal_evidence": "Dilekçelerde, dilekçe sahibinin adı-soyadı ve imzası ile iş veya ikametgâh adresinin bulunması gerekir.",
+      "general_document_types": ["dilekce", "sikayet", "talep", "genel_basvuru"]
+    },
+    {
+      "rule_id": "3071-M6-KONU",
+      "source_id": "SRC-3071",
+      "article": "Madde 6",
+      "field": "konu",
+      "requirement": "Başvuru belirli ve anlaşılır bir konu içermelidir.",
+      "legal_evidence": "Belli bir konuyu ihtiva etmeyenler incelenemezler.",
+      "general_document_types": ["dilekce", "sikayet", "talep", "genel_basvuru"]
+    },
+    {
+      "rule_id": "4982-M9-GERCEK-KISI",
+      "source_id": "SRC-4982-UYGULAMA",
+      "article": "Madde 9",
+      "field": "gonderen",
+      "requirement": "Gerçek kişi bilgi edinme başvurusunda ad ve soyad bulunmalıdır.",
+      "legal_evidence": "Gerçek kişiler tarafından yapılacak bilgi edinme başvurusu; başvuru sahibinin adı ve soyadı, imzası, oturma yeri veya iş adresini içeren dilekçeyle yapılır.",
+      "general_document_types": ["belge"],
+      "operational_categories": ["bilgi_talebi"]
+    },
+    {
+      "rule_id": "4982-M9-IMZA",
+      "source_id": "SRC-4982-UYGULAMA",
+      "article": "Madde 9",
+      "field": "imza",
+      "requirement": "Yazılı gerçek kişi bilgi edinme başvurusunda imza bulunmalıdır.",
+      "legal_evidence": "Gerçek kişiler tarafından yapılacak bilgi edinme başvurusu; başvuru sahibinin adı ve soyadı, imzası, oturma yeri veya iş adresini içeren dilekçeyle yapılır.",
+      "general_document_types": ["belge"],
+      "operational_categories": ["bilgi_talebi"],
+      "expected_position": "Belgenin son bölümündeki imza alanı"
+    },
+    {
+      "rule_id": "4982-M9-ADRES",
+      "source_id": "SRC-4982-UYGULAMA",
+      "article": "Madde 9",
+      "field": "adres",
+      "requirement": "Gerçek kişi bilgi edinme başvurusunda oturma yeri veya iş adresi bulunmalıdır.",
+      "legal_evidence": "Gerçek kişiler tarafından yapılacak bilgi edinme başvurusu; başvuru sahibinin adı ve soyadı, imzası, oturma yeri veya iş adresini içeren dilekçeyle yapılır.",
+      "general_document_types": ["belge"],
+      "operational_categories": ["bilgi_talebi"]
+    },
+    {
+      "rule_id": "4982-M9-TALEP-ACIKLIGI",
+      "source_id": "SRC-4982-UYGULAMA",
+      "article": "Madde 9",
+      "field": "talep",
+      "requirement": "İstenen bilgi veya belgeler açık ve ayrıntılı belirtilmelidir.",
+      "legal_evidence": "Dilekçede, istenen bilgi veya belgeler açık ve ayrıntılı olarak belirtilir.",
+      "general_document_types": ["belge"],
+      "operational_categories": ["bilgi_talebi"]
+    },
+    {
+      "rule_id": "RY-M10-BASLIK",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 10",
+      "field": "baslik",
+      "requirement": "Üst yazıda idareyi gösteren başlık bulunmalıdır.",
+      "legal_evidence": "Başlık, belgeyi gönderen idarenin adının belirtildiği bölümdür.",
+      "general_document_types": ["ust_yazi"],
+      "rule_kind": "position",
+      "expected_position": "İlk sayfanın üst orta bölümü"
+    },
+    {
+      "rule_id": "RY-M11-SAYI",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 11",
+      "field": "sayi",
+      "requirement": "Üst yazıda sayı bilgisi bulunmalıdır.",
+      "legal_evidence": "Belgelerde sayı bulunması zorunludur.",
+      "general_document_types": ["ust_yazi"],
+      "expected_position": "İlk sayfada başlığın altındaki sol bölüm"
+    },
+    {
+      "rule_id": "RY-M12-TARIH",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 12",
+      "field": "tarih",
+      "requirement": "Üst yazıda tarih bulunmalıdır.",
+      "legal_evidence": "Tarih; sayı ile aynı satırda olmak üzere yazı alanının en sağında yer alır.",
+      "general_document_types": ["ust_yazi"],
+      "rule_kind": "position",
+      "expected_position": "İlk sayfada sayı ile aynı satırın sağ tarafı"
+    },
+    {
+      "rule_id": "RY-M13-KONU",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 13",
+      "field": "konu",
+      "requirement": "Üst yazıda içeriği kısa ve öz anlatan konu bulunmalıdır.",
+      "legal_evidence": "Konu, belgenin içeriği hakkında kısa ve öz bilgi barındırır.",
+      "general_document_types": ["ust_yazi"],
+      "expected_position": "Sayı alanının bir alt satırı"
+    },
+    {
+      "rule_id": "RY-M14-MUHATAP",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 14",
+      "field": "muhatap",
+      "requirement": "Üst yazıda belgenin gönderildiği idare veya kişi belirtilmelidir.",
+      "legal_evidence": "Muhatap, belgenin gönderildiği idareyi veya kişiyi belirtir.",
+      "general_document_types": ["ust_yazi"],
+      "expected_position": "Konu bölümünün altında, sayfa ortasında"
+    },
+    {
+      "rule_id": "RY-M16-METIN",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 16",
+      "field": "metin",
+      "requirement": "Üst yazıda muhatap veya ilgiden sonra açıklayıcı metin bulunmalıdır.",
+      "legal_evidence": "Metin alanı, Muhatap veya varsa İlgi ile İmza arasındaki kısımdır.",
+      "general_document_types": ["ust_yazi"]
+    },
+    {
+      "rule_id": "RY-M17-IMZA",
+      "source_id": "SRC-RY-2646",
+      "article": "Madde 17",
+      "field": "imza",
+      "requirement": "Üst yazı yetkili makam tarafından imzalanmalıdır.",
+      "legal_evidence": "Metnin bitiminden itibaren iki ila dört satır boşluk bırakılarak belgeyi imzalayacak olan makam sahibinin adı, soyadı ve bunların altında unvanı yazı alanının en sağına ortalanarak yazılır.",
+      "general_document_types": ["ust_yazi"],
+      "rule_kind": "position",
+      "expected_position": "Metinden sonra sağ alt bölüm"
+    },
+    {
+      "rule_id": "CIMER-M6-AD-SOYAD",
+      "source_id": "SRC-CIMER-5690",
+      "article": "Madde 6",
+      "field": "gonderen",
+      "requirement": "CİMER başvurusunda başvuru sahibinin adı ve soyadı bulunmalıdır.",
+      "legal_evidence": "Başvuru, başvuru sahibinin adı ve soyadını içerecek şekilde yapılır.",
+      "subtype_terms": ["cimer"]
+    },
+    {
+      "rule_id": "CIMER-M6-KIMLIK",
+      "source_id": "SRC-CIMER-5690",
+      "article": "Madde 6",
+      "field": "kimlik_numarasi",
+      "requirement": "CİMER başvurusunda vatandaşlık, pasaport veya yabancı kimlik numarası bulunmalıdır.",
+      "legal_evidence": "Başvuru, Türkiye Cumhuriyeti vatandaşları için T.C. vatandaşlık kimlik numarasını, diğer ülke vatandaşları için pasaport numarası veya yabancı kimlik numarasını içerecek şekilde yapılır.",
+      "subtype_terms": ["cimer"]
+    },
+    {
+      "rule_id": "CIMER-M6-ILETISIM",
+      "source_id": "SRC-CIMER-5690",
+      "article": "Madde 6",
+      "field": "iletisim",
+      "requirement": "CİMER başvurusunda yerleşim/iş adresi ile iletişim bilgileri bulunmalıdır.",
+      "legal_evidence": "Başvuru, yerleşim yeri ve/veya iş adresi ile iletişim bilgilerini içerecek şekilde yapılır.",
+      "subtype_terms": ["cimer"]
+    },
+    {
+      "rule_id": "CIMER-M6-IMZA",
+      "source_id": "SRC-CIMER-5690",
+      "article": "Madde 6",
+      "field": "imza",
+      "requirement": "Yazılı CİMER başvurusunda imza bulunmalıdır.",
+      "legal_evidence": "Başvuru, başvuru sahibinin imzasını içerecek şekilde yapılır.",
+      "subtype_terms": ["cimer"],
+      "expected_position": "Belgenin son bölümündeki imza alanı"
+    },
+    {
+      "rule_id": "KGM-FORM-TARIH",
+      "source_id": "SRC-KGM-SIKAYET-FORMU",
+      "field": "tarih",
+      "requirement": "KGM proje şikâyet/talep formunda tarih alanı beklenir.",
+      "legal_evidence": "Tarih : ...... / ...... / ..........",
+      "subtype_terms": ["türkiye acil yol rehabilitasyonu", "şikâyet / talep formu", "şikayet / talep formu"],
+      "rule_kind": "official_form_field",
+      "applicability": "form_profile",
+      "absence_is_missing": false,
+      "severity": "warning"
+    },
+    {
+      "rule_id": "KGM-FORM-DETAY",
+      "source_id": "SRC-KGM-SIKAYET-FORMU",
+      "field": "sikayet_detayi",
+      "requirement": "KGM proje şikâyet/talep formunda şikâyet detayı alanı beklenir.",
+      "legal_evidence": "Şikâyet detayı :",
+      "subtype_terms": ["türkiye acil yol rehabilitasyonu", "şikâyet / talep formu", "şikayet / talep formu"],
+      "rule_kind": "official_form_field",
+      "applicability": "form_profile",
+      "absence_is_missing": false,
+      "severity": "warning"
+    },
+    {
+      "rule_id": "KGM-GECIS-M23-SAHIPLIK",
+      "source_id": "SRC-KGM-GECIS-YOLU",
+      "article": "Madde 23",
+      "field": "sahiplik_belgesi",
+      "requirement": "Geçiş yolu ön izin başvurusunda sahiplik veya kullanım hakkını gösteren belge bulunmalıdır.",
+      "legal_evidence": "Tesis yapılacak yerin tapusu, çaplı tasarruf belgesi, zilyetlik ilmuhaberi veya kira kontratından herhangi birinin aslı veya noterden tasdikli bir örneği istenir.",
+      "general_document_types": ["izin"],
+      "subtype_terms": ["geçiş yolu", "gecis yolu"],
+      "rule_kind": "mandatory_attachment"
+    },
+    {
+      "rule_id": "KGM-GECIS-M23-VAZIYET",
+      "source_id": "SRC-KGM-GECIS-YOLU",
+      "article": "Madde 23",
+      "field": "vaziyet_plani",
+      "requirement": "Geçiş yolu ön izin başvurusunda teknik elemanlarca hazırlanmış ve imzalanmış vaziyet planı bulunmalıdır.",
+      "legal_evidence": "Teknik elemanlarca hazırlanmış ve imzalanmış tesisin arazi üzerindeki konumunu, her türlü giriş çıkış yollarını gösteren vaziyet planlarından beş adet istenir.",
+      "general_document_types": ["izin"],
+      "subtype_terms": ["geçiş yolu", "gecis yolu"],
+      "rule_kind": "mandatory_attachment"
+    },
+    {
+      "rule_id": "KGM-GECIS-M23-BELEDIYE-YAZISI",
+      "source_id": "SRC-KGM-GECIS-YOLU",
+      "article": "Madde 23",
+      "field": "belediye_sinir_yazisi",
+      "requirement": "Tesis belediye veya mücavir alan dışındaysa bunu gösteren resmî yazı bulunmalıdır.",
+      "legal_evidence": "Tesis yerinin belediye sınırı veya mücavir alan dışında olduğuna dair ilgili Belediyeden alınmış resmi yazı istenir.",
+      "general_document_types": ["izin"],
+      "subtype_terms": ["geçiş yolu", "gecis yolu"],
+      "rule_kind": "conditional_attachment",
+      "applicability": "conditional",
+      "absence_is_missing": false,
+      "severity": "warning"
+    }
+  ]
+}

@@ -37,6 +37,10 @@ class LegalAgentRole(StrEnum):
     RESEARCHER = "researcher"
     AUDITOR = "auditor"
     ADJUDICATOR = "adjudicator"
+    TEMPLATE_SELECTOR = "template_selector"
+    DRAFTER = "drafter"
+    ROUTER = "router"
+    RESPONSE_ADVISOR = "response_advisor"
 
 
 class DataClassification(StrEnum):
@@ -104,8 +108,8 @@ class LLMConfig:
             raise ValueError("LLM base URL yapılandırılmalıdır.")
         if isinstance(self.timeout_seconds, bool) or not isinstance(
             self.timeout_seconds, (int, float)
-        ) or not 0 < self.timeout_seconds <= 60:
-            raise ValueError("LLM timeout değeri 0-60 saniye arasında olmalıdır.")
+        ) or not 0 < self.timeout_seconds <= 1800:
+            raise ValueError("LLM timeout değeri 0-1800 saniye arasında olmalıdır.")
         if isinstance(self.max_output_tokens, bool) or not isinstance(
             self.max_output_tokens, int
         ) or not 32 <= self.max_output_tokens <= 8192:

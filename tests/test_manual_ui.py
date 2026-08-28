@@ -56,7 +56,8 @@ def test_manual_test_interface_and_local_assets(monkeypatch, tmp_path: Path) -> 
     assert "Standalone frontend styles" in stylesheet
     assert "handleInformationSubmit" in script
     assert "handleApprovalSubmit" in script
-    assert "PDF taslağını indir" in script
+    assert "LaTeX (.tex) indir" in script
+    assert "PDF indir" in script
     assert "LaTeX taslağını indir" not in script
     assert 'id="compile-pdf"' not in page
     assert "compile_pdf: true" in script
@@ -116,6 +117,21 @@ def test_manual_ui_exposes_llm_roles_and_outcomes_in_flow_tab(
     assert "step.retryable" in script
     assert "step.decision_applied === true" in script
     assert "step.decision_applied === false" in script
+    assert "renderLlmDecisionAudit(step)" in script
+    assert "step.decision_summary" in script
+    assert "step.decision_checks || []" in script
+    assert "step.findings || []" in script
+    assert "Sunucu karar kapıları" in script
+    assert "Skorlu bulgular" in script
+    assert "finding.confidence" in script
+    assert "finding.legal_reference_ids" in script
+    assert "step.repair_attempted" in script
+    assert "step.repair_succeeded" in script
+    assert "Kanıt düzeltme turu" in script
+    assert "finding.legal_support_score" in script
+    assert "finding.document_presence_score" in script
+    assert "finding.coordinate_confidence" in script
+    assert "finding.legal_evidence" in script
     assert "step.detail" in script
     assert "Ağ çağrısından önce veri güvenliği politikası uygulandı" in script
 
@@ -149,7 +165,8 @@ def test_primary_manual_scenario_reaches_approval_and_download(
     )
     assert process_response.status_code == 200
     initial = process_response.json()
-    assert initial["analysis"]["document_type"] == "yol_bakim_talebi"
+    assert initial["analysis"]["document_type"] == "talep"
+    assert initial["analysis"]["operational_category"] == "yol_bakim_talebi"
     assert initial["routing"]["unit_id"] == "ORKGM-YB-001"
     assert initial["template_decision"]["template_id"] == "ust_yazi_v1"
     assert initial["missing_information"] == ["sayi", "imzalayan", "unvan"]
@@ -206,7 +223,8 @@ def test_file_upload_path_matches_primary_scenario(monkeypatch, tmp_path: Path) 
     assert payload["source_name"] == source_path.name
     assert payload["raw_text"] == source_path.read_text(encoding="utf-8").strip()
     assert payload["status"] == "eksik_bilgi_bekleniyor"
-    assert payload["analysis"]["document_type"] == "yol_bakim_talebi"
+    assert payload["analysis"]["document_type"] == "talep"
+    assert payload["analysis"]["operational_category"] == "yol_bakim_talebi"
     assert payload["routing"]["unit_id"] == "ORKGM-YB-001"
     assert payload["template_decision"]["template_id"] == "ust_yazi_v1"
     assert payload["artifact"]["compiled"] is False
@@ -236,6 +254,7 @@ def test_paraphrase_scenario_uses_concept_signals_for_road_maintenance(
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["analysis"]["document_type"] == "yol_bakim_talebi"
+    assert payload["analysis"]["document_type"] == "talep"
+    assert payload["analysis"]["operational_category"] == "yol_bakim_talebi"
     assert payload["routing"]["unit_id"] == "ORKGM-YB-001"
     assert payload["template_decision"]["template_id"] == "ust_yazi_v1"

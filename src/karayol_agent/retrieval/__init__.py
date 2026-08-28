@@ -52,6 +52,12 @@ from .reranker import (
     RerankingRetriever,
 )
 from .repository import LegislationRepository, RepositoryApprovalError
+from .requirement_rules import (
+    RequirementRule,
+    RequirementRuleCatalog,
+    RequirementRuleRepository,
+    RequirementSource,
+)
 from .runtime import (
     AnalysisAwareHybridRetriever,
     AnalysisDomainResolver,
@@ -93,6 +99,10 @@ __all__ = [
     "RELEVANCE_STRATEGY",
     "ROAD_SURFACE_PROFILE",
     "RepositoryApprovalError",
+    "RequirementRule",
+    "RequirementRuleCatalog",
+    "RequirementRuleRepository",
+    "RequirementSource",
     "RerankedSearchResponse",
     "RerankerProvider",
     "RerankerUnavailableError",

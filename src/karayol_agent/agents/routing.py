@@ -49,6 +49,7 @@ class RoutingAgent:
             " ".join(
                 [
                     analysis.document_type,
+                    analysis.operational_category or "",
                     analysis.summary,
                     analysis.retrieval_evidence_text or "",
                     *analysis.keywords,
