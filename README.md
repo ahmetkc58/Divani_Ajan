@@ -1,20 +1,7 @@
 # Divan-ı Ajan
 
-**TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması - 1. Senaryo**<br>
-**Tema:** Kamu Evrak ve Yazışma Süreçleri İçin Akıllı Agent Destek Sistemi
-
-Divan-ı Ajan; kamu kurumlarına ulaşan evrakı okuyup anlamlandıran, türünü ve
-eksiklerini belirleyen, ilgili kaynakları bulan, işlem yapılacak birimi öneren
-ve insan onayına sunulmak üzere resmî yazı taslağı hazırlayan Türkçe, çok
-ajanlı bir karar destek sistemidir.
-
-Projenin amacı kamu personelinin yerine kontrolsüz karar vermek değil; yoğun,
-tekrarlı ve hata riski taşıyan evrak iş akışını **kaynak izli, açıklanabilir ve
-insan denetimli** hâle getirmektir.
-
-> **Hukuki kullanım sınırı:** Yarışma snapshot'ı güncelliği ve yürürlüğü
-> doğrulanmış bir hukuk hizmeti değildir. Sistem kaynak, sürüm ve güven
-> durumunu görünür tutar; kritik kararlar insan onayı olmadan kesinleştirilmez.
+Divan-ı Ajan, **TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması** için
+geliştirilen Türkçe kamu evrakı işleme ve resmî yazı hazırlama sistemidir.
 
 ## Takım
 
@@ -25,398 +12,182 @@ insan denetimli** hâle getirmektir.
 | Geliştirici | Ceren Karabağ |
 | Geliştirici | Sami Erdoğmuş |
 
-Takım adı **Divan-ı Ajan**dır ve şartnamede belirtilen takım kaptanı dâhil dört
-kişilik takım yapısına uygundur.
+## Problem
 
-## Yarışma problemi
+Kamu kurumlarına gelen evrakların okunması, sınıflandırılması, eksik
+bilgilerinin belirlenmesi, ilgili mevzuatın bulunması, doğru birime
+yönlendirilmesi ve resmî cevabın hazırlanması çok sayıda manuel adımdan oluşur.
+Bu yapı işlem süresini uzatır, personel yükünü artırır ve farklı birimler
+arasında standartlaşmayı zorlaştırır.
 
-Kamu evrak süreçlerinde belge alımı, OCR, içerik analizi, sınıflandırma,
-mevzuat/yazışma kuralı eşleştirmesi, eksik bilgi tespiti, resmî taslak üretimi
-ve birime yönlendirme çoğunlukla farklı kişilerce ve çok adımlı biçimde
-yürütülür. Bu durum işlem süresini uzatır, standartlaşmayı zorlaştırır ve
-kararların izlenebilirliğini azaltır.
-
-Divan-ı Ajan bu zinciri tek bir denetlenebilir süreçte birleştirir:
+Divan-ı Ajan bu süreci tek bir denetlenebilir iş akışında birleştirir:
 
 ```text
-Evrak / OCR
-    -> Katman 1: sınıflandırma, alan çıkarımı ve eksiklik denetimi
-    -> Katman 2: federated RAG, kaynak doğrulama ve içerik değerlendirmesi
-    -> Katman 3: şablon, birim, cevap stratejisi ve resmî taslak
-    -> uygunluk kontrolü -> insan onayı -> LaTeX / PDF
+Evrak alımı ve OCR
+        -> sınıflandırma ve bilgi çıkarımı
+        -> eksik alan denetimi
+        -> mevzuat arama ve kaynak doğrulama
+        -> birim ve resmî yazı türü seçimi
+        -> taslak ve uygunluk kontrolü
+        -> insan onayı ve PDF/LaTeX çıktı
 ```
 
-## Üç katmanlı çözüm mimarisi
+Sistem kesin hukuki karar veren bir yapı değildir. Kaynakların güncellik ve
+güven durumunu görünür tutan, kanıt yetersiz olduğunda çekimser kalan ve nihai
+kararı kullanıcıya bırakan bir karar destek sistemidir.
+
+## Proje mimarisi
 
 ### Katman 1 - Evrakı anlama
 
-- TXT, MD, PDF, PNG, JPG ve TIFF girdilerini kabul eder.
-- Metin katmanı yoksa veya yetersizse OCR uygular.
-- Evrakı kapalı genel tür kataloğunda sınıflandırır.
-- Gönderen, tarih, konu, talep ve benzeri önemli alanları çıkarır.
-- Evrak türüne göre bulunması gereken alanları denetler.
-- Eksik veya belirsiz bilgileri kullanıcıya bildirim olarak sunar.
+Katman 1 gelen belgeyi işler:
+
+- TXT, MD, PDF ve görsel belgelerden metin çıkarır.
+- Gerektiğinde OCR uygular ve sayfa/satır izlerini korur.
+- Evrakın genel türünü ve operasyonel konusunu belirler.
+- Gönderen, tarih, konu ve talep gibi önemli alanları çıkarır.
+- Evrak türüne göre zorunlu alanları kontrol ederek eksikleri bildirir.
+- Kısa ve yapılandırılmış bir özet üretir.
+
+Başlıca dosyalar:
+
+```text
+src/karayol_agent/documents/extractor.py
+src/karayol_agent/agents/classifier.py
+src/karayol_agent/agents/analysis.py
+src/karayol_agent/agents/llm_roles.py
+src/karayol_agent/retrieval/requirement_rules.py
+```
 
 ### Katman 2 - Kaynağa bağlı değerlendirme
 
-- Evraktaki hukuki ve teknik meseleleri ayrı arama sorgularına dönüştürür.
-- UAB/karayolları korpusu ile geniş hukuk korpusunu ayrı kanallarda tarar.
-- Farklı embedding uzaylarının ham skorlarını doğrudan karşılaştırmaz; kanal
-  sıralarını Reciprocal Rank Fusion ile birleştirir.
-- Getirilen hükmü evraktaki görünür ifadeyle ilişkilendirir.
-- Kaynak alıntısını, madde/fıkra izini ve belge kanıtını doğrular.
-- Yeterli kanıt yoksa kaynak veya hukuki sonuç uydurmak yerine çekimser kalır.
+Katman 2 evraktaki hukuki ve teknik meseleleri ayrı sorgulara dönüştürür.
+UAB/karayolları korpusu ile geniş hukuk korpusunu ayrı kanallarda arar. Bulunan
+hükmün gerçekten evraktaki iddia veya taleple ilişkili olup olmadığını kaynak
+alıntısı ve belge kanıtıyla denetler.
+
+Arama sonuçları doğrudan doğru kabul edilmez. Researcher adayları toplar,
+Auditor kaynak ve ilişkiyi denetler, Adjudicator yalnız denetimden geçen
+bulguları kullanıcıya sunar. Yeterli kanıt bulunamazsa sistem kaynak uydurmaz.
+
+Başlıca dosyalar:
+
+```text
+src/karayol_agent/layer2_legal_reasoning.py
+src/karayol_agent/agents/legislation.py
+src/karayol_agent/retrieval/federated.py
+src/karayol_agent/retrieval/hybrid.py
+src/karayol_agent/retrieval/qdrant_store.py
+```
 
 ### Katman 3 - Kurumsal işlem ve resmî yazı
 
-- Kapalı katalogdan resmî yazı/şablon türünü seçer.
-- Organizasyon kataloğuna bağlı sorumlu birim önerir.
-- Kullanıcıya kaynaklı cevap stratejileri sunar.
-- Vatandaş, kurum içi birim veya iki hedef için ayrı taslak üretebilir.
-- Modelin doğrudan LaTeX yazmasına izin vermeden yapılandırılmış alanları
-  güvenli şablona aktarır.
-- Resmî yazışma uygunluk kontrollerinden sonra insan onayı ister.
+Katman 3, doğrulanmış analiz ve kaynaklardan hareketle:
 
-Ayrıntılı akış, REST sözleşmesi ve arayüz alanları için
-[`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
-belgesine bakın.
+- uygun resmî yazı şablonunu seçer,
+- sorumlu kurum birimini önerir,
+- kullanıcıya cevap stratejileri sunar,
+- seçilen hedef için resmî yazı taslağı oluşturur,
+- taslağı resmî yazışma kurallarıyla denetler,
+- insan onayından sonra LaTeX ve PDF çıktısı verir.
 
-## Şartname görevleriyle uyum
+LLM doğrudan LaTeX üretmez. Yapılandırılmış alanları doldurur; güvenli kaçış ve
+belge düzeni renderer tarafından uygulanır.
 
-| Şartname beklentisi | Divan-ı Ajan karşılığı |
-|---|---|
-| Evrakı OCR veya doğrudan metin olarak okuma | Belge çıkarıcı, sayfa bazlı kalite kontrolü ve OCR fallback |
-| Evrak türünü belirleme | Kapalı genel tür kataloğu ve yapılandırılmış sınıflandırma |
-| Önemli bilgileri çıkarma | Kaynak ve belge satırı izi taşıyan alan çıkarımı |
-| Eksik bilgileri tespit etme | Evrak türüne bağlı gereksinim kataloğu ve Katman 1 denetimi |
-| Mevzuat/yazışma kuralı önerme | Hibrit ve federated RAG, kaynak doğrulama kapıları |
-| Kısa ve öz özet oluşturma | Yapılandırılmış analiz özeti |
-| Resmî yazı türüne karar verme | Kapalı şablon kataloğu ve Katman 3 seçim ajanı |
-| Resmî üsluba uygun taslak | Güvenli LaTeX şablonları ve deterministik uygunluk motoru |
-| Doğru birime yönlendirme | Kapalı organizasyon kataloğuna bağlı yönlendirme |
-| Kullanıcıyı süreç hakkında bilgilendirme | Durum olayları, polling API'si ve arayüz zaman çizelgesi |
-| Gerektiğinde eksik bilgi isteme | Bildirim, güvenli bilgi tamamlama ve insan onayı adımları |
-
-Yarışmada iki görevin birlikte tamamlanması zorunludur. Bu nedenle proje yalnız
-sınıflandırma yapan bir model veya yalnız metin üreten bir sohbet ekranı olarak
-değil, evrak alımından onaylı çıktıya kadar uçtan uca tasarlanmıştır.
-
-## Veri ve güvenlik yaklaşımı
-
-Şartname gereği gerçek kamu verisi kullanılmaz. Proje geliştirme ve gösterim
-sürecinde:
-
-- açık kaynak metinler,
-- kurgusal/sentetik evraklar,
-- yapay olarak oluşturulmuş resmî yazışma örnekleri,
-- kullanım durumu açıkça işaretlenmiş mevzuat snapshot'ları
-
-kullanılır. Kişisel veya kısıtlı evrakın haricî LLM'e gönderilmesi fail-closed
-güvenlik kapılarıyla engellenir. API anahtarları kaynak koduna veya frontend'e
-yazılmaz. Kaynak, lisans, model sürümü ve veri sınırı mümkün olduğu ölçüde
-metadata ile korunur.
-
-## Jüri değerlendirmesine yönelik teknik değer
-
-Şartnamede final değerlendirmesi 100 puandır:
-
-| Kriter | Puan | Projede gösterilecek kanıt |
-|---|---:|---|
-| Yöntem ve Teknik Yaklaşım | 35 | Üç katmanlı ajan ayrımı, çift korpus, RRF, kaynak kapıları ve denetlenebilir iz |
-| Uygulama | 35 | OCR, sınıflandırma, eksik alan, yönlendirme, özet ve resmî taslak doğruluğu |
-| Demo | 15 | Uçtan uca çalışan Türkçe senaryo, canlı ilerleme ve indirilebilir çıktı |
-| Yenilikçilik, Özgünlük ve Ticarileşme Potansiyeli | 15 | İnsan denetimli kamu iş akışı, federated Legal RAG ve kurumlara uyarlanabilir kataloglar |
-
-## Önerilen 10 dakikalık final demosu
-
-Final sunumu şartnameye göre toplam 15 dakikadır: 10 dakika takım sunumu ve 5
-dakika jüri soru-cevap bölümü.
-
-1. **Problem ve değer önerisi - 1 dakika:** Kamu evrakındaki zaman, standart ve
-   izlenebilirlik sorununu açıklayın.
-2. **Mimari - 2 dakika:** Üç katmanı, ajan sorumluluklarını ve insan onayını
-   gösterin.
-3. **Canlı evrak alımı - 1 dakika:** Türkçe PDF veya taranmış evrak yükleyin;
-   OCR ve alan kanıtlarını gösterin.
-4. **Katman 1 - 1 dakika:** Tür, özet, önemli alanlar ve eksikleri gösterin.
-5. **Katman 2 - 2 dakika:** Birden fazla mesele için bulunan farklı maddeleri,
-   birebir alıntıları ve çekimserlik kapısını gösterin.
-6. **Katman 3 - 2 dakika:** Birim ve cevap stratejisini seçip resmî taslağı
-   üretin.
-7. **Çıktı ve kapanış - 1 dakika:** Uygunluk sonucu, insan onayı ve PDF/LaTeX
-   indirmeyi gösterin.
-
-Canlı demo için internet kesintisi, uzak servis veya model sorunu ihtimaline
-karşı aynı senaryonun kayıtlı gösterimi ve çevrimdışı fallback'i hazır
-tutulmalıdır. Kayıt kullanılırsa jüri talep ettiğinde sistem canlı
-çalıştırılabilmelidir.
-
-## Yarışma teslim kontrol listesi
-
-- [ ] Her iki görev uçtan uca gösteriliyor.
-- [ ] Takım ve görev dağılımı doğru belgelenmiş.
-- [ ] Tüm teslim dokümanları Türkçe hazırlanmış.
-- [ ] Kaynaklar ve üçüncü taraf lisansları belirtilmiş.
-- [ ] Zorunlu proje bileşenleri uygun bir açık kaynak lisansıyla erişilebilir.
-- [ ] Model ağırlıkları depoya eklenmemiş; erişim, sürüm ve lisans bilgisi yazılmış.
-- [ ] Demo veri kaynakları ve kullanım hakları açıklanmış.
-- [ ] Gerçek kamu veya kişisel veri kullanılmıyor.
-- [ ] Sunum PDF ve PPTX olarak hazırlanmış.
-- [ ] Gerçek zamanlı demoya karşı yedek plan hazır.
-- [ ] Güncel takvim ve final lokasyonu TEKNOFEST resmî kanallarından kontrol edilmiş.
-
-## Temel proje dosyaları
+Başlıca dosyalar:
 
 ```text
-src/karayol_agent/orchestrator.py             # uçtan uca süreç yöneticisi
-src/karayol_agent/agents/llm_roles.py         # Katman 1 LLM rolleri
-src/karayol_agent/layer2_legal_reasoning.py   # Katman 2 değerlendirme zinciri
-src/karayol_agent/retrieval/federated.py      # iki korpusun birlikte aranması
-src/karayol_agent/agents/llm_layer3.py        # Katman 3 LLM rolleri
-src/karayol_agent/backend/routes.py           # REST ve asenkron süreç uçları
-src/karayol_agent/latex/renderer.py           # güvenli LaTeX/PDF üretimi
-frontend/                                     # manuel test ve yarışma arayüzü
-templates/                                    # kapalı resmî yazı şablonları
-tests/                                        # regresyon ve kabul testleri
+src/karayol_agent/agents/llm_layer3.py
+src/karayol_agent/agents/template_selection.py
+src/karayol_agent/agents/routing.py
+src/karayol_agent/agents/drafting.py
+src/karayol_agent/agents/compliance.py
+src/karayol_agent/latex/renderer.py
+templates/
 ```
 
-## Hızlı başlangıç
+Tüm katmanlar `src/karayol_agent/orchestrator.py` tarafından yönetilir. REST
+uçları `src/karayol_agent/backend/routes.py`, kullanıcı arayüzü ise `frontend/`
+altındadır.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev]"
-$env:PYTHONPATH="src"
-python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
-```
+## Mevzuat chunklama mimarisi
 
-Ayrı terminalde frontend:
+Mevzuat metinleri sabit uzunlukta rastgele parçalara ayrılmaz. Hukuki yapı
+korunarak **parent/leaf** biçiminde chunklanır.
 
-```powershell
-python -m http.server 3000 --directory frontend
-```
+### 1. Parent oluşturma
 
-Arayüz `http://127.0.0.1:3000`, API dokümantasyonu
-`http://127.0.0.1:8010/docs` adresindedir. LLM ve Qdrant seçimine ilişkin ayrıntı
-`.env.example` ile aşağıdaki teknik bölümlerde yer alır.
+- Güvenilir `MADDE` başlığı bulunan her madde bir parent kaydıdır.
+- Parent; belge, bölüm, madde, sayfa aralığı ve kaynak izini taşır.
+- Madde yapısı güvenilir biçimde bulunamayan genelge, tablo, ek veya OCR
+  belgelerinde sayfa tabanlı parent fallback uygulanır.
 
----
+### 2. Leaf oluşturma
 
-## Ayrıntılı teknik dokümantasyon
-
-Üç katmanlı ajan mimarisinin görevleri, iki vektör korpusunun kullanımı ve yeni
-bir arayüzün REST API'ye nasıl bağlanacağı için
-[`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
-belgesine bakın.
-
-Bu depo, `PROJE_PLANI.md` içindeki TEKNOFEST 2026 projesinin çalışan MVP
-uygulamasıdır. Sistem sentetik karayolu evraklarını uçtan uca işler:
-
-1. metin/PDF/PNG/JPG/TIFF alımı ve OCR fallback,
-2. evrak sınıflandırma ve önemli alan çıkarımı,
-3. eksik bilgi tespiti,
-4. bağlamsal BM25 veya Jina Embeddings v3 + Qdrant + RRF hibrit arama,
-5. kullanıcı-niyeti + görünür metin alaka kapısı ve kaynak doğrulama,
-6. resmî yazı türü ve LaTeX şablonu seçimi,
-7. sentetik birime yönlendirme,
-8. güvenli LaTeX taslağı ve doğrudan indirilebilir PDF oluşturma,
-9. uygunluk kontrolü ve süreç bilgilendirmesi.
-
-Evrak sınıflandırması iki seviyeyi bilinçli olarak ayırır. Kullanıcıya gösterilen
-kapalı `document_type`; `dilekce`, `sikayet`, `itiraz`, `talep`, `izin`,
-`belge`, `bildirim`, `ust_yazi` veya `genel_basvuru` değerlerinden biridir (bu
-alan aynı zamanda `general_document_type` içinde de tekrarlanır). Yol bakımı,
-trafik güvenliği, hasar ve bilgi edinme gibi ayrımlar evrak türü olarak
-çoğaltılmaz; mevcut yönlendirme ve RAG doğruluğunu koruyan ayrı konu/işlem
-profili `operational_category` alanında tutulur.
-
-Altı genel başvuru türünü kapsayan 120 dengeli sentetik PDF; tür adını gövdeye
-açıkça yazmadan ve 30 gerçek raster/taranmış örnek içerecek şekilde üretilebilir:
-
-```powershell
-python scripts/generate_synthetic_pdfs.py
-```
-
-Beklenen genel tür, eksik alan ve taranmış-belge bayrağı
-`data/synthetic_documents/manifest.csv` içinde saklanır. Bu dosyalar yalnız test
-verisidir; mevzuat RAG korpusuna alınmaz.
-
-Çevrimdışı demo akışı varsayılan olarak kural tabanlı BM25 ile çalışır. İsteğe
-bağlı RAG katmanı aynı sorguyu Jina Embeddings v3 (`retrieval.query`) ve
-contextual BM25 kanallarına gönderir, Qdrant dense sonuçlarını klasik RRF ile
-birleştirir ve dense kanal kullanılamazsa bunu süreç teşhisinde açıkça belirterek
-BM25'e döner. Varsayılan BM25 demo verileri sentetiktir. İsteğe bağlı
-`competition_snapshot` modu depodaki 8 sabit yerel belgeyi zorunlu
-güncellik/hukuki görüş uyarısıyla kullanır; `verified_public` yolu ise insan
-onayı olmadan hâlâ fail-closed kalır.
-
-## Yapılandırılmış LLM, LegalGraph karar zinciri ve OCR alan çıkarımı
-
-24 Ağustos 2026 geliştirme turunda proje planındaki açık LLM orkestrasyonu,
-seçici graf karar desteği ve OCR'dan alan tanıma katmanı birbirine bağlandı:
+Arama parent üzerinde değil, daha hassas leaf parçalarında yapılır:
 
 ```text
-Yerel OCR/alan çıkarımı
-  → Researcher: BM25 veya Jina/Qdrant/RRF adayları
-  → Auditor: kaynak, alaka, güncellik ve kullanım kapıları
-  → sentetik multi-hop graf: kural → evrak türü → birim/şablon/zorunlu alan
-  → Adjudicator: yalnız doğrulanmış kanıt ve kapalı aday listesi
-  → deterministik uygunluk denetimi → insan onayı
+Belge
+  -> Bölüm
+      -> Madde (parent)
+          -> Fıkra (leaf)
+              -> Bent (leaf)
 ```
 
-- Varsayılan LLM sağlayıcısı yerel Ollama'dır. Uygulama
-  `http://127.0.0.1:11434/api/chat` adresine native Ollama JSON Schema isteği
-  gönderir; API anahtarı gerekmez. Varsayılan model bu geliştirme makinesinde
-  kurulu `qwen2.5:0.5b` modelidir ve `KARAYOL_LLM_MODEL` ile değiştirilebilir.
-- Ollama URL'si güvenlik nedeniyle yalnız `localhost`, `127.0.0.1` veya `::1`
-  loopback adresi olabilir. Yerel Ollama kısıtlı evrakı cihaz dışına çıkarmadan
-  işleyebilir; gizli anahtar desenleri yine LLM sınırında engellenir.
-- Gemini/Groq/OpenAI-compatible sağlayıcılar isteğe bağlı olarak korunur.
-  Haricî sağlayıcılara yalnız sabit SHA-256 ile tanınan sentetik gold/UI demo
-  evrakları çıkabilir. Snapshot Adjudicator çağrısında özgün mevzuat paragrafı
-  dışarı verilmez; yalnız Auditor'ın kapalı aday kimlikleri, başlık/madde/sayfa
-  metadata'sı ve `currentness_verified=false` / `legal_reliance_allowed=false`
-  bayrakları aktarılır. Gerçek/kısıtlı evrak, API anahtarı bulunsa bile ağdan
-  önce engellenir. Bu sınır gönderen, iletişim ve hukuk belgesi verilerini
-  korumak için bilinçlidir.
-- Graf girdilerinin SHA-256'ları çalışma anında doğrulanır ve graf aynı
-  girdilerden yeniden üretilip semantik olarak karşılaştırılır. Mevcut graf
-  yalnız sentetik benchmark içindir; `legal_reliance_allowed=false` kalır ve
-  üretim mevzuatı sayılmaz.
-- OCR sonrası alan çıkarımı artık `Gönderici`, `Gönderen`, `Başvuru Sahibi`,
-  `Müracaatçı`, `G0NDEREN`, `K0NU`, `TARlH`, ayrı satırdaki değerler ve güvenli
-  imza bloğu fallback'ini tanır. Kullanılan yöntem alanın `source` izinde
-  saklanır; özgün retrieval kanıt metni değiştirilmez.
-- Karma PDF'lerde metin kalitesi sayfa bazında ölçülür; yalnız zayıf/boş
-  sayfalar OCR'dan geçirilir ve özgün sayfa sırası korunur. Boş OCR sonucu
-  belgeyi durdurur; PDF sayfa/piksel/süre sınırları ve API threadpool izolasyonu
-  kaynak tüketimini sınırlar. Raster görüntülü sayfadaki kısa tarayıcı watermark'i
-  text-layer sayılmaz; kısa imza OCR'ı yalnız yapısal ad/soyad kapısından geçer.
-- PNG/JPG/TIFF belgeler doğrudan OCR akışına alınır. PDF ve görseller uzantıdan
-  bağımsız magic-byte kontrolünden geçer; yanlış uzantılı içerik işlenmez.
-- Resmî taslak şeması ilgi, ek, dağıtım, iletişim, paraf/koordinasyon,
-  elektronik imza, iç belge üstverisi ve makam ilişkisi alanlarını taşır.
-  Boş isteğe bağlı bölümler ile teknik üstveri/kaynak izleri kullanıcıya sunulan
-  belgede gösterilmez; bunlar süreç kaydı ve arayüzde izlenebilir kalır. Makam
-  ilişkisiyle çelişen veya birden fazla kapanış içeren taslak uygunluk kapısını
-  geçemez.
-- Uygunluk motoru `2646-RG-2020-31151` kaynak sürümüne bağlıdır; sayı, tarih,
-  konu, muhatap, ilgi, makam ilişkisine göre kapanış, imza, ek, dağıtım ve
-  üstveri kontrolleri sonuçta `RY-10`–`RY-28` kimlikleriyle izlenir. İlgi ile
-  RAG mevzuat referansları ayrı tutulur. Dayanaklar, otomatik kontrol kapsamı ve
-  insan doğrulaması sınırları
-  [`docs/RESMI_YAZISMA_UYGUNLUK_KURALLARI.md`](docs/RESMI_YAZISMA_UYGUNLUK_KURALLARI.md)
-  dosyasındadır.
+- Madde önce fıkralara, ardından bentlere ayrılır.
+- Doğal hukuki alt yapı yoksa madde metni leaf olarak korunur.
+- Bir leaf 1.800 karakteri aşarsa cümle sınırlarında kontrollü olarak bölünür.
+- Her leaf kendi `parent_id`, madde, fıkra, bent ve sayfa bilgisini taşır.
+- Kimlikler belge ve içerikten deterministik hash ile üretilir.
 
-Yerel Ollama'yı kullanmak için servisi başlatın ve completion modelinin kurulu
-olduğunu doğrulayın:
+### 3. Contextual embedding metni
 
-```bash
-ollama serve
-ollama list
-export KARAYOL_LLM_PROVIDER=ollama
-export KARAYOL_LLM_MODEL=qwen2.5:0.5b
-export KARAYOL_LLM_BASE_URL=http://127.0.0.1:11434
+Her leaf için mevzuata yorum eklemeden hiyerarşik bir bağlam oluşturulur:
+
+```text
+Belge Başlığı > Bölüm > Madde > Fıkra > Bent
+Leaf'in özgün metni
 ```
 
-PowerShell'de Ollama kontrolü ve uygulama başlangıcını tek komutla yapmak için
-`powershell -ExecutionPolicy Bypass -File scripts/start_local_ollama.ps1`
-kullanılabilir. Yerel `.env` varsa yüklenir; script LLM sağlayıcısını Ollama
-olarak ayarlar. `.env` Git tarafından yok sayılır.
+Bu birleşim `embedding_text` olarak hem dense hem sparse aramada kullanılır.
+Kullanıcıya alıntı yapılırken bağlamsal başlık değil, leaf'in özgün metni ve
+kaynak izi gösterilir.
 
-501 belgeli sabit UAB arşivini ve depoda yayımlanan 10.048 vektörlük yerel
-Qdrant koleksiyonunu elle test etmek için ayrı başlatıcı kullanılır:
+### 4. Vektör ve sparse indeks
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start_local_uab.ps1 -DisableLlm
-python -m http.server 3000 --directory frontend
+- Dense embedding: `jinaai/jina-embeddings-v3`, 1024 boyut
+- Belge görevi: `retrieval.passage`
+- Sorgu görevi: `retrieval.query`
+- Sparse kanal: Türkçe metin üzerinde BM25
+- Vektör veritabanı: Qdrant
+- Birleştirme: Reciprocal Rank Fusion (RRF)
+
+Dense cosine skorları farklı korpuslar arasında doğrudan karşılaştırılmaz. Her
+korpus kendi içinde sıralanır; kanal sıraları RRF ile birleştirilir.
+
+### Üretilen v2 korpus
+
+501 belgenin çıkarılmış/OCR metinleri kullanılarak:
+
+- **6.234 parent**,
+- **30.972 leaf**,
+- **1.819 doğrulama bekleyen atıf adayı**,
+- **1.278 sayfa-fallback leaf**
+
+üretilmiştir. Atıf regex'i yalnız aday kenar çıkarır; doğrulanmamış bir atıf
+otomatik olarak hukuki kanıt sayılmaz.
+
+Chunklama ve GPU indeksleme kodu:
+
+```text
+kaggle/kaggle_legal_rag_v2.py
+kaggle/README_KAGGLE_LEGAL_RAG_V2.md
+scripts/integrate_uab_legal_rag_v2.py
 ```
 
-Başlatıcı sorgu embedding modelini varsayılan olarak ilk NVIDIA GPU'da
-(`cuda:0`) çalıştırır. Önce CUDA destekli PyTorch kurulumunun GPU'yu gördüğünü
-doğrulayın:
+## Çalıştırma
 
-```powershell
-.\.venv\Scripts\python.exe -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'GPU görünmüyor')"
-```
-
-GPU bulunmayan bir ortamda `-EmbeddingDevice cpu` parametresi kullanılabilir.
-
-Bu başlatıcı `uab_ministry_archive_chunks_v1` koleksiyonunu, Jina v3 dense +
-BM25 + RRF ile açar. İki incelenmiş demo profili dışındaki evraklarda opt-in
-`lexical_overlap` keşif kapısı uygulanır: görünür chunk metniyle kullanıcı
-metninde en az iki anlamlı terim örtüşmeden atıf gösterilmez. Bu geniş profil
-yalnız manuel keşif/test içindir; korpusun `currentness_verified=false` ve
-`legal_reliance_allowed=false` bayraklarını değiştirmez.
-
-Çalışan serviste iki yapılandırılmış LLM rolünü doğrulamak için:
-
-```powershell
-$env:PYTHONPATH="src"
-python scripts/run_llm_live_acceptance.py
-```
-
-`/api/v1/system/health`, `/api/v1/system/readiness` ve her `ProcessState`; LLM sağlayıcısı/modeli, fallback,
-graf readiness'i, graf karar yolları ve rol bazlı LLM adımlarını anahtar
-sızdırmadan açıklar. Ayrıntılı yapılandırma örneği `.env.example` içindedir.
-
-Bu tur P4 OCR işinin tamamını kapatmaz: sayfa bazlı OCR güven izi ve insan
-doğrulamalı CER/WER-alan F1 ölçümü hâlâ ayrı kabul işleridir.
-
-## Kabul, teslim envanteri ve tekrarlanabilir paket
-
-Bağımlılıklar `uv.lock` ile kilitlidir. CI; kilitli Python 3.11+ kurulumunu,
-çekirdek kabul testlerini, wheel/sdist üretimini, wheel içindeki sentetik demo
-verisi ve şablonları ve teslim envanterini denetler. Tüm isteğe bağlı bağımlılık
-ağacı için CycloneDX 1.5 SBOM `reports/sbom.cdx.json` dosyasındadır.
-
-```bash
-uv sync --locked --extra dev
-PYTHONPATH=src uv run python scripts/run_acceptance_metrics.py --repetitions 20
-PYTHONPATH=src uv run python scripts/audit_delivery_inventory.py
-uv build
-```
-
-Kabul betiği 48 kayıtlık mühendislik regresyonunu ve standart/paraphrase/
-near-miss senaryolarında p50/p95 sürelerini üretir; bağımsız kör değerlendirme
-iddiasında bulunmaz. Teslim denetimi gerçek DETSİS/UAB arşivlerini, kamu
-belgelerini, Qdrant/runtime artifact'larını varsayılan olarak `exclude` eder;
-sentetik veri `include`, sağlamlığı ve teslim kararı bekleyen şartname PDF'i
-`review_required` olarak işaretlenir. Betik dosya silmez.
-
-## Tamamlanan uygulama — 8 belgeli yarışma snapshot'ı
-
-Bu geliştirme turunda yeni/güncel mevzuat kopyalarını edinme, proje planını
-snapshot politikası için yeniden yazma ve mevcut aktivasyon kurallarını yeniden
-tasarlama adımları **atlanmıştır**. Çalışma, depoda bulunan kaynakların güncel
-hukuk metni olduğu iddia edilmeden mevcut proje snapshot'ı üzerinden devam
-edecektir.
-
-Bu teknik hedef **24 Ağustos 2026'da tamamlandı**:
-
-- metin katmanı hazır 6 belge ile 2 OCR adayından gelen 2.606 kaynak satırı
-  birleştirildi; 3 tam tekrar güvenli biçimde konsolide edilerek 8 belge ve
-  **2.603 benzersiz yapısal parça** üretildi;
-- 2.404 parça metin katmanından, 199 parça OCR adaylarından geldi; kaynak
-  başlığı, madde/fıkra/bent, sayfa aralığı ve SHA-256 izi korundu;
-- parçalar RTX 3050 üzerinde `jinaai/jina-embeddings-v3`
-  (`retrieval.passage`, 1024D) ile gömülüp kalıcı gömülü Qdrant'taki ayrı
-  `competition_snapshot_chunks_v1` koleksiyonuna yazıldı;
-- indeks kapatılıp yeniden açıldıktan sonra **2.603/2.603** uyumlu nokta ve tam
-  corpus parmak izi doğrulandı.
-- Yol yüzeyi bakım talebi ve hasarlı trafik işareti için madde/ID allowlist'i
-  kullanmayan iki denetlenebilir alaka profili eklendi. Önce özgün kullanıcı
-  metninde olay kavramları doğrulanır; ardından RRF ile birleşen en fazla 40 aday
-  görünür chunk metni üzerinden incelenir. Nesne ve görev/giderme kavramları
-  birlikte bulunmazsa kaynak elenir, hiçbiri geçmezse yanlış atıf üretmek yerine
-  abstain edilir. Expansion terimleri kullanıcı lexical kanıtı sayılmaz.
-
-Bu yol, normal `verified_public` / `legal_chunks_v1` yolundan ayrıdır ve public
-fail-closed kapısını gevşetmez. Snapshot parçaları hâlâ güncel/yürürlükte mevzuat
-veya hukuki görüş olarak kullanılamaz; uygulama her atıfta sabit snapshot
-uyarısını taşır.
-
-## Kurulum
+### Kurulum
 
 ```powershell
 python -m venv .venv
@@ -424,483 +195,29 @@ python -m venv .venv
 python -m pip install -e ".[dev]"
 ```
 
-Jina v3 + Qdrant bileşenleri için isteğe bağlı RAG bağımlılıklarını da kurun:
-
-```powershell
-python -m pip install -e ".[dev,rag]"
-```
-
-Karantinadaki taranmış PDF'ler için Türkçe OCR inceleme aracını da kullanacaksanız:
-
-```powershell
-python -m pip install -e ".[dev,rag,ocr]"
-```
-
-Bu çalışma ortamında ana bağımlılıklar zaten kuruluysa kurulumsuz da
-`$env:PYTHONPATH="src"` ile çalıştırılabilir.
-
-## Komut satırı
+### Backend
 
 ```powershell
 $env:PYTHONPATH="src"
-python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
-```
-
-Çıktılar varsayılan olarak `output/<evrak-id>/` altında saklanır. Sistemde
-`xelatex`, `pdflatex` veya `tectonic` varsa PDF bunlarla derlenir; yoksa
-ReportLab tabanlı taşınabilir üretici devreye girer. Böylece web arayüzü LaTeX
-kodu yerine her ortamda doğrudan PDF indirme bağlantısı sunar.
-
-Mevzuat PDF'sinin metin katmanını denetlemek ve Bölüm/Madde/Fıkra/Bent
-yapısında karantina çıktısına parçalamak:
-
-```powershell
-python -m karayol_agent.cli ingest `
-  --file mevzuat-1.pdf `
-  --title "Resmî Yazışma Yönetmeliği" `
-  --output data\processed\resmi_yazisma.json
-```
-
-Kalite eşiğini geçmeyen PDF indekslenmez ve OCR gerektiği raporlanır. Düşük
-kaliteli metni zorla indekslemek yalnızca inceleme amacıyla
-`--allow-low-quality` seçeneğiyle mümkündür. Bu seçenek aktif RAG onayı veremez.
-Genel `ingest` komutu hiçbir kamu kaynağını doğrudan aktif korpusa alamaz.
-
-### Yapısal mevzuat parçası sözleşmesi
-
-Mevzuat metni öncelikle doğal hukuk hiyerarşisine göre **Bölüm → Madde →
-Fıkra → Bent** sınırlarında parçalanır. Örneğin `MADDE 4- (1) ... a) ...`
-yapısından aşağıdaki gibi bir parça üretilir:
-
-```json
-{
-  "chunk_id": "MEV-3EE6799D5AA69232",
-  "document_id": "uab-road-expropriation-regulation",
-  "title": "Karayolu Yapımı Amaçlı Kamulaştırmalarda Hazine Taşınmazlarının Trampası Hakkında Yönetmelik",
-  "section": "Birinci Bölüm — Amaç, Kapsam, Dayanak ve Tanımlar",
-  "article": "Madde 4",
-  "paragraph": "1",
-  "clause": "a",
-  "page": 1,
-  "page_end": 1,
-  "context_text": "... > Madde 4 > Fıkra 1 > Bent a > Yerel bağlam: Bu Yönetmelikte geçen;",
-  "text": "a) Bakanlık: Maliye Bakanlığını,",
-  "validity_status": "needs_verification",
-  "approved_for_active_rag": false
-}
-```
-
-- `text`, kullanıcıya gösterilebilecek asıl kaynak hükmüdür.
-- `context_text`, parçanın belge içindeki yerini açıklayan yardımcı arama
-  bağlamıdır; tek başına mevzuat hükmü veya alıntı olarak gösterilemez.
-- Jina dense arama ve BM25 için indekslenecek içerik `context_text + text`
-  olacaktır. Nihai atıf her zaman `text`, kaynak PDF, madde/fıkra/bent ve sayfa
-  bilgisine döner.
-- `page` ve `page_end`, hükmün PDF'de başladığı ve bittiği sayfaları korur.
-- `chunk_id`; kararlı `document_id`, hukuk hiyerarşisi ve parça metninden
-  SHA-256 tabanlı olarak türetilir. Kaynak dosya başka klasöre taşınsa bile
-  kimlik değişmez.
-- Bir doğal fıkra veya bent 1.800 karakteri aşarsa yalnız o parça cümle
-  sınırlarında alt parçalara ayrılır; tüm alt parçalar aynı kaynak ve hiyerarşi
-  metadata'sını taşır.
-
-Bu paragraftaki JSON'lar karantina ara çıktılarıdır; tek başlarına embedding
-değildir. İnsan incelemesi tamamlanmayan parçalar
-`approved_for_active_rag=false` olarak kalır. Yarışma için birleşik
-`competition_snapshot.json` ayrıca üretilmiş ve ayrı Qdrant koleksiyonuna
-indekslenmiştir; bu işlem verified-public onayı vermez.
-
-**Bilinen yapısal kalite notu:** 2918 sayılı Kanun gibi değişiklik dipnotları
-içeren belgelerde “Birinci Bölüm başlığında...” ifadeleri bazı durumlarda gerçek
-bölüm başlığı sanılabilir. Madde/fıkra/bent ve sayfa izi korunmasına rağmen
-`section` alanı gürültülü olabilir. Aktif corpus onayından önce insan yapı
-incelemesi veya bölüm başlığı normalizasyonu uygulanmalıdır.
-
-## Mevzuat kapsam ayırma ve doğrulama manifesti
-
-DETSİS mevzuat kayıtlarını fiziksel bir yerel PDF arşiviyle eşleştirmek, ulaşım
-alanı adayı üretmek ve OCR kuyruğunu belirlemek için:
-
-```powershell
-$env:PYTHONPATH="src"
-python -m karayol_agent.cli curate-legislation `
-  --records veri_kaynaklari\karayolu\detsis\mevzuatlar.json `
-  --archive "C:\veri\uab-mevzuat-pdf" `
-  --output data\manifests\uab_legislation_manifest_v2.json `
-  --review-csv data\manifests\uab_legislation_manifest_v2_review.csv `
-  --inspect-pdfs
-```
-
-Komut iki çıktı üretir:
-
-- `data/manifests/uab_legislation_manifest.json`: Makine tarafından okunabilir
-  ana manifest, PDF eşleşmeleri, kapsam önerileri ve metin kalite sonuçları.
-- `data/manifests/uab_legislation_manifest_review.csv`: Alan uzmanının kapsam,
-  yürürlük ve aktif RAG onayı vermesi için inceleme tablosu.
-
-Otomatik sınıflandırma hiçbir kaydı kendiliğinden aktif RAG verisi yapmaz.
-`approved_for_active_rag` alanı insan doğrulaması tamamlanana kadar `false`
-kalır. Böylece denizcilik, havacılık ve demiryolu mevzuatının karayolu
-cevaplarına yanlışlıkla karışması önlenir.
-
-İnceleme CSV'sini güvenlik kapılarıyla doğrulayıp yeni manifeste uygulamak ve
-yalnız onaylı kayıtları parçalamak için:
-
-```powershell
-python -m karayol_agent.cli apply-legislation-review `
-  --manifest data\manifests\uab_legislation_manifest_v2.json `
-  --review-csv data\manifests\uab_legislation_manifest_v2_review.csv `
-  --output data\manifests\uab_legislation_reviewed.json
-
-python -m karayol_agent.cli ingest-approved-manifest `
-  --manifest data\manifests\uab_legislation_reviewed.json `
-  --output-dir data\processed\active_legislation
-```
-
-Aktivasyon için tekil PDF, geçerli SHA-256, insan kapsam onayı, doğrulanmış
-yürürlük, doğrulanmış metin/OCR, inceleyen kişi ve inceleme zamanı birlikte
-zorunludur. Çalışma alanında gerçekten bulunan ilk sekiz aday kaynak
-`data/manifests/core_legislation_sources.json` dosyasında kayıtlıdır. Eski 501
-kayıtlık manifestin işaret ettiği PDF arşivi bu çalışma alanında bulunmadığından
-o kayıtlar şu anda ingestion girdisi değildir.
-
-Depodaki çekirdek envanteri gerçek dosya hash'leri ve metin kalite kontrolüyle
-inceleme manifestine dönüştürmek, ardından onaysız karantina corpusunu üretmek:
-
-```powershell
-python -m karayol_agent.cli curate-core-inventory
-
-python -m karayol_agent.cli ingest-manifest-quarantine `
-  --manifest data\manifests\core_legislation_manifest.json `
-  --output-dir data\processed\stage3_quarantine
-```
-
-24 Ağustos 2026 ilk Aşama 3 geçişinde 8 kaynağın 6'sı 2.407 yapısal parçaya
-ayrılmış, 2 kaynak OCR kuyruğuna alınmış ve hiçbir parçaya public aktif-RAG onayı
-verilmemiştir. Seçili 6 karantina JSON'u ve 3 OCR metin girdisi bilinçli olarak
-Git'te sürümlenmiştir. Normalde yeniden üretilebilir sayılan birleşik
-`data/processed/competition_snapshot.json`, iki yapısal OCR JSON'u, kalıcı
-Qdrant verisi, süreç kaydı ve örnek LaTeX çıktısı da teslim bütünlüğü için
-24 Ağustos 2026 artifact commit'ine açıkça dahil edilmiştir. Geçici kilit ve
-Python/test cache dosyaları dahil edilmez.
-
-Ardından yarışma snapshot'ı için iki OCR adayı da ayrı ingestion sözleşmesiyle
-işlendi. Bu işlem public aktif-RAG onayı vermedi; yalnızca açık uyarı taşıyan
-`competition_snapshot` modunda 199 OCR parçasını 2.404 metin-katmanı parçasıyla
-birleştirdi.
-
-İki zayıf metin katmanlı PDF için Türkçe/İngilizce OCR aday metni ve sayfa
-bazlı güven raporu üretmek için:
-
-```powershell
-python -X utf8 scripts\ocr_review.py `
-  --document "official-writing-guide=mevzuat-kılavuz.pdf" `
-  --document "official-writing-regulation=mevzuat-1.pdf" `
-  --output-dir data\processed\ocr_review `
-  --report reports\ocr_review.json `
-  --model-dir runtime\easyocr-models `
-  --force-ocr-all `
-  --allow-model-download
-```
-
-Araç kaynak ve model SHA-256 değerlerini, sayfa yöntemini, karakter sayısını,
-OCR güvenini ve süreyi raporlar. Çıktıyı her zaman
-`ocr_candidate_human_verification_required` ve
-`approved_for_active_rag=false` olarak işaretler; OCR çalıştırmak insan onayı
-yerine geçmez. 24 Ağustos incelemesinin kaynak/güncellik paketi
-`reports/MEVZUAT_KAYNAK_INCELEME_2026-08-24.md` altındadır. Sekiz kaydın dördü
-kesin eski, biri kesik kopya, biri kanonik olmayan OCR adayıdır; bu nedenle
-otomatik `verified_public` corpus hâlâ boş tutulmaktadır.
-
-İnsan kapsam, yürürlük ve OCR doğrulamasından sonra tekil çıktılarla beraber tek
-aktif corpus dosyası üretmek için:
-
-```powershell
-python -m karayol_agent.cli ingest-approved-manifest `
-  --manifest data\manifests\core_legislation_reviewed.json `
-  --output-dir data\processed\active_legislation `
-  --corpus-output data\processed\active_legislation.json
-```
-
-Kaynakların güncel sürümle değiştirilmesi ve hukuk uzmanı onayı Aşama 3'ün
-teknik kapanışını engellemeyen, fakat gerçek kamu corpusunu aktive etmeden önce
-zorunlu olan içerik doğrulama işidir.
-
-## Jina Embeddings v3 ve Qdrant indeksi
-
-### Sabit yarışma snapshot'ını GPU ile üretme
-
-Depodaki 8 belgeyi güncel mevzuat iddiası olmadan yarışma demosuna hazırlamak ve
-kalıcı Qdrant indeksini NVIDIA GPU'da oluşturmak için:
-
-```powershell
-$env:PYTHONPATH="src"
-python -m karayol_agent.cli build-competition-snapshot `
-  --acknowledge-not-current
-
-python -m karayol_agent.cli index-snapshot-vectors `
-  --acknowledge-not-current `
-  --local-files-only `
-  --device cuda:0 `
-  --batch-size 8
-```
-
-Varsayılan kalıcı dizin `runtime/qdrant-competition-snapshot`, ayrı koleksiyon
-`competition_snapshot_chunks_v1` olur. Yaklaşık 32,8 MB'lık kalıcı SQLite
-deposu bu teslimde Git'e artifact olarak eklenmiştir. İndeks kanıtı
-`reports/competition_snapshot_index_2026-08-24.json`, yeniden açma/readiness
-kanıtı `reports/competition_snapshot_readiness_2026-08-24.json`, tüm teslim
-dosyalarının boyut/hash listesi ise
-`reports/competition_snapshot_artifact_manifest_2026-08-24.json` dosyasındadır.
-
-Uygulamayı aynı snapshot ve hibrit retrieval ile çalıştırmak için:
-
-```powershell
-$env:KARAYOL_RETRIEVAL_MODE="hybrid"
-$env:KARAYOL_CORPUS_MODE="competition_snapshot"
-$env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json"
-$env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
-$env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
-$env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
-$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
-python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
-```
-
-24 Ağustos 2026 gerçek koşusunda NVIDIA GeForce RTX 3050 Laptop GPU kullanıldı;
-2.603 parça 326 batch'te indekslendi. Dense sorgu, BM25 ve RRF'nin aynı snapshot
-üzerinde birlikte çalıştığı uçtan uca doğrulandı. GPU olmayan ortamda yalnız
-`--device cpu` seçimi değiştirilir.
-
-### İnsan onaylı public mevzuat indeksi
-
-Önce `.env.example` içindeki değişkenleri ortamınıza aktarın ve Qdrant'ı
-çalıştırın. İnsan doğrulamasından geçmiş aktif corpusu sürümlü
-`legal_chunks_v1` koleksiyonuna yazmak için:
-
-```powershell
-$env:QDRANT_URL="http://localhost:6333"
-$env:PYTHONPATH="src"
-python -m karayol_agent.cli index-vectors `
-  --corpus data\processed\active_legislation.json `
-  --collection legal_chunks_v1
-```
-
-İndeksleme sözleşmesi:
-
-- model: `jinaai/jina-embeddings-v3`, 1024 boyut, cosine;
-- belge görevi: `retrieval.passage`, sorgu görevi: `retrieval.query`;
-- indeks metni: `context_text + "\n\n" + text`;
-- kullanıcıya gösterilen kanıt: yalnız orijinal `text` ile belge/madde/sayfa izi;
-- model ağırlığı ile ayrı `auto_map` remote-code deposu kendi doğrulanmış
-  commit'lerine pinlenir;
-- Jina remote-code uyumu için `transformers` 4.x ile sınırlandırılır;
-- payload model/kod revizyonu ile indeks sürümünü taşır;
-- aktif corpusun kanonik SHA-256 parmak izi ve her `chunk_id` için tam kanonik
-  içerik SHA-256 değeri payload ile yerel sonuç doğrulamasına bağlanır; önceki,
-  başka korpusa ait veya aynı kimlikle değiştirilmiş noktalar BM25 korpusuna
-  karışamaz;
-- kamu kaynağı yalnız onay, yürürlük, OCR/metin, SHA-256, sayfa, alan,
-  madde/bağlam ve geçerli HTTP(S) kaynak URL kapılarının tamamını geçerse yazılır;
-  ayrıca `schema_version=2.0` aktif-corpus zarfı, belge sayaçları,
-  belge/chunk URL eşleşmesi ve `reviewed_by`/`reviewed_at` izi zorunludur. Kısmi
-  batch yazımından önce tüm kayıtlar doğrulanır.
-
-Hibrit çalışma zamanını etkinleştirmek için:
-
-```powershell
-$env:KARAYOL_RETRIEVAL_MODE="hybrid"
-$env:QDRANT_URL="http://localhost:6333"
-python -m karayol_agent.cli process --file examples\yol_bakim_talebi.txt
-```
-
-Her kanal varsayılan olarak 20 aday üretir; ham BM25 ve cosine skorları birbirine
-eklenmez, sıralar `k=60` klasik Reciprocal Rank Fusion ile birleştirilir. Kanal
-sıraları, ham skorlar, RRF katkıları ve fallback durumu süreç JSON'unda korunur.
-RRF skoru yalnız sıralamadır: lexical kanıt yoksa dense-only kaynak, ham Jina
-cosine skoru `KARAYOL_MIN_RETRIEVAL_SCORE` (varsayılan `0.20`) eşiğini geçmeden
-doğrulanmış hukuki kanıt sayılmaz. `competition_snapshot` yolundaki incelenmiş
-iki profilde hem `hybrid` hem `bm25` modunda ayrıca
-`KARAYOL_MIN_RELEVANCE_SCORE` (varsayılan `0.75`) uygulanır. Sonuç JSON'unda
-alaka profili, özgün-sorgu desteği, skor, kabul gerekçeleri,
-incelenen/reddedilen aday sayısı ve abstention kararı ayrı alanlarda saklanır.
-İncelenmemiş snapshot evrak türleri pass-through edilmez; fail-closed boş sonuç
-üretir.
-Mevcut çekirdek kamu kaynaklarının insan onayı henüz sıfır olduğu için bu depo
-aktif public koleksiyonu kendiliğinden doldurmaz. Varsayılan `bm25` modu sentetik
-demo akışını çevrimdışı tutar; açıkça seçilen `competition_snapshot` + `hybrid`
-modu ise yukarıdaki ayrı kalıcı GPU indeksini kullanır.
-
-**Lisans notu:** Jina Embeddings v3, ayrı remote-code uygulaması ve Jina
-Reranker v2 `CC BY-NC 4.0`; EasyOCR 1.7.2 kodu `Apache-2.0` kapsamındadır.
-EasyOCR CRAFT ve Latin G2 ağırlıkları için ayrı lisans beyanı doğrulanamadığı
-için bunlar depoda dağıtılmaz. Yarışma/demodan ticari ürüne geçmeden önce model
-lisans uygunluğu ayrıca değerlendirilmelidir. Sabit revizyon ve hash kayıtları
-`resources/manifests/sources.json` içindedir.
-
-### Sentetik retrieval karşılaştırması ve reranker kararı
-
-Dondurulmuş sentetik sette gerçek yerel Jina modeli ve Qdrant istemcisiyle
-BM25/hibrit karşılaştırmasını tekrarlamak için:
-
-```powershell
-python -m karayol_agent.cli benchmark-retrieval `
-  --local-files-only `
-  --summary-output reports\evaluation_retrieval_comparison.json
-```
-
-24 Ağustos 2026 CPU ölçümünde BM25 Recall@5 `0,8056`, MRR `0,8056`; Jina v3 +
-Qdrant + BM25 + RRF Recall@5 `1,0000`, MRR `0,9097` verdi. Parafraz diliminde
-Recall@5 `0,1250` değerinden `1,0000` değerine çıktı. Bunlar yalnız 48 sentetik
-kayıt üzerindeki benchmark sonuçlarıdır; kamu mevzuatı veya saha başarımı
-değildir.
-
-Şema `1.2` benchmark'ı her iki dense geçişte de `48/48` başarı ve `0` fallback
-doğrulamıştır. Tek bir dense hata, boş sonuç veya fallback halinde BM25 sonucu
-hibrit etiketiyle yazılmaz ve tüm benchmark raporları fail-closed durur.
-
-`--with-reranker` ile ölçülen `jina-reranker-v2-base-multilingual` Recall@5'i
-`0,9722`, MRR'ı `0,8806` değerine düşürdü ve CPU'da skor çağrısı başına ortalama
-yaklaşık `3,7 sn` ekledi. Entegrasyon ablation için korunur, fakat varsayılan
-akışta kapalıdır. Ayrıntı `reports/RETRIEVAL_ABLATION_2026-08-24.md`
-dosyasındadır.
-
-### Snapshot sorgu alakası ölçümü
-
-İki ana sorgu, iki olumlu paraphrase ve dört no-answer/near-miss kaydından oluşan
-sekiz mühendislik fixture'ı korpus fingerprint'ine bağlı setle ayrıca ölçülür:
-
-```powershell
-python -X utf8 scripts\evaluate_snapshot_relevance.py `
-  --variant intent-profile-gate-v2 `
-  --output reports\snapshot_relevance_candidate_v2_2026-08-24.json
-```
-
-Eski hibrit RRF ilk 5'i ilk iki ana fixture'da yol bakımında `0/5`, hasarlı
-levhada `2/5` strict ilgili metinsel aday döndürüyordu. V2 canlı turunda dört
-cevaplanabilir fixture'ın her biri `5/5`; `Precision@5`, `Recall@5`, `nDCG@5`
-ve hüküm ailesi recall'ü `%100`, hard-negative sayısı `0` oldu. Dört no-answer
-fixture'ın tamamında sistem abstain etti; yanlış cevap ve yanlış abstention `0`.
-Bu set kurallar geliştirilirken kullanılmış küçük bir regresyondur; bağımsız
-test, hukuk doğruluğu veya genel saha başarımı değildir. Baseline ve raporlar
-[`snapshot_relevance_baseline_2026-08-24.json`](reports/snapshot_relevance_baseline_2026-08-24.json)
-ile tarihsel v1
-[`snapshot_relevance_candidate_2026-08-24.json`](reports/snapshot_relevance_candidate_2026-08-24.json)
-ve güncel v2
-[`snapshot_relevance_candidate_v2_2026-08-24.json`](reports/snapshot_relevance_candidate_v2_2026-08-24.json)
-dosyalarındadır.
-
-### Küçük sentetik kanıt grafı
-
-Ölçümden sonra eklenen denetlenebilir grafı üretmek için:
-
-```powershell
-python -m karayol_agent.cli build-synthetic-graph `
-  --output reports\synthetic_evidence_graph.json
-```
-
-Graf; sentetik kural, evrak türü, birim, şablon ve zorunlu alan düğümlerini
-`APPLIES_TO`, `ASSIGNED_TO`, `SUPPORTS_TEMPLATE` ve `REQUIRES_FIELD`
-ilişkileriyle bağlar. Her ilişki gold kayıt kimliklerini kanıt izi olarak taşır.
-Builder sentetik olarak işaretlenmemiş girdiyi reddeder; çıktı
-`benchmark_only=true` ve `production_legal_evidence=false` olarak sabittir.
-Graf ayrıca üç giriş dosyasının proje-göreli yolunu ve SHA-256 değerini taşır;
-özet düğüm/kenar sayaçları dosya okunurken yeniden hesaplanır.
-
-## API
-
-```powershell
-$env:PYTHONPATH="src"
-python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010 --reload
-```
-
-- `GET /api/v1/system/health`
-- `GET /api/v1/system/readiness`
-- `POST /api/v1/processes/text`
-- `POST /api/v1/processes/file`
-- `GET /api/v1/processes/{evrak_id}`
-- `POST /api/v1/processes/{evrak_id}/information`
-- `POST /api/v1/processes/{evrak_id}/approval`
-- `GET /api/v1/processes/{evrak_id}/artifacts/tex`
-- `GET /api/v1/processes/{evrak_id}/artifacts/pdf`
-
-Swagger arayüzü: `http://127.0.0.1:8010/docs`. Backend artık statik arayüz
-sunmaz; kök yolu yalnız servis bilgisini JSON olarak döndürür. Ayrıntılı ayrım ve
-REST sözleşmesi [`docs/MIMARI.md`](docs/MIMARI.md), frontend teslimine hazır
-OpenAPI 3.1 dosyası ise [`docs/swagger.json`](docs/swagger.json) içindedir.
-Yapılan çalışmaların konu bazlı ayrıntılı açıklamalarına
-[`docs/README.md`](docs/README.md) indeksinden ulaşılabilir.
-
-## Manuel test arayüzü
-
-Yerel web arayüzünü örnek senaryolarla çalıştırmak için:
-
-```powershell
-$env:PYTHONPATH="src"
-$env:KARAYOL_RETRIEVAL_MODE="hybrid"
-$env:KARAYOL_CORPUS_MODE="competition_snapshot"
-$env:KARAYOL_COMPETITION_SNAPSHOT_PATH="data/processed/competition_snapshot.json"
-$env:KARAYOL_QDRANT_PATH="runtime/qdrant-competition-snapshot"
-$env:KARAYOL_QDRANT_COLLECTION="competition_snapshot_chunks_v1"
-$env:KARAYOL_EMBEDDING_LOCAL_FILES_ONLY="true"
-$env:KARAYOL_EMBEDDING_DEVICE="cuda:0"
-Remove-Item Env:QDRANT_URL -ErrorAction SilentlyContinue
 python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
 ```
 
-Ayrı bir terminalde frontend'i başlatın:
+### Frontend
+
+Başka bir terminalde:
 
 ```powershell
 python -m http.server 3000 --directory frontend
 ```
 
-Tarayıcıdan `http://127.0.0.1:3000` adresini açın. Arayüz; hazır evrak
-senaryolarını, TXT/MD/PDF yüklemeyi, sınıflandırma ve yönlendirme sonucunu,
-kaynak sözleşmesi ve güncellik/hukuki-dayanak açıklamalarını, eksik bilgi
-tamamlama adımını, insan onayını ve doğrudan PDF indirmeyi tek ekranda sunar.
-Önce `/api/v1/system/readiness` yanıtında 2.603/2.603 vektörün uyumlu olduğunu doğrulayın. Adım
-adım kabul testi için [`MANUEL_TEST_SENARYOSU.md`](MANUEL_TEST_SENARYOSU.md),
-otomatik canlı tur için şu komutu kullanın:
+- Arayüz: `http://127.0.0.1:3000`
+- API dokümantasyonu: `http://127.0.0.1:8010/docs`
 
-```powershell
-python -X utf8 scripts\run_production_demo_acceptance.py
-```
+LLM, Qdrant ve uzak korpus ayarları `.env.example` dosyasında bulunur.
 
-24 Ağustos kabul sonucu, olumlu alaka ve near-miss abstention kapılarıyla
-**23/23** zorunlu kontrol geçti:
-[`PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md`](reports/PRODUCTION_DEMO_ACCEPTANCE_2026-08-24.md).
+## Ayrıntılı dokümantasyon
 
-## Test
-
-```powershell
-$env:PYTHONPATH="src"
-pytest
-```
-
-## Sayısal gold-set değerlendirmesi
-
-48 kurgusal evraktan oluşan sabit veri setinde sınıflandırma, yönlendirme,
-eksik alan, şablon seçimi ve mevzuat retrieval ölçümü yapmak için:
-
-```powershell
-$env:PYTHONPATH="src"
-python -m karayol_agent.cli evaluate
-```
-
-Rapor `reports/evaluation_baseline.json` dosyasına yazılır. Veri setindeki 40
-standart örnek ile doğrudan anahtar kelime kullanmayan 8 paraphrase challenge
-örneği ayrı dilimler hâlinde raporlanır. Mevcut kural tabanlı başlangıç sürümü
-standart dilimde başarılıdır; challenge dilimindeki düşük sonuçlar embedding,
-reranker ve LLM entegrasyonunun ölçülebilir geliştirme hedefidir. Bu sonuçlar
-gerçek saha başarımı olarak yorumlanmamalıdır. Yeni rapor şeması retrieval
-modunu, fallback teşhisini ve her sonuç için kanal/sıra/ham skor/RRF katkısını
-saklar. Gerçek Jina/Qdrant sentetik benchmark raporu ayrıca üretilmiştir;
-onaysız kamu korpusu bu ölçüme veya aktif indekse karıştırılmamıştır.
-
-## Güvenlik ve veri sınırı
-
-- Model/kural motoru kaynakta bulunmayan kritik alanları uydurmaz.
-- Eksik alanlar `kullanici_girdisi_gerekli` olarak işaretlenir.
-- LaTeX özel karakterleri kaçış işleminden geçirilir.
-- Şablonlar çalışma sırasında değiştirilemez.
-- Shell escape kullanılmaz; derleme zaman aşımıyla sınırlandırılır.
-- Gerçek vatandaş evrakı veya kapalı kamu verisi demo veri setine eklenmez.
+- Üç katmanlı akış ve REST sözleşmesi:
+  [`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
+- Proje planı: [`PROJE_PLANI.md`](PROJE_PLANI.md)
+- Kaggle Legal RAG v2: [`kaggle/README_KAGGLE_LEGAL_RAG_V2.md`](kaggle/README_KAGGLE_LEGAL_RAG_V2.md)
