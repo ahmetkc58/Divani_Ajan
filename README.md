@@ -187,6 +187,16 @@ scripts/integrate_uab_legal_rag_v2.py
 
 ## Çalıştırma
 
+Proje **`main` branch'i** üzerinden çalıştırılmalıdır. Geliştirme ve deney
+branch'leri doğrudan demo/teslim ortamı olarak kullanılmamalıdır.
+
+```powershell
+git clone https://github.com/ahmetkc58/Divani_Ajan.git
+cd Divani_Ajan
+git switch main
+git pull --ff-only origin main
+```
+
 ### Kurulum
 
 ```powershell
@@ -219,5 +229,3 @@ LLM, Qdrant ve uzak korpus ayarları `.env.example` dosyasında bulunur.
 
 - Üç katmanlı akış ve REST sözleşmesi:
   [`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
-- Proje planı: [`PROJE_PLANI.md`](PROJE_PLANI.md)
-- Kaggle Legal RAG v2: [`kaggle/README_KAGGLE_LEGAL_RAG_V2.md`](kaggle/README_KAGGLE_LEGAL_RAG_V2.md)
