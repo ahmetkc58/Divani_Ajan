@@ -187,14 +187,15 @@ scripts/integrate_uab_legal_rag_v2.py
 
 ## Çalıştırma
 
-Proje **`main` branch'i** üzerinden çalıştırılmalıdır. Geliştirme ve deney
-branch'leri doğrudan demo/teslim ortamı olarak kullanılmamalıdır.
+Proje **`release/three-layer-competition` branch'i** üzerinden
+çalıştırılmalıdır. `main` ve diğer geliştirme branch'leri doğrudan demo/teslim
+ortamı olarak kullanılmamalıdır.
 
 ```powershell
 git clone https://github.com/ahmetkc58/Divani_Ajan.git
 cd Divani_Ajan
-git switch main
-git pull --ff-only origin main
+git switch release/three-layer-competition
+git pull --ff-only origin release/three-layer-competition
 ```
 
 ### Kurulum
