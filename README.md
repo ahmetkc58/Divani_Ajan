@@ -1,4 +1,208 @@
-# Karayolu Evrak Akıllı Ajan Sistemi
+# Divan-ı Ajan
+
+**TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması - 1. Senaryo**<br>
+**Tema:** Kamu Evrak ve Yazışma Süreçleri İçin Akıllı Agent Destek Sistemi
+
+Divan-ı Ajan; kamu kurumlarına ulaşan evrakı okuyup anlamlandıran, türünü ve
+eksiklerini belirleyen, ilgili kaynakları bulan, işlem yapılacak birimi öneren
+ve insan onayına sunulmak üzere resmî yazı taslağı hazırlayan Türkçe, çok
+ajanlı bir karar destek sistemidir.
+
+Projenin amacı kamu personelinin yerine kontrolsüz karar vermek değil; yoğun,
+tekrarlı ve hata riski taşıyan evrak iş akışını **kaynak izli, açıklanabilir ve
+insan denetimli** hâle getirmektir.
+
+> **Hukuki kullanım sınırı:** Yarışma snapshot'ı güncelliği ve yürürlüğü
+> doğrulanmış bir hukuk hizmeti değildir. Sistem kaynak, sürüm ve güven
+> durumunu görünür tutar; kritik kararlar insan onayı olmadan kesinleştirilmez.
+
+## Takım
+
+| Görev | Ad Soyad |
+|---|---|
+| Takım kaptanı | İsmail Özsoy |
+| Geliştirici | Ahmet Koç |
+| Geliştirici | Ceren Karabağ |
+| Geliştirici | Sami Erdoğmuş |
+
+Takım adı **Divan-ı Ajan**dır ve şartnamede belirtilen takım kaptanı dâhil dört
+kişilik takım yapısına uygundur.
+
+## Yarışma problemi
+
+Kamu evrak süreçlerinde belge alımı, OCR, içerik analizi, sınıflandırma,
+mevzuat/yazışma kuralı eşleştirmesi, eksik bilgi tespiti, resmî taslak üretimi
+ve birime yönlendirme çoğunlukla farklı kişilerce ve çok adımlı biçimde
+yürütülür. Bu durum işlem süresini uzatır, standartlaşmayı zorlaştırır ve
+kararların izlenebilirliğini azaltır.
+
+Divan-ı Ajan bu zinciri tek bir denetlenebilir süreçte birleştirir:
+
+```text
+Evrak / OCR
+    -> Katman 1: sınıflandırma, alan çıkarımı ve eksiklik denetimi
+    -> Katman 2: federated RAG, kaynak doğrulama ve içerik değerlendirmesi
+    -> Katman 3: şablon, birim, cevap stratejisi ve resmî taslak
+    -> uygunluk kontrolü -> insan onayı -> LaTeX / PDF
+```
+
+## Üç katmanlı çözüm mimarisi
+
+### Katman 1 - Evrakı anlama
+
+- TXT, MD, PDF, PNG, JPG ve TIFF girdilerini kabul eder.
+- Metin katmanı yoksa veya yetersizse OCR uygular.
+- Evrakı kapalı genel tür kataloğunda sınıflandırır.
+- Gönderen, tarih, konu, talep ve benzeri önemli alanları çıkarır.
+- Evrak türüne göre bulunması gereken alanları denetler.
+- Eksik veya belirsiz bilgileri kullanıcıya bildirim olarak sunar.
+
+### Katman 2 - Kaynağa bağlı değerlendirme
+
+- Evraktaki hukuki ve teknik meseleleri ayrı arama sorgularına dönüştürür.
+- UAB/karayolları korpusu ile geniş hukuk korpusunu ayrı kanallarda tarar.
+- Farklı embedding uzaylarının ham skorlarını doğrudan karşılaştırmaz; kanal
+  sıralarını Reciprocal Rank Fusion ile birleştirir.
+- Getirilen hükmü evraktaki görünür ifadeyle ilişkilendirir.
+- Kaynak alıntısını, madde/fıkra izini ve belge kanıtını doğrular.
+- Yeterli kanıt yoksa kaynak veya hukuki sonuç uydurmak yerine çekimser kalır.
+
+### Katman 3 - Kurumsal işlem ve resmî yazı
+
+- Kapalı katalogdan resmî yazı/şablon türünü seçer.
+- Organizasyon kataloğuna bağlı sorumlu birim önerir.
+- Kullanıcıya kaynaklı cevap stratejileri sunar.
+- Vatandaş, kurum içi birim veya iki hedef için ayrı taslak üretebilir.
+- Modelin doğrudan LaTeX yazmasına izin vermeden yapılandırılmış alanları
+  güvenli şablona aktarır.
+- Resmî yazışma uygunluk kontrollerinden sonra insan onayı ister.
+
+Ayrıntılı akış, REST sözleşmesi ve arayüz alanları için
+[`docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md`](docs/UC_KATMANLI_MIMARI_VE_ARAYUZ_ENTEGRASYONU.md)
+belgesine bakın.
+
+## Şartname görevleriyle uyum
+
+| Şartname beklentisi | Divan-ı Ajan karşılığı |
+|---|---|
+| Evrakı OCR veya doğrudan metin olarak okuma | Belge çıkarıcı, sayfa bazlı kalite kontrolü ve OCR fallback |
+| Evrak türünü belirleme | Kapalı genel tür kataloğu ve yapılandırılmış sınıflandırma |
+| Önemli bilgileri çıkarma | Kaynak ve belge satırı izi taşıyan alan çıkarımı |
+| Eksik bilgileri tespit etme | Evrak türüne bağlı gereksinim kataloğu ve Katman 1 denetimi |
+| Mevzuat/yazışma kuralı önerme | Hibrit ve federated RAG, kaynak doğrulama kapıları |
+| Kısa ve öz özet oluşturma | Yapılandırılmış analiz özeti |
+| Resmî yazı türüne karar verme | Kapalı şablon kataloğu ve Katman 3 seçim ajanı |
+| Resmî üsluba uygun taslak | Güvenli LaTeX şablonları ve deterministik uygunluk motoru |
+| Doğru birime yönlendirme | Kapalı organizasyon kataloğuna bağlı yönlendirme |
+| Kullanıcıyı süreç hakkında bilgilendirme | Durum olayları, polling API'si ve arayüz zaman çizelgesi |
+| Gerektiğinde eksik bilgi isteme | Bildirim, güvenli bilgi tamamlama ve insan onayı adımları |
+
+Yarışmada iki görevin birlikte tamamlanması zorunludur. Bu nedenle proje yalnız
+sınıflandırma yapan bir model veya yalnız metin üreten bir sohbet ekranı olarak
+değil, evrak alımından onaylı çıktıya kadar uçtan uca tasarlanmıştır.
+
+## Veri ve güvenlik yaklaşımı
+
+Şartname gereği gerçek kamu verisi kullanılmaz. Proje geliştirme ve gösterim
+sürecinde:
+
+- açık kaynak metinler,
+- kurgusal/sentetik evraklar,
+- yapay olarak oluşturulmuş resmî yazışma örnekleri,
+- kullanım durumu açıkça işaretlenmiş mevzuat snapshot'ları
+
+kullanılır. Kişisel veya kısıtlı evrakın haricî LLM'e gönderilmesi fail-closed
+güvenlik kapılarıyla engellenir. API anahtarları kaynak koduna veya frontend'e
+yazılmaz. Kaynak, lisans, model sürümü ve veri sınırı mümkün olduğu ölçüde
+metadata ile korunur.
+
+## Jüri değerlendirmesine yönelik teknik değer
+
+Şartnamede final değerlendirmesi 100 puandır:
+
+| Kriter | Puan | Projede gösterilecek kanıt |
+|---|---:|---|
+| Yöntem ve Teknik Yaklaşım | 35 | Üç katmanlı ajan ayrımı, çift korpus, RRF, kaynak kapıları ve denetlenebilir iz |
+| Uygulama | 35 | OCR, sınıflandırma, eksik alan, yönlendirme, özet ve resmî taslak doğruluğu |
+| Demo | 15 | Uçtan uca çalışan Türkçe senaryo, canlı ilerleme ve indirilebilir çıktı |
+| Yenilikçilik, Özgünlük ve Ticarileşme Potansiyeli | 15 | İnsan denetimli kamu iş akışı, federated Legal RAG ve kurumlara uyarlanabilir kataloglar |
+
+## Önerilen 10 dakikalık final demosu
+
+Final sunumu şartnameye göre toplam 15 dakikadır: 10 dakika takım sunumu ve 5
+dakika jüri soru-cevap bölümü.
+
+1. **Problem ve değer önerisi - 1 dakika:** Kamu evrakındaki zaman, standart ve
+   izlenebilirlik sorununu açıklayın.
+2. **Mimari - 2 dakika:** Üç katmanı, ajan sorumluluklarını ve insan onayını
+   gösterin.
+3. **Canlı evrak alımı - 1 dakika:** Türkçe PDF veya taranmış evrak yükleyin;
+   OCR ve alan kanıtlarını gösterin.
+4. **Katman 1 - 1 dakika:** Tür, özet, önemli alanlar ve eksikleri gösterin.
+5. **Katman 2 - 2 dakika:** Birden fazla mesele için bulunan farklı maddeleri,
+   birebir alıntıları ve çekimserlik kapısını gösterin.
+6. **Katman 3 - 2 dakika:** Birim ve cevap stratejisini seçip resmî taslağı
+   üretin.
+7. **Çıktı ve kapanış - 1 dakika:** Uygunluk sonucu, insan onayı ve PDF/LaTeX
+   indirmeyi gösterin.
+
+Canlı demo için internet kesintisi, uzak servis veya model sorunu ihtimaline
+karşı aynı senaryonun kayıtlı gösterimi ve çevrimdışı fallback'i hazır
+tutulmalıdır. Kayıt kullanılırsa jüri talep ettiğinde sistem canlı
+çalıştırılabilmelidir.
+
+## Yarışma teslim kontrol listesi
+
+- [ ] Her iki görev uçtan uca gösteriliyor.
+- [ ] Takım ve görev dağılımı doğru belgelenmiş.
+- [ ] Tüm teslim dokümanları Türkçe hazırlanmış.
+- [ ] Kaynaklar ve üçüncü taraf lisansları belirtilmiş.
+- [ ] Zorunlu proje bileşenleri uygun bir açık kaynak lisansıyla erişilebilir.
+- [ ] Model ağırlıkları depoya eklenmemiş; erişim, sürüm ve lisans bilgisi yazılmış.
+- [ ] Demo veri kaynakları ve kullanım hakları açıklanmış.
+- [ ] Gerçek kamu veya kişisel veri kullanılmıyor.
+- [ ] Sunum PDF ve PPTX olarak hazırlanmış.
+- [ ] Gerçek zamanlı demoya karşı yedek plan hazır.
+- [ ] Güncel takvim ve final lokasyonu TEKNOFEST resmî kanallarından kontrol edilmiş.
+
+## Temel proje dosyaları
+
+```text
+src/karayol_agent/orchestrator.py             # uçtan uca süreç yöneticisi
+src/karayol_agent/agents/llm_roles.py         # Katman 1 LLM rolleri
+src/karayol_agent/layer2_legal_reasoning.py   # Katman 2 değerlendirme zinciri
+src/karayol_agent/retrieval/federated.py      # iki korpusun birlikte aranması
+src/karayol_agent/agents/llm_layer3.py        # Katman 3 LLM rolleri
+src/karayol_agent/backend/routes.py           # REST ve asenkron süreç uçları
+src/karayol_agent/latex/renderer.py           # güvenli LaTeX/PDF üretimi
+frontend/                                     # manuel test ve yarışma arayüzü
+templates/                                    # kapalı resmî yazı şablonları
+tests/                                        # regresyon ve kabul testleri
+```
+
+## Hızlı başlangıç
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+$env:PYTHONPATH="src"
+python -m uvicorn karayol_agent.api:app --host 127.0.0.1 --port 8010
+```
+
+Ayrı terminalde frontend:
+
+```powershell
+python -m http.server 3000 --directory frontend
+```
+
+Arayüz `http://127.0.0.1:3000`, API dokümantasyonu
+`http://127.0.0.1:8010/docs` adresindedir. LLM ve Qdrant seçimine ilişkin ayrıntı
+`.env.example` ile aşağıdaki teknik bölümlerde yer alır.
+
+---
+
+## Ayrıntılı teknik dokümantasyon
 
 Üç katmanlı ajan mimarisinin görevleri, iki vektör korpusunun kullanımı ve yeni
 bir arayüzün REST API'ye nasıl bağlanacağı için
